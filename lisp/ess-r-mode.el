@@ -740,9 +740,7 @@ Once the value is found, cache it in the variable `ess-newest-R'
 for future use as finding the newest version of R can be
 potentially time-consuming."
   (or ess-newest-R
-      (progn (message "Finding all versions of R on your system...")
-             ;;(sleep-for 3)
-             nil)
+      (message "Finding all versions of R on your system...")
       (setq ess-newest-R
             (ess-newest-r
              (if ess-microsoft-p
@@ -822,16 +820,10 @@ Examples: (ess-current-R-at-least '2.7.0)
            (car (ess-get-words-from-vector
                  (format "as.character(.ess.Rversion >= \"%s\")\n" version)))))
 
-(defvar ess-temp-newest nil)
-
 (defun ess-newest-r (rvers)
   "Check all the versions of RVERS to see which is the newest.
 Return the name of the newest version of R."
   (let ((rtimes (mapcar 'ess-r-version-date rvers)))
-    ;; SJE: 2007-07-13 -- following line is a temp var to check that
-    ;; the newest version of R is found correctly.
-    ;; (nowadays gives a compile warning)
-    (setq ess-temp-newest rtimes)
     (ess-find-newest-date rtimes)))
 
 (defun ess-find-newest-date (rvers)
