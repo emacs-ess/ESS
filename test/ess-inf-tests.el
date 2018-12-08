@@ -88,6 +88,7 @@ OUT-STRING is the content of the region captured by
 
 (ert-deftest ess-eval-and-step-test ()
   (let ((inhibit-message ess-inhibit-message-in-tests))
+
     (let ((output "\nreal <- code\n"))
       (ess-test-interactive-eval output
         (insert (format "## comment\n%s" output))
@@ -99,7 +100,14 @@ OUT-STRING is the content of the region captured by
         (insert (format "## comment\n%s" output))
         (goto-char (point-min))
         (forward-line 1)
-        (ess-eval-region-or-function-or-paragraph-and-step)))))
+        (ess-eval-region-or-function-or-paragraph-and-step)))
+
+    (let ((output "a <- 1\nb <- 2\n"))
+      (ess-test-interactive-eval output
+        (insert (format "%s\nmore_code()" output))
+        (goto-char (point-min))
+        (ess-eval-region-or-function-or-paragraph-and-step)
+        (should (looking-at-p "more_code"))))))
 
 (ert-deftest ess-verbose-setwd-test ()
   (with-r-running nil

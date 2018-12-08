@@ -1594,7 +1594,7 @@ step to the next code line or to the end of region if region was
 active. Prefix arg VIS toggles visibility of ess-code as for
 `ess-eval-region'."
   (interactive "P")
-  (ess-eval-region-or-function-or-paragraph vis)
+  (ess-skip-thing (ess-eval-region-or-function-or-paragraph vis))
   (ess-next-code-line))
 
 (defun ess-eval-region-or-line-and-step (&optional vis)
