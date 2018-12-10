@@ -316,7 +316,6 @@ to look up any doc strings."
     (ess-dump-error-re             . "in \\w* at \\(.*\\):[0-9]+")
     (ess-error-regexp              . "\\(^\\s-*at\\s-*\\(?3:.*\\):\\(?2:[0-9]+\\)\\)")
     (ess-error-regexp-alist        . ess-julia-error-regexp-alist)
-    (ess-imenu-generic-expression  . ess-julia-imenu-generic-expression)
     (ess-mode-completion-syntax-table . ess-julia-completion-syntax-table)
     ;; (inferior-ess-objects-command    . inferior-ess-r-objects-command)
     ;; (inferior-ess-search-list-command        . "search()\n")

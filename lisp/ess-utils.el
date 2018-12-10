@@ -721,7 +721,7 @@ GTags file (default TAGS): ")
   (if (and (ess-build-tags-command) (null current-prefix-arg))
       (ess-eval-linewise (format (ess-build-tags-command) dir tagfile))
     ;; else generate from imenu
-    (unless (or imenu-generic-expression ess-imenu-generic-expression) ;; need both!!
+    (unless imenu-generic-expression
       (error "No ess-tag-command found, and no imenu-generic-expression defined"))
     (let* ((find-cmd
             (format "find %s -type f -size 1M \\( -regex \".*\\.\\(cpp\\|jl\\|[RsrSch]\\(nw\\)?\\)$\" \\)" dir))

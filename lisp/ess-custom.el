@@ -148,9 +148,6 @@ as `ess-imenu-use-S'."
   :group 'ess
   :type  'boolean)
 
-(defvar ess-imenu-generic-expression nil
-  "Placeholder for imenu-generic-expression. Dialect specific.")
-
 (defcustom ess-auto-width-visible nil
   "When non-nil, echo width setting in the inferior buffer.
 See `ess-auto-width'. Be warned that ESS can set the width a

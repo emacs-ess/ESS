@@ -141,7 +141,8 @@ New way to do it."
   (setq-local ess-local-customize-alist S+-customize-alist)
   (ess-mode)
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
-  (if ess-imenu-use-S (ess-imenu-S)))
+  (setq imenu-generic-expression ess-imenu-S-generic-expression)
+  (when ess-imenu-use-S (imenu-add-to-menubar "Imenu-S")))
 
 (defalias 'S+6-transcript-mode 'S+-transcript-mode)
 (define-derived-mode S+-transcript-mode ess-transcript-mode "ESS S Transcript"

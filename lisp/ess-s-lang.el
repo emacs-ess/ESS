@@ -108,7 +108,6 @@
     ;; (inferior-ess-secondary-prompt . "[+:] ") ;; catch Selection: and alike
     (inferior-ess-secondary-prompt . "+ ") ;; catch Selection: and alike
     (comment-start                . "#")
-    (ess-imenu-generic-expression  . ess-imenu-S-generic-expression)
     (comment-add                  . 1)
     (comment-start-skip           . "#+ *")
     (comment-use-syntax           . t)  ; see log for bug report 2013-06-07
@@ -670,11 +669,10 @@ and I need to relearn emacs lisp (but I had to, anyway."
 
 (defun ess-imenu-S (&optional arg)
   "S Language Imenu support for ESS."
-  (interactive)
-  (setq imenu-generic-expression ess-imenu-generic-expression)
+  (declare (obsolete "It is set automatically in major modes" "ESS 19.04"))
   (imenu-add-to-menubar "Imenu-S"))
 
-(defalias 'ess-imenu-R 'ess-imenu-S)
+(define-obsolete-function-alias 'ess-imenu-R 'ess-imenu-S "ESS 19.04")
 
 
  ;;; Speedbar stuff.
