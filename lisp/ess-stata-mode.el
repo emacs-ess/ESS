@@ -172,7 +172,7 @@ This function is placed in `ess-presend-filter-functions'.
     tab)
   "Syntax table for `ess-inferior-stata-mode'.")
 
-(define-derived-mode ess-inferior-stata-mode inferior-ess-mode "iESS"
+(define-derived-mode inferior-ess-stata-mode inferior-ess-mode "iESS"
   "Inferior `stata' mode."
   (ess-setq-vars-local STA-customize-alist)
   (setq-local comint-use-prompt-regexp t)

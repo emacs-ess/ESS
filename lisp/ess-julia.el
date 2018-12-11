@@ -397,7 +397,7 @@ It makes underscores and dots word constituent chars.")
   (copy-syntax-table ess-julia-mode-syntax-table)
   "Syntax table for `ess-inferior-julia-mode'.")
 
-(define-derived-mode ess-inferior-julia-mode inferior-ess-mode "iESS[julia]"
+(define-derived-mode inferior-ess-julia-mode inferior-ess-mode "iESS[julia]"
   "Major mode for inferior julia processes."
   (ess-setq-vars-local ess-julia-customize-alist)
   (setq-local comint-use-prompt-regexp t)
