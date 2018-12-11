@@ -91,10 +91,12 @@ VISIBLY is not currently used."
 (defun ess-julia-manual-lookup-function (&rest _args)
   "Look up topics at https://docs.julialang.org/en/latest/manual/."
   (interactive)
-  ;; <li class="toctree-l1"><a class="reference internal" href="introduction/">Introduction</a></li>
+  ;; <li class="toctree-l1"><a class="reference internal"
+  ;; href="introduction/">Introduction</a></li>
   (let* ((pages (or ess-julia--manual-topics
                     (setq ess-julia--manual-topics
-                          (ess-julia--retrive-topics "https://docs.julialang.org/en/latest/manual/"))))
+                          (ess-julia--retrive-topics
+                           "https://docs.julialang.org/en/latest/manual/"))))
          (page (ess-completing-read "Lookup:" pages nil t)))
     (browse-url (get-text-property 1 :manual page))))
 
@@ -110,25 +112,29 @@ See `comint-input-sender'."
             (t ;; normal command
              (inferior-ess-input-sender proc string))))))
 
-(cl-defmethod ess-installed-packages (&context ((string= ess-dialect "julia") (eql t)))
+(cl-defmethod ess-installed-packages
+  (&context ((string= ess-dialect "julia") (eql t)))
   "Return list of installed julia packages."
-  ;; FIXME: This doesn't work if the user hasn't done "using Pkg" yet
-  (ess-get-words-from-vector "keys(Pkg.installed())\n"))
+  (ess-get-words-from-vector "using Pkg; keys(Pkg.installed())\n"))
 
-(cl-defmethod ess-load-library--override (pack &context ((string= ess-dialect "julia") (eql t)))
+(cl-defmethod ess-load-library--override
+  (pack &context ((string= ess-dialect "julia") (eql t)))
   (ess-eval-linewise (format "using %s\n" pack)))
 
 
 ;;; COMPLETION
 (defun ess-julia-latexsub-completion ()
-  "Complete latex input, and return format required by `completion-at-point-functions'."
-  (if (julia-latexsub) ; julia-latexsub returns nil if it performed a completion, the point otherwise
+  "Complete latex input, and return format required by \
+`completion-at-point-functions'."
+  ;; julia-latexsub returns nil if it performed a completion, the point otherwise
+  (if (julia-latexsub)
       nil
     (lambda () t) ;; bypass other completion methods
     ))
 
 (defun ess-julia-object-completion ()
-  "Return completions at point in a format required by `completion-at-point-functions'."
+  "Return completions at point in a format required by \
+`completion-at-point-functions'."
   (let ((proc (ess-get-next-available-process ess-dialect t))
         (beg (ess-symbol-start)))
     (if proc
@@ -232,7 +238,7 @@ objects from that MODULE."
   (require 'auto-complete)
   (ess-julia-objects ac-prefix))
 
-(declare-function company-begin-backend "company.el")
+(declare-function company-begin-backend "company")
 
 (defun company-ess-julia-objects (command &optional arg &rest ignored)
   (interactive (list 'interactive))
@@ -253,11 +259,14 @@ objects from that MODULE."
   "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
 
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(ess-julia-in  "^\\s-*in [^ \t\n]* \\(at \\(.*\\):\\([0-9]+\\)\\)" 2 3 nil 2 1))
+             '(ess-julia-in  "^\\s-*in [^ \t\n]* \\(at \\(.*\\):\\([0-9]+\\)\\)"
+                             2 3 nil 2 1))
 (add-to-list 'compilation-error-regexp-alist-alist
              '(ess-julia-at "^\\S-+\\s-+\\(at \\(.*\\):\\([0-9]+\\)\\)"  2 3 nil 2 1))
 (add-to-list 'compilation-error-regexp-alist-alist
-             '(ess-julia-while-load "^\\s-*\\(while loading\\s-\\(.*\\), in .* on line +\\([0-9]+\\)\\)"  2 3 nil 2 1))
+             '(ess-julia-while-load
+               "^\\s-*\\(while loading\\s-\\(.*\\), in .* on line +\\([0-9]+\\)\\)"
+               2 3 nil 2 1))
 
 
 ;;; ELDOC
@@ -275,7 +284,8 @@ to look up any doc strings."
       (when funname
         (let* ((args (copy-sequence (nth 2 (ess-function-arguments funname))))
                (W (- (window-width (minibuffer-window)) (+ 4 (length funname))))
-               (doc (concat (propertize funname 'face font-lock-function-name-face) ": ")))
+               (doc (concat
+                     (propertize funname 'face font-lock-function-name-face) ": ")))
           (when args
             (setq args (sort args (lambda (s1 s2)
                                     (< (length s1) (length s2)))))
@@ -357,8 +367,8 @@ to look up any doc strings."
 It makes underscores and dots word constituent chars.")
 
 (cl-defmethod ess-help-commands (&context ((string= ess-dialect "julia") (eql t)))
-  '((packages      . "_ess_list_categories()\n")
-    (package-index . "_ess_print_index(\"%s\")\n")
+  '((packages          . "_ess_list_categories()\n")
+    (package-index     . "_ess_print_index(\"%s\")\n")
     (index-keyword-reg . "^\\(.*+\\):$*")
     (index-start-reg   . ":")))
 
@@ -431,21 +441,23 @@ always be passed to julia, put them in the variable
   (interactive "P")
   ;; get settings, notably inferior-julia-program :
   (if (null inferior-julia-program)
-      (error "'inferior-julia-program' does not point to 'julia' or 'julia-basic' executable")
+      (error "'inferior-julia-program' does not point to 'julia' or 'julia-basic' \
+executable")
     (setq ess-customize-alist ess-julia-customize-alist)
     (ess-write-to-dribble-buffer   ;; for debugging only
      (format
       "\n(julia): ess-dialect=%s, buf=%s, start-arg=%s\n current-prefix-arg=%s\n"
       ess-dialect (current-buffer) start-args current-prefix-arg))
     (let* ((jl-start-args
-	        (concat inferior-julia-args " " ; add space just in case
-		            (if start-args
-			            (read-string
+	    (concat inferior-julia-args " " ; add space just in case
+		    (if start-args
+			(read-string
                          (concat "Starting Args"
                                  (if inferior-julia-args
-                                     (concat " [other than '" inferior-julia-args "']"))
+                                     (concat " [other than '"
+                                             inferior-julia-args "']"))
                                  " ? "))
-		              nil))))
+		      nil))))
       (inferior-ess jl-start-args)
 
       (ess--tb-start)
