@@ -252,6 +252,11 @@ When t, loading a file into a namespaced will output information
 about which objects are exported and which stay hidden in the
 namespace.")
 
+(defvar ess-newest-R nil
+  "Stores the newest version of R that has been found.
+Used as a cache, within `ess-find-newest-R'. Do not use this value
+directly, but instead call the function \\[ess-find-newest-R].")
+
 (defun ess-r-font-lock-syntactic-face-function (state)
   (let ((string-end (save-excursion
                       (and (nth 3 state)
@@ -476,6 +481,12 @@ will be prompted to enter arguments interactively."
    (format
     "\n(R): ess-dialect=%s, buf=%s, start-arg=%s\n current-prefix-arg=%s\n"
     ess-dialect (current-buffer) start-args current-prefix-arg))
+  (unless (executable-find inferior-ess-r-program)
+    ;; On MS Windows, `inferior-ess-r-program' might not point to the
+    ;; absolute path to Rterm, thus we check it here and set it if
+    ;; necessary.
+    (setq inferior-ess-r-program (or ess-newest-R
+                                     (ess-find-newest-R))))
   (let* ((r-always-arg
           (if (or ess-microsoft-p (eq system-type 'cygwin))
               "--ess "
@@ -808,12 +819,6 @@ as `ess-r-created-runners' upon ESS initialization."
 (define-obsolete-function-alias
   'ess-r-versions-create 'ess-r-define-runners "ESS 18.10")
 
-(defvar ess-newest-R nil
-  "Stores the newest version of R that has been found.
-Used as a cache, within `ess-find-newest-R'. Do not use this value
-directly, but instead call the function \\[ess-find-newest-R].")
-
-
 (defcustom ess-prefer-higher-bit t
   "Non-nil means prefer higher bit architectures of R.
 e.g. prefer 64 bit over 32 bit.  This is currently used only
@@ -845,7 +850,6 @@ Once the value is found, cache it in the variable `ess-newest-R'
 for future use as finding the newest version of R can be
 potentially time-consuming."
   (or ess-newest-R
-      (message "Finding all versions of R on your system...")
       (setq ess-newest-R
             (ess-newest-r
              (if ess-microsoft-p
@@ -917,6 +921,7 @@ Examples: (ess-current-R-at-least '2.7.0)
 (defun ess-newest-r (rvers)
   "Check all the versions of RVERS to see which is the newest.
 Return the name of the newest version of R."
+  (message "Finding all versions of R on your system...")
   (let ((rtimes (mapcar 'ess-r-version-date rvers)))
     (ess-find-newest-date rtimes)))
 
