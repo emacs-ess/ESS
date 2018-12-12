@@ -392,15 +392,16 @@ With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e., from all installed
          (alist ess-local-customize-alist)
          (remote (file-remote-p default-directory))
          (buff (get-buffer-create (format "*[%s]vignettes*" ess-dialect)))
-         (inhibit-modification-hooks t))
+         (inhibit-modification-hooks t)
+         (inhibit-read-only t))
     (with-current-buffer buff
       (setq buffer-read-only nil)
       (delete-region (point-min) (point-max))
       (ess-setq-vars-local (eval alist))
+      (setq ess-local-process-name proc-name)
       (ess--help-major-mode)
       (setq ess-help-sec-regex "^\\w+:$"
-            ess-help-type 'vignettes
-            ess-local-process-name proc-name)
+            ess-help-type 'vignettes)
       (set-buffer-modified-p 'nil)
       (goto-char (point-min))
       (dolist (el vslist)

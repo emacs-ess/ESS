@@ -900,8 +900,7 @@ toggled."
                                     (null ess-local-process-name))
                                    (and
                                     (ess-derived-mode-p)
-                                    (equal loc-proc-name ess-local-process-name))
-                                   ))))
+                                    (equal loc-proc-name ess-local-process-name))))))
               (pop blist))
             (if blist
                 (pop-to-buffer (car blist))
