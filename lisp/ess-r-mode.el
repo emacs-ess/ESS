@@ -662,14 +662,14 @@ Return the value of `point' if we moved, nil otherwise."
     (when beg (point))))
 
 (defun ess-r-end-of-defun (&optional _arg)
-  "Leave the point at the end of the current ESS function.
-Optional argument for location of BEGINNING. Return t if we
-moved, nil otherwise."
+  "Leave the point at the end of the current function.
+ARG is currently ignored. Return t if we moved, nil otherwise."
   (interactive)
   (unless (or (looking-at-p ess-r-function-pattern)
-              (ess-r-beginning-of-defun))
+              (save-excursion (ess-r-beginning-of-defun)))
     (error "Point not in a function"))
-  ;; *hack* only for S (R || S+): are we in setMethod(..) etc?
+  ;; Are we in setMethod(..) etc?
+  (beginning-of-defun)
   (let ((beg-pos (point))
         (in-set-S4 (looking-at ess-r-set-function-start))
         (end-pos))
