@@ -2325,7 +2325,10 @@ state.")
       ;; probably won't work. If it's FALSE, R outputs ascii ', but
       ;; searching through the whole buffer takes too long.
       (while (re-search-forward "‘\\([^[:space:]]+?\\)’" nil t)
-        (let ((text (match-string 1)))
+        (let* ((text (match-string 1))
+               (text (if (string-match-p ".*()\\'" text)
+                         (substring text nil (- (length text) 2))
+                       text)))
           (when (member text help-topics)
             (delete-region (match-beginning 0) (match-end 0))
             (insert-text-button text
