@@ -938,12 +938,22 @@ scored <- read.csv(scored_path, comment.char="#")
 ## MM: but I don't see this, so told him to upgrade ESS (he had 16.10, Windows)
 
 
-## This is a problem only inside package code [ess-tracebug related]
+### --- 39 --issue ..: problem *only* inside package code [ess-tracebug related]
 rm(old,new)
 old <- 10    # line 1, use ess-eval-line,          i.e., C-c C-j
 new <- old+1 # line 2, use ess-eval-line-and-step, i.e., C-c C-n
 
-
+### --- 40 --issue ..: new in 18.10(-1) - but ok in git(2018-10-29)
+Fedora.ver <- "F28"; biocLibrary <- "/usr/local.nfs/app/R/Bioconductor/library_F28"
+cat(sprintf("Fedora version: %s\nBioc. library - where packages are installed now:\n  %s\n",
+            Fedora.ver, biocLibrary))
+## After sending (C-c C-n) the first line,  the  `*Messages*` buffer shows
+Loading line: Fedora.ver <- "F28"; biocLibrary <- "/usr/local.nfs/app/R/Bioconductor/library_F28"
+Starting evaluation...
+ess-send-string: Not enough arguments for format string
+## and the user indeed gets the "Not enough arguments ..."
+## message in the minibuffer/message area *and* the R process hangs (with a '+ ')
+## expecting the continuation, but inside this buffer, further C-c C-n do nothing!
 
 
 ### Local Variables:
