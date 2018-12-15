@@ -583,7 +583,6 @@ Return the value of `point' if we moved, nil otherwise."
   ;; beginning-of-defun-function specification
   ;; FIXME: should __WORK__ in the crucial case: large function w/ internal function defs
   (interactive)
-  (skip-chars-backward " \t\n")
   (let ((init-point (point))
         (in-set-S4 nil)
         beg end done)

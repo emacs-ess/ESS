@@ -372,8 +372,10 @@ With UPDATE, update cached package list."
   "If inside a function go to the beginning of it.
 Otherwise go to the beginning of paragraph."
   (interactive)
-  (or (beginning-of-defun)
-      (backward-paragraph))
+  (let ((beg-point (point)))
+    (or (beginning-of-defun)
+        (backward-paragraph))
+    (when (eql beg-point (point)) (backward-paragraph)))
   (point))
 
 (defun ess-goto-end-of-function-or-para ()
