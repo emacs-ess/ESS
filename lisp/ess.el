@@ -380,8 +380,9 @@ Otherwise go to the beginning of paragraph."
   "If inside a function go to end of it.
 Otherwise go to the end of paragraph."
   (interactive)
-  (or (end-of-defun)
-      (forward-paragraph))
+  (condition-case nil
+      (end-of-defun)
+    (error (forward-paragraph)))
   (point))
 
 (defun ess-mark-function-or-para ()
