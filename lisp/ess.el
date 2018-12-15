@@ -368,24 +368,33 @@ With UPDATE, update cached package list."
 
 ;;;*;;; Motion / manipulation commands
 
-(defun ess-goto-beginning-of-function-or-para ()
+(defun ess-goto-beginning-of-function-or-para (&optional arg)
   "If inside a function go to the beginning of it.
-Otherwise go to the beginning of paragraph."
+Otherwise go to the beginning of paragraph. If ARG is negative,
+go to the end of function or paragraph."
   (interactive)
   (let ((beg-point (point)))
-    (or (beginning-of-defun)
-        (backward-paragraph))
-    (when (eql beg-point (point)) (backward-paragraph)))
+    (setq arg (or arg 1))
+    (or (condition-case nil (if (> arg 0)
+                                (beginning-of-defun)
+                              (end-of-defun))
+          ;; end-of-defun can error in R mode
+          (error (forward-paragraph)))
+        (if (> arg 0)
+            (backward-paragraph)
+          (forward-paragraph)))
+    (when (eql beg-point (point))
+      ;; Ensure we move
+      (if (> arg 0)
+          (backward-paragraph)
+        (forward-paragraph))))
   (point))
 
 (defun ess-goto-end-of-function-or-para ()
   "If inside a function go to end of it.
 Otherwise go to the end of paragraph."
   (interactive)
-  (condition-case nil
-      (end-of-defun)
-    (error (forward-paragraph)))
-  (point))
+  (ess-goto-beginning-of-function-or-para -1))
 
 (defun ess-mark-function-or-para ()
   "Put mark at end of ESS function, point at beginning."
