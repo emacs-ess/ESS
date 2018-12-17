@@ -2317,7 +2317,8 @@ state.")
 
 (defun ess-r-help-add-links ()
   "Add links to the help buffer."
-  (let ((help-topics (ess-s-get-help-topics-function ess-local-process-name))
+  (let ((help-topics (when (process-live-p ess-local-process-name)
+                       (ess-s-get-help-topics-function ess-local-process-name)))
         (inhibit-read-only t))
     (save-excursion
       ;; Search for fancy quotes only. If users have
