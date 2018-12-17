@@ -167,10 +167,10 @@ This function is placed in `ess-presend-filter-functions'.
         (add-hook 'ess-presend-filter-functions 'ess-sta-remove-comments nil 'local)
         (run-mode-hooks 'ess-stata-post-run-hook)))))
 
-(defvar ess-inferior-stata-mode-syntax-table
+(defvar inferior-ess-stata-mode-syntax-table
   (let ((tab (copy-syntax-table ess-stata-mode-syntax-table)))
     tab)
-  "Syntax table for `ess-inferior-stata-mode'.")
+  "Syntax table for `inferior-ess-stata-mode'.")
 
 (define-derived-mode inferior-ess-stata-mode inferior-ess-mode "iESS"
   "Inferior `stata' mode."

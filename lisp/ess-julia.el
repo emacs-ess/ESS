@@ -393,9 +393,9 @@ It makes underscores and dots word constituent chars.")
   (imenu-add-to-menubar "Imenu-jl"))
 
 ;; Inferior mode
-(defvar ess-inferior-julia-mode-syntax-table
+(defvar inferior-ess-julia-mode-syntax-table
   (copy-syntax-table ess-julia-mode-syntax-table)
-  "Syntax table for `ess-inferior-julia-mode'.")
+  "Syntax table for `inferior-ess-julia-mode'.")
 
 (define-derived-mode inferior-ess-julia-mode inferior-ess-mode "iESS[julia]"
   "Major mode for inferior julia processes."

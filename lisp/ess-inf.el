@@ -53,8 +53,8 @@
 (declare-function tramp-dissect-file-name "tramp")
 (declare-function tramp-tramp-file-p "tramp")
 (declare-function inferior-ess-r-mode "ess-r-mode")
-(declare-function ess-inferior-julia-mode "ess-julia")
-(declare-function ess-inferior-stata-mode "ess-stata-mode")
+(declare-function inferior-ess-julia-mode "ess-julia")
+(declare-function inferior-ess-stata-mode "ess-stata-mode")
 
 (declare-function ess-mode "ess")
 (declare-function ess-complete-object-name "ess-r-completion")
@@ -78,10 +78,10 @@
                 (inferior-ess-r-mode)))
         ((string= "julia" dialect)
          (progn (require 'ess-julia)
-                (ess-inferior-julia-mode)))
+                (inferior-ess-julia-mode)))
         ((string= "stata" dialect)
          (progn (require 'ess-stata-mode)
-                (ess-inferior-stata-mode)))
+                (inferior-ess-stata-mode)))
         ;; FIXME: we need this horrible hack so that
         ;; inferior-ess-mode-syntax-table gets set for
         ;; languages that still rely on the old way of doing
