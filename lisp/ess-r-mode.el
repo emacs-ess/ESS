@@ -2330,7 +2330,8 @@ state.")
                (text (if (string-match-p ".*()\\'" text)
                          (substring text nil (- (length text) 2))
                        text)))
-          (when (member text help-topics)
+          (when (and (member text help-topics)
+                     (not (string= text ess-help-object)))
             (delete-region (match-beginning 0) (match-end 0))
             (insert-text-button text
                                 'ess-r-help-link-text text

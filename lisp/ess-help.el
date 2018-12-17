@@ -119,6 +119,7 @@ Local in `ess-help' buffers.")
   "Name of the object the help is displayed for.
 Is name of the package for package index.
 Local in `ess-help' buffers.")
+(put 'ess-help-object 'permanent-local t)
 
 ;;;###autoload
 (defun ess-display-help-on-object (object &optional command)
@@ -148,9 +149,9 @@ suplied, it is used instead of `inferior-ess-help-command'."
                 (ess--help-get-bogus-buffer-substring old-hb-p))
         (ess-with-current-buffer tbuffer
           (ess--flush-help-into-current-buffer object command)
+          (setq ess-help-object object)
           (ess--help-major-mode)
           (setq truncate-lines nil
-                ess-help-object object
                 ess-help-type 'help)))
       (unless (ess--help-kill-bogus-buffer-maybe tbuffer)
         (ess--switch-to-help-buffer tbuffer)))))
