@@ -1,4 +1,4 @@
-;; ess-tracebug.el --- Tracing and debugging facilities for ESS.
+;; ess-tracebug.el --- Tracing and debugging facilities for ESS.  -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 2011--2017 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
 ;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
@@ -45,7 +45,8 @@
 (eval-when-compile
   (require 'cl)
   (require 'cl-lib)
-  (require 'tramp))
+  (require 'tramp)
+  (require 'subr-x))
 (require 'comint)
 (require 'compile)
 (require 'overlay)
@@ -62,6 +63,7 @@
 (defvar ess--dbg-del-empty-p)
 (defvar inferior-ess-mode-map)
 (defvar ess-mode-map)
+(defvar ess--inhibit-presend-hooks)
 (declare-function ess--accumulation-buffer "ess-inf")
 (declare-function ess--if-verbose-write-process-state "ess-inf")
 (declare-function ess--run-presend-hooks "ess-inf")
@@ -401,7 +403,7 @@ by `ess-inject-source' variable."
 ;; I   . Goto input event marker backwards    . `ess-debug-goto-input-event-marker'
 
 
-(defun ess-tracebug-show-help (&optional ev)
+(defun ess-tracebug-show-help ()
   "Show help for `ess-tracebug'."
   (interactive)
   (describe-variable 'ess-tracebug-help))
@@ -741,13 +743,11 @@ This is the value of `next-error-function' in iESS buffers."
   ;; Modified version of `compilation-next-error-function'.
   (interactive "p")
   (if reset  (goto-char (point-max)))
-  (let* ((columns compilation-error-screen-columns) ; buffer's local value
+  (let* (;; (columns compilation-error-screen-columns) ; buffer's local value
          ;; (proc (or (get-buffer-process (current-buffer))
          ;;                         (error "Current buffer has no process")))
          (pbuff-p (get-buffer-process (current-buffer)))
-         (last 1)
          (n (or n 1))
-         timestamp
          (beg-pos  ; from where the search for next error starts
           (if (and pbuff-p
                    (>= n 0)
@@ -756,7 +756,7 @@ This is the value of `next-error-function' in iESS buffers."
             (point)))
          (at-error t)
          (msg
-          (condition-case err
+          (condition-case nil
               (compilation-next-error n  nil beg-pos)
             (error
              (when pbuff-p
@@ -773,7 +773,7 @@ This is the value of `next-error-function' in iESS buffers."
                 (message "Beyond last-input marker")
                 (setq at-error nil)))
          (marker (point-marker))
-         loc end-loc)
+         loc)
     (when at-error
       (setq compilation-current-error (point-marker)
             overlay-arrow-position (if (bolp)
@@ -781,10 +781,7 @@ This is the value of `next-error-function' in iESS buffers."
                                      (copy-marker (line-beginning-position)))
             loc (if (fboundp 'compilation--message->loc)
                     (compilation--message->loc msg)
-                  (car msg))
-            end-loc (if (fboundp  'compilation--message->end-loc) ;; emacs 24
-                        (compilation--message->end-loc msg)
-                      (nth 2 msg)))
+                  (car msg)))
       (let* ((file (caar (nth 2 loc)))
              (col (car loc))
              (line (cadr loc))
@@ -956,8 +953,7 @@ The SPEC should be one of the components of
 The action list is in `ess-debug-error-action-alist'."
   (interactive)
   (ess-force-buffer-current)
-  (let* ((alist ess-debug-error-action-alist)
-         (ev last-command-event)
+  (let* ((ev last-command-event)
          (com-char  (event-basic-type ev))
          (cur-action (or (ess-process-get 'on-error-action) ""))
          actions act)
@@ -1290,8 +1286,7 @@ value as it might be a continuation prompt."
             "> "))
          ((eq inferior-ess-replace-long+ t)
           (let ((prompt (replace-regexp-in-string "\\(\\+ \\)\\{2\\}\\(\\+ \\)+"
-                                                  ess-long+replacement prompt))
-                (len (length prompt)))
+                                                  ess-long+replacement prompt)))
             (if (and last+ (not is-final))
                 ;; append > for aesthetic reasons
                 (concat prompt "> ")
@@ -1356,8 +1351,7 @@ prompts."
                             ;; > and 2+ spaces
                             "\\(^\\([+>] \\)\\{2,\\}\\)\\|\\(> \\) +"
                           "^\\([+>] \\)+"))
-                (prev-prompt (process-get proc 'prev-prompt))
-                (eol (point-at-eol)))
+                (prev-prompt (process-get proc 'prev-prompt)))
             (while (re-search-forward regexp nil t)
               (setq pos1 (match-beginning 0)
                     tpos (if nowait
@@ -1646,7 +1640,7 @@ If FILENAME is not found at all, ask the user where to find it if
                (ess-r-package-source-dirs)
                (cl-loop for d in ess-tracebug-search-path
                         append (ess-r-package--all-source-dirs d))))
-        buffsym buffer fmts name buffername)
+        buffer name)
     (setq dirs (cons default-directory dirs)) ;; TODO: should be R working dir
     ;; 1. search already open buffers for match (associated file might not even exist yet)
     (dolist (bf (buffer-list))
@@ -1844,7 +1838,7 @@ If supplied, EV must be a proper key event or a string representing the digit."
       (ess-send-string proc ev-char)
       (move-marker (process-mark proc) (max-char)))))
 
-(defun ess-debug-command-next (&optional ev)
+(defun ess-debug-command-next ()
   "Step next in debug mode.
 Equivalent to 'n' at the R prompt."
   (interactive)
@@ -1855,7 +1849,7 @@ Equivalent to 'n' at the R prompt."
       (ess-send-string (ess-get-process) "0")
     (ess-send-string (ess-get-process) "n")))
 
-(defun ess-debug-command-next-multi (&optional ev N)
+(defun ess-debug-command-next-multi (&optional N)
   "Ask for N and step (n) N times in debug mode."
   (interactive)
   (ess-force-buffer-current)
@@ -1869,7 +1863,7 @@ Equivalent to 'n' at the R prompt."
       (setq N (1- N))))
   (ess-debug-command-next))
 
-(defun ess-debug-command-continue-multi (&optional ev N)
+(defun ess-debug-command-continue-multi (&optional N)
   "Ask for N, and continue (c) N times in debug mode."
   (interactive)
   (ess-force-buffer-current)
@@ -1883,7 +1877,7 @@ Equivalent to 'n' at the R prompt."
       (setq N (1- N))))
   (ess-debug-command-continue))
 
-(defun ess-debug-command-up (&optional ev)
+(defun ess-debug-command-up ()
   "Step up one call frame.
 Equivalent to 'n' at the R prompt."
   (interactive)
@@ -1900,7 +1894,7 @@ Equivalent to 'n' at the R prompt."
 ;;   (interactive)
 ;;   (previous-error))
 
-(defun ess-debug-command-quit (&optional ev)
+(defun ess-debug-command-quit ()
   "Quits the browser/debug in R process.
 Equivalent of `Q' at the R prompt."
   (interactive)
@@ -1914,7 +1908,7 @@ Equivalent of `Q' at the R prompt."
         (t
          (error "Debugger is not active"))))
 
-(defun ess-debug-command-continue (&optional ev)
+(defun ess-debug-command-continue ()
   "Continue the code execution.
 Equivalent of `c' at the R prompt."
   (interactive)
@@ -1926,7 +1920,7 @@ Equivalent of `c' at the R prompt."
         (t
          (error "Debugger is not active"))))
 
-(defun ess-tracebug-set-last-input (&rest ARGS)
+(defun ess-tracebug-set-last-input (&rest _args)
   "Move `ess--tb-last-input' marker to the process mark.
 ARGS are ignored to allow using this function in process hooks."
   (let* ((last-input-process (get-process ess-local-process-name))
@@ -2059,9 +2053,7 @@ Returns the beginning position of the hidden text."
                         (setq ess--bp-identifier (1+ ess--bp-identifier))))
          (bp-command (concat  (format (nth 1 bp-specs) bp-id)
                               "##:ess-bp-end:##\n"))
-         (bp-length (length bp-command))
          (dummy-string (format "##:ess-bp-start::%s@%s:##\n"  (car bp-specs) condition))
-         (dummy-length (length dummy-string))
          insertion-pos)
     (when bp-specs
       (set-marker init-pos (1+ init-pos))
@@ -2171,7 +2163,7 @@ commands like `ess-bp-toggle-state' and `ess-bp-kill'. Use
           (pos-start (if (get-char-property (point) 'ess-bp) ;;check for bobp
                          (point)
                        (next-single-property-change (point) 'ess-bp nil (window-end))))
-          pos dist-up dist-down)
+          dist-up dist-down)
     (unless (eq pos-end (window-start))
       (setq dist-up (- (line-number-at-pos (point))
                        (line-number-at-pos pos-end))))
@@ -2302,7 +2294,7 @@ If there is no active R session, this command triggers an error."
     (let ((pos (ess-bp-get-bp-position-nearby))
           (fringe-face (nth 3 ess-bp-inactive-spec))
           (inhibit-point-motion-hooks t) ;; deactivates intangible property
-          bp-id beg-pos-dummy end-pos-comment bp-specs beg-pos-command)
+          bp-id bp-specs beg-pos-command)
       (if (null pos)
           (message "No breakpoints in the visible region")
         (goto-char (car pos))
@@ -2343,13 +2335,11 @@ If there is no active R session, this command triggers an error."
 (defun ess-bp-next nil
   "Goto next breakpoint."
   (interactive)
-  (let ((cur-pos (point))
-        (bp-pos (next-single-property-change (point) 'ess-bp)))
-    (when bp-pos
-      (save-excursion
-        (goto-char bp-pos)
-        (when (get-text-property (1- (point)) 'ess-bp)
-          (setq bp-pos (next-single-property-change bp-pos 'ess-bp)))))
+  (when-let ((bp-pos (next-single-property-change (point) 'ess-bp)))
+    (save-excursion
+      (goto-char bp-pos)
+      (when (get-text-property (1- (point)) 'ess-bp)
+        (setq bp-pos (next-single-property-change bp-pos 'ess-bp))))
     (if bp-pos
         (goto-char bp-pos)
       (message "No breakpoints found"))))
@@ -2358,13 +2348,10 @@ If there is no active R session, this command triggers an error."
 (defun ess-bp-previous nil
   "Goto previous breakpoint."
   (interactive)
-  (let ((cur-pos (point))
-        (bp-pos (previous-single-property-change (point) 'ess-bp)))
-    (if bp-pos
-        (goto-char (or (previous-single-property-change bp-pos 'ess-bp)
-                       bp-pos))
-      ;;
-      (message "No breakpoints before the point found"))))
+  (if-let ((bp-pos (previous-single-property-change (point) 'ess-bp)))
+      (goto-char (or (previous-single-property-change bp-pos 'ess-bp)
+                     bp-pos))
+    (message "No breakpoints before the point found")))
 
 ;;;_ + WATCH
 
@@ -2470,7 +2457,7 @@ respectively."
           )))))
 
 
-(defun ess-watch-revert-buffer (ignore noconfirm)
+(defun ess-watch-revert-buffer (_ignore _noconfirm)
   "Update the watch buffer.
 Arguments IGNORE and NOCONFIRM currently not used."
   (ess-watch)
@@ -2731,7 +2718,7 @@ Optional N if supplied gives the number of backward steps."
 (defun ess--dbg-get-signatures (method)
   "Get signatures for the method METHOD."
   (let ((tbuffer (get-buffer-create " *ess-command-output*")); initial space: disable-undo
-        signatures curr-point)
+        signatures)
     (save-excursion
       (ess-if-verbose-write (format "ess-get-signatures*(%s).. " method))
       (ess-command (concat "showMethods(\"" method "\")\n") tbuffer)
@@ -2777,7 +2764,7 @@ for signature and trace it with browser tracer."
                      (car (sort matches (lambda (a b) (< (length a) (length b))))))))
          (ufunc (ess-completing-read "Debug" all-functions
                                      nil nil nil nil (or default obj-at-point)))
-         signature default-string out-message)
+         signature)
     ;; FIXME: Most of the following logic should be in R
     (if (ess-boolean-command (format "as.character(isGeneric('%s'))\n" ufunc))
 
