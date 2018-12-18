@@ -1,4 +1,4 @@
-;;; ess-trns.el --- Support for manipulating S transcript files
+;;; ess-trns.el --- Support for manipulating S transcript files  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 1989--1994 Bates, Kademan, Ritter and Smith
 ;; Copyright (C) 1997--2010 A.J. Rossini, Richard M. Heiberger, Martin
