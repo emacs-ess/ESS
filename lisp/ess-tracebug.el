@@ -147,10 +147,6 @@ The postfix keys are defined in `ess-tracebug-map':
   :type '(choice (const nil) (string))
   :group 'ess-tracebug)
 
-;; (make-obsolete-variable 'ess-tracebug-prefix "ess-tracebug-prefix will be removed in future versions.
-;; Electric debug keys are now on C-c and ess-dev maps." "ESS 13.05")
-;; (define-obsolete-variable-alias 'ess-tracebug-command-prefix 'ess-tracebug-prefix)
-
 (defcustom ess-tracebug-search-path nil
   "List of directories to search for source files.
 Elements should be directory names, not file names of directories."
@@ -1788,10 +1784,6 @@ triggered the command."
      ess-electric-debug-map help-mess wait
      (not (ess-process-get 'dbg-active)))))
 
-(define-obsolete-function-alias
-  'ess-singlekey-debug 'ess-electric-debug  "ESS 13.05")
-(make-obsolete 'ess-electric-debug nil "ESS 13.05")
-
 (defun ess-electric-selection (&optional wait)
   "Call commands defined in `ess-electric-selection-map'.
 Single-key input commands are those, which once executed do not
@@ -1800,13 +1792,10 @@ requre the prefix command for subsequent invocation. See
 
 If WAIT is t, wait for next input and ignore the keystroke which
 triggered the command."
-
   (interactive)
   (ess--execute-electric-command ess-electric-selection-map
                                  "Selection: " wait
                                  (not (ess-process-get 'is-recover))))
-
-(make-obsolete 'ess-singlekey-selection 'ess-electric-selection "ESS 13.05")
 
 (defun ess-debug-command-digit (&optional ev)
   "Digit commands in selection mode.
@@ -2853,47 +2842,6 @@ Only do this when called interactively and #chars is 1"
           (kill-region beg (point))))
     ad-do-it))
 
-;; reported as bug#21368
-
-;; ;; previous-line gets stuck if next char is intangible
-;; reported
-;; (defadvice previous-line (around ess-fix-cursor-stuck-at-intangible-text activate)
-;;   "When about to move to previous line when next char is
-;; intangible, step char backward first"
-;;   (when (and (eq major-mode 'ess-mode)
-;;              (or (null (ad-get-arg 0))
-;;                  (= (ad-get-arg 0) 1))
-;;              (get-text-property (point) 'intangible))
-;;     (goto-char (1- (point))))
-;;   ad-do-it)
-
-;; (ad-remove-advice 'previous-line 'around 'ess-fix-cursor-stuck-at-intangible-text)
-
-(make-obsolete-variable 'ess-dbg-blink-ref-not-found-face  'ess-debug-blink-ref-not-found-face "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-blink-same-ref-face  'ess-debug-blink-same-ref-face "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-current-debug-line-face 'ess-debug-current-debug-line-face "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-error-action nil "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-error-action-alist 'ess-debug-error-action-alist "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-blink-interval 'ess-debug-blink-interval "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-indicator 'ess-debug-indicator "ESS 13.05")
-(make-obsolete-variable 'ess-dbg-ask-for-file 'ess-debug-ask-for-file "ESS 13.05")
-(make-obsolete 'ess-dbg-set-error-action 'ess-debug-set-error-action "ESS 13.05")
-(make-obsolete 'ess-dbg-toggle-error-action 'ess-debug-toggle-error-action "ESS 13.05")
-(make-obsolete 'ess-dbg-goto-input-event-marker 'ess-debug-goto-input-event-marker "ESS 13.05")
-(make-obsolete 'ess-dbg-goto-debug-point 'ess-debug-goto-debug-point "ESS 13.05")
-(make-obsolete 'ess-dbg-insert-in-forward-ring 'ess-debug-insert-in-forward-ring "ESS 13.05")
-(make-obsolete 'ess-dbg-start 'ess-debug-start "ESS 13.05")
-(make-obsolete 'ess-dbg-stop 'ess-debug-stop "ESS 13.05")
-(make-obsolete 'ess-dbg-command-digit 'ess-debug-command-digit "ESS 13.05")
-(make-obsolete 'ess-dbg-command-n 'ess-debug-command-next "ESS 13.05")
-(make-obsolete 'ess-dbg-command-Q 'ess-debug-command-quit "ESS 13.05")
-(make-obsolete 'ess-dbg-command-c 'ess-debug-command-continue "ESS 13.05")
-(make-obsolete 'ess-dbg-flag-for-debugging 'ess-debug-flag-for-debugging "ESS 13.05")
-(make-obsolete 'ess-dbg-unflag-for-debugging 'ess-debug-unflag-for-debugging "ESS 13.05")
-(make-obsolete-variable 'ess-tb-last-input-fringe-face 'ess-tracebug-last-input-fringe-face "ESS 13.05")
-(make-obsolete-variable 'ess-tb-next-error-function 'ess-tracebug-next-error-function "ESS 13.05")
-
-(ess-if-verbose-write "\n<- debug done")
 (provide 'ess-tracebug)
 
 ;;; ess-tracebug.el ends here
