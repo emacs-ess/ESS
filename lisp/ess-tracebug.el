@@ -1734,22 +1734,6 @@ This is the value of `next-error-function' in *ess.dbg* buffers."
           (error "Moved past first debug line")
         (error "Moved past last debug line")))))
 
-
-;; not used; remove in 13.09
-(defvar ess-electric-debug-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "c" 'ess-debug-command-continue)
-    (define-key map "C" 'ess-debug-command-continue-multi)
-    (define-key map "n" 'ess-debug-command-next)
-    (define-key map "N" 'ess-debug-command-next-multi)
-    (define-key map "q" 'ess-debug-command-quit)
-    (define-key map "u" 'ess-debug-command-up)
-    map)
-  "Keymap used to define commands for single key input mode.
-This commands are triggered by `ess-electric-debug' .
-\\{ess-electric-debug-map}")
-(make-obsolete-variable 'ess-electric-debug-map nil "ESS 13.05")
-
 (defun ess--debug-keys-message-string (&optional map)
   (let ((overriding-local-map (or map ess-debug-minor-mode-map)))
     (substitute-command-keys
@@ -1762,33 +1746,10 @@ This commands are triggered by `ess-electric-debug' .
                   "(\\[ess-debug-command-quit])quit")
                 " "))))
 
-;; not used anywhere; remove in ESS 13.09
-(defun ess-electric-debug (&optional wait)
-  "Call commands defined in `ess-electric-debug-map'.
-Single-key input commands are those that once invoked do not
-requre the prefix command for subsequent invocation.
-
-For example, if the prefix key is 'C-c C-t' and
-`ess-debug-command-next' is bound to 'n' and `ess-debug-command-continue' is
-bound to 'c' then 'C-c C-t n n c' executes `ess-debug-command-next'
-twice and `ess-debug-command-continue' once. Any other input not defined
-in `ess-electric-debug-map' will cause the exit from single-key
-input mode.
-
-If WAIT is t, wait for next input and ignore the keystroke which
-triggered the command."
-  (interactive)
-  (let ((help-mess (ess--debug-keys-message-string
-                    ess-electric-debug-map)))
-    (ess--execute-electric-command
-     ess-electric-debug-map help-mess wait
-     (not (ess-process-get 'dbg-active)))))
-
 (defun ess-electric-selection (&optional wait)
   "Call commands defined in `ess-electric-selection-map'.
 Single-key input commands are those, which once executed do not
-requre the prefix command for subsequent invocation. See
-`ess-electric-debug' for more.
+requre the prefix command for subsequent invocation.
 
 If WAIT is t, wait for next input and ignore the keystroke which
 triggered the command."
