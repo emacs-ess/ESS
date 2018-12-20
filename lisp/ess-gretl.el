@@ -1,4 +1,4 @@
-;; ess-gretl.el --- ESS gretl mode and inferior interaction
+;; ess-gretl.el --- ESS gretl mode and inferior interaction  -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 2012 Allin Cottrell
 ;; Copyright (C) 2012 Ahmadou DICKO
@@ -14,7 +14,6 @@
 ;;
 
 ;; This file is *NOT* part of GNU Emacs.
-;; This file is *NOT YET* part of ESS
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
