@@ -1,4 +1,4 @@
-;;; ess-rutils.el --- R functions and keybindings to use in iESS.
+;;; ess-rutils.el --- R functions and keybindings to use in iESS.  -*- lexical-binding: t; -*-
 
 ;; Author:       Sebastian Luque <sluque@gmail.com>
 ;; Created:      Thu Nov 10 02:20:36 2004 (UTC)
@@ -49,7 +49,6 @@
 ;; TODO: This should be more tightly integrated with ess-r-mode and ESSR.
 ;; TODO: Should be active in ess-r-mode not only ess-inf
 ;; TODO: Both S level Utils and this package's Rutils are in the menu; confusing and inconvenient.
-(defvar pkg)
 
 ;;; Code:
 
@@ -110,12 +109,9 @@ Useful bindings to handle package loading and installing."
       (goto-char (point-min))
       (if (search-forward "libraries**" nil t)
           (setq oklocal t)))
-    (if oklocal
-        (progn
-          (setq pkg (ess-rutils-namepkg))
-          (ess-execute (concat "library('" pkg "', character.only=TRUE)")
-                       'buffer))
-      nil)))
+    (when oklocal
+      (ess-execute (concat "library('" (ess-rutils-namepkg) "', character.only=TRUE)")
+                   'buffer))))
 
 (defun ess-rutils-repos-pkgs ()
   "List available packages.
@@ -401,7 +397,3 @@ given field. Options should be separated by value of
 (provide 'ess-rutils)
 
 ;;; ess-rutils.el ends here
-
-;; Local Variables:
-;; byte-compile-warnings: (not lexical)
-;; End:
