@@ -49,12 +49,14 @@
   ;; (ess-async-command "{cat(1:5);Sys.sleep(5);cat(2:6)}\n" nil (get-process "R")
   ;;                    (lambda (proc) (message "done"))
   (with-r-running nil
-    (let ((output-buffer (get-buffer-create " *ess-async-text-command-output*"))
-          output)
-      (ess-async-command "{cat(1:5);Sys.sleep(0.5);cat(2:6)}\n" output-buffer (get-process "R")
-                         (lambda (proc string) (setq output string)))
-      (sleep-for 0.6)
-      (should (string= "2 3 4 5 6> " output)))))
+    (ess-async-command "{cat(1:5);Sys.sleep(0.5);cat(2:6)}\n"
+                       (get-buffer-create " *ess-async-text-command-output*")
+                       (get-process "R")
+                       (lambda (proc string)))
+    (loop repeat 3
+          until (null (process-get (get-process "R") 'callbacks))
+          do (sleep-for 0 600)
+          finally (should-not (process-get (get-process "R") 'callbacks)))))
 
 (ert-deftest ess-run-presend-hooks-test ()
   (with-r-running nil
