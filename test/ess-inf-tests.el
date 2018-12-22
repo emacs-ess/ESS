@@ -52,7 +52,8 @@
     (ess-async-command "{cat(1:5);Sys.sleep(0.5);cat(2:6)}\n"
                        (get-buffer-create " *ess-async-text-command-output*")
                        (get-process "R")
-                       (lambda (proc string)))
+                       #'ignore)
+    (should (process-get (get-process "R") 'callbacks))
     (loop repeat 3
           until (null (process-get (get-process "R") 'callbacks))
           do (sleep-for 0 600)
