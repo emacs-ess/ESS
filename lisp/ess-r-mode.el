@@ -695,6 +695,7 @@ ARG is currently ignored. Return t if we moved, nil otherwise."
   (setq-local paragraph-separate (concat "\\s-*$\\|" page-delimiter))
   (setq-local paragraph-ignore-fill-prefix t)
   (setq-local indent-line-function  'ess-indent-line)
+  (setq-local comment-indent-function #'ess-calculate-indent)
   (setq-local ess-style ess-default-style)
   (setq-local add-log-current-defun-header-regexp "^\\(.+\\)\\s-+<-[ \t\n]*function")
   (setq-local font-lock-syntactic-face-function #'ess-r-font-lock-syntactic-face-function)

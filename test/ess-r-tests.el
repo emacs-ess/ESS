@@ -335,6 +335,22 @@ add <- function(x, y) {
     (search-forward "+")
     (should-error (end-of-defun))))
 
+(ert-deftest ess-r-test-comment-dwim ()
+  "Test `comment-dwim' and Bug #434."
+  (let ((ess-default-style 'RRR))
+    (ess-r-test-with-temp-text "#¶"
+      (let ((ess-indent-with-fancy-comments t))
+        (comment-dwim nil)
+        (should (eql 41 (current-column)))
+        (ess-indent-or-complete)
+        (should (eql 41 (current-column)))))
+    (ess-r-test-with-temp-text "#¶"
+      (let ((ess-indent-with-fancy-comments nil))
+        (comment-dwim nil)
+        (should (eql 1 (current-column)))
+        (ess-indent-or-complete)
+        (should (eql 1 (current-column)))))))
+
 ;; Local Variables:
 ;; no-byte-compile: t
 ;; End:
