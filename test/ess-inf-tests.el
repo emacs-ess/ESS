@@ -50,16 +50,16 @@
   ;; (ess-async-command "{cat(1:5);Sys.sleep(5);cat(2:6)}\n" nil (get-process "R")
   ;;                    (lambda (proc) (message "done"))
   (with-r-running nil
-    (lexical-let (semaphore)                  
+    (let (semaphore)
       (ess-async-command "{cat(1:5);Sys.sleep(0.5);cat(2:6)}\n"
                          (get-buffer-create " *ess-async-text-command-output*")
                          (get-process "R")
                          (lambda (&rest args) (setq semaphore t)))
       (should (process-get (get-process "R") 'callbacks))
-      (loop repeat 3
-            until (and semaphore (null (process-get (get-process "R") 'callbacks)))
-            do (sleep-for 0 600)
-            finally (should-not (process-get (get-process "R") 'callbacks))))))
+      (cl-loop repeat 3
+               until (and semaphore (null (process-get (get-process "R") 'callbacks)))
+               do (sleep-for 0 600)
+               finally (should-not (process-get (get-process "R") 'callbacks))))))
 
 (ert-deftest ess-run-presend-hooks-test ()
   (with-r-running nil
