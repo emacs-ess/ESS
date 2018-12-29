@@ -6,7 +6,7 @@ include ../Makeconf
 all: compile lisp
 
 julia:
-	$(MAKE) -C .. julia
+	@$(MAKE) -C .. julia
 
 lisp: julia
 	${EMACS} -Q --script run-tests
@@ -40,4 +40,4 @@ literate-cases:
 .PHONY: compile
 compile:
 	@cd ../lisp && make -k all \
-		"EMACSBATCH = $(EMACS) --batch --eval \"(setq byte-compile-error-on-warn t)\""
+		"COMPILE-FLAGS = --eval \"(setq byte-compile-error-on-warn t)\""

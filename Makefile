@@ -53,7 +53,7 @@ generate-indent-cases:
 
 .PHONY: julia
 julia:
-	cd lisp; $(MAKE) julia-mode.el
+	@cd lisp; $(MAKE) julia-mode.el
 
 .PHONY: autoloads
 autoloads:

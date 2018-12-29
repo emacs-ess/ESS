@@ -17,10 +17,9 @@ NOWEAVE=noweave
 ##.nw.h:  ;       $(NOTANGLE) -R$*.h | cpif $*.h
 .tex.dvi: ;     latex '\scrollmode \input '"$*"; while grep -s 'Rerun to get cross-references right' $*.log; do latex '\scrollmode \input '"$*"; done
 
-# Have to preload the files that contain macro definitions or the byte compiler
-# will compile everything that references them incorrectly. Also preload a file
-# that sets byte compiler options.
-COMPILE = $(EMACSBATCH) --directory . --directory ./obsolete -f batch-byte-compile
+## COMPILE-FLAGS are set in tests
+COMPILE = $(EMACSBATCH) $(COMPILE-FLAGS) --directory . --directory ./obsolete -f batch-byte-compile
+COMPILE-SIMPLE = $(EMACSBATCH) --directory . --directory ./obsolete -f batch-byte-compile
 
 
 ### Targets
@@ -70,11 +69,15 @@ distclean clean:
 
 .el.elc:
 	$(COMPILE) $<
+obsolete/%.elc: obsolete/%.el
+	$(COMPILE-SIMPLE) $<
 
 ## Should happen before building ESS; definitely *NOT* after unpacking tarball :
 julia-mode.el:
 	test -f ../etc/.IS.RELEASE || $(DOWNLOAD) \
 	https://raw.githubusercontent.com/JuliaEditorSupport/julia-emacs/master/julia-mode.el > $@
+julia-mode.elc:
+	$(COMPILE-SIMPLE) julia-mode.el
 
 ess-autoloads.el:
 	@printf	"\nGenerating $@\n"
