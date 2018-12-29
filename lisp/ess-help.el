@@ -452,9 +452,9 @@ With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e., from all installed
 (defun ess--action-open-in-emacs (pos)
   (display-buffer (find-file-noselect (get-text-property pos 'help-echo))))
 (defun ess--action-R-open-vignette (pos)
-  (ess-command (format "vignette('%s', package='%s')\n"
-                       (get-text-property pos 'vignette)
-                       (get-text-property pos 'package))))
+  (ess-eval-linewise (format "vignette('%s', package='%s')\n"
+                             (get-text-property pos 'vignette)
+                             (get-text-property pos 'package))))
 
 (defalias 'ess-help-quit 'quit-window)
 (make-obsolete 'ess-help-quit 'quit-window "16.04")
