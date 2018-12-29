@@ -414,7 +414,6 @@ and ensure space before subsequent text."
 (defun ess-dump-to-src (&optional dont-query verbose)
   "Make the changes in an S - dump() file to improve human readability."
   (interactive "P")
-  (ess-mode)
   (ess-replace-regexp-dump-to-src  "^\"\\([a-z.][a-z.0-9]*\\)\" *<-\n"
                                    "\n\\1 <- "
                                    dont-query verbose))
@@ -425,7 +424,6 @@ and ensure space before subsequent text."
   (interactive "P")
   (save-excursion
     (goto-char (point-min))
-
     (let ((num 0)
           (str "")
           (rgxp "000000+[1-9]?[1-9]?\\>")
@@ -433,7 +431,6 @@ and ensure space before subsequent text."
       (if dont-query
           (ess-rep-regexp     rgxp to nil nil verbose)
         (query-replace-regexp rgxp to nil))
-
       (while (< num 9)
         (setq str (concat (int-to-string num) "999999+[0-8]*"))
         (if (and (numberp verbose) (> verbose 1))
@@ -476,7 +473,6 @@ nil (as by default) !"
   (ess-replace-regexp-dump-to-src
    "^\\( *[a-z.][_a-z.0-9]*\\) *= *\\(function *(\\)"
    "\\1 <- \\2" dont-query verbose)
-
   (unless not-all
     ;; "too" aggressive {proposing to replace function argument specs}:
     (ess-replace-regexp-dump-to-src ;; all those *not* ending in ","
@@ -484,8 +480,7 @@ nil (as by default) !"
      ;; but not `names(x) = "..."' for that is "confused" with plot(x=x,..)
      "^\\( *[a-z.][][, \"_a-z.0-9]*\\) *= *\\([a-z.0-9({]\\(.*[^,]\\)? *$\\)"
      "\\1 <- \\2" nil ;; always query - often has many "false positives"
-     verbose)
-    ))
+     verbose)))
 
 ;;; All of the above three :
 (defun ess-MM-fix-src (&optional dont-query verbose)
@@ -498,8 +493,7 @@ and one that is well formatted in emacs ess-mode."
   (ess-fix-comments dont-query)
   (ess-num-var-round dont-query verbose)
   (ess-fix-dot-more dont-query verbose)
-  (ess-fix-EQ-assign dont-query verbose 'not-all)
-  )
+  (ess-fix-EQ-assign dont-query verbose 'not-all))
 
 (defun ess-fix-miscellaneous (&optional from verbose)
   "Fix Miscellaneous S/R `ill-formation's from current \\[point].

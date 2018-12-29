@@ -140,27 +140,31 @@
     }
 
     ## deal with new plain objects and functions
-    for(this in intersect(newPkg, newNs)){
+    for (this in intersect(newPkg, newNs)) {
         thisEnv <- get(this, envir = env, inherits = FALSE)
-        if(exists(this, envir = fallback_env, inherits = FALSE)){
+        if (exists(this, envir = fallback_env, inherits = FALSE)){
             thisGl <- get(this, envir = fallback_env)
-            if(.ess.differs(thisEnv, thisGl)){
-                if(is.function(thisEnv)){
+            if (.ess.differs(thisEnv, thisGl)) {
+                if (is.function(thisEnv)) {
                     environment(thisEnv) <- envns
                     newFunc <- c(newFunc, this)
-                }else{
+                } else {
                     newObjects <- c(newObjects, this)
                 }
                 .ess.assign(this, thisEnv, fallback_env)
+                if (.is.essenv(fallback_env))
+                    .ess.assign(this, thisEnv, .GlobalEnv)
             }
-        }else{
-            if(is.function(thisEnv)){
+        } else {
+            if (is.function(thisEnv)) {
                 environment(thisEnv) <- envns
                 newFunc <- c(newFunc, this)
-            }else{
+            } else {
                 newObjects <- c(newObjects, this)
             }
             .ess.assign(this, thisEnv, fallback_env)
+            if (.is.essenv(fallback_env))
+                .ess.assign(this, thisEnv, .GlobalEnv)
         }
     }
 
@@ -392,6 +396,7 @@
         return(nsenv_parent)
     }
     essenv <- new.env(parent = nsenv_parent)
+    essenv[[".__ESSENV__."]] <- TRUE
     attr(essenv, "name") <- essenv_name
     nssym <- ".__NAMESPACE__."
     nssym_val <- get(nssym, envir = nsenv, inherits = FALSE)
@@ -403,6 +408,10 @@
     })
     parent.env(nsenv) <- essenv
     essenv
+}
+
+.is.essenv <- function(env) {
+    exists(".__ESSENV__.", envir = env, inherits = FALSE)
 }
 
 
