@@ -82,6 +82,7 @@
 (declare-function ess-send-string "ess-inf")
 (declare-function ess-switch-to-ESS "ess-inf")
 (declare-function ess-wait-for-process "ess-inf")
+(declare-function ess-eval-region--normalise-region "ess-inf" )
 (declare-function inferior-ess-run-callback "ess-inf")
 (declare-function inferior-ess-set-status "ess-inf")
 (declare-function ess-helpobjs-at-point--read-obj "ess-help")
@@ -323,6 +324,7 @@ command conforms to VISIBLY."
 (defun ess-tracebug-send-region (process start end &optional visibly message type)
   "Send region to process adding source references as specified
 by `ess-inject-source' variable."
+  (ess-eval-region--normalise-region start end)
   (let* ((inject-p  (cond ((eq type 'function)
                            ess-inject-source)
                           ((eq type 'buffer)

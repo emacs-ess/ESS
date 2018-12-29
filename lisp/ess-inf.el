@@ -1440,10 +1440,8 @@ they might throw off the debugger."
     (goto-char start)
     (skip-chars-forward "\n\t ")
     (setq start (point))
-
     (unless mark-active
       (ess-blink-region start end))
-
     (goto-char end)
     (skip-chars-backward "\n\t ")
     (setq end (point))))
