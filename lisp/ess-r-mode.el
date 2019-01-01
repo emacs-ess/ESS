@@ -587,7 +587,7 @@ Executed in process buffer."
       (skip-chars-forward " \t\n")
       (goto-char (cadr (ess-continuations-bounds))))))
 
-(defun ess-r-beginning-of-defun (&optional arg)
+(defun ess-r-beginning-of-function (&optional arg)
   "Leave (and return) the point at the beginning of the current ESS function.
 ARG is as in `beggining-of-defun'."
   (interactive)
@@ -609,7 +609,7 @@ ARG is as in `beggining-of-defun'."
         (point)
       (goto-char init-point))))
 
-(defun ess-r-end-of-defun (&optional arg)
+(defun ess-r-end-of-function (&optional arg)
   "Leave the point at the end of the current function.
 ARG is currently ignored. Return t if we moved, nil otherwise."
   (interactive)
@@ -624,7 +624,7 @@ ARG is currently ignored. Return t if we moved, nil otherwise."
                             (progn (goto-char (match-beginning 0))
                                    (ess-r--skip-function))
                           (goto-char start-pos))))))
-    (ess-r-beginning-of-defun)
+    (ess-r-beginning-of-function)
     (if (< (point) start-pos)
         ;; Moved back. We were either inside a function or after a function.
         (progn
@@ -668,8 +668,8 @@ ARG is currently ignored. Return t if we moved, nil otherwise."
   (setq imenu-generic-expression ess-imenu-S-generic-expression)
   (when ess-imenu-use-S
     (imenu-add-to-menubar "Imenu-R"))
-  (setq-local beginning-of-defun-function #'ess-r-beginning-of-defun)
-  (setq-local end-of-defun-function #'ess-r-end-of-defun)
+  (setq-local beginning-of-defun-function #'ess-r-beginning-of-function)
+  (setq-local end-of-defun-function #'ess-r-end-of-function)
   (ess-roxy-mode))
 ;;;###autoload
 (defalias 'R-mode 'ess-r-mode)
