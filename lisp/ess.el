@@ -368,33 +368,48 @@ With UPDATE, update cached package list."
 
 ;;;*;;; Motion / manipulation commands
 
-(defun ess-goto-beginning-of-function-or-para (&optional arg)
+(defun ess-goto-beginning-of-function-or-para ()
   "If inside a function go to the beginning of it.
-Otherwise go to the beginning of paragraph. If ARG is negative,
-go to the end of function or paragraph."
+Otherwise go to the beginning of paragraph."
   (interactive)
-  (let ((beg-point (point)))
-    (setq arg (or arg 1))
-    (or (condition-case nil (if (> arg 0)
-                                (beginning-of-defun)
-                              (end-of-defun))
-          ;; end-of-defun can error in R mode
-          (error (forward-paragraph)))
-        (if (> arg 0)
-            (backward-paragraph)
-          (forward-paragraph)))
-    (when (eql beg-point (point))
-      ;; Ensure we move
-      (if (> arg 0)
-          (backward-paragraph)
-        (forward-paragraph))))
-  (point))
+  (let ((pos (point))
+        beg end)
+    (beginning-of-defun)
+    (setq beg (point))
+    (end-of-defun)
+    (setq end (point))
+    (goto-char beg)
+    (when (or (< beg pos)
+              (> end pos))
+      (let ((par-pos (save-excursion
+                       (goto-char pos)
+                       (forward-comment most-negative-fixnum)
+                       (backward-paragraph)
+                       (forward-comment most-positive-fixnum)
+                       (point))))
+        (when (<= end par-pos)
+          (goto-char par-pos))))))
 
 (defun ess-goto-end-of-function-or-para ()
   "If inside a function go to end of it.
 Otherwise go to the end of paragraph."
   (interactive)
-  (ess-goto-beginning-of-function-or-para -1))
+  (let ((pos (point))
+        beg end)
+    (end-of-defun)
+    (setq end (point))
+    (beginning-of-defun)
+    (setq beg (point))
+    (goto-char end)
+    (when (or (< beg pos)
+              (> end pos))
+      (let ((par-pos (save-excursion
+                       (goto-char pos)
+                       (forward-comment most-positive-fixnum)
+                       (forward-paragraph)
+                       (point))))
+        (when (<= par-pos beg)
+          (goto-char par-pos))))))
 
 (defun ess-mark-function-or-para ()
   "Put mark at end of ESS function, point at beginning."

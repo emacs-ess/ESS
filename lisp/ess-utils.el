@@ -376,8 +376,8 @@ to `ess-completing-read'."
   `(if (null ,command)
        (message "Not implemented for dialect %s" ess-dialect)
      (let* ((com  (if (symbolp ,command)
-                     (symbol-function ,command)
-                   ,command))
+                      (symbol-function ,command)
+                    ,command))
             (prompt ',prompt)
             (resp (and prompt
                        (if (stringp  prompt)
