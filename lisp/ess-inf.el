@@ -393,7 +393,7 @@ defined. If no project directory has been found, use
       (accept-process-output proc 0.01)
       (not (process-get proc 'busy)))))
 
-(defun inferior-ess-set-status (proc string &optional no-timestamp)
+(defun inferior-ess--set-status (proc string &optional no-timestamp)
   "Internal function to set the satus of the PROC.
 If no-timestamp, don't set the last-eval timestamp. Return
 non-nil if the process is in a read (aka not busy) state."
@@ -469,7 +469,7 @@ non-nil if the process is in a read (aka not busy) state."
 Ring Emacs bell if process output starts with an ASCII bell, and pass
 the rest to `comint-output-filter'.
 Taken from octave-mod.el."
-  (inferior-ess-set-status proc string)
+  (inferior-ess--set-status proc string)
   (ess--if-verbose-write-process-state proc string)
   (inferior-ess-run-callback proc string)
   (if (process-get proc 'suppress-next-output?)
@@ -1002,7 +1002,7 @@ non-nil stop waiting for output after TIMEOUT seconds."
           (setq wait .3))))))
 
 (defun inferior-ess-ordinary-filter (proc string)
-  (inferior-ess-set-status proc string t)
+  (inferior-ess--set-status proc string t)
   (ess--if-verbose-write-process-state proc string "ordinary-filter")
   (inferior-ess-run-callback proc string)
   (with-current-buffer (process-buffer proc)
