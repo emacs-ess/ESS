@@ -1318,6 +1318,7 @@ prompts."
       (when (timerp flush-timer)
         (cancel-timer flush-timer))
       (if (eq (buffer-local-value 'major-mode pbuf) 'fundamental-mode)
+          ;; FIXME: this cannot be, ess-command changes the filter
           ;; Just in case if we are in *ess-command* buffer; restart the timer.
           (process-put proc 'flush-timer
                        (run-at-time .02 nil #'ess--flush-accumulated-output proc))
@@ -1409,7 +1410,7 @@ the output into *ess.dbg* buffer."
                           (string-match ess--dbg-regexp-skip string)
                           (not (string-match ess--dbg-regexp-no-skip string))))
          (match-dbg (or match-skip (and match-input (not match-selection))))
-         (is-ready (not (inferior-ess-set-status proc string)))
+         (is-ready (inferior-ess-set-status proc string))
          (new-time (float-time))
          (last-time (process-get proc 'flush-time))
          (flush-timer (process-get proc 'flush-timer)))

@@ -383,23 +383,38 @@ defined. If no project directory has been found, use
 (define-obsolete-function-alias 'ess-gen-proc-buffer-name:projectile-or-directory
   'ess-gen-proc-buffer-name:project-or-directory "ESS 19.04")
 
+(defun inferior-ess-available-p (&optional proc)
+  (when-let ((proc (or proc (ess-get-process nil nil 'no-error))))
+    (when (not (process-get proc 'busy))
+      ;; Send an empty string and waiting a bit to make sure we are not busy.
+      (process-send-string proc "\n")
+      (inferior-ess-mark-as-busy proc)
+      (process-put proc 'availability-check t)
+      (accept-process-output proc 0.01)
+      (not (process-get proc 'busy)))))
+
 (defun inferior-ess-set-status (proc string &optional no-timestamp)
   "Internal function to set the satus of the PROC.
-If no-timestamp, don't set the last-eval timestamp.
-Return the 'busy state."
+If no-timestamp, don't set the last-eval timestamp. Return
+non-nil if the process is in a read (aka not busy) state."
   ;; todo: do it in one search, use starting position, use prog1
-  (let ((busy (not (string-match (concat "\\(" inferior-ess-primary-prompt "\\)\\'") string))))
-    (process-put proc 'busy-end? (and (not busy)
-                                      (process-get proc 'busy)))
-    (when (not busy)
+  (let ((ready (string-match-p (concat "\\(" inferior-ess-primary-prompt "\\)\\'") string)))
+    (process-put proc 'busy-end? (and ready (process-get proc 'busy)))
+    ;; When "\n" inserted from inferior-ess-available-p, delete the prompt.
+    (when (and ready
+               (process-get proc 'availability-check)
+               (string-match-p (concat "^" inferior-ess-primary-prompt "\\'") string))
+      (process-put proc 'suppress-next-output? t))
+    (process-put proc 'availability-check nil)
+    (when ready
       (process-put proc 'running-async? nil))
-    (process-put proc 'busy busy)
+    (process-put proc 'busy (not ready))
     (process-put proc 'sec-prompt
                  (when inferior-ess-secondary-prompt
                    (string-match (concat "\\(" inferior-ess-secondary-prompt "\\)\\'") string)))
     (unless no-timestamp
       (process-put proc 'last-eval (current-time)))
-    busy))
+    ready))
 
 (defun inferior-ess-mark-as-busy (proc)
   (process-put proc 'busy t)
@@ -850,7 +865,7 @@ no such process has been found."
                        (equal dialect
                               (buffer-local-value 'ess-dialect (process-buffer proc)))
                        (or ignore-busy
-                           (not (process-get proc 'busy))))
+                           (inferior-ess-available-p proc)))
               (throw 'found proc))))))))
 
 
@@ -2364,11 +2379,7 @@ print(out, max=1e6) })\n\"."
                   "\\( \\|$\\)"; space or end
                   ))
          words)
-    (ess-if-verbose-write
-     (format "(ess-get-words-* command=%s full-word-regexp=%S)\n"
-             command full-word-regexp))
     (ess-command command tbuffer 'sleep no-prompt-check wait proc)
-    (ess-if-verbose-write " [ok] ..")
     (with-current-buffer tbuffer
       (goto-char (point-min))
       (while (re-search-forward full-word-regexp nil t)
@@ -2794,7 +2805,8 @@ NO-ERROR prevents errors when this has not been implemented for
   "Set Emacs' current directory to be the same as the subprocess directory.
 To be used in `ess-idle-timer-functions'."
   (when (and ess-can-eval-in-background
-             ess-getwd-command)
+             ess-getwd-command
+             (inferior-ess-available-p))
     (ess-when-new-input last-sync-dirs
       (ess-if-verbose-write "\n(ess-synchronize-dirs)\n")
       (setq default-directory

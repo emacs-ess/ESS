@@ -4,7 +4,12 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
-@item smart-underscore and 'ess-smart-S-assign-key' have been removed.
+@item Implement a more reliable check for the process busy state.
+Background actions such as completion and directory synchronization
+should not block the process and should not cause printing of the
+extraneous output to the interpreter.
+
+@item @code{smart-underscore} and @code{ess-smart-S-assign-key} have been removed.
 Users who liked the previous behavior (i.e. underscore inserting
 ``<-'') should bind @code{ess-insert-assign} to the underscore in
 their Emacs initialization file. For example, @code{(define-key
