@@ -596,48 +596,51 @@ local ESS vars like `ess-local-process-name'."
       (1 font-lock-keyword-face)
       (2 font-lock-variable-name-face)))))
 
-(defun ess-get-process (&optional name use-another)
+(defun ess-get-process (&optional name use-another no-error)
   "Return the ESS process named by NAME.
 If USE-ANOTHER is non-nil, and the process NAME is not
 running (anymore), try to connect to another if there is one. By
 default (USE-ANOTHER is nil), the connection to another process
-happens interactively (when possible)."
+happens interactively (when possible). When NO-ERROR is non-nil,
+don't throw an error when there is no associated process and
+return nil."
   (setq name (or name ess-local-process-name))
-  (if (null name)           ; should almost never happen at this point
-      (error "No ESS process is associated with this buffer now"))
-  (update-ess-process-name-list)
-  (if (assoc name ess-process-name-list)
-      (get-process name)
-    ;; else :
-    ;; was (error "Process %s is not running" name)
-    (ess-write-to-dribble-buffer
-     (format "ess-get-process: process '%s' not running" name))
-    (if (= 0 (length ess-process-name-list))
-        (save-current-buffer
-          (ess-write-to-dribble-buffer
-           (format " .. restart proc %s for language %s (buf %s)\n"
-                   name ess-language (current-buffer)))
-          (message "trying to (re)start process %s for language %s ..."
-                   name ess-language)
-          (ess-start-process-specific ess-language ess-dialect)
-          ;; and return the process: "call me again"
-          (ess-get-process name))
+  (if (null name)
+      (unless no-error
+        (error "No ESS process is associated with this buffer now"))
+    (update-ess-process-name-list)
+    (if (assoc name ess-process-name-list)
+        (get-process name)
+      ;; else :
+      ;; was (error "Process %s is not running" name)
+      (ess-write-to-dribble-buffer
+       (format "ess-get-process: process '%s' not running" name))
+      (if (= 0 (length ess-process-name-list))
+          (save-current-buffer
+            (ess-write-to-dribble-buffer
+             (format " .. restart proc %s for language %s (buf %s)\n"
+                     name ess-language (current-buffer)))
+            (message "trying to (re)start process %s for language %s ..."
+                     name ess-language)
+            (ess-start-process-specific ess-language ess-dialect)
+            ;; and return the process: "call me again"
+            (ess-get-process name))
 
-      ;; else: there are other running processes
-      (if use-another ; connect to another running process : the first one
-          (let ((other-name (car (elt ess-process-name-list 0))))
-            ;; "FIXME": try to find the process name that matches *closest*
-            (message "associating with *other* process '%s'" other-name)
-            (ess-get-process other-name))
-        ;; else
-        (ding)
-        (if (y-or-n-p
-             (format "Process %s is not running, but others are. Switch? " name))
-            (progn
-              (ess-force-buffer-current
-               (concat ess-dialect " process to use: ") 'force)
-              (ess-get-process ess-current-process-name))
-          (error "Process %s is not running" name))))))
+        ;; else: there are other running processes
+        (if use-another ; connect to another running process : the first one
+            (let ((other-name (car (elt ess-process-name-list 0))))
+              ;; "FIXME": try to find the process name that matches *closest*
+              (message "associating with *other* process '%s'" other-name)
+              (ess-get-process other-name))
+          ;; else
+          (ding)
+          (if (y-or-n-p
+               (format "Process %s is not running, but others are. Switch? " name))
+              (progn
+                (ess-force-buffer-current
+                 (concat ess-dialect " process to use: ") 'force)
+                (ess-get-process ess-current-process-name))
+            (error "Process %s is not running" name)))))))
 
 (defun inferior-ess-default-directory ()
   (ess-get-process-variable 'default-directory))
