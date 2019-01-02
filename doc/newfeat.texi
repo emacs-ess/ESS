@@ -9,13 +9,14 @@ Background actions such as completion and directory synchronization
 should not block the process and should not cause printing of the
 extraneous output to the interpreter.
 
+@item Activate @code{goto-address-mode} for url and emal highlighting in inferior buffers. 
+
 @item @code{smart-underscore} and @code{ess-smart-S-assign-key} have been removed.
-Users who liked the previous behavior (i.e. underscore inserting
-``<-'') should bind @code{ess-insert-assign} to the underscore in
-their Emacs initialization file. For example, @code{(define-key
-ess-r-mode-map "_" #'ess-insert-assign)} and @code{(define-key
-inferior-ess-r-mode-map "_" #'ess-insert-assign)} will activate it in
-all ESS R buffers.
+Users who liked the previous behavior (i.e. underscore inserting ``<-'')
+should bind @code{ess-insert-assign} to the underscore in their Emacs
+initialization file. For example, @code{(define-key ess-r-mode-map "_"
+#'ess-insert-assign)} and @code{(define-key inferior-ess-r-mode-map "_"
+#'ess-insert-assign)} will activate it in all ESS R buffers.
 
 @item ESS major modes are now defined using 'define-derived-mode'.
 This makes ESS major modes respect modern conventions such as having

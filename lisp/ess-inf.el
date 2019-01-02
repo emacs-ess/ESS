@@ -1825,11 +1825,9 @@ meaning as for `ess-eval-region'."
 
 (define-derived-mode inferior-ess-mode comint-mode "iESS"
   "Major mode for interacting with an inferior ESS process.
-
-To learn more about how to use inferior ess modes, see Info node `(ess)Top'.
-
-If you accidentally suspend your process, use \\[comint-continue-subjob]
-to continue it."
+To learn more about how to use inferior ess modes, see Info
+node `(ess)Top'. If you accidentally suspend your process, use
+\\[comint-continue-subjob] to continue it."
   ;; initialize all custom vars:
   (when ess-customize-alist
     (ess-setq-vars-local ess-customize-alist))
@@ -1873,6 +1871,9 @@ to continue it."
   (remove-hook 'completion-at-point-functions 'comint-completion-at-point t) ;; reset the hook
   (add-hook 'completion-at-point-functions 'comint-c-a-p-replace-by-expanded-history nil 'local)
   (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
+
+  ;; hyperlinks support
+  (goto-address-mode t)
 
   ;; Avoid spaces after filenames
   (setq-local comint-completion-addsuffix (cons "/" ""))
