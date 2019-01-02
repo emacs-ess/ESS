@@ -38,8 +38,7 @@
  ; Requires and autoloads
 (require 'cl-lib)
 (eval-when-compile
-  (require 'tramp)
-  (require 'reporter))
+  (require 'tramp))
 (require 'easymenu)
 (require 'info)
 (require 'ess-mode)
@@ -915,48 +914,6 @@ other dialects)."
       (display-buffer buf)
       (set-window-point (get-buffer-window buf) pos) ;; don't move window point
       buf)))
-
-
-;;; Bug Reporting
-
-;;;###autoload
-(defun ess-submit-bug-report ()
-  "Submit a bug report to the ESS maintainers."
-  (interactive)
-  (require 'reporter)
-  (let ((reporter-prompt-for-summary-p 't))
-    (reporter-submit-bug-report
-     "ess-bugs@r-project.org"
-     (concat "ess-mode " (ess-version-string))
-     (list 'ess-language
-           'ess-dialect
-           'ess-ask-for-ess-directory
-           'ess-ask-about-transfile
-           'default-directory
-           'ess-keep-dump-files
-           'ess-source-directory
-           'ess-use-ido
-           'ess-use-eldoc
-           'ess-use-tracebug
-           'ess-use-auto-complete
-           'ess-use-company
-           'ess-eval-visibly-p
-           'ess-can-eval-in-background
-           'ess-local-process-name)
-     nil
-     (lambda ()
-       ;;(goto-char (point-max))
-       (rfc822-goto-eoh)
-       (forward-line 1)
-       (insert "\n\n-------------------------------------------------------\n")
-       (insert "This bug report will be sent to the ESS bugs email list\n")
-       (insert "Press C-c C-c when you are ready to send your message.\n")
-       (insert "-------------------------------------------------------\n\n")
-       (insert (with-current-buffer ess-dribble-buffer
-                 (goto-char (point-max))
-                 (forward-line -100)
-                 (buffer-substring-no-properties (point) (point-max))))))))
-
 
 (provide 'ess-help)
 ;;; ess-help.el ends here
