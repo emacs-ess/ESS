@@ -578,10 +578,10 @@ Executed in process buffer."
 
 (defun ess-r--skip-function ()
   ;; Assumes the point is at function start
-  (if (looking-at ess-r-set-function-start)
+  (if (looking-at-p ess-r-set-function-start)
       (forward-list 1) ; get over the entire setXyz(...)
     (forward-list 1) ; get over arguments
-    (if (looking-at "[ \t\n]*{")
+    (if (looking-at-p "[ \t\n]*{")
         (forward-sexp 1) ;; move over {...}
       ;; {..}-less case
       (skip-chars-forward " \t\n")
@@ -589,7 +589,9 @@ Executed in process buffer."
 
 (defun ess-r-beginning-of-function (&optional arg)
   "Leave (and return) the point at the beginning of the current ESS function.
-ARG is as in `beggining-of-defun'."
+When ARG is positive, search for beginning of function backward,
+otherwise forward. Value of ARG is currently ignored. Return the
+new position."
   (interactive)
   (setq arg (or arg 1))
   (let ((init-point (point))
@@ -611,7 +613,9 @@ ARG is as in `beggining-of-defun'."
 
 (defun ess-r-end-of-function (&optional arg)
   "Leave the point at the end of the current function.
-ARG is currently ignored. Return t if we moved, nil otherwise."
+When ARG is positive, search for end of function forward,
+otherwise backward. Value of ARG is currently ignored. Return the
+new position."
   (interactive)
   (setq arg (or arg 1))
   (let* ((start-pos (point))
