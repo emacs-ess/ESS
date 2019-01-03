@@ -193,7 +193,7 @@
                  (goto-char (point-min))
                  (ess-skip-thing 'line)
                  (point))))
-  (should (eql 31
+  (should (eql 30
                (ess-r-test-with-temp-text "x <- function(x){\n mean(x)\n }\n \n \n x(3)\n "
                  (goto-char (point-min))
                  (ess-skip-thing 'function)

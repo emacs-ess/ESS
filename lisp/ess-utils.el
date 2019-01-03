@@ -105,7 +105,7 @@ THING can be 'function, 'paragraph, or 'line."
   (cond
    ((eql thing 'line) (goto-char (line-end-position)))
    ((eql thing 'paragraph) (forward-paragraph))
-   ((eql thing 'function) (end-of-defun))))
+   ((eql thing 'function) (end-of-defun) (skip-chars-backward " \t\n"))))
 
 (defun ess-line-end-position (&optional N)
   "Return the 'point' at the end of N lines. N defaults to 1, i.e., current line."

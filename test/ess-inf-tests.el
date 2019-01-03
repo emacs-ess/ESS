@@ -77,12 +77,13 @@
 ;;; Inferior interaction
 
 (defmacro ess-test-interactive-eval (out-string &rest body)
-  "Evaluate BODY in a temp buffer with R-mod eon.
+  "Evaluate BODY in a temp buffer with R-mode on.
 OUT-STRING is the content of the region captured by
 `ess-send-region' function."
-  (declare (indent 1))
+  (declare (indent 1) (debug (form body)))
   `(cl-letf (((symbol-function 'ess-force-buffer-current) #'ignore)
              ((symbol-function 'ess-get-process) #'ignore)
+             ((symbol-function 'ess-process-get) #'ignore)
              ((symbol-function 'ess-send-region)
               (lambda (_ start end &rest _ignore)
                 (should (string= (buffer-substring-no-properties start end)
@@ -100,19 +101,36 @@ OUT-STRING is the content of the region captured by
         (forward-line -1)
         (ess-eval-region-or-function-or-paragraph-and-step)))
 
-    (let ((output "\nxyz <- function {\n}\n"))
+    (let ((output "xyz <- function () {\n}\n"))
       (ess-test-interactive-eval output
-        (insert (format "## comment\n%s" output))
+        (insert (format "## comment\n\n%s" output))
         (goto-char (point-min))
         (forward-line 1)
         (ess-eval-region-or-function-or-paragraph-and-step)))
+
+    (let ((output "xyz <- function () {\n}\n"))
+      (ess-test-interactive-eval output
+        (insert (format "## comment\n%ssome_code\n\nmore_code" output))
+        (goto-char (point-min))
+        (forward-line 1)
+        (ess-eval-region-or-function-or-paragraph-and-step)
+        (should (looking-at-p "some_code"))))
 
     (let ((output "a <- 1\nb <- 2\n"))
       (ess-test-interactive-eval output
         (insert (format "%s\nmore_code()" output))
         (goto-char (point-min))
         (ess-eval-region-or-function-or-paragraph-and-step)
-        (should (looking-at-p "more_code"))))))
+        (should (looking-at-p "more_code"))))
+
+    (let ((output "a <- 1\nb <- 2\n"))
+      (ess-test-interactive-eval output
+        (insert (format "%s\nmore_code()" output))
+        (goto-char (point-min))
+        (ess-eval-region-or-function-or-paragraph-and-step)
+        (should (looking-at-p "more_code"))))
+
+    ))
 
 (ert-deftest ess-verbose-setwd-test ()
   (with-r-running nil
