@@ -218,6 +218,7 @@ builddeb:
 ## 'clean'     shall remove *exactly* those things that are *not* in version control
 ## 'distclean' removes also things in VC (svn, when they are remade by "make"):
 clean distclean: cleanup-dist
+	rm -f ess-$(ESSVERSION).tar
 	cd etc; $(MAKE) $@
 	cd lisp; $(MAKE) $@
 	cd doc; $(MAKE) $@

@@ -26,7 +26,8 @@ COMPILE-SIMPLE = $(EMACSBATCH) --directory . --directory ./obsolete -f batch-byt
 
 .PHONY: all dist install uninstall distclean clean compile
 
-ELS = $(filter-out ess-autoloads.el, $(wildcard *.el obsolete/*.el)) julia-mode.el
+JULIAS := julia-mode.el julia-latexsubs.el
+ELS = $(filter-out ess-autoloads.el, $(wildcard *.el obsolete/*.el)) $(JULIAS)
 ELC = $(ELS:.el=.elc)
 
 all dist: compile ess-autoloads.el
@@ -50,7 +51,7 @@ uninstall:
 	fi;
 
 distclean clean:
-	rm -f $(ELC) ess-autoloads.el julia-*.el .dependencies
+	rm -f $(ELC) ess-autoloads.el $(JULIAS) .dependencies
 
 
 ### File Targets
@@ -74,7 +75,7 @@ obsolete/%.elc: obsolete/%.el
 
 JULIA-REPO=https://raw.githubusercontent.com/JuliaEditorSupport/julia-emacs/master
 ## Should happen before building ESS; definitely *NOT* after unpacking tarball :
-julia-mode.el:
+$(JULIAS):
 	test -f ../etc/.IS.RELEASE || $(DOWNLOAD) $(JULIA-REPO)/julia-mode.el > julia-mode.el
 	test -f ../etc/.IS.RELEASE || $(DOWNLOAD) $(JULIA-REPO)/julia-latexsubs.el > julia-latexsubs.el
 julia-%.elc: julia-%.el
