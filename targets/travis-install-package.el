@@ -6,16 +6,16 @@
 
 ;;; Code:
 
-(package-initialize)
+(require 'package)
 (require 'subr-x)
 
+(add-to-list 'package-archives (cons "melpa" "https://melpa.org/packages/") t)
+
+(package-initialize)
+
 ;; Get julia-mode and install
-(let ((julia (url-retrieve-synchronously
-              "https://raw.githubusercontent.com/JuliaEditorSupport/julia-emacs/master/julia-mode.el" nil t)))
-  (with-current-buffer julia
-    (search-forward ";;; julia-mode.el")
-    (delete-region (point-min) (match-beginning 0))
-    (package-install-from-buffer)))
+(package-refresh-contents)
+(package-install 'julia-mode)
 
 ;; This file gets called from one directory up
 (when-let ((file (directory-files default-directory t ".tar$")))
