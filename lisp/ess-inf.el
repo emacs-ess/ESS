@@ -404,6 +404,7 @@ non-nil if the process is in a read (aka not busy) state."
     (when (and ready
                (process-get proc 'availability-check)
                (string-match-p (concat "^" inferior-ess-primary-prompt "\\'") string))
+      (setq no-timestamp t)
       (process-put proc 'suppress-next-output? t))
     (process-put proc 'availability-check nil)
     (when ready
