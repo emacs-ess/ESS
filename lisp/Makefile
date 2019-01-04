@@ -50,7 +50,7 @@ uninstall:
 	fi;
 
 distclean clean:
-	rm -f $(ELC) ess-autoloads.el julia-mode.el .dependencies
+	rm -f $(ELC) ess-autoloads.el julia-*.el .dependencies
 
 
 ### File Targets
@@ -72,12 +72,13 @@ distclean clean:
 obsolete/%.elc: obsolete/%.el
 	$(COMPILE-SIMPLE) $<
 
+JULIA-REPO=https://raw.githubusercontent.com/JuliaEditorSupport/julia-emacs/master
 ## Should happen before building ESS; definitely *NOT* after unpacking tarball :
 julia-mode.el:
-	test -f ../etc/.IS.RELEASE || $(DOWNLOAD) \
-	https://raw.githubusercontent.com/JuliaEditorSupport/julia-emacs/master/julia-mode.el > $@
-julia-mode.elc:
-	$(COMPILE-SIMPLE) julia-mode.el
+	test -f ../etc/.IS.RELEASE || $(DOWNLOAD) $(JULIA-REPO)/julia-mode.el > julia-mode.el
+	test -f ../etc/.IS.RELEASE || $(DOWNLOAD) $(JULIA-REPO)/julia-latexsubs.el > julia-latexsubs.el
+julia-%.elc: julia-%.el
+	$(COMPILE-SIMPLE) $<
 
 ess-autoloads.el:
 	@printf	"\nGenerating $@\n"
