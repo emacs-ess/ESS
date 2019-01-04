@@ -1213,19 +1213,15 @@ This handles Tramp when working on a remote."
 ;;                            (lambda (proc) (message "done")))
 ;; (process-get (get-process "R") 'running-async?)
 
-(defun ess-command--normalise-proc (proc no-prompt-check)
-  (let ((proc (cond
-               (proc
-                ;; This lets external functions call this command
-                (unless ess-local-process-name
-                  (setq ess-local-process-name (process-name proc)))
-                proc)
-               (t
-                (ess-get-process ess-local-process-name)))))
-    (unless no-prompt-check
-      (when (process-get proc 'busy)
-        (user-error "ESS process not ready. Finish your command before trying again")))
-    proc))
+(defun ess-command--get-proc (proc no-prompt-check)
+  (if proc
+      (unless ess-local-process-name
+        (setq ess-local-process-name (process-name proc)))
+    (setq proc (ess-get-process ess-local-process-name)))
+  (unless no-prompt-check
+    (when (process-get proc 'busy)
+      (user-error "ESS process not ready. Finish your command before trying again")))
+  proc)
 
 (defun ess-command (cmd &optional out-buffer _sleep no-prompt-check wait proc force-redisplay)
   "Send the ESS process CMD and delete the output from the ESS process buffer.
@@ -1251,7 +1247,7 @@ wrapping the code into:
     ...
  })"
   (let ((out-buffer (or out-buffer (get-buffer-create " *ess-command-output*")))
-        (proc (ess-command--normalise-proc proc no-prompt-check)))
+        (proc (ess-command--get-proc proc no-prompt-check)))
     (with-current-buffer (process-buffer proc)
       (let ((primary-prompt inferior-ess-primary-prompt)
             (oldpb (process-buffer proc))
@@ -2475,19 +2471,19 @@ name that contains :,$ or @."
         (setq args nil))
       (or args
           (cadr (assoc funname (process-get proc 'funargs-pre-cache)))
-	  (and
-	   (not (process-get proc 'busy))
-	   (with-current-buffer (ess-command (format ess-funargs-command
-						     (ess-quote-special-chars funname))
-					     nil nil nil nil proc)
-	     (goto-char (point-min))
-	     (when (re-search-forward "(list" nil t)
-	       (goto-char (match-beginning 0))
-	       (setq args (ignore-errors (eval (read (current-buffer)))))
-	       (if args
-		   (setcar args (cons (car args) (current-time)))))
-	     ;; push even if nil
-	     (puthash (substring-no-properties funname) args cache)))))))
+	      (and
+	       (not (process-get proc 'busy))
+	       (with-current-buffer (ess-command (format ess-funargs-command
+						                             (ess-quote-special-chars funname))
+					                         nil nil nil nil proc)
+	         (goto-char (point-min))
+	         (when (re-search-forward "(list" nil t)
+	           (goto-char (match-beginning 0))
+	           (setq args (ignore-errors (eval (read (current-buffer)))))
+	           (when args
+		         (setcar args (cons (car args) (current-time)))))
+	         ;; push even if nil
+	         (puthash (substring-no-properties funname) args cache)))))))
 
 ;;; SJE: Wed 29 Dec 2004 --- remove this function.
 ;;; rmh: Wed 5 Jan 2005 --- bring it back for use on Windows
