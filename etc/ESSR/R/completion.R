@@ -85,20 +85,22 @@ local({
         fmls <- formals(args)
         fmls_names <- names(fmls)
         fmls <- gsub('\"', '\\\"',
-                     gsub("\\", "\\\\", as.character(fmls),fixed = TRUE),
+                     gsub("\\", "\\\\", as.character(fmls), fixed = TRUE),
                      fixed=TRUE)
         args_alist <-
             sprintf("'(%s)",
                     paste("(\"", fmls_names, "\" . \"", fmls, "\")",
                           sep = '', collapse = ' '))
         allargs <-
-            if(special) fmls_names
+            if (special) fmls_names
             else tryCatch(gsub('=', '', utils:::functionArgs(funname, ''), fixed = TRUE),
                           error=function(e) NULL)
         allargs <- sprintf("'(\"%s\")",
                            paste(allargs, collapse = '\" "'))
-        envname <- environmentName(environment(fun))
-        if(envname == "R_GlobalEnv") envname <- ""
+        envname <-
+            if (is.primitive(fun)) "base"
+            else environmentName(environment(fun))
+        if (envname == "R_GlobalEnv") envname <- ""
         cat(sprintf('(list \"%s\" %s %s)\n',
                     envname, args_alist, allargs))
     }
