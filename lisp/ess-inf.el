@@ -384,10 +384,11 @@ defined. If no project directory has been found, use
   'ess-gen-proc-buffer-name:project-or-directory "ESS 19.04")
 
 (defun inferior-ess-available-p (&optional proc)
+  "Return non-nil if PROC is not busy."
   (when-let ((proc (or proc (and ess-local-process-name
                                  (get-process ess-local-process-name)))))
     (unless (process-get proc 'busy)
-      (or (ess-debug-active-p proc)
+      (or (ess-debug-active-p proc) ; don't send empty lines in debugger
           (time-less-p (process-get proc 'last-eval)
                        (process-get proc 'last-availability-check))
           (progn
@@ -395,8 +396,16 @@ defined. If no project directory has been found, use
             (process-send-string proc "\n")
             (inferior-ess-mark-as-busy proc)
             (process-put proc 'availability-check t)
-            (accept-process-output proc 0.01)
-            (process-put proc 'last-availability-check (current-time))
+            ;; Start with a very conservative waiting time and quickly average
+            ;; down to the actual response.
+            (let ((avresp (or (process-get proc 'average-response-time) 0.1))
+                  (ts (current-time)))
+              (when (accept-process-output proc (max 0.005 (* 2.0 avresp)))
+                (let ((avresp (/ (+ (* 2.0 avresp)
+                                    (float-time (time-subtract (current-time) ts)))
+                                 3.0)))
+                  (process-put proc 'average-response-time avresp)))
+              (process-put proc 'last-availability-check ts))
             (not (process-get proc 'busy)))))))
 
 (defun inferior-ess--set-status (proc string &optional no-timestamp)
