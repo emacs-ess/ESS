@@ -384,14 +384,20 @@ defined. If no project directory has been found, use
   'ess-gen-proc-buffer-name:project-or-directory "ESS 19.04")
 
 (defun inferior-ess-available-p (&optional proc)
-  (when-let ((proc (or proc (ess-get-process nil nil 'no-error))))
-    (when (not (process-get proc 'busy))
-      ;; Send an empty string and waiting a bit to make sure we are not busy.
-      (process-send-string proc "\n")
-      (inferior-ess-mark-as-busy proc)
-      (process-put proc 'availability-check t)
-      (accept-process-output proc 0.01)
-      (not (process-get proc 'busy)))))
+  (when-let ((proc (or proc (and ess-local-process-name
+                                 (get-process ess-local-process-name)))))
+    (unless (process-get proc 'busy)
+      (or (ess-debug-active-p proc)
+          (time-less-p (process-get proc 'last-eval)
+                       (process-get proc 'last-availability-check))
+          (progn
+            ;; Send an empty string and waiting a bit to make sure we are not busy.
+            (process-send-string proc "\n")
+            (inferior-ess-mark-as-busy proc)
+            (process-put proc 'availability-check t)
+            (accept-process-output proc 0.01)
+            (process-put proc 'last-availability-check (current-time))
+            (not (process-get proc 'busy)))))))
 
 (defun inferior-ess--set-status (proc string &optional no-timestamp)
   "Internal function to set the satus of the PROC.
@@ -612,18 +618,15 @@ local ESS vars like `ess-local-process-name'."
       (1 font-lock-keyword-face)
       (2 font-lock-variable-name-face)))))
 
-(defun ess-get-process (&optional name use-another no-error)
+(defun ess-get-process (&optional name use-another)
   "Return the ESS process named by NAME.
 If USE-ANOTHER is non-nil, and the process NAME is not
 running (anymore), try to connect to another if there is one. By
 default (USE-ANOTHER is nil), the connection to another process
-happens interactively (when possible). When NO-ERROR is non-nil,
-don't throw an error when there is no associated process and
-return nil."
+happens interactively (when possible)."
   (setq name (or name ess-local-process-name))
   (if (null name)
-      (unless no-error
-        (error "No ESS process is associated with this buffer now"))
+      (error "No ESS process is associated with this buffer now")
     (update-ess-process-name-list)
     (if (assoc name ess-process-name-list)
         (get-process name)
@@ -694,22 +697,24 @@ Returns the name of the process, or nil if the current buffer has none."
   (with-current-buffer (process-buffer (ess-get-process ess-local-process-name))
     (set var val)))
 
-(defun ess-process-live-p ()
+(defun ess-process-live-p (&optional proc)
   "Check if the local ess process is alive.
 Return nil if current buffer has no associated process, or
-process was killed."
-  (and ess-local-process-name
-       (let ((proc (get-process ess-local-process-name)))
+process was killed. PROC defaults to `ess-local-process-name'"
+  (and (or proc ess-local-process-name)
+       (let ((proc (or proc (get-process ess-local-process-name))))
          (and (processp proc)
               (process-live-p proc)))))
 
-(defun ess-process-get (propname)
-  "Return the variable PROPNAME (symbol) from the plist of the current ESS process."
-  (process-get (get-process ess-local-process-name) propname))
+(defun ess-process-get (propname &optional proc)
+  "Return the variable PROPNAME (symbol) from the plist of the current ESS process.
+PROC defaults to process with name `ess-local-process-name'."
+  (process-get (or proc (get-process ess-local-process-name)) propname))
 
-(defun ess-process-put (propname value)
-  "Set the variable PROPNAME (symbol) to VALUE in the plist of the current ESS process."
-  (process-put (get-process ess-local-process-name) propname value))
+(defun ess-process-put (propname value &optional proc)
+  "Set the variable PROPNAME (symbol) to VALUE in the plist of the current ESS process.
+PROC defaults to the process given by `ess-local-process-name'"
+  (process-put (or proc (get-process ess-local-process-name)) propname value))
 
 (defun ess-start-process-specific (language dialect)
   "Start an ESS process.

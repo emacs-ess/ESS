@@ -1187,10 +1187,10 @@ Kill the *ess.dbg.[R_name]* buffer."
   (and (ess-process-live-p)
        (ess-process-get  'is-recover)))
 
-(defun ess-debug-active-p ()
-  (and (ess-process-live-p)
-       (or (ess-process-get 'dbg-active)
-           (ess-process-get 'is-recover))))
+(defun ess-debug-active-p (&optional proc)
+  (and (ess-process-live-p proc)
+       (or (ess-process-get 'dbg-active proc)
+           (ess-process-get 'is-recover proc))))
 
 (defvar ess--dbg-regexp-reference "debug \\w+ +\\(.+\\)#\\([0-9]+\\):")
 (defvar ess--dbg-regexp-jump "debug \\w+ ") ;; debug at ,debug bei ,etc
