@@ -389,8 +389,8 @@ defined. If no project directory has been found, use
                                  (get-process ess-local-process-name)))))
     (unless (process-get proc 'busy)
       (or (ess-debug-active-p proc) ; don't send empty lines in debugger
-          (time-less-p (process-get proc 'last-eval)
-                       (process-get proc 'last-availability-check))
+          (when-let ((last-check (process-get proc 'last-availability-check)))
+            (time-less-p (process-get proc 'last-eval) last-check))
           (progn
             ;; Send an empty string and waiting a bit to make sure we are not busy.
             (process-send-string proc "\n")
@@ -408,10 +408,10 @@ defined. If no project directory has been found, use
               (process-put proc 'last-availability-check ts))
             (not (process-get proc 'busy)))))))
 
-(defun inferior-ess--set-status (proc string &optional no-timestamp)
+(defun inferior-ess--set-status (proc string)
   "Internal function to set the satus of the PROC.
-If no-timestamp, don't set the last-eval timestamp. Return
-non-nil if the process is in a read (aka not busy) state."
+Return non-nil if the process is in a ready (aka not busy)
+state."
   ;; todo: do it in one search, use starting position, use prog1
   (let ((ready (string-match-p (concat "\\(" inferior-ess-primary-prompt "\\)\\'") string)))
     (process-put proc 'busy-end? (and ready (process-get proc 'busy)))
@@ -419,7 +419,6 @@ non-nil if the process is in a read (aka not busy) state."
     (when (and ready
                (process-get proc 'availability-check)
                (string-match-p (concat "^" inferior-ess-primary-prompt "\\'") string))
-      (setq no-timestamp t)
       (process-put proc 'suppress-next-output? t))
     (process-put proc 'availability-check nil)
     (when ready
@@ -428,8 +427,6 @@ non-nil if the process is in a read (aka not busy) state."
     (process-put proc 'sec-prompt
                  (when inferior-ess-secondary-prompt
                    (string-match (concat "\\(" inferior-ess-secondary-prompt "\\)\\'") string)))
-    (unless no-timestamp
-      (process-put proc 'last-eval (current-time)))
     ready))
 
 (defun inferior-ess-mark-as-busy (proc)
@@ -1017,11 +1014,10 @@ non-nil stop waiting for output after TIMEOUT seconds."
           (setq wait .3))))))
 
 (defun inferior-ess-ordinary-filter (proc string)
-  (inferior-ess--set-status proc string t)
+  (inferior-ess--set-status proc string)
   (ess--if-verbose-write-process-state proc string "ordinary-filter")
   (inferior-ess-run-callback proc string)
   (with-current-buffer (process-buffer proc)
-    ;; (princ (format "%s:" string))
     (insert string)))
 
 (defvar ess-presend-filter-functions nil
@@ -1130,6 +1126,7 @@ MESSAGE is a message to display."
         (string (ess--run-presend-hooks process string)))
     (inferior-ess--interrupt-subjob-maybe process)
     (inferior-ess-mark-as-busy process)
+    (process-put process 'last-eval (current-time))
     (cond
      ;; Wait after each line
      ((eq visibly t)
