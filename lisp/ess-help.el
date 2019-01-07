@@ -528,8 +528,6 @@ For internal use.  Take into account variable `ess-help-own-frame'."
   (interactive)
   (ess-execute-dialect-specific ess-reference-lookup-command))
 
-(defvar ess-help-sec-map nil "Sub-keymap for ESS help mode.")
-
 (defvar ess-doc-map
   (let (ess-doc-map)
     (define-prefix-command 'ess-doc-map)
@@ -559,7 +557,6 @@ For internal use.  Take into account variable `ess-help-own-frame'."
 (defvar ess-help-mode-map
   (let ((map (make-keymap))); Full keymap, in order to
     (define-key map "\C-m" 'next-line)
-    ;; (define-key map "s" ess-help-sec-map)
     (define-key map "h" 'ess-display-help-on-object)
     (define-key map "w" 'ess-display-help-in-browser)
     (define-key map "i" 'ess-display-package-index)
@@ -637,20 +634,7 @@ For internal use.  Take into account variable `ess-help-own-frame'."
   ;; FIXME
   ;; (if ess-mode-syntax-table ;;set in advance by ess-setq-local
   ;;     (set-syntax-table ess-mode-syntax-table))
-  (setq show-trailing-whitespace nil)
-
-  ;; Add the keys for navigating among sections; this is done
-  ;; dynamically since different languages (e.g. S vs R) have different
-  ;; section headings.
-  ;; FIXME: define ess-r-help-mode and others, move these there:
-  ;; (setq ess-help-sec-map (make-sparse-keymap))
-  ;; (dolist (pair ess-help-sec-keys-alist)
-  ;;   (define-key ess-help-sec-map (char-to-string (car pair))
-  ;;     'ess-skip-to-help-section))
-  ;; (define-key ess-help-sec-map "?" 'ess-describe-sec-map)
-  ;; (define-key ess-help-sec-map ">" 'end-of-buffer)
-  ;; (define-key ess-help-sec-map "<" 'beginning-of-buffer)
-  )
+  (setq show-trailing-whitespace nil))
 
 
 ;;*;; User commands defined in ESS help mode
@@ -711,10 +695,7 @@ Keystroke    Section
         (insert "    "
                 (car cs)
                 "      "
-                (cdr cs) "\n"))
-      (insert "\nFull list of key definitions:\n"
-              (substitute-command-keys
-               "\\{ess-help-sec-map}")))))
+                (cdr cs) "\n")))))
 
 (defun ess-helpobjs-at-point--read-obj ()
   (let* ((obj (ess-read-object-name-default)))
