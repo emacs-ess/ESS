@@ -45,6 +45,8 @@
 
 (require 'ess-custom)
 
+(defvar reporter-prompt-for-summary-p)
+
 
 ;;*;; Internal ESS tools and variables
 
@@ -143,9 +145,6 @@ Is set  by \\[ess-version-string].")
 
 
 ;;; Bug Reporting
-
-(eval-when-compile
-  (require 'reporter))
 
 ;;;###autoload
 (defun ess-submit-bug-report ()
