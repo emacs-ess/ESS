@@ -59,6 +59,8 @@
 (declare-function ess-mode "ess")
 (declare-function ess-complete-object-name "ess-r-completion")
 
+(defvar add-log-current-defun-header-regexp)
+
 ;; The following declares can be removed once we drop Emacs 25
 (declare-function tramp-file-name-method "tramp")
 (declare-function tramp-file-name-user "tramp")
@@ -1540,20 +1542,25 @@ Prefix arg VIS toggles visibility of ess-code as for
       (forward-line -1)
       (ess-next-code-line 1))
     (let ((pos (point))
-          beg end)
+          beg end msg)
       (end-of-defun)
       (beginning-of-defun)
+      ;; While we are the beginning of the function, get the function
+      ;; name
+      (setq msg (format "Eval function: %s"
+                        (propertize (if (looking-at-p add-log-current-defun-header-regexp)
+                                        (add-log-current-defun)
+                                      (buffer-substring-no-properties (point) (point-at-eol)))
+                                    'face 'font-lock-function-name-face)))
       (setq beg (point))
       (end-of-defun)
       (setq end (point))
       (when (or (< pos beg)
                 (< end pos))
         (error "Not in a function"))
-      (let* ((beg-eol (save-excursion (goto-char beg) (point-at-eol)))
-             (msg (format "Eval %s" (buffer-substring-no-properties beg beg-eol))))
-        (if (ess-tracebug-p)
-            (ess-tracebug-send-function (get-process ess-local-process-name) beg end vis msg)
-          (ess-eval-region beg end vis msg))))))
+      (if (ess-tracebug-p)
+          (ess-tracebug-send-function (get-process ess-local-process-name) beg end vis msg)
+        (ess-eval-region beg end vis msg)))))
 
 (defun ess-eval-paragraph (&optional vis)
   "Send the current paragraph to the inferior ESS process.
