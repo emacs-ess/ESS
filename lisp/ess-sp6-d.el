@@ -39,7 +39,6 @@
 (require 'ess-mode)
 (require 'ess-inf)
 (require 'ess-s-lang)
-(require 'ess-dde)
 (require 'ess-trns)
 
 
@@ -77,13 +76,6 @@
      (inferior-ess-program             . inferior-S+-program)
      (inferior-ess-help-command        . "help(\"%s\", pager=\"slynx -dump\", window=FALSE)\n")
      (inferior-ess-search-list-command . "searchPaths()\n")
-
-     (ess-command-function             . #'ess-dde-command)
-     (ess-eval-linewise-function       . #'ess-dde-eval-linewise)
-     (ess-dump-object-function         . #'ess-dde-dump-object)
-     (ess-read-object-name-function    . #'ess-dde-read-object-name)
-     (ess-find-help-file-function      . #'ess-dde-find-help-file)
-     (ess-display-help-on-object-function . #'ess-dde-display-help-on-object)
 
      (ess-directory-function           . S+-directory-function)
      (ess-setup-directory-function     . S+-setup-directory-function)

@@ -37,7 +37,6 @@
 
 ;;*;; Requires
 (require 'mouseme)
-(require 'ess-dde)
 (require 'ess-trns)
 ;;(if (or (equal window-system 'w32)
 ;;      (equal window-system 'win32)
@@ -138,15 +137,15 @@ the symbol `string' it will be called with one string argument."
   (ess-mouse-me-eval-expanded string "Edit.data(" ")" nil nil nil))
 
 (defun ess-mouse-me-print (string)
-  (ess-mouse-me-eval-expanded string "" "" nil (ess-ddeclient-p) t))
+  (ess-mouse-me-eval-expanded string "" "" nil nil t))
 (defun ess-mouse-me-summary (string)
-  (ess-mouse-me-eval-expanded string "summary(" ")" nil (ess-ddeclient-p) t))
+  (ess-mouse-me-eval-expanded string "summary(" ")" nil nil t))
 (defun ess-mouse-me-plot (string)
   (ess-mouse-me-eval-expanded string "plot(" ")") nil nil nil)
 (defun ess-mouse-me-show (string)
   (ess-mouse-me-eval-expanded string "show(" ")") nil nil nil)
 (defun ess-mouse-me-args (string)
-  (ess-mouse-me-eval-expanded string "args(" ")" nil (ess-ddeclient-p) t))
+  (ess-mouse-me-eval-expanded string "args(" ")" nil nil t))
 
 (defun ess-mouse-me-browser-on (string)
   (if (equal (substring ess-dialect 0 1) "R")
@@ -164,9 +163,9 @@ the symbol `string' it will be called with one string argument."
                                           page value-returned)
   "Send the expanded STRING to the inferior-ess process using `ess-command'
 after first concating the HEAD and TAIL.  Put answer in COMMANDS-BUFFER if
-specified and not using ddeclient, otherwise in \"tmp-buffer\".  In either
+specified, otherwise in \"tmp-buffer\".  In either
 case the buffer containing the answer is renamed to the value of the
-constructed command.  If PAGE is non-nil and using ddeclient, expand
+constructed command.  If PAGE is non-nil, expand
 the string one more time by embedding it in a \"page()\" command."
   (interactive)
   (let* (scommand
@@ -179,23 +178,12 @@ the string one more time by embedding it in a \"page()\" command."
                                     (get-buffer-create "tmp-buffer")))
     (setq scommand (concat head string tail))
 
-    (if (ess-ddeclient-p)
-        (progn
-          (setq page-scommand (if page
-                                  (concat "page(" scommand ")")
-                                scommand))
-          (set-buffer-file-coding-system 'undecided-dos)
-          (ess-command page-scommand commands-buffer)
-          (if (not value-returned)
-              nil
-            (sleep-for 2)
-            (pop-to-buffer-same-window (car (buffer-list)))))
-      (ess-make-buffer-current)
-      (pop-to-buffer-same-window commands-buffer)
-      (ess-setq-vars-local (eval ess-mouse-customize-alist) (current-buffer))
-      (setq ess-local-process-name lproc-name)
-      (ess-command (concat scommand "\n") commands-buffer)
-      (if (not value-returned) (pop-to-buffer-same-window (nth 1 (buffer-list)))))
+    (ess-make-buffer-current)
+    (pop-to-buffer-same-window commands-buffer)
+    (ess-setq-vars-local (eval ess-mouse-customize-alist) (current-buffer))
+    (setq ess-local-process-name lproc-name)
+    (ess-command (concat scommand "\n") commands-buffer)
+    (if (not value-returned) (pop-to-buffer-same-window (nth 1 (buffer-list))))
     (if (not value-returned)
         nil
       (if ess-microsoft-p                      ;; there ought to be a filter

@@ -1976,27 +1976,6 @@ for help files.  The default value is nil for other systems."
   :type '(choice (const nil) (string)))
 (make-variable-buffer-local 'inferior-ess-help-filetype)
 
-;;;;; names for communication using MS-Windows 9x/NT ddeclient mechanism
-
-(defcustom inferior-ess-ddeclient nil
-  "ddeclient is the intermediary between emacs and the stat program."
-  :group 'ess-proc
-  :type '(choice (const nil) (string)))
-
-(defcustom inferior-ess-client-name nil
-  "Name of ESS program ddeclient talks to."
-  :group 'ess-proc
-  :type '(choice (const nil) (string)))
-
-(defcustom inferior-ess-client-command nil
-  "ddeclient command sent to the ESS program."
-  :group 'ess-proc
-  :type '(choice (const nil) string))
-
-(make-variable-buffer-local 'inferior-ess-client-name)
-(make-variable-buffer-local 'inferior-ess-ddeclient)
-(make-variable-buffer-local 'inferior-ess-client-command)
-
 (defvar inferior-S-program  inferior-S+3-program
   "Program name for invoking an inferior ESS with S.")
 
@@ -2080,13 +2059,6 @@ the process output, otherwise not.
   "Non-nil means use R-builtin completion mechanism when available."
   :group 'ess-proc
   :type 'boolean)
-
-(defcustom ess-eval-ddeclient-sleep 0.06
-  "If non-nil, a number specifying *seconds* to wait after certain
-\\[ess-eval-linewise-ddeclient] calls, such as those at startup."
-  ;; i.e this currently only applies to (if microsoft-p ...) !
-  :group 'ess-proc
-  :type '(choice (const nil) number))
 
 (defcustom ess-sleep-for-shell (if ess-microsoft-p 5 1)
   "Pause before sending output to the shell."
