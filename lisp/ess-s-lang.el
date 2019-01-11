@@ -650,7 +650,7 @@ and I need to relearn emacs lisp (but I had to, anyway."
 
 ;; don't use syntax classes, bad for etags
 (defvar ess-imenu-S-generic-expression
-  '(("Functions" "^\\(.+\\)[ \t\n]*<-[ \t\n]*function[ ]*(" 1)
+  '(("Functions" "^\\([^ \t\n]+\\)[ \t\n]*<-[ \t\n]*function[ ]*(" 1)
     ("Classes" "^.*setClass(\\(.*\\)," 1)
     ("Coercions" "^.*setAs(\\([^,]+,[^,]*\\)," 1) ; show from and to
     ("Generics" "^.*setGeneric(\\([^,]*\\)," 1)
