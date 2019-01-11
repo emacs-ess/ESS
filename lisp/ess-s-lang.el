@@ -658,7 +658,7 @@ and I need to relearn emacs lisp (but I had to, anyway."
     ;;[ ]*\\(signature=\\)?(\\(.*,?\\)*\\)," 1)
     ;;
     ;;("Other" "^\\(.+\\)\\s-*<-[ \t\n]*[^\\(function\\|read\\|.*data\.frame\\)]" 1)
-    ("Package" "^.*\\(library\\|require\\)(\\(.*\\)" 2)
+    ("Package" "^.*\\(library\\|require\\)(\\([^)]*\\)" 2)
     ("Data" "^\\(.+\\)[ \t\n]-*<-[ \t\n]*\\(read\\|.*data\.frame\\).*(" 1)))
 
 (defun ess-imenu-S (&optional arg)
