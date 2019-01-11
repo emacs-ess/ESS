@@ -3,6 +3,7 @@
 (require 'ess-r-mode)
 (require 'ess-r-tests-utils)
 (require 'cc-mode)
+(require 'imenu)
 
 ;;; R
 
@@ -430,6 +431,27 @@ add <- function(x, y) {
         (should (eql 2 (current-column)))
         (ess-indent-or-complete)
         (should (eql 2 (current-column)))))))
+
+;; imenu
+(ert-deftest ess-imenu-test ()
+  (ess-r-test-with-temp-text
+      "
+library(knitr)
+x <- function(a) mean(a)
+
+y <- function(c){
+  sum(c)
+}
+
+the_dat <- read.csv(\"foo.csv\")"
+    (let ((result (funcall imenu-create-index-function)))
+      (should (equal (car (nth 0 result)) "Data"))
+      (should (equal (caadr (nth 0 result)) "the_dat"))
+      (should (equal (car (nth 1 result)) "Package"))
+      (should (equal (caadr (nth 1 result)) "knitr"))
+      (should (equal (car (nth 2 result)) "Functions"))
+      (should (equal (caadr (nth 2 result)) "x"))
+      (should (equal (caaddr (nth 2 result)) "y")))))
 
 ;; Local Variables:
 ;; no-byte-compile: t
