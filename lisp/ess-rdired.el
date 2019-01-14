@@ -183,7 +183,14 @@ for more information."
                                             (goto-char (point-min))
                                             (forward-line 1)
                                             (point))
-                                          (point-max))))
+                                          (point-max))
+        (goto-char (point-min))
+        (let ((text (thing-at-point 'line t)))
+          (delete-region (point) (1+ (point-at-eol)))
+          (setq header-line-format
+                (concat "  " (substring text 0
+                                        ;; Trim newline
+                                        (1- (length text))))))))
     (pop-to-buffer buff)))
 
 
@@ -372,13 +379,8 @@ Rotate between the alternative sorting methods."
 (defun ess-rdired-reverse ()
   "Reverse the current sort order."
   (interactive)
-  (let ((buffer-read-only nil)
-        (beg (save-excursion
-               (goto-char (point-min))
-               (forward-line 1)
-               (point)))
-        (end (point-max)))
-    (reverse-region beg end)))
+  (let ((buffer-read-only nil))
+    (reverse-region (point-min) (point-max))))
 
 (define-obsolete-function-alias 'ess-rdired-next-line #'forward-to-indentation "ESS 19.04")
 (define-obsolete-function-alias 'ess-rdired-previous-line #'backward-to-indentation "ESS 19.04")
