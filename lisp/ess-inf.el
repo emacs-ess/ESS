@@ -39,6 +39,7 @@
   (require 'subr-x))
 (require 'ess-utils)
 
+(require 'ansi-color)
 (require 'comint)
 (require 'overlay)
 (require 'project)
