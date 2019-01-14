@@ -128,22 +128,18 @@ the function which prints the output for rdired.")
     (define-key ess-rdired-mode-map "p" 'ess-rdired-plot)
     (define-key ess-rdired-mode-map "s" 'ess-rdired-sort)
     (define-key ess-rdired-mode-map "r" 'ess-rdired-reverse)
-    (define-key ess-rdired-mode-map "q" 'ess-rdired-quit)
     (define-key ess-rdired-mode-map "y" 'ess-rdired-type) ;what type?
-    (define-key ess-rdired-mode-map " "  'ess-rdired-next-line)
-    (define-key ess-rdired-mode-map [backspace] 'ess-rdired-previous-line)
-    (define-key ess-rdired-mode-map "\C-n" 'ess-rdired-next-line)
-    (define-key ess-rdired-mode-map "\C-p" 'ess-rdired-previous-line)
-    ;; (define-key ess-rdired-mode-map "n" 'ess-rdired-next-line)
-    ;; (define-key ess-rdired-mode-map "p" 'ess-rdired-previous-line)
-
+    (define-key ess-rdired-mode-map " "  'forward-to-indentation)
+    (define-key ess-rdired-mode-map [backspace] 'backward-to-indentation)
+    (define-key ess-rdired-mode-map "\C-n" 'forward-to-indentation)
+    (define-key ess-rdired-mode-map "\C-p" 'backward-to-indentation)
     ;; R mode keybindings.
     (define-key ess-rdired-mode-map "\C-c\C-s" 'ess-rdired-switch-process)
     (define-key ess-rdired-mode-map "\C-c\C-y" 'ess-switch-to-ESS)
     (define-key ess-rdired-mode-map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
 
-    (define-key ess-rdired-mode-map [down] 'ess-rdired-next-line)
-    (define-key ess-rdired-mode-map [up] 'ess-rdired-previous-line)
+    (define-key ess-rdired-mode-map [down] 'forward-to-indentation)
+    (define-key ess-rdired-mode-map [up] 'backward-to-indentation)
     (define-key ess-rdired-mode-map "g" 'revert-buffer)
     (define-key ess-rdired-mode-map [mouse-2] 'ess-rdired-mouse-view)
     ess-rdired-mode-map))
@@ -340,46 +336,7 @@ User is queried first to check that objects should really be deleted."
       (message "no objects set to delete")
       )))
 
-;; Fancy delete method, based on dired.  Bit too much for our needs?
-;; (defun ess-rdired-expunge ()
-;;   "Delete the marked objects.
-;; User is queried first to check that objects should really be deleted."
-;;   (interactive)
-;;   (let ((objs)
-;;      (cmd "rm("))
-;;     (save-excursion
-;;       (goto-line 2)
-;;       (while (< (count-lines (point-min) (point))
-;;              (count-lines (point-min) (point-max)))
-;;      (beginning-of-line)
-;;      (if (looking-at "^D ")
-;;          (progn
-;;            (setq objs (cons (ess-rdired-object) objs ))
-;;            (setq cmd (concat cmd (ess-rdired-object) ", "))
-;;            ))
-;;      (forward-line 1)
-;;      ))
-;;     (if (> (length objs) 0)
-;;      ;; found objects to delete
-;;      (if
-;;          (dired-mark-pop-up "*RDired deletions*" 'delete
-;;                             objs dired-deletion-confirmer
-;;                             (format "delete %s "
-;;                                     (dired-mark-prompt nil objs)))
-;;          ;; should delete the objects.
-;;          (progn
-;;            (setq cmd (concat (substring cmd 0 (- (length cmd) 2))
-;;                              ")\n"))
-;;            (ess-command cmd)
-;;            (ess-rdired)))
-;;       ;; else nothing to delete
-;;       (message "no objects set to delete")
-;;       )))
-
-(defun ess-rdired-quit ()
-  "Quit the R dired buffer."
-  (interactive)
-  (kill-buffer ess-rdired-buffer))
+(define-obsolete-function-alias 'ess-rdired-quit #'quit-window "ESS 19.04")
 
 (defun ess-rdired-revert-buffer (_ignore-auto _noconfirm)
   "Update the buffer list (in case object list has changed)."
@@ -423,25 +380,9 @@ Rotate between the alternative sorting methods."
         (end (point-max)))
     (reverse-region beg end)))
 
-(defun ess-rdired-next-line (arg)
-  "Move down lines then position at object.
-Optional prefix ARG says how many lines to move; default is one line."
-  (interactive "p")
-  (forward-line arg)
-  (ess-rdired-move-to-object))
-
-(defun ess-rdired-previous-line (arg)
-  "Move up lines then position at object.
-Optional prefix ARG says how many lines to move; default is one line."
-  (interactive "p")
-  (forward-line (- (or arg 1))) ; -1 if arg was nil
-  (ess-rdired-move-to-object))
-
-(defun ess-rdired-move-to-object ()
-  "Put point at start of object."
-  (beginning-of-line)
-  (forward-char 2)
-  )
+(define-obsolete-function-alias 'ess-rdired-next-line #'forward-to-indentation "ESS 19.04")
+(define-obsolete-function-alias 'ess-rdired-previous-line #'backward-to-indentation "ESS 19.04")
+(define-obsolete-function-alias 'ess-rdired-move-to-object #'back-to-indentation "ESS 19.04")
 
 (defun ess-rdired-mouse-view (event)
   "In rdired, visit the object on the line you click on."
@@ -461,7 +402,7 @@ Optional prefix ARG says how many lines to move; default is one line."
   (save-excursion
     (goto-char beg)
     (while (< (point) end)
-      (ess-rdired-move-to-object)
+      (back-to-indentation)
       (add-text-properties
        (point)
        (save-excursion
