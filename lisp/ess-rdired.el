@@ -381,7 +381,7 @@ User is queried first to check that objects should really be deleted."
   (interactive)
   (kill-buffer ess-rdired-buffer))
 
-(defun ess-rdired-revert-buffer ()
+(defun ess-rdired-revert-buffer (_ignore-auto _noconfirm)
   "Update the buffer list (in case object list has changed)."
   (ess-rdired))
 
