@@ -73,6 +73,10 @@ This is similar with what you would see with, for example
 version as well. This only works with @code{options(useFancyQuotes =
 TRUE)} (the default).
 
+@item @code{ess-rdired} buffers now derive from tabulated-list-mode.
+They should look better and be a bit faster overall. The size column
+now displays object sizes in bytes.
+
 @item ESS removed support for many unused languages.
 This includes old versions of S+, ARC, OMG, VST, and XLS.
 
