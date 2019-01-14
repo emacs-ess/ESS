@@ -2171,6 +2171,7 @@ to the command if BUFF is not given.)"
       (let ((buff (ess-create-temp-buffer buff-name)))
         (ess-command the-command buff);; sleep?
         (with-current-buffer buff
+          (ansi-color-apply-on-region (point-min) (point-max))
           (goto-char (point-min))
           (if message (insert message)
             (if buff nil
