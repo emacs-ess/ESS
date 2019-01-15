@@ -64,6 +64,10 @@ TRUE)} (the default).
 They should look better and be a bit faster overall. The size column
 now displays object sizes in bytes.
 
+@item @code{ess-rdired} buffers now auto-update.
+The frequency is governed by the new option
+@code{ess-rdired-auto-update-interval}.
+
 @item ESS removed support for many unused languages.
 This includes old versions of S+, ARC, OMG, VST, and XLS.
 

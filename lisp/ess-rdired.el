@@ -76,6 +76,9 @@
 (require 'ess-custom)
 (require 'ess-inf)
 
+(eval-when-compile
+  (require 'subr-x))
+
 (defvar ess-rdired-objects "local({.rdired.objects <- function(objs) {
   if (length(objs)==0) {
     \"No objects to view!\"
@@ -107,6 +110,15 @@ the function which prints the output for rdired.")
 (defvar ess-rdired-buffer "*R dired*"
   "Name of buffer for displaying R objects.")
 
+(defvar ess-rdired-auto-update-timer nil
+  "The timer object for auto updates.")
+
+(defcustom ess-rdired-auto-update-interval 5
+  "Seconds between refreshes of the `ess-rdired' buffer."
+  :type '(choice (const nil :tag "No auto updates") (integer :tag "Seconds"))
+  :group 'ess-R
+  :package-version '(ess . "19.04"))
+
 (defvar ess-rdired-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map "d" 'ess-rdired-delete)
@@ -131,7 +143,12 @@ can then examine these objects, plot them, and so on."
           ("Class" 10 t)
           ("Length" 10 ess-rdired--length-predicate)
           ("Size" 10 ess-rdired--size-predicate)])
-  (add-hook 'tabulated-list-revert-hook #'ess-rdired nil t)
+  (add-hook 'tabulated-list-revert-hook #'ess-rdired-refresh nil t)
+  (when (and (not ess-rdired-auto-update-timer)
+             ess-rdired-auto-update-interval)
+    (setq ess-rdired-auto-update-timer
+          (run-at-time t ess-rdired-auto-update-interval #'ess-rdired-refresh)))
+  (add-hook 'kill-buffer-hook #'ess-rdired-cancel-auto-update-timer nil t)
   (tabulated-list-init-header)
   (tabulated-list-print))
 
@@ -141,23 +158,35 @@ can then examine these objects, plot them, and so on."
 You may interact with these objects, see `ess-rdired-mode' for
 details."
   (interactive)
-  (let  ((proc ess-local-process-name)
-         (buff (get-buffer-create ess-rdired-buffer)))
-    (ess-command ess-rdired-objects buff nil nil nil (get-buffer-process proc))
-    (with-current-buffer buff
-      (setq ess-local-process-name proc)
-      (goto-char (point-min))
-      (let ((buffer-read-only nil)
-            text)
-        ;; Delete two lines. One filled with +'s from R's prompt
-        ;; printing, the other with the header info from the data.frame
-        (delete-region (point-min) (1+ (point-at-eol 2)))
-        (setq text (split-string (buffer-string) "\n" t "\n"))
-        (delete-region (point-min) (point-max))
-        (setq tabulated-list-entries
-              (mapcar #'ess-rdired--tabulated-list-entries text))
-        (ess-rdired-mode)))
-    (pop-to-buffer buff)))
+  (let ((proc ess-local-process-name))
+    (pop-to-buffer (get-buffer-create ess-rdired-buffer))
+    (setq ess-local-process-name proc)
+    (ess-rdired-refresh)))
+
+(defun ess-rdired-refresh ()
+  "Refresh the `ess-rdired' buffer."
+  (when-let ((buff (get-buffer-create ess-rdired-buffer))
+             (proc-name (buffer-local-value 'ess-local-process-name buff))
+             (proc (get-process proc-name)))
+    (unless (process-get proc 'busy)
+      (ess-command ess-rdired-objects buff nil nil nil (get-process proc))
+      (with-current-buffer buff
+        (goto-char (point-min))
+        (let ((buffer-read-only nil)
+              text)
+          ;; Delete two lines. One filled with +'s from R's prompt
+          ;; printing, the other with the header info from the data.frame
+          (delete-region (point-min) (1+ (point-at-eol 2)))
+          (setq text (split-string (buffer-string) "\n" t "\n"))
+          (delete-region (point-min) (point-max))
+          (setq tabulated-list-entries
+                (mapcar #'ess-rdired--tabulated-list-entries text))
+          (ess-rdired-mode))))))
+
+(defun ess-rdired-cancel-auto-update-timer ()
+  "Cancel the timer `ess-rdired-auto-update-timer'."
+  (setq ess-rdired-auto-update-timer
+        (cancel-timer ess-rdired-auto-update-timer)))
 
 (defun ess-rdired--tabulated-list-entries (text)
   "Return a value suitable for `tabulated-list-entries' from TEXT."
