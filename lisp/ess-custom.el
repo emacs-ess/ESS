@@ -1179,7 +1179,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
       (ess-indent-with-fancy-comments   . ,(default-value 'ess-indent-with-fancy-comments))))
 
   "Predefined formatting styles for ESS code. Use
-`ess-default-style' to apply a style in all R buffers. The values
+`ess-style' to apply a style in all R buffers. The values
 of all styles except OWN are fixed. To change the value of
 variables in the OWN group, customize the variable
 `ess-own-style-list'. DEFAULT style picks default (aka global)
@@ -1254,9 +1254,9 @@ Remove any existing entry with the same KEY before adding the new one."
 
 (defcustom ess-own-style-list (cdr (assoc 'RRR ess-style-alist))
   "Indentation variables for your own style.
-Set `ess-default-style' to 'OWN to use these values. To change
+Set `ess-style' to 'OWN to use these values. To change
 these values, use the customize interface. See the documentation
-of each variable for its meaning. "
+of each variable for its meaning."
   :group 'ess-edit
   :type 'alist
   :initialize 'custom-initialize-set
@@ -1266,8 +1266,9 @@ of each variable for its meaning. "
 
 ;;;###autoload (put 'ess-style 'safe-local-variable #'symbolp)
 
-(defcustom ess-default-style 'RRR
-  "The default value of `ess-indent-style'.
+(define-obsolete-variable-alias 'ess-default-style 'ess-style "ESS 19.04")
+(defcustom ess-style 'RRR
+  "Current ESS indentation style, see `ess-style-alist' for more.
 See the variable `ess-style-alist' for how these groups (RRR,
 DEFAULT, GNU, BSD, ...) map onto different settings for
 variables. OWN style is defined in `ess-own-style-list' and you
@@ -1290,9 +1291,6 @@ directory local variable (see Info node `(emacs) File Variables'."
                  (const DEFAULT))
   :group 'ess-edit
   :safe #'symbolp)
-
-(defvar ess-style ess-default-style
-  "Current ESS indentation style, see `ess-style-alist' for more.")
 
 ;;*;; Variables controlling behaviour of dump files
 

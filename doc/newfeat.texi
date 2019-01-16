@@ -41,6 +41,8 @@ buffers. Preview functionality is not supported outside R buffers.
 
 @item @code{ess-style} now has effects when set as a file or directory local variable.
 
+@item @code{ess-default-style} is now obsolete, use @code{ess-style} instead.
+
 @item Options for 'ess-gen-proc-buffer-name-function' have been renamed.
 ess-gen-proc-buffer-name:projectile-or-simple was renamed to
 ess-gen-proc-buffer-name:project-or-simple and

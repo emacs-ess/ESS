@@ -942,7 +942,6 @@ use \"bin/Rterm.exe\"."
   (setq-local paragraph-separate (concat "\\s-*$\\|" page-delimiter))
   (setq-local paragraph-ignore-fill-prefix t)
   (setq-local indent-line-function  'ess-indent-line)
-  (setq-local ess-style ess-default-style)
   (setq-local add-log-current-defun-header-regexp "^\\(.+\\)\\s-+<-[ \t\n]*function")
   (setq-local font-lock-syntactic-face-function #'ess-r-font-lock-syntactic-face-function)
   (setq-local prettify-symbols-alist ess-r-prettify-symbols)

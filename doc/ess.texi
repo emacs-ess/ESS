@@ -1747,14 +1747,14 @@ style allows you to use your own private values of the indentation
 variable, see below.
 @end deffn
 
-@defvr {User Option} ess-default-style
-The default value of @code{ess-style}.  See the variable
-@code{ess-style-alist} for how these groups (DEFAULT, OWN, GNU, RRR,
-@dots{}) map onto different settings for variables.  You can set this in
-your Emacs configuration file:
+@defvr {User Option} ess-style
+The style to use. See the variable @code{ess-style-alist} for how
+these groups (DEFAULT, OWN, GNU, RRR, @dots{}) map onto different
+settings for variables. You can set this in your Emacs configuration
+file:
 
 @example
-(setq ess-default-style 'C++)
+(setq ess-style 'C++)
 @end example
 @end defvr
 
@@ -1762,12 +1762,12 @@ your Emacs configuration file:
 Predefined formatting styles for ESS code.  Values for all groups,
 except OWN, are fixed.  To change the value of variables in the OWN
 group, customize the variable @code{ess-own-style-list}.  The default
-style in use is controlled by @code{ess-default-style}.
+style in use is controlled by @code{ess-style}.
 @end defvr
 
 The styles @code{DEFAULT} and @code{OWN} are initially identical.  If
 you wish to edit some of the default values, set
-@code{ess-default-style} to @code{'OWN} and change
+@code{ess-style} to @code{'OWN} and change
 @code{ess-own-style-list}.
 @xref{Customization}, for convenient ways to set both these variables.
 
@@ -1784,7 +1784,7 @@ In the rare case that you'd like to add an entire new indentation style
 of your own, copy the definition of @code{ess-own-style-list} to a new
 variable and ensure that the last line of the @code{:set} declaration
 calls @code{ess-add-style} with a unique name for your style
-(e.g. @code{'MINE}).  Finally, add @code{(setq ess-default-style 'MINE)}
+(e.g. @code{'MINE}).  Finally, add @code{(setq ess-style 'MINE)}
 to use your new style.
 
 @node Other edit buffer commands

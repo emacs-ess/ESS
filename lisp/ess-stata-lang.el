@@ -1098,7 +1098,6 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
     ;;(ess-indent-line              . 'S-indent-line)
     ;;(ess-calculate-indent         . 'ess-calculate-indent)
     (indent-line-function         . 'ess-indent-line)
-    (ess-style                . ess-default-style)
     (ess-local-process-name       . nil)
     ;;(ess-keep-dump-files          . 'ask)
     (font-lock-defaults           . '(ess-STA-mode-font-lock-defaults
