@@ -139,7 +139,3 @@ htsummary <- function(x, hlength = 4, tlength = 4, digits = 3) {
             } else remote
     paste0(home, "/doc/html/index.html")
 }
-
-## Local Variables:
-## eval: (ess-set-style 'RRR t)
-## End:

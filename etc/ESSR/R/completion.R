@@ -161,8 +161,3 @@ local({
         i <- i + 1
     cat('\n\n', as.character(out), '\n')
 };
-
-
-## Local Variables:
-## eval: (ess-set-style 'RRR t)
-## End:

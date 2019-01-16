@@ -413,8 +413,3 @@
 .is.essenv <- function(env) {
     exists(".__ESSENV__.", envir = env, inherits = FALSE)
 }
-
-
-## Local Variables:
-## eval: (ess-set-style 'RRR t)
-## End:

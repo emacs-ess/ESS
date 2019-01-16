@@ -222,7 +222,3 @@
         x
     }
 }
-
-## Local Variables:
-## eval: (ess-set-style 'RRR t)
-## End:

@@ -132,8 +132,3 @@ if(.ess.Rversion < "1.8")
 
         unquote(substitute(expr))
     }
-
-
-## Local Variables:
-## eval: (ess-set-style 'RRR t)
-## End:

@@ -7,4 +7,5 @@
   (sentence-end-double-space))
  (emacs-lisp-mode
   (outline-regexp . "\f\\|\\`;\\|;;\\*\\|;;;\\*\\|(def[cvu]\\|(setq\\|;;;;\\*")
-  (indent-tabs-mode)))
+  (indent-tabs-mode))
+ (ess-r-mode . ((ess-style . RRR))))

@@ -51,8 +51,3 @@ load.ESSR <- function(dir){
     ## BUILDESSR needs this:
     invisible(ESSR)
 }
-
-
-## Local Variables:
-## eval: (ess-set-style 'RRR t)
-## End:
