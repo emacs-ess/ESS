@@ -2006,14 +2006,11 @@ Set to nil if language doesn't support secondary prompt.")
 (defvar ess-traceback-command nil
   "Command to generate error traceback.")
 
-;; need this to recognise  + + + > > >
-;; and "+ . + " in tracebug prompt
-;; VS[17-08-2012]: all of the occurrences in the code should should eventually
-;; go away, (once we are sure this doesn't break anything)
-(defvaralias 'inferior-ess-S-prompt 'inferior-S-prompt)
-(defvar inferior-S-prompt "[]a-zA-Z0-9.[]*\\(?:[>+.] \\)+"
+;; Need this to recognize prompts of the form  + + + > > >
+;; and "+ . + ", but not "Abcd. "
+(defvar inferior-S-prompt "[]a-zA-Z0-9.[]*[>+] \\(?:[>+.] \\)*"
   "Regexp used in S and R inferior and transcript buffers for prompt navigation.
-Must be anchored to BOL.")
+Must not be anchored to BOL.")
 
 ;;*;; Variables controlling interaction with the ESS process
 
