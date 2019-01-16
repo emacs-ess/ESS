@@ -301,8 +301,6 @@ indentation style. See `ess-style-alist' for predefined styles."
   (when-let ((alist ess-mode-editing-alist))
     (ess-setq-vars-local alist))
 
-  (ess-set-style ess-style t)
-
   ;; Keep <tabs> out of the code.
   (setq-local indent-tabs-mode nil)
 
@@ -317,8 +315,15 @@ indentation style. See `ess-style-alist' for predefined styles."
   (delq t comint-dynamic-complete-functions)
   (set (make-local-variable 'comint-completion-addsuffix)
        (cons "/" ""))
-
+  (add-hook 'hack-local-variables-hook #'ess--set-style-in-buffer nil t)
   (add-hook 'ess-idle-timer-functions 'ess-synchronize-dirs nil 'local))
+
+(defun ess--set-style-in-buffer ()
+  "Set `ess-style' taking into account file and directory local variables.
+This is added to `hack-local-variables-hook'."
+  (setq-local ess-style (or (alist-get 'ess-style file-local-variables-alist)
+                            ess-style))
+  (ess-set-style ess-style t))
 
 (defun ess--get-mode-line-indicator ()
   "Get `ess--mode-line-process-indicator' from process buffer.

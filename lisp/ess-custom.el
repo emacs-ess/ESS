@@ -1264,13 +1264,19 @@ of each variable for its meaning. "
          (set symbol value)
          (ess-add-style 'OWN value)))
 
+;;;###autoload (put 'ess-style 'safe-local-variable #'symbolp)
+
 (defcustom ess-default-style 'RRR
   "The default value of `ess-indent-style'.
 See the variable `ess-style-alist' for how these groups (RRR,
 DEFAULT, GNU, BSD, ...) map onto different settings for
 variables. OWN style is defined in `ess-own-style-list' and you
 can customize it to your needs. DEFAULT style picks default (aka
-global) values from ESS indentation variables."
+global) values from ESS indentation variables.
+
+This variable only has an effect if set before a buffer is
+visited (e.g. in your Emacs initialization file) or as a file or
+directory local variable (see Info node `(emacs) File Variables'."
   :type '(choice (const OWN)
                  (const GNU)
                  (const BSD)
@@ -1282,9 +1288,9 @@ global) values from ESS indentation variables."
                  (const RStudio)
                  (const RStudio-)
                  (const DEFAULT))
-  :group 'ess-edit)
+  :group 'ess-edit
+  :safe #'symbolp)
 
-;; the real setting of this happens via <foo>-editing-alist:
 (defvar ess-style ess-default-style
   "Current ESS indentation style, see `ess-style-alist' for more.")
 

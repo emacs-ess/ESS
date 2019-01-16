@@ -649,7 +649,6 @@ new position."
   (setq-local paragraph-ignore-fill-prefix t)
   (setq-local indent-line-function  'ess-indent-line)
   (setq-local comment-indent-function #'ess-calculate-indent)
-  (setq-local ess-style ess-default-style)
   (setq-local add-log-current-defun-header-regexp "^\\(.+\\)\\s-+<-[ \t\n]*function")
   (setq-local font-lock-syntactic-face-function #'ess-r-font-lock-syntactic-face-function)
   ;; eldoc
