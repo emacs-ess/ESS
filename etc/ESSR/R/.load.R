@@ -1,3 +1,5 @@
+## This file is sourced when R starts and `load.ESSR` is called. See
+## inferior-ess-r-load-ESSR--local.
 ## Do not use _ in names, nor :: as they cannot be parsed in old R versions
 
 ## load .base.R and all other files into ESSR environment; then attach ESSR
@@ -8,10 +10,8 @@ load.ESSR <- function(dir){
         else
             function(..., keep.source) sys.source(...)
 
-    Rver <-
-        if(exists("getRversion", mode="function")) getRversion()
-        else paste(R.version$major, R.version$minor, sep=".")
-
+    Rver <- if(exists("getRversion", mode="function")) getRversion()
+            else paste(R.version$major, R.version$minor, sep=".")
     oldR <- Rver <= "1.3.0"
 
     ESSR <-

@@ -4,14 +4,13 @@
 ## Do not use _ in names, nor :: , nor 1L etc, as they
 ## cannot be parsed in old R versions
 
+.ess.getRversion <- function() {
+    if(exists("getRversion", mode="function")) getRversion()
+    else paste(R.version$major, R.version$minor, sep=".")
+}
 
 ## loading ESSR.rda might fail, so re-assign here:
-.ess.Rversion <-
-    if( exists("getRversion", mode="function") ){
-        getRversion()
-    } else {
-        paste(R.version$major, R.version$minor, sep=".")
-    }
+.ess.Rversion <- .ess.getRversion()
 
 .ess.R.has.utils <- (.ess.Rversion >= "1.9.0")
 .ess.utils.name <- paste("package",
