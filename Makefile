@@ -65,7 +65,7 @@ essr: VERSION
 	@echo "** Making ESSRv$(ESSR-VERSION) **"
 	@sed -i "s/^ *VERSION <- .*/    VERSION <- \"$(ESSR-VERSION)\"/" etc/ESSR/R/.load.R
 	@sed -i "s/(defconst essr-version .*/(defconst essr-version \"$(ESSR-VERSION)\"/" lisp/ess.el
-	@cd etc/ESSR/; ./BUILDESSR; cd -
+	cd etc/ESSR/; ./BUILDESSR; cd -
 	@git add etc/ESSR.rds lisp/ess.el etc/ESSR/R/.load.R
 	git commit -m"ESSR Version $(ESSR-VERSION)"
 	git tag "ESSRv"$(ESSR-VERSION)
