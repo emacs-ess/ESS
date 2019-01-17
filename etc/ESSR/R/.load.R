@@ -27,7 +27,7 @@ load.ESSR <- function(dir){
     assign(".ess.Rversion", Rver, envir = ESSR)
 
     ## updated by make !!
-    VERSION <- "1.4"
+    VERSION <- "1.5"
     assign(".ess.ESSRversion", VERSION, envir = ESSR)
 
 

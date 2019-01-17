@@ -19,7 +19,7 @@
 ;; Version: 18.10.3snapshot
 ;; URL: https://ess.r-project.org/
 ;; Package-Requires: ((emacs "25.1") (julia-mode "0.3"))
-;; ESSR-Version: 1.4
+;; ESSR-Version: 1.5
 ;;
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -94,7 +94,7 @@ Used in noweb modes.")
   "Version of ESS currently loaded.")
 
 ;; updated by 'make'!
-(defconst essr-version "1.4"
+(defconst essr-version "1.5"
   "Version of ESSR package.")
 
 (defvar ess-revision nil
