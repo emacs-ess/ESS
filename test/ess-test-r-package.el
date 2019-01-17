@@ -1,7 +1,27 @@
+;;; ess-test-r-package.el --- ESS tests for R package functionality  -*- lexical-binding: t; -*-
+;;
+;; This file is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 2, or (at your option)
+;; any later version.
+;;
+;; This file is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; A copy of the GNU General Public License is available at
+;; https://www.r-project.org/Licenses/
+;;
+;;; Commentary:
+;;
+
 (require 'ert)
 (require 'ess-r-mode)
 (require 'ess-r-package)
-(require 'ess-r-tests-utils)
+(require 'ess-test-r-utils)
+
+;;; Code:
 
 (ert-deftest ess-r-package-auto-activation-test ()
   (let ((inhibit-message ess-inhibit-message-in-tests))
@@ -73,3 +93,7 @@
         (should (string= (plist-get pkg-info :name) "foo"))
         (should (string-match-p "dummy-pkg$" (plist-get pkg-info :root)))
         (kill-buffer)))))
+
+(provide 'ess-test-r-package)
+
+;;; ess-test-r-package.el ends here

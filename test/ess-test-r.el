@@ -1,11 +1,30 @@
+;;; ess-test-r.el --- ESS tests for R  -*- lexical-binding: t; -*-
+;;
+;; This file is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 2, or (at your option)
+;; any later version.
+;;
+;; This file is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; A copy of the GNU General Public License is available at
+;; https://www.r-project.org/Licenses/
+;;
+;;; Commentary:
+;;
 
 (require 'ert)
 (require 'ess-r-mode)
-(require 'ess-r-tests-utils)
+(require 'ess-test-r-utils)
 (require 'cc-mode)
 (require 'imenu)
 
 ;;; R
+
+;;; Code:
 
 (ert-deftest ess-r-inherits-prog-mode-test ()
   (let ((prog-mode-hook (lambda () (setq ess-test-prog-hook t))))
@@ -169,7 +188,8 @@
     (mapc (lambda (file)
             (switch-to-buffer (find-file-noselect file))
             (should (eq major-mode 'makefile-mode)))
-          '("fixtures/Makevars" "fixtures/Makevars.win"))))
+          `(,(expand-file-name "Makevars" ess-test-fixtures-directory)
+            ,(expand-file-name "Makevars.win" ess-test-fixtures-directory)))))
 
 (ert-deftest ess-find-newest-date-test ()
   (should (equal (ess-find-newest-date '(("2003-10-04" . "R-1.7")
@@ -230,9 +250,12 @@
                    (point))))))
 
 (ert-deftest ess-Rout-file-test ()
-  (let ((buf (find-file-noselect "fixtures/file.Rout")))
+  (let* ((file (expand-file-name "file.Rout" ess-test-fixtures-directory))
+         (buf (or (find-buffer-visiting file)
+                  (find-file-noselect file))))
     (with-current-buffer buf
       (should (eq major-mode 'ess-r-transcript-mode))
+      (goto-char (point-min))
       (font-lock-default-fontify-buffer)
       (should (eq (face-at-point) 'font-lock-function-name-face)))))
 
@@ -271,23 +294,23 @@ add(x, y)
 Add together two numbers. add(10, 1)
 } 
 "
-              (with-temp-buffer
-                (R-mode)
-                (ess-roxy-mode)
-                (insert
-                 "##' Add together two numbers.
+                (with-temp-buffer
+                  (R-mode)
+                  (ess-roxy-mode)
+                  (insert
+                   "##' Add together two numbers.
 ##' add(10, 1)
 add <- function(x, y) {
   x + y
 }")
-                (goto-char (point-min))
-                (ess-roxy-preview-Rd)
-                ;; Delete the reference to the file which isn't
-                ;; reproducible across different test environments
-                (goto-char (point-min))
-                (forward-line 1)
-                (kill-whole-line)
-                (buffer-substring-no-properties (point-min) (point-max))))))))
+                  (goto-char (point-min))
+                  (ess-roxy-preview-Rd)
+                  ;; Delete the reference to the file which isn't
+                  ;; reproducible across different test environments
+                  (goto-char (point-min))
+                  (forward-line 1)
+                  (kill-whole-line)
+                  (buffer-substring-no-properties (point-min) (point-max))))))))
 
 (ert-deftest ess-roxy-cpp-test ()
   ;; Test M-q
@@ -335,7 +358,7 @@ add <- function(x, y) {
     (should (eql (point) 28))))
 
 (ert-deftest ess-r-beginning/end-of-defun-test ()
-  (with-r-file "fixtures/navigation.R"
+  (with-r-file (expand-file-name "navigation.R" ess-test-fixtures-directory)
     (goto-char (point-min))
     (end-of-defun 1)
     (should (looking-back "fn1\n"))
@@ -359,7 +382,7 @@ add <- function(x, y) {
     (should (looking-back "fn3\n"))))
 
 (ert-deftest ess-r-beginning/end-of-function-test ()
-  (with-r-file "fixtures/navigation.R"
+  (with-r-file (expand-file-name "navigation.R" ess-test-fixtures-directory)
     (goto-char (point-min))
     (ess-r-end-of-function 1)
     (should (looking-at " ## end of fn1"))
@@ -385,7 +408,7 @@ add <- function(x, y) {
     (should (looking-at " ## end of fn3"))))
 
 (ert-deftest ess-r-goto-beginning/end-of-function-or-para-test ()
-  (with-r-file "fixtures/navigation.R"
+  (with-r-file (expand-file-name "navigation.R" ess-test-fixtures-directory)
     (goto-char (point-min))
     (ess-goto-end-of-function-or-para)
     (should (looking-back "fn1\n"))
@@ -408,7 +431,7 @@ add <- function(x, y) {
     (should (looking-at "fn3 <-"))))
 
 (ert-deftest ess-r-beggining/end-of-defun-ignore-inner-fn-test ()
-  (with-r-file "fixtures/navigation.R"
+  (with-r-file (expand-file-name "navigation.R" ess-test-fixtures-directory)
     (re-search-forward "fn5_body")
     (beginning-of-defun)
     (should (looking-at "fn4 <- "))
@@ -453,6 +476,6 @@ the_dat <- read.csv(\"foo.csv\")"
       (should (equal (caadr (nth 2 result)) "x"))
       (should (equal (caaddr (nth 2 result)) "y")))))
 
-;; Local Variables:
-;; no-byte-compile: t
-;; End:
+(provide 'ess-test-r)
+
+;;; ess-test-r.el ends here

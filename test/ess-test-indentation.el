@@ -1,5 +1,4 @@
-;; ess-tests.el --- Tests for ESS
-;;
+;; ess-test-indentation.el --- Tests for ESS indentation  -*- lexical-binding: t; -*-
 ;;
 ;; Filename: ess-tests.el
 ;; Created: 07-05-2015 (ESS 15.09)
@@ -41,7 +40,7 @@
 
 (require 'ert)
 (require 'ess-r-mode)
-(require 'ess-r-tests-utils)
+(require 'ess-test-r-utils)
 
 ;;; Indentation tests
 
@@ -121,3 +120,7 @@ where the edit took place. Return nil if E represents no real change.
 
 (ert-deftest test-ess-R-indentation-misc1 ()
   (ess-test-R-indentation "styles/misc1.R" 'misc1))
+
+(provide 'ess-test-indentation)
+
+;;; ess-test-indentation.el ends here

@@ -1,5 +1,14 @@
+;;; ess-test-literate.el --- ESS literate tests
+
+
+;;; Commentary:
+;; Literate tests
+
+
+;;; Code:
 
 (require 'ess-r-mode)
+
 (eval-when-compile
   (require 'cl-lib))
 (require 'ert)
@@ -306,3 +315,7 @@ Insert KEY if there's no command."
       (setq last-command-event (aref key 0))
       (call-interactively cmd)
       (setq last-command cmd))))
+
+(provide 'ess-test-literate)
+
+;;; ess-test-literate.el ends here

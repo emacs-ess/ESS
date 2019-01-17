@@ -1,8 +1,26 @@
-;; ess-org-test.el --- Test for org-babel integration -*- lexical-binding: t -*-
+;; ess-test-org.el --- Test for org-babel integration -*- lexical-binding: t -*-
+;;
+;; This file is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 2, or (at your option)
+;; any later version.
+;;
+;; This file is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; A copy of the GNU General Public License is available at
+;; https://www.r-project.org/Licenses/
+;;
+;;; Commentary:
+;; Tests for org babel functionality.
+
+;;; Code:
 
 (require 'ert)
 (require 'ess-r-mode)
-(require 'ess-r-tests-utils)
+(require 'ess-test-r-utils)
 (require 'ob-R)
 
 (defun test-org-R-ouput (expect input)
@@ -43,3 +61,7 @@
   (test-org-R-ouput "| 3 | c |"
     "#+BEGIN_SRC R :session :results value :colnames yes\n  data.frame(x=1:3, y=c(\"a\",\"b\",\"c\"))\n#+END_SRC"))
 
+
+(provide 'ess-test-org)
+
+;;; ess-test-org.el ends here

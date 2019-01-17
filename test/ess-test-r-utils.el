@@ -1,4 +1,29 @@
-;; ess-r-tests-utils.el --- Various utilities for ess R tests
+;; ess-test-r-utils.el --- Various utilities for ess R tests
+;;
+;; This file is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 2, or (at your option)
+;; any later version.
+;;
+;; This file is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; A copy of the GNU General Public License is available at
+;; https://www.r-project.org/Licenses/
+;;
+;;; Commentary:
+;; Various utilities for ESS tests.
+
+;;; Code:
+(require 'ert)
+
+(defvar ess-test-fixtures-directory
+  (expand-file-name "fixtures"
+                    (file-name-directory (or load-file-name
+                                             buffer-file-name)))
+  "Location of the fixtures directory.")
 
 (defvar ess-inhibit-message-in-tests nil)
 
@@ -223,4 +248,6 @@ representative to the common interactive use with tracebug on."
   (font-lock-default-fontify-buffer))
 
 
-(provide 'ess-r-tests-utils)
+(provide 'ess-test-r-utils)
+
+;;; ess-test-r-utils.el ends here
