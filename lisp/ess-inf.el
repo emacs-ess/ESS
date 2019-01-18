@@ -891,7 +891,8 @@ no such process has been found."
 With (prefix) EOB-P non-nil, positions cursor at end of buffer."
   (interactive "P")
   (ess-force-buffer-current)
-  (pop-to-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))
+  (pop-to-buffer (buffer-name (process-buffer (get-process ess-current-process-name)))
+                 '(nil . ((inhibit-same-window . t))))
   (when eob-p (goto-char (point-max))))
 
 (defun ess-switch-to-ESS-deprecated (eob-p)
