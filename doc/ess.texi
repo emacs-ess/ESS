@@ -356,6 +356,7 @@ statistical programs.
 * Multiple ESS processes::
 * ESS processes on Remote Computers::
 * Customizing startup::
+* Controlling buffer display::
 @end menu
 
 @node Starting up
@@ -585,29 +586,6 @@ It is not normally necessary to pass arguments to the iESS program; in
 particular do not pass the @samp{-e} option to @code{Splus}, since ESS
 provides its own command history mechanism.
 
-To control where buffer containing the process is displayed, customize
-@code{display-buffer-alist}, @xref{Window Choice,,, emacs}. For
-example, to ensure Help buffers always appear at the right side of the
-current frame and inferior R buffers always appear at the bottom of
-the current frame, you could add this to your Emacs initialization
-file:
-
-@example
-(add-to-list 'display-buffer-alist
-             '("*Help"
-               (display-buffer-reuse-window display-buffer-in-side-window)
-               (side . right)
-               (window-width . 0.33)
-               (reusable-frames . nil)))
-
-(add-to-list 'display-buffer-alist
-             '("*R"
-               (display-buffer-reuse-window display-buffer-at-bottom)
-               (window-height . 0.5)
-               (reusable-frames . nil)))
-@end example
-
-
 @vindex ess-auto-width
 @vindex ess-auto-width-visible
 
@@ -616,6 +594,52 @@ the window configuration changes. To do so, set @code{ess-auto-width}
 to a non-nil value. By default, the change will not be shown in the
 inferior buffer. If you want it to be shown, set
 @code{ess-auto-width-visible} to a non-nil value.
+
+
+@node Controlling buffer display
+@section Controlling buffer display
+
+Users can control how buffers are displayed by customizing
+@code{display-buffer-alist}, @xref{Window Choice,,, emacs}. This
+section provides examples of how to achieve certain setups.
+
+Users coming from RStudio may want the R process to appear at the
+bottom left of the frame, help buffers to appear at the bottom right,
+and ess-rdired buffers at the top right. To achieve that, you could
+this. Note that the order matters; @code{*R Dired*} would match
+@code{*R} if it came before in the alist.
+
+@example
+(setq display-buffer-alist
+      `(("*R Dired"
+         (display-buffer-reuse-window display-buffer-in-side-window)
+         (side . right)
+         (slot . -1)
+         (window-width . 0.33)
+         (reusable-frames . nil))
+        ("*R"
+         (display-buffer-reuse-window display-buffer-at-bottom)
+         (window-width . 0.5)
+         (reusable-frames . nil))
+        ("*Help"
+         (display-buffer-reuse-window display-buffer-in-side-window)
+         (side . right)
+         (slot . 1)
+         (window-width . 0.33)
+         (reusable-frames . nil))))
+@end example
+
+Some users prefer working with multiple frames where one frame has the
+source code and the other frame has the inferior process. To achieve
+this, use this example. @xref{Buffer Display Action Alists,,,
+elisp} for a detailed description of @code{reusable-frames}.
+
+@example
+(setq 'display-buffer-alist
+      '("*R"
+        (display-buffer-reuse-window display-buffer-pop-up-frame)
+        (reusable-frames . 0)))
+@end example
 
 @node Entering commands
 @chapter Interacting with the ESS process

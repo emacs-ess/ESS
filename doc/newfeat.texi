@@ -30,28 +30,8 @@ visibility.
 
 @item ESS now respects @code{display-buffer-alist}.
 Users can now use @code{display-buffer-alist} to manage how and where
-windows appear. For example, to ensure help buffers always appear at
-the right side of the current frame and inferior R buffers always
-appear at the bottom, you could add something like the following to
-your Emacs file:
-
-@example
-(add-to-list 'display-buffer-alist
-             '("*Help"
-               (display-buffer-reuse-window display-buffer-in-side-window)
-               (side . right)
-               (window-width . 0.33)
-               (reusable-frames . nil)))
-
-(add-to-list 'display-buffer-alist
-             '("*R"
-               (display-buffer-reuse-window display-buffer-at-bottom)
-               (window-height . 0.5)
-               (reusable-frames . nil)))
-@end example
-
-See the documentation of @code{display-buffer-alist},
-@code{display-buffer}, and @xref{Window Choice,,, emacs} for details.
+windows appear. See @xref{Controlling buffer display,,, ess} for more
+information and examples.
 
 @item @code{ess-roxy-mode} can now be enabled in non-R buffers.
 This is primarily intended to support roxygen documentation for cpp
