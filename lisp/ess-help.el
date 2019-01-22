@@ -653,7 +653,8 @@ sections."
       (if (not the-sec) (error "Invalid section key: %c"
                                last-command-event)
         (if (re-search-forward (concat "^" the-sec) nil t)
-            (recenter)
+            (progn (recenter)
+                   (beginning-of-line))
           (message "No %s section in this help. Sorry." the-sec)
           (goto-char old-point))))))
 
