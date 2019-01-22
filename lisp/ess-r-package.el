@@ -250,6 +250,7 @@ arguments, or expressions which return R arguments."
         (args (ess-r-command--build-args p actions)))
     (unless (car pkg-info)
       (user-error "Not in a package"))
+    (ess-project-save-buffers)
     (message msg (alist-get :name pkg-info))
     (display-buffer (ess-get-process-buffer))
     (let ((pkg-path (concat "'" (abbreviate-file-name (alist-get :root pkg-info)) "'")))
@@ -362,6 +363,16 @@ With prefix argument ARG, run tests on current file only."
   devtools::revdep_check_save_logs(res, logs_path)
 })
 ")
+
+(defun ess-project-save-buffers ()
+  "Offer to save modified files in the current project.
+Respects `ess-save-silently', which see."
+  (let ((cur-proj ess-r-package--info-cache))
+    (dolist (buf (buffer-list))
+      (when-let ((file (buffer-file-name buf))
+                 (buf-proj (buffer-local-value 'ess-r-package--info-cache buf)))
+        (when (equal cur-proj buf-proj)
+          (ess-save-file file))))))
 
 (defun ess-r-devtools-document-package (&optional arg)
   "Interface for `devtools::document()'.

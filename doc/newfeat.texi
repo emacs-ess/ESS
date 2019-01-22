@@ -51,6 +51,9 @@ ess-gen-proc-buffer-name:project-or-directory. As the name suggests,
 these now rely on project.el (included with Emacs) rather than
 projectile.el, which is a third-party package.
 
+@item ESS[R]: devtools commands ask about saving modified buffers before running.
+Users can disable the questioning with @code{ess-save-silently}.
+
 @item ESS[R] help pages now provide links to other help topics.
 This is similar with what you would see with, for example
 @code{options(help_type = ``html'')} but works with the plain-text

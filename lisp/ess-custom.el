@@ -674,10 +674,18 @@ blink the filling region."
   :group 'ess-edit
   :type 'boolean)
 
-(defcustom ess-mode-silently-save t
-  "Non-nil means automatically save ESS source buffers before loading."
+(define-obsolete-variable-alias 'ess-mode-silently-save 'ess-save-silently "ESS 19.04")
+(defcustom ess-save-silently 'auto
+  "If non-nil, possibly save buffers without asking.
+If t, save without asking. If 'auto, save without asking if
+either `compilation-ask-about-save' or `auto-save-visited-mode'
+is non-nil. Affects `ess-save-file'."
   :group 'ess-edit
-  :type 'boolean)
+  :type '(choice (const :tag "Do not save without asking." :value nil)
+                 (const :tag "Use compilation-ask-about-save and auto-save-visited-mode."
+                        :value 'auto)
+                 (const :tag "Save without asking." :value t))
+  :package-version '(ess . "19.04"))
 
 ;;*;; Variables controlling editing
 

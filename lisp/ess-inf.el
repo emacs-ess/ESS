@@ -1184,7 +1184,7 @@ type of the region."
     (abbreviate-file-name file)))
 
 (defun ess-load-file--normalise-buffer (file)
-  (when (ess-check-source file)
+  (when (ess-save-file file)
     (error "Buffer %s has not been saved" (buffer-name file)))
   (let ((source-buffer (get-file-buffer file)))
     (if source-buffer
@@ -2964,33 +2964,26 @@ if this is the case."
                    objname)))
             (error "Aborted"))))))
 
-(defun ess-check-source (fname)
-  "If file FNAME has an unsaved buffer, offer to save it.
-Returns t if the buffer existed and was modified, but was not saved."
-  (let ((buff (get-file-buffer fname)))
-    ;; RMH: Corrections noted below are needed for C-c C-l to work
-    ;; correctly when issued from *S* buffer.
-    ;; The following barfs since
-    ;; 1. `if' does not accept a buffer argument, `not' does.
-    ;; 2. (buffer-file-name) is not necessarily defined for *S*
-    ;;(if buff
-    ;; (let ((deleted (not (file-exists-p (buffer-file-name)))))
-    ;; Next 2 lines are RMH's solution:
-    (if (not (not buff))
-        (let ((deleted (not (file-exists-p fname))))
-          (if (and deleted (not (buffer-modified-p buff)))
-              ;; Buffer has been silently deleted, so silently save
-              (with-current-buffer buff
-                (set-buffer-modified-p t)
-                (save-buffer))
-            (if (and (buffer-modified-p buff)
-                     (or ess-mode-silently-save
-                         (y-or-n-p
-                          (format "Save buffer %s first? "
-                                  (buffer-name buff)))))
-                (with-current-buffer buff
-                  (save-buffer))))
-          (buffer-modified-p buff)))))
+(define-obsolete-function-alias 'ess-check-source #'ess-save-file "ESS 19.04")
+(defun ess-save-file (file)
+  "If FILE (a string) has an unsaved buffer, offer to save it.
+Return t if the buffer existed and was modified, but was not
+saved. If `ess-save-silently' is non-nil, the buffer is
+saved without offering."
+  (when-let ((buff (find-buffer-visiting file)))
+    (when (and (buffer-modified-p buff)
+               (or (eql ess-save-silently t)
+                   (and (eql ess-save-silently 'auto)
+                        (or (not compilation-ask-about-save)
+                            (bound-and-true-p
+                             ;; Only added in Emacs 26.1
+                             auto-save-visited-mode)))
+                   (y-or-n-p
+                    (format "Buffer %s is modified. Save? "
+                            (buffer-name buff)))))
+      (with-current-buffer buff
+        (save-buffer)))
+    (buffer-modified-p buff)))
 
 
 ;;*;; Error messages
