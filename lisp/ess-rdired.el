@@ -149,8 +149,7 @@ can then examine these objects, plot them, and so on."
     (setq ess-rdired-auto-update-timer
           (run-at-time t ess-rdired-auto-update-interval #'ess-rdired-refresh)))
   (add-hook 'kill-buffer-hook #'ess-rdired-cancel-auto-update-timer nil t)
-  (tabulated-list-init-header)
-  (tabulated-list-print))
+  (tabulated-list-init-header))
 
 ;;;###autoload
 (defun ess-rdired ()
@@ -161,27 +160,35 @@ details."
   (let ((proc ess-local-process-name))
     (pop-to-buffer (get-buffer-create ess-rdired-buffer))
     (setq ess-local-process-name proc)
+    (ess-rdired-mode)
     (ess-rdired-refresh)))
 
 (defun ess-rdired-refresh ()
   "Refresh the `ess-rdired' buffer."
-  (when-let ((buff (get-buffer-create ess-rdired-buffer))
-             (proc-name (buffer-local-value 'ess-local-process-name buff))
-             (proc (get-process proc-name)))
-    (unless (process-get proc 'busy)
-      (ess-command ess-rdired-objects buff nil nil nil (get-process proc))
-      (with-current-buffer buff
+  (let* ((buff (get-buffer-create ess-rdired-buffer))
+         (proc-name (buffer-local-value 'ess-local-process-name buff))
+         (proc (get-process proc-name))
+         (out-buff (get-buffer-create " *ess-rdired-output*"))
+         text)
+    (when (and proc-name proc
+               (not (process-get proc 'busy)))
+      (ess-command ess-rdired-objects out-buff nil nil nil proc)
+      (with-current-buffer out-buff
         (goto-char (point-min))
-        (let ((buffer-read-only nil)
-              text)
-          ;; Delete two lines. One filled with +'s from R's prompt
-          ;; printing, the other with the header info from the data.frame
-          (delete-region (point-min) (1+ (point-at-eol 2)))
-          (setq text (split-string (buffer-string) "\n" t "\n"))
-          (delete-region (point-min) (point-max))
-          (setq tabulated-list-entries
-                (mapcar #'ess-rdired--tabulated-list-entries text))
-          (ess-rdired-mode))))))
+        ;; Delete two lines. One filled with +'s from R's prompt
+        ;; printing, the other with the header info from the data.frame
+        (delete-region (point-min) (1+ (point-at-eol 2)))
+        (setq text (split-string (buffer-string) "\n" t "\n"))
+        (erase-buffer))
+      (with-current-buffer buff
+        (setq tabulated-list-entries
+              (mapcar #'ess-rdired--tabulated-list-entries text))
+        (let ((entry (tabulated-list-get-id))
+              (col (current-column)))
+          (tabulated-list-print)
+          (while (not (equal entry (tabulated-list-get-id)))
+            (forward-line))
+          (move-to-column col))))))
 
 (defun ess-rdired-cancel-auto-update-timer ()
   "Cancel the timer `ess-rdired-auto-update-timer'."
