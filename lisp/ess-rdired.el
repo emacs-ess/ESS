@@ -157,6 +157,9 @@ can then examine these objects, plot them, and so on."
 You may interact with these objects, see `ess-rdired-mode' for
 details."
   (interactive)
+  (unless (and (string= "R" ess-dialect)
+               ess-local-process-name)
+    (error "Not in an R buffer with attached process"))
   (let ((proc ess-local-process-name))
     (pop-to-buffer (get-buffer-create ess-rdired-buffer))
     (setq ess-local-process-name proc)
