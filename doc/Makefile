@@ -87,7 +87,7 @@ install: install-info install-other-docs
 install-info : info/ess.info
 	-$(INSTALLDIR) $(INFODIR)
 	$(INSTALL) info/ess.info $(INFODIR)
-	test -f $(INFODIR)/dir || $(INSTALL) dir.txt $(INFODIR)/dir
+	$(INSTALL) info/dir $(INFODIR)
 	grep $(ESSINFONODE1) $(INFODIR)/dir || \
 	(echo >> $(INFODIR)/dir; echo 'Emacs' >> $(INFODIR)/dir; \
 	echo $(ESSINFONODE1) $(ESSINFONODE2) >> $(INFODIR)/dir; \

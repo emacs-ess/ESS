@@ -1,9 +1,0 @@
-Package: pkg1
-Type: Package
-Title: A sample package for testing ESS
-Version: 1.0
-Date: 2014-01-20
-Author: ESS Core
-Maintainer: <yourfault@somewhere.net>
-Description: A sample package for testing ESS
-License: GPL-2
