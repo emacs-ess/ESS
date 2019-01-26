@@ -65,11 +65,11 @@
         (ess-r-package-auto-activate nil))
     (with-r-file "dummy-pkg/R/test.R"
       (let ((pkg-info (ess-r-package-info)))
-        (should (string= (alist-get :name pkg-info) "foo"))
-        (should (string-match-p "dummy-pkg$" (alist-get :root pkg-info)))
+        (should (string= (plist-get pkg-info :name) "foo"))
+        (should (string-match-p "dummy-pkg$" (plist-get pkg-info :root)))
         (kill-buffer)))
     (with-c-file "dummy-pkg/src/test.c"
       (let ((pkg-info (ess-r-package-info)))
-        (should (string= (alist-get :name pkg-info) "foo"))
-        (should (string-match-p "dummy-pkg$" (alist-get :root pkg-info)))
+        (should (string= (plist-get pkg-info :name) "foo"))
+        (should (string-match-p "dummy-pkg$" (plist-get pkg-info :root)))
         (kill-buffer)))))

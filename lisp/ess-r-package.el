@@ -102,7 +102,7 @@ and the project path as string. If DIR is provided, the package
 is searched from that directory instead of `default-directory'."
   (let ((pkg-info (ess-r-package-info dir)))
     (when (car pkg-info)
-      (cons 'ess-r-package (alist-get :root pkg-info)))))
+      (cons 'ess-r-package (plist-get pkg-info :root)))))
 
 (cl-defmethod project-roots ((project (head ess-r-package)))
   "Return the project root for ESS R packages"
@@ -110,11 +110,11 @@ is searched from that directory instead of `default-directory'."
 
 (defun ess-r-package-name (&optional dir)
   "Return the name of the current package as a string."
-  (alist-get :name (ess-r-package-info dir)))
+  (plist-get (ess-r-package-info dir) :name))
 
 (defun ess-r-package-info (&optional dir)
   "Get the description of the R project in directory DIR.
-Return an alist with the keys :name and :root. When not in a
+Return an plist with the keys :name and :root. When not in a
 package return '(nil). This value is cached buffer-locally for
 efficiency reasons."
   (if (and (null dir) (car ess-r-package--info-cache))
@@ -123,7 +123,8 @@ efficiency reasons."
            (name (when path
                    (ess-r-package--find-package-name path)))
            (info (if name
-                     `((:name . ,name) (:root . ,path))
+                     (list :name name
+                           :root path)
                    '(nil))))
       ;; If DIR was supplied we cannot cache in the current buffer.
       (if dir
@@ -141,7 +142,7 @@ efficiency reasons."
 Return nil if not in a package. Search sub-directories listed in
 `ess-r-package-source-roots' are searched recursively and
 return all physically present directories."
-  (let ((pkg-root (alist-get :root (ess-r-package-info))))
+  (let ((pkg-root (plist-get (ess-r-package-info) :root)))
     (when pkg-root
       (let ((files (directory-files-and-attributes pkg-root t "^[^.]")))
         (cl-loop for f in files
@@ -209,7 +210,7 @@ Root is determined by locating `ess-r-package-root-file'."
 (defun ess-r-package-use-dir ()
   "Set process directory to current package directory."
   (interactive)
-  (let ((pkg-root (alist-get :root (ess-r-package-info))))
+  (let ((pkg-root (plist-get (ess-r-package-info) :root)))
     (if pkg-root
         (ess-set-working-directory (abbreviate-file-name pkg-root))
       (user-error "Not in a project"))))
@@ -222,7 +223,7 @@ Root is determined by locating `ess-r-package-root-file'."
 Namespaced evaluation is enabled if
 `ess-r-package-auto-enable-namespaced-evaluation' is non-nil."
   (when ess-r-package-auto-enable-namespaced-evaluation
-    (let ((root (alist-get :root (ess-r-package-info))))
+    (let ((root (plist-get (ess-r-package-info) :root)))
       ;; Check that we are in a file within R/
       (when (and root
                  default-directory
@@ -251,9 +252,9 @@ arguments, or expressions which return R arguments."
     (unless (car pkg-info)
       (user-error "Not in a package"))
     (ess-project-save-buffers)
-    (message msg (alist-get :name pkg-info))
+    (message msg (plist-get pkg-info :name))
     (display-buffer (ess-get-process-buffer))
-    (let ((pkg-path (concat "'" (abbreviate-file-name (alist-get :root pkg-info)) "'")))
+    (let ((pkg-path (concat "'" (abbreviate-file-name (plist-get pkg-info :root)) "'")))
       (ess-eval-linewise (format command (concat pkg-path args))))))
 
 (defun ess-r-command--build-args (ix &optional actions)
