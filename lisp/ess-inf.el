@@ -1641,7 +1641,12 @@ place (see `ess-r-set-evaluation-env') evaluation of multiline
 input will fail."
   (interactive)
   (ess-force-buffer-current)
-  (display-buffer (ess-get-process-buffer))
+  (display-buffer (ess-get-process-buffer) nil
+                  ;; Pass t to reusable-frames if users have help in
+                  ;; own frames, otherwise help frames get split to
+                  ;; display the inferior.
+                  (or (equal ess-help-own-frame 'one)
+                      ess-help-own-frame))
   (let ((ess-eval-visibly t))
     (ess-eval-region-or-line-and-step)))
 
@@ -1674,7 +1679,12 @@ place (see `ess-r-set-evaluation-env'), the evaluation of
 multiline input will fail."
   (interactive "P")
   (ess-force-buffer-current)
-  (display-buffer (ess-get-process-buffer))
+  (display-buffer (ess-get-process-buffer) nil
+                  ;; Pass t to reusable-frames if users have help in
+                  ;; own frames, otherwise help frames get split to
+                  ;; display the inferior.
+                  (or (equal ess-help-own-frame 'one)
+                      ess-help-own-frame))
   (let ((ess-eval-visibly t)
         (ess-eval-empty (or ess-eval-empty simple-next)))
     (ess-eval-line)
