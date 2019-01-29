@@ -610,19 +610,11 @@ If `ess-language' is not \"S\", call `self-insert-command' with ARG."
 (define-obsolete-function-alias 'ess-disable-smart-S-assign #'ignore "ESS 18.10")
 
 (defun ess-add-MM-keys ()
-  "Define MM's user keys, currently \\<ess-mode-map>\\[ess-insert-function-outline], and
- \\<inferior-ess-mode-map>\\[ess-execute-screen-options]."
-  (interactive)
-  (require 'ess-mode); typically unnecessary
-  (require 'ess-inf); dito
+  "Define MM's user keys."
+  (declare (obsolete "Setup your own keybindings." "ESS 19.04"))
   (define-key inferior-ess-mode-map "\C-cw" 'ess-execute-screen-options)
-
-  ;; Make M-- : [Alt] + [-] (in addition to / instead of  "_" = (on US-keyboard) [Shift]+ [-]
-  ;; Note this overwrites 'M--' as "negative argument" (still on 'C--'):
   (define-key ess-mode-map          [?\M--] 'ess-insert-assign)
-  (define-key inferior-ess-mode-map [?\M--] 'ess-insert-assign)
-  )
-
+  (define-key inferior-ess-mode-map [?\M--] 'ess-insert-assign))
 
 (defun ess-dump-args-and-go (Sfunc) ; &optional buff)
   "Dump the function name, with arguments, to a buffer for editing.
