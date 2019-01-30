@@ -1327,8 +1327,8 @@ prompts."
           (goto-char (point-min))
           (let ((case-fold-search nil))
             (when (re-search-forward "Error\\(:\\| +in\\)" nil t)
-              (unless (equal (selected-window) (get-buffer-window pbuf))
-                (display-buffer (process-buffer proc)))))
+              (unless (get-buffer-window pbuf 'visible)
+                (display-buffer (process-buffer proc) nil t))))
           (goto-char (point-min))
           ;; First long + + in the output mirrors the sent input by the user and
           ;; is unnecessary in nowait case. A single + can be a continuation in
