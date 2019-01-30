@@ -734,10 +734,6 @@ nil otherwise."
 Note that we can't search SAS, Stata or XLispStat for additional information."
   (ess-make-buffer-current)
   (cond
-   ((fboundp ess-find-help-file-function)
-    (funcall ess-find-help-file-function p-string))
-   ;; Fixme: Are `ess-find-help-file-function' and
-   ;; `ess-get-help-topics-function' redundant?
    ((fboundp ess-get-help-topics-function)
     (let* ((help-files-list (funcall ess-get-help-topics-function ess-current-process-name))
            (hlpobjs (ess-helpobjs-at-point help-files-list)))
