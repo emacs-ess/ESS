@@ -70,7 +70,7 @@ VISIBLY is not currently used."
 
 
 ;;; HELP
-(defun ess-julia-get-help-topics (&optional proc)
+(cl-defmethod ess-help-get-topics (proc &context ((string= ess-dialect "julia") (eql t)))
   (append (with-current-buffer (ess-command "ESS.all_help_topics()\n")
             (split-string (buffer-string) "\n"))
           (ess-julia--get-objects proc)))
@@ -307,7 +307,6 @@ to look up any doc strings."
     (inferior-ess-prompt           . "\\w*> ")
     (ess-local-customize-alist     . 'ess-julia-customize-alist)
     (inferior-ess-program          . inferior-julia-program)
-    (ess-get-help-topics-function  . 'ess-julia-get-help-topics)
     (ess-help-web-search-command   . "https://docs.julialang.org/en/latest/search/?q=%s")
     (ess-manual-lookup-command     . 'ess-julia-manual-lookup-function)
     ;; (ess-reference-lookup-command       . 'ess-julia-reference-lookup-function)

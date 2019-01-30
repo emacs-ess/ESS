@@ -115,7 +115,6 @@
     ;; inferior-ess-prompt is used by comint for navigation, only if
     ;; comint-use-prompt-regexp is t; (transcript-mode also relies on this regexp)
     (inferior-ess-prompt           . inferior-S-prompt)
-    (ess-get-help-topics-function  . #'ess-s-get-help-topics-function)
     (ess-getwd-command          . "getwd()\n")
     (ess-setwd-command          . "setwd('%s')\n")
     (ess-funargs-command        . ".ess_funargs(\"%s\")\n")
@@ -695,8 +694,8 @@ and I need to relearn emacs lisp (but I had to, anyway."
           (ess-S-initialize-speedbar)))
     (error nil)))
 
-(defun ess-s-get-help-topics-function (name)
-  "Return a list of current S help topics associated with process NAME.
+(cl-defmethod ess-help-get-topics (proc &context ((string= ess-dialect "R") (eql t)))
+  "Return a list of current S help topics associated with process PROC.
 If 'sp-for-help-changed?' process variable is non-nil or
 `ess-help-topics-list' is nil, (re)-populate the latter and
 return it.  Otherwise, return `ess-help-topics-list'."
@@ -710,7 +709,7 @@ return it.  Otherwise, return `ess-help-topics-list'."
       (ess-process-put 'sp-for-help-changed? nil)
       (setq ess-help-topics-list
             (delete-dups
-             (append (ess-get-object-list name 'exclude-1st)
+             (append (ess-get-object-list proc 'exclude-1st)
                      (ess-get-help-files-list)
                      (ess-get-help-aliases-list)))))
      (t

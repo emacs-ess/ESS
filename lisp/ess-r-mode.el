@@ -2257,8 +2257,7 @@ state.")
         ess-build-help-command-function #'ess-r-build-help-command
         ess-help-sec-regex ess-help-r-sec-regex
         ess-help-sec-keys-alist ess-help-r-sec-keys-alist ; TODO: Still necessary?
-        inferior-ess-help-command inferior-ess-r-help-command
-        ess-get-help-topics-function #'ess-s-get-help-topics-function)
+        inferior-ess-help-command inferior-ess-r-help-command)
   (ess-r-help-add-links))
 
 (define-button-type 'ess-r-help-link
@@ -2273,7 +2272,7 @@ state.")
 (defun ess-r-help-add-links ()
   "Add links to the help buffer."
   (let ((help-topics (when (ess-process-live-p)
-                       (ess-s-get-help-topics-function ess-local-process-name)))
+                       (ess-help-get-topics ess-local-process-name)))
         (inhibit-read-only t))
     (save-excursion
       ;; Search for fancy quotes only. If users have

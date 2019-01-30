@@ -84,7 +84,6 @@
     (inferior-ess-secondary-prompt . "--more--")
     (comint-use-prompt-regexp      . t)
     (inferior-ess-start-args       . inferior-STA-start-args)
-    (ess-get-help-topics-function  . 'ess-get-STA-help-topics)
     (inferior-ess-search-list-command   . "set more off\n search()\n")
     (comment-start                . "/\* ")
     (comment-end                  . " \*/")
@@ -207,8 +206,8 @@ This function is placed in `ess-presend-filter-functions'.
       (nreverse (delete-dups topics))
       )))
 
-(defun ess-get-STA-help-topics (&optional name)
-  "Return a list of current STA help topics associated with process NAME."
+(cl-defmethod ess-help-get-topics (proc &context ((string= ess-dialect "stata") (eql t)))
+  "Return a list of current STA help topics associated with process PROC."
   (or (ess-process-get 'help-topics)
       (progn
         (ess-process-put 'help-topics (ess--STA-retrive-topics-from-search))

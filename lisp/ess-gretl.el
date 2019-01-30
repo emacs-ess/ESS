@@ -438,7 +438,7 @@ end keywords as associated values.")
         (push (match-string-no-properties 0) acum))
       acum)))
 
-(defun gretl-get-help-topics-function (name)
+(cl-defmethod ess-help-get-topics (proc &context ((string= ess-dialect "gretl") (eql t)))
   (delete-dups
    (append gretl-command-words gretl-genr-functions
            gretl-block-end-keywords gretl-block-other-keywords
@@ -464,7 +464,6 @@ end keywords as associated values.")
     (inferior-ess-prompt		. "\\? ")
     (ess-local-customize-alist		. 'gretl-customize-alist)
     (inferior-ess-program		. "gretlcli")
-    (ess-get-help-topics-function	. 'gretl-get-help-topics-function)
     (ess-load-command   		. "open \"%s\"\n")
     ;; (ess-dump-error-re			. "in \\w* at \\(.*\\):[0-9]+")
     ;; (ess-error-regexp			. "\\(^\\s-*at\\s-*\\(?3:.*\\):\\(?2:[0-9]+\\)\\)")

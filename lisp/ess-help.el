@@ -710,7 +710,7 @@ Keystroke    Section
   "Return a list (def obj fun).
 Obj is a name at point, fun is the name of the function call
 point is in, and def is either obj or fun (in that order) which
-has a a help file, i.e. it is a member of slist (string-list).
+has a a help file, i.e. it is a member of SLIST (string-list).
 nil otherwise."
   (let* ((obj (ess-helpobjs-at-point--read-obj))
          (unqualified-obj (and obj (ess-unqualify-symbol obj)))
@@ -729,18 +729,17 @@ nil otherwise."
               (car (member fun slist)))
           obj fun)))
 
+(cl-defgeneric ess-help-get-topics (proc)
+  "Return a list of help topics from PROC."
+  (user-error "Not supported for %s, %s" ess-dialect proc))
+
 (defun ess-find-help-file (p-string)
-  "Find help, prompting for P-STRING.
-Note that we can't search SAS, Stata or XLispStat for additional information."
+  "Find help, prompting for P-STRING."
   (ess-make-buffer-current)
-  (cond
-   ((fboundp ess-get-help-topics-function)
-    (let* ((help-files-list (funcall ess-get-help-topics-function ess-current-process-name))
-           (hlpobjs (ess-helpobjs-at-point help-files-list)))
-      (ess-completing-read p-string (append (delq nil hlpobjs) help-files-list)
-                           nil nil nil nil (car hlpobjs))))
-   (t
-    (read-string (format "%s: " p-string)))))
+  (let* ((help-files-list (ess-help-get-topics ess-current-process-name))
+         (hlpobjs (ess-helpobjs-at-point help-files-list)))
+    (ess-completing-read p-string (append (delq nil hlpobjs) help-files-list)
+                         nil nil nil nil (car hlpobjs))))
 
 
 ;;*;; Utility functions
