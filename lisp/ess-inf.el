@@ -2246,10 +2246,11 @@ If you want to finish your session, use \\[ess-quit] instead."
     (message "Good move.")))
 
 (defun ess-cleanup ()
-  "Possibly kill or offer to kill, depending on the value of
-`ess-S-quit-kill-buffers-p', all buffers associated with this ESS process.
-Leaves you in the ESS process buffer.  It's a good idea to run this
-before you quit.  It is run automatically by \\[ess-quit]."
+  "Cleanup buffers associated with the process.
+Possibly kill or offer to kill, depending on the value of
+`ess-S-quit-kill-buffers-p', all buffers associated with this ESS
+process. Uses `pop-to-buffer' to display and return the process
+buffer. It is run automatically by \\[ess-quit]."
   (interactive)
   (let ((the-procname (or (ess-make-buffer-current) ess-local-process-name)))
     (unless the-procname
@@ -2269,7 +2270,7 @@ before you quit.  It is run automatically by \\[ess-quit]."
                      ess-local-process-name
                      (equal ess-local-process-name the-procname))
             (kill-buffer buf)))))
-    (ess-switch-to-ESS nil)))
+    (pop-to-buffer (buffer-name (process-buffer (get-process the-procname))))))
 
 (defun inferior-ess-reload (&optional start-args)
   "Reload the inferior process.
