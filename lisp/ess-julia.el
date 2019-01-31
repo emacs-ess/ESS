@@ -463,6 +463,16 @@ always be passed to julia, put them in the variable
       (with-ess-process-buffer nil
         (run-mode-hooks 'ess-julia-post-run-hook)))))
 
+(cl-defmethod ess--help-major-mode (&context ((string= ess-dialect "julia") (eql t)))
+  (ess-julia-help-mode))
+
+(define-derived-mode ess-julia-help-mode ess-help-mode "ESS[Julia] Help"
+  "Major mode for Julia documentation."
+  (let ((inhibit-read-only t))
+    ;; Julia help buffers can contain color if julia starts with
+    ;; --color=yes
+    (ansi-color-apply-on-region (point-min) (point-max))))
+
 (add-to-list 'auto-mode-alist '("\\.jl\\'" . ess-julia-mode))
 
 (provide 'ess-julia)
