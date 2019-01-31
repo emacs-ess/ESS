@@ -2195,6 +2195,13 @@ frame.  If you wish help buffers to appear in their own frame (either
 one per help buffer, or one for all help buffers), you can customize the
 variable @code{ess-help-own-frame}.
 
+Help buffers are displayed by calling the function
+@code{ess-display-help}. You can customize where these buffers are
+displayed by adding an entry in @code{display-buffer-alist} (see
+@xref{Controlling buffer display,,, ess} for examples) or by customizing
+the options @code{ess-help-own-frame}, @code{ess-help-frame-alist},
+and @code{ess-display-buffer-reuse-frame}.
+
 @findex ess-quit
 @findex ess-cleanup
 @cindex temporary buffers

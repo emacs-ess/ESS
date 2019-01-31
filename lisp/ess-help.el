@@ -150,7 +150,7 @@ suplied, it is used instead of `inferior-ess-help-command'."
           (setq truncate-lines nil
                 ess-help-type 'help)))
       (unless (ess--help-kill-bogus-buffer-maybe tbuffer)
-        (ess--switch-to-help-buffer tbuffer)))))
+        (ess-display-help tbuffer)))))
 
 ;;;###autoload
 (defalias 'ess-help 'ess-display-help-on-object)
@@ -317,7 +317,7 @@ REG-START gives the start location from where to search linkifying, and HELP-OBJ
       (setq ess-help-type help-type)
       (setq truncate-lines nil))
     (unless (ess--help-kill-bogus-buffer-maybe buff)
-      (ess--switch-to-help-buffer buff))))
+      (ess-display-help buff))))
 
 (defun ess-display-help-apropos (&optional pattern)
   "Create an ess-apropos buffer with a *linked* list of apropos topics."
@@ -443,7 +443,7 @@ With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e., from all installed
       (insert (propertize "\t\t**** Vignettes ****\n" 'face 'bold-italic))
       (unless (eobp) (delete-char 1))
       (setq buffer-read-only t))
-    (ess--switch-to-help-buffer buff)))
+    (ess-display-help buff)))
 
 (defun ess--action-open-in-emacs (pos)
   (display-buffer (find-file-noselect (get-text-property pos 'help-echo))))
@@ -455,60 +455,46 @@ With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e., from all installed
 (defalias 'ess-help-quit 'quit-window)
 (make-obsolete 'ess-help-quit 'quit-window "16.04")
 
-(defun ess--find-displayed-help-window ()
-  (catch 'win
-    (dolist (f (frame-list))
-      (when (frame-visible-p f)
-        (dolist (w (window-list f))
-          (when (with-current-buffer (window-buffer w) (derived-mode-p 'ess-help-mode))
-            (throw 'win w)))))))
+(defun ess-display-help (buff)
+  "Display buffer BUFF.
+If `ess-help-pop-to-buffer' is non-nil, call `pop-to-buffer',
+otherwise call `display-buffer' to display the buffer.
 
-(defun ess--switch-to-help-buffer (buff)
-  "Switch to an ESS help BUFF.
-For internal use.  Take into account variable `ess-help-own-frame'."
-  (if (eq ess-help-own-frame t)
-      ;; 0) always pop new frame
-      (let* ((frame (make-frame ess-help-frame-alist))
-             (action `(display-buffer-same-window (reusable-frames . ,frame))))
-        (ess--display-help buff frame action))
-    (let ((help-win (or
-                     ;; if this doc is already displayed, reuse
-                     (get-buffer-window buff 'all-frames)
-                     ;; if help window visible, reuse
-                     (and ess-help-reuse-window
-                          (ess--find-displayed-help-window)))))
-      (cond
-       ;; 1) existent help window lying somewhere; reuse
-       (help-win
-        (set-window-buffer help-win buff)
-        (let ((action '(display-buffer-reuse-window (reusable-frames . t))))
-          (ess--display-help buff nil action)))
-       ;; 2)
-       ((eq ess-help-own-frame 'one)
-        (let* ((frame (if (frame-live-p ess--help-frame)
-                          ess--help-frame
-                        (make-frame ess-help-frame-alist)))
-               (action `(display-buffer-same-window (reusable-frames . ,frame))))
-          (setq ess--help-frame frame)
-          (ess--display-help buff frame action)))
-       ;; 3) display help in other window
-       (t
-        (ess--display-help buff))))))
-
-(defun ess--display-help (buff &optional frame action)
-  (let ((action (or action `(nil (reusable-frames . ,(or frame ess-display-buffer-reuse-frames))))))
-    (when (and (framep frame)
-               (not (eq (selected-frame) frame)))
-      ;; VS[04-05-2018]: `display-buffer` framework has no satisfactory
-      ;; functionality to display buffers in selected windows. So, do some extra
-      ;; frame selection here.
-      (raise-frame frame)
-      (if ess-help-pop-to-buffer
-          (select-frame-set-input-focus frame)
-        (select-frame frame)))
+You may control how help buffers are displayed by EITHER setting
+an entry in `display-buffer-alist' (see examples in info
+node `(ess) Controlling buffer display') OR setting the
+ESS-specific variables `ess-help-own-frame',
+`ess-help-reuse-window', `ess-help-frame-alist', and
+`ess-display-buffer-reuse-frames'."
+  (let* ((action (cond (ess-help-own-frame
+                        '(display-buffer-reuse-window
+                          display-buffer-use-some-frame
+                          display-buffer-pop-up-frame))
+                       (ess-help-reuse-window
+                        '(display-buffer-reuse-window
+                          display-buffer-reuse-mode-window
+                          display-buffer-pop-up-window
+                          display-buffer-use-some-window))
+                       (t '(display-buffer-pop-up-window
+                            display-buffer-use-some-window))))
+         (alist `((mode . (ess-help-mode ess-r-help-mode ess-stata-help-mode ess-julia-help-mode))
+                  (reusable-frames . ,ess-display-buffer-reuse-frames)
+                  ;; `display-buffer-use-some-frame' uses this to
+                  ;; determine whether to use the frame or not.
+                  (frame-predicate . (lambda (f)
+                                       (when (equal ess-help-own-frame 'one)
+                                         ;; Note we're always returning
+                                         ;; nil for `ess-help-own-frame' t.
+                                         (frame-parameter f 'ess-help-frame))))
+                  ;; If `display-buffer' makes a new frame, these are
+                  ;; given as frame parameters.
+                  (pop-up-frame-parameters . ,(append ess-help-frame-alist
+                                                      `((auto-hide-function . delete-frame)
+                                                        (ess-help-frame . ,(equal ess-help-own-frame 'one)))))))
+         (display-alist `(,action . ,alist)))
     (if ess-help-pop-to-buffer
-        (pop-to-buffer buff action)
-      (display-buffer buff action))))
+        (pop-to-buffer buff display-alist)
+      (display-buffer buff display-alist))))
 
 (defun ess-help-web-search ()
   "Search the web for documentation."

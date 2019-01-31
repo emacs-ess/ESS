@@ -2515,8 +2515,9 @@ default."
 
 (defcustom ess-help-pop-to-buffer t
   "If non-nil ess-help buffers are given focus during the display.
-The default is t (except when `focus-follows-mouse' and
-`mouse-autoselect-window' are both t)."
+If non-nil, `ess-display-help' uses `pop-to-buffer' to display
+help, otherwise it uses `display-buffer', which does not select
+the help window."
   :group 'ess-help
   :type 'boolean)
 
@@ -2528,19 +2529,17 @@ Possible values are:
   'one: All help buffers are shown in one dedicated frame.
      t: Each help buffer gets its own frame.
 
-Note if you set this to t you should also set
-`ess-help-reuse-window' to nil to ensure that help buffers are
-displayed in a new frame.
-
-The parameters of the own frame are stored in `ess-help-frame-alist'.
-See also `inferior-ess-own-frame'."
+If this is non-nil,`ess-help-reuse-window' is ignored. The
+parameters of the own frame are stored in
+`ess-help-frame-alist'."
   :group 'ess-help
   :type '(choice (const :tag "Display in current frame" nil)
                  (const :tag "Display in one frame" one)
                  (const :tag "Always display in a new frame" t)))
 
 (defcustom ess-help-reuse-window t
-  "If t, ESS tries to display new help buffers in the existing help window."
+  "If t, ESS tries to display new help buffers in the existing help window.
+This variable is ignored if `ess-help-own-frame' is non-nil."
   :type 'boolean
   :group 'ess-help)
 
