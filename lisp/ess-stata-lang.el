@@ -1215,6 +1215,9 @@ PROC is the stata process. Does not change point."
              (if (< (point) start-of-output) (goto-char start-of-output))
              (not (looking-at "^. "))))))
 
+(cl-defgeneric ess--help-major-mode (&context ((string= ess-dialect "stata") (eql t)))
+  (ess-stata-help-mode))
+
 (define-derived-mode ess-stata-help-mode ess-help-mode "Stata help"
   "Major mode for displaying Stata help in a read-only buffer.
 Active commands are Help (\\[stata-help]) and hyperlink

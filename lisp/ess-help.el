@@ -59,13 +59,10 @@
 ;;;; * The major mode ess-help-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun ess--help-major-mode (&optional dialect)
+(cl-defgeneric ess--help-major-mode ()
   "Determine which help major mode to call, and call it.
-DIALECT defaults to `ess-dialect'."
-  (let ((ess-dialect (or dialect ess-dialect)))
-    (cond ((string= ess-dialect "R") (require 'ess-r-mode) (ess-r-help-mode))
-          ((string= ess-dialect "stata") (require 'ess-stata-lang) (ess-stata-help-mode))
-          (t (ess-help-mode)))))
+Uses `ess-dialect' to determine the appropriate help mode."
+  (ess-help-mode))
 
 (defun ess--help-get-bogus-buffer-substring (buffer &optional nr-first)
   "Return non-nil if BUFFER looks like a bogus ESS help buffer.

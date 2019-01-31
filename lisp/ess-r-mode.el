@@ -2247,6 +2247,9 @@ state.")
     map)
   "Keymap for `ess-r-help-mode'.")
 
+(cl-defmethod ess--help-major-mode (&context ((string= ess-dialect "R") (eql t)))
+  (ess-r-help-mode))
+
 (define-derived-mode ess-r-help-mode ess-help-mode "R Help"
   "Major mode for help buffers."
   (setq ess-dialect "R"
