@@ -261,9 +261,6 @@ Variables controlling indentation style:
  `ess-tab-always-indent'
     Non-nil means TAB in ESS mode should always reindent the current line,
     regardless of where in the line point is when the TAB command is used.
- `ess-auto-newline'
-    Non-nil means automatically newline before and after braces inserted in S
-    code.
  `ess-indent-offset'
     Indentation of ESS statements within surrounding block.
     The surrounding block's indentation is the indentation of the line on

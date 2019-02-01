@@ -701,12 +701,6 @@ bracket."
 
 ;;;*;;; Indentation parameters
 
-(defcustom ess-auto-newline nil
-  "Non-nil means automatically newline before and after braces
-inserted in S code."
-  :type 'boolean
-  :group 'ess-edit)
-
 (defcustom ess-tab-always-indent t
   "Non-nil means TAB in S mode should always reindent the current line,
 regardless of where in the line point is when the TAB command is used."
