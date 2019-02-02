@@ -1451,11 +1451,10 @@ the output into *ess.dbg* buffer."
              ;; improve on the next refactoring iteration
              fast-flush
              (> (- new-time last-time) .5)
-             (and (boundp 'edebug-mode) edebug-mode)
+             (bound-and-true-p edebug-mode)
              ;; the flush is not getting called if the third party call
              ;; accept-process-output in a loop (e.g. org-babel-execute-src-block)
-             (and (boundp 'org-babel-current-src-block-location)
-                  org-babel-current-src-block-location))
+             (bound-and-true-p org-babel-current-src-block-location))
             (ess--flush-accumulated-output proc)
           ;; setup new flush timer; ideally also for fast-flush cased in order
           ;; to avoid detecting intermediate prompts as end-of-output prompts
@@ -1626,8 +1625,7 @@ nil, or TB-INDEX is not found return nil."
               (if col
                   (goto-char (+ (point-at-bol) col))
                 (back-to-indentation))
-              (when (and (boundp 'org-babel-tangled-file)
-                         org-babel-tangled-file)
+              (when (bound-and-true-p org-babel-tangled-file)
                 (org-babel-tangle-jump-to-org))
               (list (point-marker) (copy-marker (point-at-eol))))))))))
 

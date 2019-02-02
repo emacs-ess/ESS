@@ -488,7 +488,7 @@ buffer or end chunks etc.")
 
 (make-obsolete-variable 'ess-smart-S-assign-key nil "ESS 18.10")
 
-(defcustom ess-assign-list (cons (if (boundp 'ess-S-assign) ess-S-assign " <- ")
+(defcustom ess-assign-list (cons (or (bound-and-true-p ess-S-assign) " <- ")
                                  '(" <<- " " = " " -> " " ->> "))
   "List of assignment operators.
 `ess-cycle-assign' uses this list.  These strings must

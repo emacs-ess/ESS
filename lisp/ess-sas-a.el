@@ -558,7 +558,7 @@ current buffer if nil."
            (concat "[cCub][oOty][rRpt][dDue][sSt][ ][wW][rR][iI][tT][tT][eE][nN][ ]+[tT][oO][ ]\n?[ ]*\\(.*"
                    ;;                         (concat "[ ][rR][eE][cC][oO][rR][dD][sS][ ][wW][rR][iI][tT][tT][eE][nN][ ]+[tT][oO][ ]\n?[ ]*\\(.*"
                    ess-sas-graph-view-suffix-regexp "\\)")))
-     ;           (concat "['\"]\\(.*" ess-sas-graph-suffix-regexp "\\)['\"]")))
+                                        ;           (concat "['\"]\\(.*" ess-sas-graph-suffix-regexp "\\)['\"]")))
 
       (save-match-data
         (search-backward-regexp "[ \t=]" nil t)
@@ -573,7 +573,7 @@ current buffer if nil."
                                          (or ess-tmp-graph ess-sas-file-path)))
 
         ;;GNU Emacs graphics file image viewing mode loaded?
-        (if (and (boundp 'auto-image-file-mode) auto-image-file-mode
+        (if (and (bound-and-true-p auto-image-file-mode)
                  (string-match "[.][jJ][pP][eE]?[gG]" ess-tmp-graph))
             (find-file ess-tmp-graph)
           ;;else XEmacs graphics file image viewing mode loaded?

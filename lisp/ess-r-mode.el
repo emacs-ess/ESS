@@ -1303,7 +1303,7 @@ If it changes, we flush the cache.")
   "Load/INSTALL/Update ESSR."
   (let* ((pkg-dir (expand-file-name "ESSR" ess-etc-directory))
          (src-dir (expand-file-name "R" pkg-dir)))
-    (if (not (or (and (boundp 'ess-remote) ess-remote)
+    (if (not (or (bound-and-true-p ess-remote)
                  (file-remote-p (ess-get-process-variable 'default-directory))))
         (inferior-ess-r-load-ESSR--local pkg-dir src-dir)
       (inferior-ess-r-load-ESSR--remote pkg-dir src-dir))))
