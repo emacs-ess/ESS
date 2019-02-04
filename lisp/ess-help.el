@@ -134,23 +134,21 @@ suplied, it is used instead of `inferior-ess-help-command'."
      (when current-prefix-arg ;update cache if prefix
        (ess-process-put 'sp-for-help-changed? t))
      (list (ess-find-help-file "Help on"))))
-  (if (fboundp ess-display-help-on-object-function)
-      (funcall ess-display-help-on-object-function object command)
-    (let* ((hb-name (concat "*help[" ess-current-process-name "]("
-                            (replace-regexp-in-string "^\\?\\|`" "" object) ")*"))
-           (old-hb-p (get-buffer hb-name))
-           (tbuffer (get-buffer-create hb-name)))
-      (when (or (not old-hb-p)
-                current-prefix-arg
-                (ess--help-get-bogus-buffer-substring old-hb-p))
-        (ess-with-current-buffer tbuffer
-          (ess--flush-help-into-current-buffer object command)
-          (setq ess-help-object object)
-          (ess--help-major-mode)
-          (setq truncate-lines nil
-                ess-help-type 'help)))
-      (unless (ess--help-kill-bogus-buffer-maybe tbuffer)
-        (ess-display-help tbuffer)))))
+  (let* ((hb-name (concat "*help[" ess-current-process-name "]("
+                          (replace-regexp-in-string "^\\?\\|`" "" object) ")*"))
+         (old-hb-p (get-buffer hb-name))
+         (tbuffer (get-buffer-create hb-name)))
+    (when (or (not old-hb-p)
+              current-prefix-arg
+              (ess--help-get-bogus-buffer-substring old-hb-p))
+      (ess-with-current-buffer tbuffer
+        (ess--flush-help-into-current-buffer object command)
+        (setq ess-help-object object)
+        (ess--help-major-mode)
+        (setq truncate-lines nil
+              ess-help-type 'help)))
+    (unless (ess--help-kill-bogus-buffer-maybe tbuffer)
+      (ess-display-help tbuffer))))
 
 ;;;###autoload
 (defalias 'ess-help 'ess-display-help-on-object)

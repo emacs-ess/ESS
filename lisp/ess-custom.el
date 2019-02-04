@@ -2152,9 +2152,6 @@ If set, changes will take effect when next R session is started."
   :group 'ess-command
   :type 'string)
 
-(defvar-local ess-display-help-on-object-function nil
-  "Dialect specific function for displaying help on object.")
-
 (defvar-local ess-build-help-command-function nil
   "Dialect specific function for building an help command.")
 
