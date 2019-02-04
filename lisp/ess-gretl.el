@@ -422,8 +422,8 @@ end keywords as associated values.")
 ;;       (insert string))
 ;;     (process-send-string process (format ess-load-command file))))
 
-(defun gretl--get-words-from-command (command start-reg end-reg)
-  (with-current-buffer (ess-command command)
+(defun gretl--get-words-from-command (command start-reg end-reg proc)
+  (with-current-buffer (ess-command command nil nil nil nil proc)
     (goto-char (point-min))
     (let ((beg (or (re-search-forward start-reg nil t)
                    (point-min)))
@@ -442,9 +442,9 @@ end keywords as associated values.")
    (append gretl-command-words gretl-genr-functions
            gretl-block-end-keywords gretl-block-other-keywords
            gretl-block-start-keywords
-           (gretl--get-words-from-command "help\n" "are:" "^For")
-           (gretl--get-words-from-command "help functions\n" "Accessors:" "^Functions")
-           (gretl--get-words-from-command "help functions\n" "^Functions" "^For")
+           (gretl--get-words-from-command "help\n" "are:" "^For" proc)
+           (gretl--get-words-from-command "help functions\n" "Accessors:" "^Functions" proc)
+           (gretl--get-words-from-command "help functions\n" "^Functions" "^For" proc)
            )))
 
 ;; (defvar ess-gretl-error-regexp-alist '(gretl-in gretl-at)
