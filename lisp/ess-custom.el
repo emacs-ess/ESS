@@ -2176,11 +2176,6 @@ Really set in <ess-lang>-customize-alist in ess[dl]-*.el")
   :group 'ess-command
   :type 'string)
 
-(defcustom inferior-ess-get-prompt-command "options()$prompt\n"
-  "Command to find the value of the current S prompt."
-  :group 'ess-command
-  :type 'string)
-
 ;;*;; Regular expressions
 (defvar-local inferior-ess-prompt nil
   "The regular expression  used for recognizing prompts.
