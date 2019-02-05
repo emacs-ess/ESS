@@ -783,18 +783,17 @@ See `hs-show-block' and `ess-roxy-hide-block'."
   (goto-char (ess-roxy-beg-of-entry)))
 
 (defun ess-roxy-get-function-args ()
-  "Return the arguments specified for the current function as a list of strings."
+  "Return the arguments specified for the current function as a list of strings.
+Assumes point is at the beginning of the function."
   (save-excursion
     (let ((args-txt
-           (progn
-             (beginning-of-defun)
-             (buffer-substring-no-properties
-              (progn
-                (search-forward-regexp "\\([=,-]+ *function *\\|^\s*function\\)" nil nil 1)
-                (+ (point) 1))
-              (progn
-                (ess-roxy-match-paren)
-                (point))))))
+           (buffer-substring-no-properties
+            (progn
+              (search-forward-regexp "\\([=,-]+ *function *\\|^\s*function\\)" nil nil 1)
+              (+ (point) 1))
+            (progn
+              (ess-roxy-match-paren)
+              (point)))))
       (setq args-txt (replace-regexp-in-string "#+[^\"']*\n" "" args-txt))
       (setq args-txt (replace-regexp-in-string "([^)]+)" "" args-txt))
       (setq args-txt (replace-regexp-in-string "=[^,]+" "" args-txt))

@@ -312,6 +312,25 @@ add <- function(x, y) {
                   (kill-whole-line)
                   (buffer-substring-no-properties (point-min) (point-max))))))))
 
+(ert-deftest ess-roxy-get-function-args-test ()
+  (ess-r-test-with-temp-text
+      "#' a function
+#'
+#' @param x the param
+my_mean <- function(x, y){
+  mean(x) + mean(y)
+}
+
+#' another function
+#'
+#' @param z the param
+my_mean2 <- function(z){
+  mean(z)
+}"
+    (should (equal (ess-roxy-get-function-args) '("x" "y")))
+    (search-forward "param z the param")
+    (should (equal (ess-roxy-get-function-args) '("z")))))
+
 (ert-deftest ess-roxy-cpp-test ()
   ;; Test M-q
   (should (string=
