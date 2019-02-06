@@ -15,7 +15,13 @@ function all_help_topics()
 end 
 
 function help(topic::AbstractString)
-    VERSION >= v"0.4-" ? Core.eval(@current_module(), parse("@doc $topic")) : Base.Help.help(topic)
+    if (VERSION >= v"1.0-")
+        Core.eval(parentmodule(ESS), parse("@doc $topic"))
+    elseif  (VERSION >= v"0.4-")
+        Core.eval(@current_module(), parse("@doc $topic"))
+    else
+        Base.Help.help(topic)
+    end
 end    
 
 ## modified version of function show(io::IO, m::Method)
@@ -50,7 +56,8 @@ end
 
 function fun_args(s::AbstractString)
     try
-        m = Core.eval(@current_module(), parse(s))
+        mod = VERSION >= v"1.0-" ?  parentmodule(ESS) : @current_module()
+        m = Core.eval(mod, parse(s))
         if ! isa(m, String)
             fun_args(m)
         end
