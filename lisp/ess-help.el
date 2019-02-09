@@ -119,7 +119,7 @@ Local in `ess-help' buffers.")
 
 ;;;###autoload
 (defun ess-display-help-on-object (object &optional command)
-  "Display documentation for OBJECT in another window.
+  "Display documentation for OBJECT.
 If prefix arg is given, force an update of the cached help topics
 and query the ESS process for the help file instead of reusing an
 existing buffer if it exists. Uses the variable
