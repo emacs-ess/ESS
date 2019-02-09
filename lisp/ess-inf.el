@@ -612,12 +612,15 @@ evaluation of BODY."
 local ESS vars like `ess-local-process-name'."
   (declare (indent 1) (debug t))
   (let ((lpn (make-symbol "lpn"))
+        (dialect (make-symbol "dialect"))
         (alist (make-symbol "alist")))
     `(let ((,lpn ess-local-process-name)
+           (,dialect ess-dialect)
            (,alist ess-local-customize-alist))
        (with-current-buffer ,buffer
          (ess-setq-vars-local (eval ,alist))
          (setq ess-local-process-name ,lpn)
+         (setq ess-dialect ,dialect)
          ,@body))))
 
 (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
