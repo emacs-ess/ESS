@@ -495,16 +495,19 @@ the_dat <- read.csv(\"foo.csv\")"
       (should (equal (caadr (nth 2 result)) "x"))
       (should (equal (caaddr (nth 2 result)) "y")))))
 
-(ert-deftest ess-quit-test ()
-  (let (buf1 buf2)
-    (ignore-errors
-      ;; ignore errors here because `with-r-running' tries to kill the
-      ;; process we've already killed with `ess-quit'
-      (with-r-running (expand-file-name "file.R" ess-test-fixtures-directory)
-        (setq buf1 (current-buffer))
-        (ess-quit)
-        (setq buf2 (current-buffer))))
-    (should (equal buf1 buf2))))
+(ert-deftest ess-test-r-help-mode ()
+  (skip-unless (not noninteractive))
+  (with-r-running nil
+    (let ((ess-pop-to-buffer t))
+      (ess-display-help-on-object "plot")
+      (should (equal ess-help-object "plot"))
+      (should (derived-mode-p 'ess-r-help-mode))
+      ;; Ensure help buffers after button presses are also in
+      ;; `ess-r-help-mode', Bug#836
+      (forward-button 2)
+      (push-button)
+      (should (equal ess-help-object "plot.default"))
+      (should (derived-mode-p 'ess-r-help-mode)))))
 
 (provide 'ess-test-r)
 
