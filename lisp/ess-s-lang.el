@@ -37,7 +37,7 @@
 (require 'ess-utils)
 (require 'ess-inf)
 
-(autoload 'speedbar-add-supported-extension "speedbar.el")
+(declare-function speedbar-add-supported-extension "speedbar" (extension))
 
  ; Configuration variables
 
@@ -657,39 +657,13 @@ and I need to relearn emacs lisp (but I had to, anyway."
 
 
  ;;; Speedbar stuff.
-(defun ess-S-initialize-speedbar ()
-  "Extend to all extensions; see initialization, and edit."
-  (speedbar-add-supported-extension ".R")
-  (speedbar-add-supported-extension ".S")
-  (speedbar-add-supported-extension ".s")
-  (speedbar-add-supported-extension ".q"))
 
-                                        ;(if (featurep 'speedbar)
-                                        ;    (progn
-                                        ;      (message "enabling speedbar support")
-                                        ;      (require 'speedbar)
-                                        ;      (ess-S-initialize-speedbar)))
-
-(eval-when-compile
-  (condition-case nil
-      (progn
-        (require 'speedbar)
-        (when (featurep 'speedbar)
-
-          (defun S-speedbar-buttons (buffer)
-            "attempted hack."
-
-            ;;(speedbar-make-tag-line)
-            ;;(speedbar-insert-button)
-            (speedbar-with-writable))
-
-          (fset 'R-speedbar-buttons 'S-speedbar-buttons)
-
-          (defun S-speedbar-menu-items  ( )
-            "Need to write.")
-
-          (ess-S-initialize-speedbar)))
-    (error nil)))
+(eval-after-load "speedbar"
+  '(progn
+     (speedbar-add-supported-extension ".R")
+     (speedbar-add-supported-extension ".S")
+     (speedbar-add-supported-extension ".s")
+     (speedbar-add-supported-extension ".q")))
 
 (cl-defmethod ess-help-get-topics (proc &context ((string= ess-dialect "R") (eql t)))
   "Return a list of current S help topics associated with process PROC.
