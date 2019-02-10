@@ -1,4 +1,4 @@
-;;; ess-bugs-l.el --- ESS[BUGS] languages
+;;; ess-bugs-l.el --- ESS[BUGS] languages  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2006-2011 Rodney Sparapani
 
@@ -46,7 +46,11 @@
   :prefix "ess-")
 
 (defcustom ess-bugs-batch-method
-  (if ess-microsoft-p (if (w32-shell-dos-semantics) 'dos 'sh) 'sh)
+  (if (and ess-microsoft-p
+           (fboundp 'w32-shell-dos-semantics)
+           (w32-shell-dos-semantics))
+      'dos
+    'sh)
   "Method used by `ess-bugs-batch'.
 The default is based on the value of the Emacs variable `system-type'
 and, on Windows machines, the function `w32-shell-dos-semantics'.
