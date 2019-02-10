@@ -615,7 +615,7 @@ If `ess-language' is not \"S\", call `self-insert-command' with ARG."
   (define-key ess-mode-map          [?\M--] 'ess-insert-assign)
   (define-key inferior-ess-mode-map [?\M--] 'ess-insert-assign))
 
-(defun ess-dump-args-and-go (Sfunc) ; &optional buff)
+(defun ess-dump-args-and-go (Sfunc)
   "Dump the function name, with arguments, to a buffer for editing.
 
 Currently, this needs to:
@@ -624,17 +624,14 @@ Currently, this needs to:
    3. c/function/Sfunc/
 and I need to relearn emacs lisp (but I had to, anyway."
   (interactive "sFunction ? ")
-  (let* ((buffname "ess-complete.R")
-         (buf (ess-execute (format "args(%s)" Sfunc) t buffname)))
-    (pop-to-buffer buf)
+  (declare (obsolete 'ess-execute "ESS 19.04"))
+  (let* ((buffname "ess-complete.R"))
+    (ess-execute (format "args(%s)" Sfunc) t buffname)
+    (pop-to-buffer (concat "*" buffname "*"))
     (while (search-forward "function" nil t)
       (replace-match Sfunc nil t))
     (when (fboundp 'ess-r-mode)
       (ess-r-mode))))
-
-(defun ess-chm-display-help-on-object (object &rest args)
-  (ess-eval-linewise (concat "help(" object ")")))
-
 
 ;;; S imenu support
 
