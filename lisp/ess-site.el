@@ -1,4 +1,4 @@
-;;; ess-site.el --- user customization of ESS
+;;; ess-site.el --- user customization of ESS  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 1993 David M. Smith
 ;; Copyright (C) 1997--2010 A.J. Rossini, Richard M. Heiberger, Martin
