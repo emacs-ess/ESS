@@ -1,4 +1,4 @@
-;;; ess-r-a.el -- Possible local customizations for R with ESS.
+;;; ess-r-a.el -- Possible local customizations for R with ESS.  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 1997--2005 A.J. Rossini, Richard M. Heiberger, Martin
 ;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
@@ -49,8 +49,8 @@
   (read-kbd-macro
    "C-u M-x R RET - - vsize = 40M SPC - - nsize = 600000 2*RET"))
 
-(defun ess-r-do-region (start end &optional message)
-  "Send the current region to R via AppleScript."
+(defun ess-r-do-region (start end)
+  "Send from START to END to R via AppleScript."
   (interactive "r\nP")
   (message "Starting evaluation...")
   (do-applescript (concat
@@ -85,9 +85,10 @@
   (message "Finished evaluation"))
 
 (defun ess-r-var (beg end)
-  "Load the current region of numbers into an R variable.  Prompts for
-a variable name.  If none is given, it uses a default variable name,
-e.  BEG and END denote the region in the current buffer to be sent."
+  "Load the current region of numbers into an R variable.
+Prompts for a variable name. If none is given, it uses a default
+variable name, e. BEG and END denote the region in the current
+buffer to be sent."
   (interactive "r")
   (save-window-excursion
     (let ((tmp-file (make-temp-file "ess-r-var"))
