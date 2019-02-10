@@ -1,4 +1,4 @@
-;;; ess-jags-d.el --- ESS[JAGS] dialect
+;;; ess-jags-d.el --- ESS[JAGS] dialect  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2008-2011 Rodney Sparapani
 
@@ -175,7 +175,7 @@
                                 ))
   )
 
-(defun ess-jags-na-jmd (jags-command jags-chains)
+(defun ess-jags-na-jmd (jags-command)
   "ESS[JAGS]: Perform the Next-Action for .jmd."
                                         ;(ess-save-and-set-local-variables)
   (if (equal 0 (buffer-size)) (ess-jags-switch-to-suffix ".jmd")
