@@ -1,4 +1,4 @@
-;;; essd-els.el --- S-PLUS 3.x at another location customization
+;;; essd-els.el --- S-PLUS 3.x at another location customization  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 1998 Richard M. Heiberger
 ;; Copyright (C) 1999--2005 A.J. Rossini, Richard M. Heiberger, Martin
@@ -61,11 +61,12 @@ The default value is nil."
      (ess-STERM  . "iESS")
      )
    S+common-cust-alist)
-  "Variables to customize for S+elsewhere")
+  "Variables to customize for S+elsewhere.")
 
-(defun S+elsewhere (&optional proc-name)
+(defun S+elsewhere (&optional _proc-name)
   "Call 'S-PLUS 3.x', the 'Real Thing'  from StatSci."
-  (interactive)
+  ;; git commit 104c4d7c56bc239ea245562763caa317bc3a1a84
+  (declare (obsolete ess-remote "2000"))
   (setq ess-customize-alist S+elsewhere-customize-alist)
   (ess-write-to-dribble-buffer
    (format "\n(S+elsewhere): ess-dialect=%s, buf=%s\n" ess-dialect
@@ -73,12 +74,10 @@ The default value is nil."
   (inferior-ess)
   (if inferior-ess-language-start
       (ess-eval-linewise inferior-ess-language-start)))
-;; git commit 104c4d7c56bc239ea245562763caa317bc3a1a84
-(make-obsolete 'S+elsewhere #'ess-remote "2000")
 
-(defun S+elsewhere-mode (&optional proc-name)
+(defun S+elsewhere-mode (&optional _proc-name)
   "Major mode for editing S+3 source.  See `ess-mode' for more help."
-  (interactive)
+  (declare (obsolete ess-remote "2000"))
   (setq ess-customize-alist S+elsewhere-customize-alist)
   (setq-local ess-local-customize-alist S+elsewhere-customize-alist)
   (ess-mode))
@@ -89,7 +88,7 @@ The default value is nil."
 ;; an inferior process handler.
 
 (defun ess-select-alist-dialect (&optional dialect)
-  "Query user for an ESS dialect and return the matching customize-alist."
+  "Query user for an ESS DIALECT and return the matching customize-alist."
   (interactive)
   (let* ((dialects '("R" "S+" "julia" "arc" "vst" "omg" "s3" "s4" "stata" "sp3" "sp4"
                      "sqpe4" "sp5" "sqpe" "XLS" "SAS"))
@@ -111,27 +110,27 @@ buffer on the local computer."
   (interactive)
   (let ((proc (get-buffer-process (buffer-name))))
     (if (not proc)
-        (error "No process is associated with this buffer.")
+        (error "No process is associated with this buffer")
       (set-process-filter proc 'inferior-ess-output-filter)
       (setq ess-current-process-name (process-name proc))
       (add-to-list 'ess-process-name-list
                    (list ess-current-process-name)))))
 
 (defvar ess-remote nil
-  "Indicator, t in ess-remote buffers.")
+  "Indicator, t in remote buffers.")
 
 ;;;###autoload
 (defun ess-remote (&optional proc-name dialect)
-  "Execute this command from within a buffer running a process.  It
-runs `ess-add-ess-process' to add the process to
+  "Execute this command from within a buffer running a process.
+It runs `ess-add-ess-process' to add the PROC-NAME to
 `ess-process-name-alist' and to make it the
-`ess-current-process-name'.  It then prompts the user for an ESS
+`ess-current-process-name'. It then prompts the user for an ESS
 language and sets the editing characteristics appropriately.
 
 To use this command, first start a process on a remote computer by
 manual use of telnet, rlogin, ssh, or some other protocol.  Start the
 relevant program (\"S\" or \"R\" or \"sas -stdio\") in that buffer.  Once
-you are talking to S or R or SAS, then execute `ess-remote' to make
+you are talking to S or R or SAS, then do \\[ess-remote] to make
 the current buffer an inferior-ess buffer with the right behavior for
 the language you are currently working with.  With S and R, use C-c
 C-n to send lines over.  With SAS, use C-c i
