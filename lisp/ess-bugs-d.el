@@ -1,4 +1,4 @@
-;;; ess-bugs-d.el --- ESS[BUGS] dialect
+;;; ess-bugs-d.el --- ESS[BUGS] dialect  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2008-2011 Rodney Sparapani
 
@@ -119,7 +119,7 @@
                                                             ))
 
                                 (if (equal ".bmd" suffix) (let
-                                                              ((ess-bugs-temp-chains "") (ess-bugs-temp-monitor "") (ess-bugs-temp-chain ""))
+                                                              ((ess-bugs-temp-chains "") (ess-bugs-temp-monitor ""))
 
                                                             (if bugs-chains (setq ess-bugs-chains bugs-chains))
                                                             (if bugs-monitor (setq ess-bugs-monitor bugs-monitor))
@@ -190,7 +190,7 @@
                                 ))
   )
 
-(defun ess-bugs-na-bmd (bugs-command bugs-chains)
+(defun ess-bugs-na-bmd (bugs-command)
   "ESS[BUGS]: Perform the Next-Action for .bmd."
                                         ;(ess-save-and-set-local-variables)
   (if (equal 0 (buffer-size)) (ess-bugs-switch-to-suffix ".bmd")
