@@ -9,13 +9,7 @@
 (require 'package)
 (require 'subr-x)
 
-(add-to-list 'package-archives (cons "melpa" "https://melpa.org/packages/") t)
-
 (package-initialize)
-
-;; Get julia-mode and install
-(package-refresh-contents)
-(package-install 'julia-mode)
 
 ;; This file gets called from one directory up
 (when-let ((file (directory-files default-directory t ".tar$")))

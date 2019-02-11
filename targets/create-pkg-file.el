@@ -8,12 +8,9 @@
 
 ;; This script is called from one directory up
 
-;; Copy lisp into top-level
-(copy-directory "lisp" "." t t t)
-(delete-directory "lisp" t nil)
 ;; Make documentation
-(shell-command "make -C doc info/ess.info")
-(dolist (file '("doc/info/ess.info" "doc/info/dir"))
+(shell-command "make -C doc")
+(dolist (file '("doc/ess.info" "doc/dir"))
   (copy-file file (file-name-nondirectory file))
   (delete-file file))
 ;; Generate ess-pkg.el

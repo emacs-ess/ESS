@@ -1,14 +1,11 @@
 
 include ../Makeconf
 
-.PHONY: literate all julia lisp ess inf r r-indent literate cases indent-cases literate-cases
+.PHONY: literate all lisp ess inf r r-indent literate cases indent-cases literate-cases
 
 all: compile lisp
 
-julia:
-	@$(MAKE) -C .. julia
-
-lisp: julia
+lisp:
 	${EMACS} -Q --script run-tests
 
 ess:
@@ -39,5 +36,5 @@ literate-cases:
 
 .PHONY: compile
 compile:
-	@cd ../lisp && make -k all \
+	@cd .. && make -k all \
 		"COMPILE-FLAGS = --eval \"(setq byte-compile-error-on-warn t)\""
