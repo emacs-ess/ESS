@@ -608,27 +608,15 @@ evaluation of BODY."
          (error "No current ESS process")))))
 
 (defmacro ess-with-current-buffer (buffer &rest body)
-  "Like `with-current-buffer' but with transfer of some essential
-local ESS vars like `ess-local-process-name'."
+  "Like `with-current-buffer' but transfers some local variables.
+BUFFER and BODY are as in `with-current-buffer'."
   (declare (indent 1) (debug t))
-  (let ((lpn (make-symbol "lpn"))
-        (dialect (make-symbol "dialect"))
-        (alist (make-symbol "alist")))
-    `(let ((,lpn ess-local-process-name)
-           (,dialect ess-dialect)
-           (,alist ess-local-customize-alist))
-       (with-current-buffer ,buffer
-         (ess-setq-vars-local (eval ,alist))
-         (setq ess-local-process-name ,lpn)
-         (setq ess-dialect ,dialect)
-         ,@body))))
-
-(dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
-  (font-lock-add-keywords
-   mode
-   '(("(\\(ess-with-current-buffer\\)\\s +\\(\\(\\w\\|\\s_\\)+\\)"
-      (1 font-lock-keyword-face)
-      (2 font-lock-variable-name-face)))))
+  `(let ((buf (current-buffer)))
+     (with-current-buffer ,buffer
+       (ess-setq-vars-local (eval (buffer-local-value 'ess-local-customize-alist buf) t))
+       (setq ess-dialect (buffer-local-value 'ess-dialect buf))
+       (setq ess-local-process-name (buffer-local-value 'ess-local-process-name buf))
+       ,@body)))
 
 (defun ess-get-process (&optional name use-another)
   "Return the ESS process named by NAME.
