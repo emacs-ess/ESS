@@ -2171,18 +2171,14 @@ to the command if BUFF is not given.)"
                     ess-execute-in-process-buffer)))
     (if in-pbuff
         (ess-eval-linewise the-command)
-      (let ((buff (ess-create-temp-buffer buff-name)))
-        (ess-command the-command buff);; sleep?
-        (with-current-buffer buff
-          (ansi-color-apply-on-region (point-min) (point-max))
-          (goto-char (point-min))
-          (if message (insert message)
-            (if buff nil
-              ;; Print the command in the buffer if it has not been
-              ;; given a special name
-              (insert "> " the-command)))
-          (setq ess-local-process-name ess-current-process-name))
-        (ess-display-temp-buffer buff)))))
+      (ess-with-current-buffer (get-buffer-create buff-name)
+        (ess-command the-command (current-buffer) nil nil nil
+                     (get-process ess-local-process-name))
+        (ansi-color-apply-on-region (point-min) (point-max))
+        (goto-char (point-min))
+        (if message (insert message)
+          (insert "> " the-command))
+        (display-buffer (current-buffer))))))
 
 
 ;;;*;;; Quitting
@@ -2865,56 +2861,6 @@ To be used in `ess-idle-timer-functions'."
 
 
 ;;*;; Temporary buffer handling
-
-;; (defun ess-create-temp-buffer (name)
-;;  "Create an empty buffer called NAME, but doesn't display it."
-;;  (let ((buff (get-buffer-create name)))
-;;    (save-excursion
-;;      (set-buffer buff)
-;;      (erase-buffer))
-;;    buff))
-
-
-;; Ed Kademan's version:
-;; From: Ed Kademan <kademan@phz.com>
-;; Subject: Re: ess-mode 5.1.16; search list
-;; To: rossini@biostat.washington.edu (A.J. Rossini)
-;; Cc: Martin Maechler <maechler@stat.math.ethz.ch>, ess-bugs@stat.math.ethz.ch
-;; Date: 26 Jul 2000 16:12:12 -0400
-
-;; Dear Tony Rossini,
-
-;; I was having trouble looking at the search list under ess.  When I
-;; started up multiple inferior processes---each for a different
-;; dialect---ess-mode would issue the wrong variant of the "search"
-;; command when I typed C-c C-s.  In case it is useful let me tell you
-;; what I did to get it to work for me.
-
-;; I added the component:
-;;  (inferior-ess-search-list-command . "search()\n")
-;; to S+3-customize-alist and ess-r-customize-alist, and then I redefined the
-;; ess-create-temp-buffer function as follows:
-(defun ess-create-temp-buffer (name)
-  "Create an empty buffer called NAME."
-  (let ((buff (get-buffer-create name))
-        (elca (eval ess-local-customize-alist)))
-    (with-current-buffer buff
-      (erase-buffer)
-      (ess-setq-vars-local elca buff))
-    buff))
-;;These two steps seem to insure that the temporary buffer in which the
-;;search results appear has the correct version of the local variables.
-;;I am not that well acquainted with the ess code and don't know whether
-;;this is a good fundamental way of fixing the problem, or even whether
-;;or not this breaks some other feature of ess-mode that I never use.
-;;Thanks for listening.
-;;Ed K.
-;;--
-;;Ed Kademan              508.651.3700
-;;PHZ Capital Partners    508.653.1745 (fax)
-;;321 Commonwealth Road   <kademan@phz.com>
-;;Wayland, MA 01778
-
 (defun ess-display-temp-buffer (buff)
   "Display the buffer BUFF.
 Uses `temp-buffer-show-function' and respects

@@ -51,6 +51,14 @@
 
 ;;*;; Code Chunk evaluation.
 
+(defun ess-noweb-create-tangle-buffer (name)
+  (let ((buff (get-buffer-create name))
+        (elca (eval ess-local-customize-alist)))
+    (with-current-buffer buff
+      (erase-buffer)
+      (ess-setq-vars-local elca buff))
+    buff))
+
 (defun ess-eval-chunk (vis)
   "Tangle the current chunk and send it to the inferior ESS process.
 Arg has same meaning as for `ess-eval-region'."
@@ -58,7 +66,7 @@ Arg has same meaning as for `ess-eval-region'."
   (let ((process-name ess-local-process-name)
         new-process-name
         (cbuf (current-buffer))
-        (temp-buffer (ess-create-temp-buffer "Tangle Buffer")))
+        (temp-buffer (ess-noweb-create-tangle-buffer "Tangle Buffer")))
     (save-excursion
       (ess-noweb-tangle-chunk temp-buffer)
       (set-buffer temp-buffer)
@@ -110,7 +118,7 @@ Arg has same meaning as for `ess-eval-region'."
   "Tangle all chunks in the current chunk-thread and send to the ESS process.
 Arg has same meaning as for `ess-eval-region'."
   (interactive "P")
-  (let ((temp-buffer (ess-create-temp-buffer "Tangle Buffer")))
+  (let ((temp-buffer (ess-noweb-create-tangle-buffer "Tangle Buffer")))
     (ess-noweb-tangle-current-thread temp-buffer)
     (set-buffer temp-buffer)
     (ess-eval-region (point-min) (point-max) vis "Eval buffer")
