@@ -495,6 +495,17 @@ the_dat <- read.csv(\"foo.csv\")"
       (should (equal (caadr (nth 2 result)) "x"))
       (should (equal (caaddr (nth 2 result)) "y")))))
 
+(ert-deftest ess-quit-test ()
+  (let (buf1 buf2)
+    (ignore-errors
+      ;; ignore errors here because `with-r-running' tries to kill the
+      ;; process we've already killed with `ess-quit'
+      (with-r-running (expand-file-name "file.R" ess-test-fixtures-directory)
+        (setq buf1 (current-buffer))
+        (ess-quit)
+        (setq buf2 (current-buffer))))
+    (should (equal buf1 buf2))))
+
 (provide 'ess-test-r)
 
 ;;; ess-test-r.el ends here
