@@ -135,6 +135,8 @@ suplied, it is used instead of `inferior-ess-help-command'."
      (when current-prefix-arg ;update cache if prefix
        (ess-process-put 'sp-for-help-changed? t))
      (list (ess-find-help-file "Help on"))))
+  (ess-help-r--check-last-help-type) ; stabilize ess-help-r--last-help-type to avoid
+                                     ; killing tbuffer if R's help_type changed
   (let* ((hb-name (concat "*help[" ess-current-process-name "]("
                           (replace-regexp-in-string "^\\?\\|`" "" object) ")*"))
          (old-hb-p (get-buffer hb-name))
@@ -142,8 +144,6 @@ suplied, it is used instead of `inferior-ess-help-command'."
     (when (or (not old-hb-p)
               current-prefix-arg
               (ess--help-get-bogus-buffer-substring old-hb-p))
-      (ess-help-r--check-last-help-type) ; stabilize ess-help-r--last-help-type to avoid
-                                         ; killing tbuffer if R's help_type changed
       (ess-with-current-buffer tbuffer
         (ess--flush-help-into-current-buffer object command)
         (setq ess-help-object object)
