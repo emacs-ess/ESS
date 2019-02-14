@@ -46,7 +46,6 @@
 (require 'ess-utils)
 
 (declare-function ess-r-help-mode 'ess-r-mode)
-(declare-function ess-help-r--check-last-help-type 'ess-r-mode)
 (declare-function ess-stata-help-mode "ess-stata-lang")
 
 (defvar ess--help-frame nil
@@ -135,8 +134,7 @@ suplied, it is used instead of `inferior-ess-help-command'."
      (when current-prefix-arg ;update cache if prefix
        (ess-process-put 'sp-for-help-changed? t))
      (list (ess-find-help-file "Help on"))))
-  (ess-help-r--check-last-help-type) ; stabilize ess-help-r--last-help-type to avoid
-                                     ; killing tbuffer if R's help_type changed
+  (ess-help-get-topics ess-current-process-name) 
   (let* ((hb-name (concat "*help[" ess-current-process-name "]("
                           (replace-regexp-in-string "^\\?\\|`" "" object) ")*"))
          (old-hb-p (get-buffer hb-name))
