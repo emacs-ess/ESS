@@ -46,6 +46,7 @@
 (require 'ess-utils)
 
 (declare-function ess-r-help-mode 'ess-r-mode)
+(declare-function ess-help-r--check-last-help-type 'ess-r-mode)
 (declare-function ess-stata-help-mode "ess-stata-lang")
 
 (defvar ess--help-frame nil
@@ -141,6 +142,8 @@ suplied, it is used instead of `inferior-ess-help-command'."
     (when (or (not old-hb-p)
               current-prefix-arg
               (ess--help-get-bogus-buffer-substring old-hb-p))
+      (ess-help-r--check-last-help-type) ; stabilize ess-help-r--last-help-type to avoid
+                                         ; killing tbuffer if R's help_type changed
       (ess-with-current-buffer tbuffer
         (ess--flush-help-into-current-buffer object command)
         (setq ess-help-object object)

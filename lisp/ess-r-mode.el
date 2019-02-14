@@ -1241,6 +1241,7 @@ If it changes, we flush the cache.")
 
 (defun ess-help-r--check-last-help-type ()
   (let ((help-type (ess-string-command "getOption('help_type')\n")))
+    (unless ess-help-r--last-help-type (setq ess-help-r--last-help-type help-type))
     (when (not (string= help-type ess-help-r--last-help-type))
       (let ((help-buffers (ess-help-get-local-help-buffers)))
         (mapc #'kill-buffer help-buffers))
