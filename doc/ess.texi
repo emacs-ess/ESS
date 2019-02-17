@@ -641,6 +641,19 @@ elisp} for a detailed description of @code{reusable-frames}.
          (reusable-frames . 0))))
 @end example
 
+Some users may want the process window to be dedicated to the process
+so that other buffers are not shown on top of that window.
+@xref{Dedicated Windows,,, elisp}. For example, this prevents help
+buffers from being displayed in the window showing the inferior R
+process.
+
+@example
+(setq display-buffer-alist
+      '(("*R"
+         nil
+         (dedicated . t))))
+@end example
+
 @node Entering commands
 @chapter Interacting with the ESS process
 @cindex entering commands
