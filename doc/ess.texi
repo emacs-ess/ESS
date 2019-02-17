@@ -635,10 +635,10 @@ this, use this example. @xref{Buffer Display Action Alists,,,
 elisp} for a detailed description of @code{reusable-frames}.
 
 @example
-(setq 'display-buffer-alist
-      '("*R"
-        (display-buffer-reuse-window display-buffer-pop-up-frame)
-        (reusable-frames . 0)))
+(setq display-buffer-alist
+      '(("*R"
+         (display-buffer-reuse-window display-buffer-pop-up-frame)
+         (reusable-frames . 0))))
 @end example
 
 @node Entering commands
