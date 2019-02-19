@@ -51,6 +51,13 @@
 (require 'ess-r-xref)
 (when (>= emacs-major-version 26) (require 'ess-r-flymake)) ; Flymake rewrite in Emacs 26
 
+(define-obsolete-variable-alias 'R-mode-hook 'ess-r-mode-hook "19.04")
+(defcustom ess-r-mode-hook nil
+  "Hook run when entering `ess-r-mode'."
+  :options '(electric-layout-local-mode)
+  :type 'hook
+  :group 'ess-R)
+
 ;; Silence the byte compiler
 (defvar add-log-current-defun-header-regexp)
 
@@ -651,6 +658,7 @@ new position."
   (setq-local comment-indent-function #'ess-calculate-indent)
   (setq-local add-log-current-defun-header-regexp "^\\(.+\\)\\s-+<-[ \t\n]*function")
   (setq-local font-lock-syntactic-face-function #'ess-r-font-lock-syntactic-face-function)
+  (setq-local electric-layout-rules '((?{ . after)))
   ;; eldoc
   (add-function :before-until (local 'eldoc-documentation-function)
                 #'ess-r-eldoc-function)

@@ -1370,13 +1370,6 @@ Good for evaluating ESS code."
   :group 'ess-hooks
   :type 'hook)
 
-(define-obsolete-variable-alias 'R-mode-hook 'ess-r-mode-hook "19.04")
-(defcustom ess-r-mode-hook nil
-  "Hook run when entering R mode."
-  :type 'hook
-  :group 'ess-R)
-
-
 (defcustom Rnw-mode-hook nil
   "Hook run when entering Rnw mode."
   :type 'hook

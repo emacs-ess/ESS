@@ -68,6 +68,10 @@ now displays object sizes in bytes.
 The frequency is governed by the new option
 @code{ess-rdired-auto-update-interval}.
 
+@item ESS[R]: @code{electric-layout-mode} is now supported.
+This automatically inserts a newline after an opening curly brace in R
+buffers. To enable it, customize @code{ess-r-mode-hook}.
+
 @item ESS removed support for many unused languages.
 This includes old versions of S+, ARC, OMG, VST, and XLS.
 
