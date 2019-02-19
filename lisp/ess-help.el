@@ -225,7 +225,6 @@ suplied, it is used instead of `inferior-ess-help-command'."
   "Provide help on object at the beginning of line.
 It's intended to be used in R-index help pages. Load the package
 if necessary.  It is bound to RET and C-m in R-index pages."
-  (interactive)
   (let* ((string (button-label button))
          (command (when (fboundp ess-build-help-command-function)
                     (funcall ess-build-help-command-function string))))
