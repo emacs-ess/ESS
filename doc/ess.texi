@@ -2225,7 +2225,6 @@ and @code{ess-display-buffer-reuse-frame}.
 * Object names::
 * Function arguments::
 * Minibuffer completion::
-* Auto-complete::
 * Company::
 * Icicles::
 @end menu
