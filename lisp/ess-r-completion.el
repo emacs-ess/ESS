@@ -450,6 +450,7 @@ it. Do not update the cache."
 
 ;;; AC SOURCES
 ;;; http://cx4a.org/software/auto-complete/index.html
+;; auto-complete is de-facto unmaintained, users should switch to `company-mode'.
 
 (defvar ac-source-R
   '((prefix     . ess-ac-start)
@@ -458,11 +459,13 @@ it. Do not update the cache."
     ;; (action  . ess-ac-action-args) ;; interfere with ac-fallback mechanism on RET (which is extremely annoing in inferior buffers)
     (document   . ess-ac-help))
   "Combined ad-completion source for R function arguments and R objects.")
+(make-obsolete-variable 'ac-source-R "Use company-mode instead" "ESS 19.04")
 
 (defun ess-ac-start ()
   (when (ess-process-live-p)
     (or (ess-arg-start)
         (ess-symbol-start))))
+(make-obsolete-variable 'ess-ac-start "Use company-mode instead" "ESS 19.04")
 
 (defun ess-ac-candidates ()
   "OBJECTS + ARGS."
@@ -474,11 +477,13 @@ it. Do not update the cache."
       (if args
           (append args (ess-ac-objects t))
         (ess-ac-objects)))))
+(make-obsolete-variable 'ess-ac-candidates "Use company-mode instead" "ESS 19.04")
 
 (defun ess-ac-help (sym)
   (if (string-match-p "= *\\'" sym)
       (ess-r-get-arg-help-string sym)
     (ess-r-get-object-help-string sym)))
+(make-obsolete-variable 'ess-ac-help "Use company-mode instead" "ESS 19.04")
 
 ;; OBJECTS
 (defvar  ac-source-R-objects
@@ -487,9 +492,11 @@ it. Do not update the cache."
     (candidates . ess-ac-objects)
     (document   . ess-r-get-object-help-string))
   "Auto-completion source for R objects.")
+(make-obsolete-variable 'ac-source-R-objects "Use company-mode instead" "ESS 19.04")
 
 (defun ess-ac-objects (&optional no-kill)
   "Get all cached objects."
+  (declare (obsolete "Use company-mode instead" "ESS 19.04"))
  (let ((aprf ac-prefix))
    (when (and aprf (ess-process-live-p))
      (unless no-kill ;; workaround
@@ -504,9 +511,11 @@ it. Do not update the cache."
     ;; (action     . ess-ac-action-args)
     (document   . ess-r-get-arg-help-string))
   "Auto-completion source for R function arguments.")
+(make-obsolete-variable 'ac-source-R-args "Use company-mode instead" "ESS 19.04")
 
 (defun ess-ac-args ()
   "Get the args of the function when inside parentheses."
+  (declare (obsolete "Use company-mode-instead" "ESS 19.04"))
   (when  (and ess--fn-name-start-cache ;; set in a call to ess-arg-start
               (ess-process-live-p))
     (let ((args (nth 2 (ess-function-arguments (car ess--fn-name-start-cache)))))
@@ -516,9 +525,6 @@ it. Do not update the cache."
       (delete "..." args)
       (mapcar (lambda (a) (concat a ess-R-argument-suffix))
               args))))
-
-(defvar ess--ac-help-arg-command
-  "getArgHelp('%s','%s')")
 
 (provide 'ess-r-completion)
 

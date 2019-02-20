@@ -90,6 +90,11 @@ polymode @url{https://github.com/polymode/poly-R/},
 @url{https://polymode.github.io/}, or markdown-mode with edit-indirect
 @url{https://jblevins.org/projects/markdown-mode}.
 
+@item Support for @code{auto-complete} is obsolete.
+The @code{auto-complete} package is unmaintained and so ESS support is
+now obsolete. Users are encouraged to switch to @code{company-mode}
+instead.
+
 @item User options for controlling display of buffers.
 This includes @code{ess-show-buffer-action},
 @code{inferior-ess-same-window}, @code{inferior-ess-own-frame}, and

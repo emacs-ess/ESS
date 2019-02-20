@@ -2323,56 +2323,6 @@ completion command @code{ess-completing-read} falls back on classic
 @code{completion-read} interface if this feature is not available for
 whatever reason.
 
-@node Auto-complete
-@section Integration with auto-complete package
-@cindex auto-complete
-@vindex ac-source-R
-@vindex ac-source-R-args
-@vindex ac-source-R-objects
-ESS provides three sources for @code{Auto Completion} mode:
-@comment (@uref{http://cx4a.org/software/auto-complete/})
-@code{ac-source-R-args}, @code{ac-source-R-objects} and
-@code{ac-source-R}.  The last one combines the previous two and makes them
-play nicely together.  See auto-complete package documentation
-(@uref{http://cx4a.org/software/auto-complete/}) for how to modify and
-install your own completion sources.
-
-For the default auto-complete ESS configuration, install the latest
-version of @code{auto-complete} package. ESS automatically detect the
-package and activates auto-complete in ESS buffers.
-
-
-To deactivate AC, place the following into your init file:
-
-@example
-(setq ess-use-auto-complete nil)
-@end example
-
-Or, to activate auto-completion only in the @code{ess-mode} buffers:
-
-@example
-(setq ess-use-auto-complete 'script-only)
-@end example
-
-ESS provides AC help both for arguments and objects (default keys
-@kbd{C-?}  or @kbd{<f1>}). You can bind @kbd{M-h} to display quick help
-pop-ups:
-
-@example
-(define-key ac-completing-map (kbd "M-h") 'ac-quick-help)
-@end example
-
-@code{AC} binds @kbd{M-n}, and @kbd{M-p} for the navigation in the
-completion menu, which might be inconvenient if you want it to use in
-the inferior R. Bind it to something else:
-
-@example
-(define-key ac-completing-map "\M-n" nil) ;; was ac-next
-(define-key ac-completing-map "\M-p" nil) ;; was ac-previous
-(define-key ac-completing-map "\M-," 'ac-next)
-(define-key ac-completing-map "\M-k" 'ac-previous)
-@end example
-
 @node Company
 @section Company
 @cindex company

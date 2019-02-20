@@ -420,8 +420,10 @@ If 'process, only check if the buffer has an inferior process."
   :package-version '(ess . "18.10"))
 
 (defcustom ess-use-auto-complete t
-  "If t, activate auto-complete support  in ess-mode and inferior-ess-mode buffers.
-If 'script-only activate in ess-mode buffers only.
+  "If non-nil, activate auto-complete support.
+If t, activate auto-complete support in `ess-mode' and
+`inferior-ess-mode' buffers. If 'script-only activate in `ess-mode'
+buffers only.
 
 If non-nil add `ac-source-R' and `ac-source-filename' to the
 `ac-sources' buffer local variable.
@@ -432,11 +434,13 @@ documentation (http://cx4a.org/software/auto-complete/) for how
 to install your custom sources."
   :group 'ess-extras
   :type '(choice (const t) (const script-only) (const nil)))
+(make-obsolete-variable 'ess-use-auto-complete "Auto-complete is unmaintained; use company-mode instead"
+                        "ESS 19.04" 'set)
 
 (defcustom ess-use-company t
-  "If t, activate company support in ess-mode and inferior-ess-mode buffers.
+  "If t, activate company support in `ess-mode' and `inferior-ess-mode' buffers.
 If non-nil add `company-R-args' and `company-R-objects' to the
-`company-backends'. If 'script-only activate in ess-mode buffers
+`company-backends'. If 'script-only activate in `ess-mode' buffers
 only."
   :group 'ess-extras
   :type '(choice (const t) (const script-only) (const nil)))
