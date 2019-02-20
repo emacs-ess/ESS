@@ -1243,17 +1243,6 @@ selected (see `ess-r-set-evaluation-env')."
 (defconst inferior-ess-r--input-?-help-regexp "^ *\\(?:\\(?1:[a-zA-Z ]*?\\?\\{1,2\\}\\) *\\(?2:.+\\)\\)")
 (defconst inferior-ess-r--page-regexp (format "^ *page *(%s)" ess-help-arg-regexp))
 
-(defvar ess-help-r--last-help-type nil
-  "Variable holding the last known help type.
-If it changes, we flush the cache.")
-
-(defun ess-help-r--check-last-help-type ()
-  (let ((help-type (ess-string-command "getOption('help_type')\n")))
-    (when (not (string= help-type ess-help-r--last-help-type))
-      (let ((help-buffers (ess-help-get-local-help-buffers)))
-        (mapc #'kill-buffer help-buffers))
-      (setq ess-help-r--last-help-type help-type))))
-
 (defun ess-help-r--process-help-input (proc string)
   (let ((help-match (and (string-match inferior-ess-r--input-help string)
                          (match-string 2 string)))
@@ -1262,7 +1251,6 @@ If it changes, we flush the cache.")
         (page-match   (and (string-match inferior-ess-r--page-regexp string)
                            (match-string 2 string))))
     (when (or help-match help-?-match page-match)
-      (ess-help-r--check-last-help-type)
       (cond (help-match
              (ess-display-help-on-object help-match)
              (process-send-string proc "\n"))

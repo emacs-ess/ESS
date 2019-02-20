@@ -501,8 +501,6 @@ If 'sp-for-help-changed?' process variable is non-nil or
 `ess-help-topics-list' is nil, (re)-populate the latter and
 return it.  Otherwise, return `ess-help-topics-list'."
   (with-ess-process-buffer nil
-    (when (fboundp 'ess-help-r--check-last-help-type)
-      (ess-help-r--check-last-help-type))
     (cond
      ;; (Re)generate the list of topics
      ((or (not ess-help-topics-list)
