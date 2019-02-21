@@ -1670,7 +1670,9 @@ place (see `ess-r-set-evaluation-env'), the evaluation of
 multiline input will fail."
   (interactive "P")
   (ess-force-buffer-current)
-  (display-buffer (ess-get-process-buffer) nil
+  (display-buffer (ess-get-process-buffer)
+                  ;; Use a different window for the process buffer:
+                  '(nil (inhibit-same-window . t))
                   ;; Pass t to reusable-frames if users have help in
                   ;; own frames, otherwise help frames get split to
                   ;; display the inferior.
