@@ -181,8 +181,9 @@ that integer. Anything else is treated as 'window."
                                 ("sos"                  . ess-sos)
                                 ("vignettes"            . ess-display-vignettes)
                                 )
-  "An alist of custom ESS commands available for call by
-`ess-handy-commands' and `ess-smart-comma' function."
+  "An alist of custom ESS commands.
+These are available for call by function `ess-handy-commands' and
+`ess-smart-comma' function."
   :group 'ess
   :type 'alist)
 
@@ -194,11 +195,9 @@ that integer. Anything else is treated as 'window."
 If nil display in an electric buffer. If 'tooltip display in
 a tooltip.
 
-See also `tooltip-hide-delay' and `tooltip-delay'.
- "
+See also `tooltip-hide-delay' and variable `tooltip-delay'."
   :group 'ess-utils
-  :type '(choice (const :tag "buffer" :value nil ) (const tooltip))
-  )
+  :type '(choice (const :tag "buffer" :value nil ) (const tooltip)))
 
 (defvaralias
   'ess-R-describe-object-at-point-commands
@@ -225,8 +224,8 @@ implementation."
 
 
 (defcustom ess-can-eval-in-background t
-  "If non-nil ESS can perform caching and other background
- activities by calling the subprocess on idle time."
+  "If non-nil ESS can perform caching and other background activities.
+This allows ESS to call the subprocess on idle time."
   :group 'ess
   :type 'boolean)
 
@@ -257,8 +256,8 @@ See also `ess-blink-delay'"
   :type 'boolean)
 
 (defcustom ess-display-buffer-reuse-frames t
-  "Non-nil means \\[display-buffer] reuses existing frames; see
-`display-buffer-reuse-frames'."
+  "Non-nil means \\[display-buffer] reuses existing frames.
+See `display-buffer-reuse-frames'."
   :group 'ess
   :type 'boolean)
 
@@ -334,26 +333,22 @@ By default ESS uses enables IDO flex matching. See
 `ess-ido-flex-matching' on how to disable it for ESS, if you
 don't want it.
 
-Some useful keys for IDO completion:
-
- - C-s (next) or C-r (previous) to move through the list.
- - C-SPC   to restrict the list to currently matched items.
- - TAB     to display possible completion in a buffer
- - C-t     `ido-toggle-regexp'
-"
+See info node `(ido) Top' for more information about how ido
+works."
   :group 'ess
   :type 'boolean)
 
 
 (defcustom ess-tab-complete-in-script nil
-  "If non-nil, TAB in script buffers tries to complete if there is nothing to indent.
+  "If non-nil, TAB tries to complete if it does not indent in script buffers.
 See also `ess-first-tab-never-complete'."
   :group 'ess
   :type 'boolean)
 
-(defvaralias 'ess-first-tab-never-completes-p  'ess-first-tab-never-complete)
+(define-obsolete-variable-alias 'ess-first-tab-never-completes-p
+  'ess-first-tab-never-complete "ESS 19.04")
 (defcustom ess-first-tab-never-complete 'symbol
-  "If t, first TAB never tries to complete in ess-mode.
+  "If t, first TAB never tries to complete in `ess-mode'.
 If 'symbol first TAB doesn't try to complete if next char is a
 valid symbol constituent.
 
@@ -366,8 +361,7 @@ punctuation +-=% etc, or closed paren or symbol.
 If 'unless-eol - first TAB completes only at end of line.
 
 If nil first TAB always tries to complete (this might be too
-aggressive and dangerous).
-"
+aggressive and dangerous)."
   :group 'ess
   :type '(choice (const nil)
                  (const symbol)
@@ -378,7 +372,7 @@ aggressive and dangerous).
 
 (defcustom ess-use-eldoc t
   "If t, activate eldoc in `ess-mode' and `inferior-ess-mode' buffers.
-If 'script-only activate in ess-mode buffers only.
+If 'script-only activate in `ess-mode' buffers only.
 
 See also `ess-eldoc-show-on-symbol'."
   :group 'ess-extras
@@ -392,13 +386,18 @@ If nil show only when the point is in a function call, i.e. after (."
   :type  'boolean)
 
 (defcustom ess-eldoc-abbreviation-style 'normal
-  "How ess-eldoc string should be abbreviated when it doesn't fit into one line
+  "Controls how `eldoc' displays information that does not fit on a line.
+
 A symbol which can be
-nil: do nothing
-mild:  Replace TRUE, FALSE with T,F
-normal: Try mild + shorten the default values longer than 10 characters.
-strong: Try normal + completely remove default values except =F,=T,=d where d is a digit.
-aggressive (or t): Try strong + truncate the doc string to fit into minibuffer.
+
+- nil: do nothing
+- mild: Replace TRUE, FALSE with T,F
+- normal: Try mild + shorten the default values longer than 10
+  characters.
+- strong: Try normal + completely remove default values except
+  =F,=T,=d where d is a digit.
+- aggressive (or t): Try strong + truncate the doc string to fit
+  into minibuffer.
 
 The default style is 'normal.
 
@@ -452,7 +451,7 @@ only."
                  integer))
 
 (defcustom ess-use-tracebug t
-  "If t, load ess-tracebug when R process starts."
+  "If t, load `ess-tracebug' when R process starts."
   :group 'ess-extras
   :type  'boolean)
 
@@ -460,8 +459,7 @@ only."
   "If t, ido for ESS completion uses flex matching.
 See `ido-enable-flex-matching' for details.
 If you have an old computer, or you load lot of packages, you
-might want to set this to nil.
-"
+might want to set this to nil."
   :group 'ess
   :type 'boolean)
 
@@ -481,7 +479,7 @@ If t, use all. If an axplicit list of operators, use only those
 operators.
 
 In current verion of ESS, it controls the behavior of
-ess-smart-comma only, but will be enriched in the near future.")
+`ess-smart-comma' only, but will be enriched in the near future.")
 
 
 (defvar ess-no-skip-regexp "[ \t\n]*\\'"
@@ -529,26 +527,25 @@ if you want to disable R specific prettification."
 ;;*;; Variables concerning editing behaviour
 
 (defcustom ess-filenames-map t
-  "Declares if the filenames in an attached directory are the same
-as objects in that directory (when t). This is not true for DOS and
-other OS's with limited filename lengths.  Even if this is set
-incorrectly, the right things will probably still happen, however."
+  "If non-nil, filenames and objects are the same in an attached directory.
+This is not true for DOS and other OS's with limited filename
+lengths. Even if this is set incorrectly, the right things will
+probably still happen, however."
   :group 'ess-edit
   :type 'boolean)
 
 (defcustom ess-keep-dump-files t
   "Variable controlling whether to delete dump files after a successful load.
 If nil: always delete.  If `ask', confirm to delete.  If `check', confirm
-to delete, except for files created with ess-dump-object-into-edit-buffer.
+to delete, except for files created with `ess-dump-object-into-edit-buffer'.
 Anything else, never delete.  This variable only affects the behaviour
 of `ess-load-file'.  Dump files are never deleted if an error occurs
-during the load. "
+during the load."
   :group 'ess-edit
   :type '(choice (const :tag "Check" :value  'check)
                  (const :tag "Ask"   :value  'ask)
                  (const :tag "Always keep"   :value t)
-                 (const :tag "Always delete"   :value nil)
-                 ))
+                 (const :tag "Always delete"   :value nil)))
 
 (defcustom ess-delete-dump-files nil
   "Non-nil means delete dump files after they are created.
@@ -579,7 +576,8 @@ back into S."
   :type 'boolean)
 
 (defcustom ess-fill-calls t
-  "If non-nil, refilling a paragraph inside a function or
+  "If non-nil, refilling inside a call arranges arguments.
+In other words, refilling a paragraph inside a function or
 indexing call will arrange the arguments according to
 `fill-column' as in:
 
@@ -682,7 +680,7 @@ blink the filling region."
 (defcustom ess-save-silently 'auto
   "If non-nil, possibly save buffers without asking.
 If t, save without asking. If 'auto, save without asking if
-either `compilation-ask-about-save' or `auto-save-visited-mode'
+either `compilation-ask-about-save' or variable `auto-save-visited-mode'
 is non-nil. Affects `ess-save-file'."
   :group 'ess-edit
   :type '(choice (const :tag "Do not save without asking." :value nil)
@@ -706,8 +704,9 @@ bracket."
 ;;;*;;; Indentation parameters
 
 (defcustom ess-tab-always-indent t
-  "Non-nil means TAB in S mode should always reindent the current line,
-regardless of where in the line point is when the TAB command is used."
+  "Non-nil means TAB should always reindent the current line.
+This happens regardless of where in the line point is when the
+TAB command is used."
   :type 'boolean
   :group 'ess-edit)
 
@@ -791,10 +790,10 @@ type and the offset size, such as `'(prev-call 2)'. Otherwise,
 for other offsets controlling indentation.")
 
 (defvar ess-offset-block 'prev-line
-  "Indentation for blocks. A block is usually declared with
-braces but a statement wrapped in anonymous parentheses is also
-considered a block. This offset can be either `prev-call',
-`prev-line' or `open-delim'.
+  "Controls indentation for blocks.
+A block is usually declared with braces but a statement wrapped
+in anonymous parentheses is also considered a block. This offset
+can be either `prev-call', `prev-line' or `open-delim'.
 
 When set to `open-delim', blocks are indented relative to the
 opening parenthesis of the closest function call:
@@ -848,8 +847,8 @@ for other offsets controlling indentation.")
 (define-obsolete-variable-alias 'ess-first-continued-statement-offset 'ess-offset-continued "15.09")
 (define-obsolete-variable-alias 'ess-continued-statement-offset 'ess-offset-continued "15.09")
 (defvar ess-offset-continued 'straight
-  "This setting controls indentation of continued statements, that is,
-consecutive statements separated by operators.
+  "This setting controls indentation of continued statements.
+That is, consecutive statements separated by operators.
 
 When set to 'straight, continued statements are indented as follows:
 
@@ -864,7 +863,7 @@ When set to 'cascade:
           other_function()
 
 The 'straight and 'cascade settings are actually equivalent to
-'(straight . t) and '(cascade . t), where `t' represents the
+'(straight . t) and '(cascade . t), where t represents the
 base indent size. More generally, you can supply '(straight . N)
 to control the size of indentation.
 
@@ -947,9 +946,9 @@ an offset:
 See `ess-style-alist' for for an overview of ESS indentation.")
 
 (defvar ess-align-blocks '(control-flow)
-  "List of block types for which `ess-offset-blocks' should be
-ignored. The overridden blocks are vertically aligned. The list
-can contain either or both of the symbols `control-flow' and
+  "List of block types for which `ess-offset-blocks' is ignored.
+The overridden blocks are vertically aligned. The list can
+contain either or both of the symbols `control-flow' and
 `fun-decl'.
 
 With `control-flow', if, else for and while blocks will always be
@@ -959,9 +958,8 @@ declaration will always be aligned with the call to
 
 (define-obsolete-variable-alias 'ess-arg-function-offset 'ess-indent-from-lhs "15.09")
 (defvar ess-indent-from-lhs '(arguments fun-decl-opening)
-  "List of syntactic elements that should be indented from the
-left-hand side of an assignment. The list accepts the symbol
-`arguments' and `fun-decl-opening'.
+  "List of elements that are indented from the left side of an assignment.
+The list accepts the symbol `arguments' and `fun-decl-opening'.
 
 For arguments, this setting only has an effect for offsets set to
 `prev-call'. When set, this indentation is produced:
@@ -1012,18 +1010,18 @@ align the function body from the LHS to save horizontal space.
 See `ess-style-alist' for for an overview of ESS indentation.")
 
 (defvar ess-indent-from-chain-start t
-  "When non-nil, chained calls will be treated as if they were
-one call and indentation will start from the first one. This
-setting only has an effect for offsets set to `prev-call' or
-block offsets set to `opening-delim'.
+  "When non-nil, chained calls are treated as if they were one call.
+Indentation will start from the first one. This setting only has
+an effect for offsets set to `prev-call' or block offsets set to
+`opening-delim'.
 
-If `nil':
+If nil:
 
   some_function(other_function(
                     argument
                 ))
 
-If `t':
+If t:
 
   some_function(other_function(
       argument
@@ -1184,14 +1182,14 @@ See `ess-style-alist' for for an overview of ESS indentation."
       (ess-indent-from-chain-start      . ,(default-value 'ess-indent-from-chain-start))
       (ess-indent-with-fancy-comments   . ,(default-value 'ess-indent-with-fancy-comments))))
 
-  "Predefined formatting styles for ESS code. Use
-`ess-style' to apply a style in all R buffers. The values
-of all styles except OWN are fixed. To change the value of
-variables in the OWN group, customize the variable
-`ess-own-style-list'. DEFAULT style picks default (aka global)
-values from ESS indentation variables. In addition, ESS provides
-many indentation styles, the most important being the RRR and the
-RStudio variants.
+  "Predefined formatting styles for ESS code.
+Use `ess-style' to apply a style in all R buffers. The values of
+all styles except OWN are fixed. To change the value of variables
+in the OWN group, customize the variable `ess-own-style-list'.
+DEFAULT style picks default (aka global) values from ESS
+indentation variables. In addition, ESS provides many indentation
+styles, the most important being the RRR and the RStudio
+variants.
 
 RRR is the common R style that adheres closely to R internal
 standards. RRR+ is the same except it also aligns blocks in
@@ -1253,8 +1251,9 @@ Control variables:
    ### comments distinctly.")
 
 (defun ess-add-style (key entries)
-  "Add a new style to `ess-style-list', with the key KEY.
-Remove any existing entry with the same KEY before adding the new one."
+  "Add a new style to `ess-style-list'.
+The new style has the key KEY. Remove any existing entry with the
+same KEY before adding the new one."
   (setq ess-style-alist (assq-delete-all key ess-style-alist))
   (add-to-list 'ess-style-alist (cons key entries)))
 
@@ -1315,7 +1314,7 @@ working directory (i.e. first elt of search list)."
   :package-version '(ess . "18.10"))
 
 (defvar ess-dump-filename-template nil
-  "Internal. Initialized by dialects")
+  "Internal. Initialized by dialects.")
 
 (defcustom ess-dump-filename-template-proto (concat (user-login-name) ".%s.S")
   "Prototype template for filenames of dumped objects.
@@ -1354,8 +1353,9 @@ Good for evaluating ESS code."
   :type 'hook)
 
 (defcustom inferior-ess-mode-hook nil
-  "Hook for customizing inferior ESS mode.  Called after
-`inferior-ess-mode' is entered and variables have been initialised."
+  "Hook for customizing inferior ESS mode.
+Called after `inferior-ess-mode' is entered and variables have
+been initialised."
   :group 'ess-hooks
   :type 'hook)
 
@@ -1406,8 +1406,8 @@ If nil, ESS will try finding one from a list."
   :type 'string)
 
 (defcustom ess-roxy-tags-noparam '("export" "noRd")
-  "The tags used in roxygen fields that can be used alone.  Used
-to decide highlighting and tag completion."
+  "The tags used in roxygen fields that can be used alone.
+Used to decide highlighting and tag completion."
   :group 'ess-roxy
   :type '(repeat string))
 
@@ -1452,7 +1452,7 @@ syntactically correct roxygen entries)"
                  (const :tag "On" t)))
 
 (defcustom ess-roxy-hide-show-p nil
-  "Non-nil means ess-roxy uses hs-minor-mode for block hiding with TAB."
+  "Non-nil means ess-roxy uses `hs-minor-mode' for block hiding with TAB."
   :group 'ess-roxy
   :type '(choice (const :tag "Off" nil)
                  (const :tag "On" t)))
@@ -1464,15 +1464,14 @@ syntactically correct roxygen entries)"
                  (const :tag "On" t)))
 
 (defcustom ess-roxy-str "##'"
-  "Prefix string to insert before each line in new roxygen
-blocks. In existing roxygen blocks, the prefix is taken from
-the line at point"
+  "Prefix string to insert before each line in new roxygen blocks.
+In existing roxygen blocks, the prefix is taken from the line at
+point"
   :group 'ess-roxy
   :type 'string)
 
 (defvar ess-roxy-insert-prefix-on-newline t
-  "When non-nil, `ess-roxy-newline-and-indent' will make sure the new
-line starts with the roxy prefix.")
+  "When non-nil, `ess-roxy-newline-and-indent' makes newlines start with the roxy prefix.")
 
  ; System variables
 
@@ -1484,8 +1483,7 @@ line starts with the roxy prefix.")
 (put 'ess-local-process-name 'permanent-local t)
 
 (defcustom ess-switch-to-end-of-proc-buffer t
-  "If t, `ess-switch-to-inferior-or-script-buffer goes to end of
-process buffer."
+  "If non-nil, `ess-switch-to-inferior-or-script-buffer' goes to the end of the process buffer."
   :group 'ess
   :type 'boolean)
 
@@ -1544,8 +1542,7 @@ there is no project root in the current directory."
 ;; Fixme: the following is just for S dialects :
 (defcustom ess-dumped-missing-re
   "\\(<-\nDumped\n\\'\\)\\|\\(<-\\(\\s \\|\n\\)*\\'\\)"
-  "If a dumped object's buffer matches this re, then it is replaced
-by `ess-function-template'."
+  "If a dumped object's buffer matches this re, then it is replaced by `ess-function-template'."
   :group 'ess
   :type 'regexp)
 
@@ -1591,13 +1588,14 @@ node `(ess)Customizing startup'. For example:
   :type '(choice (string) file))
 
 (defcustom inferior-R-args ""
-  "String of arguments (see 'R --help') used when starting R,
-including the versions of R created via variable `ess-r-versions'."
+  "String of arguments used when starting R.
+See also `ess-R-readline'."
   :group 'ess-R
   :type 'string)
 
 (defcustom ess-R-readline nil
-  "nil indicates that \"--no-readline \" should be used as argument when starting R.
+  "When non-nil, use readline in R.
+nil indicates that \"--no-readline \" should be used as argument when starting R.
 This has been the default since 1998 and may very slightly speedup interaction.
 On the other hand, readline is necessary for expansion of \"~username/\" in paths.
 Note that readline interprets tabs (tabular characters) in R source files as asking
@@ -1645,8 +1643,9 @@ path (as in 'setwd(%s)\\n'.")
   :type '(choice (string) (const nil)))
 
 (defcustom ess-directory-containing-R nil
-  "nil (the default) means the search for all occurences of R
-on the machine will use the default location of the R directory
+  "When non-nil, a directory containing R.
+nil means the search for all occurences of R on the machine will
+use the default location of the R directory
  (inside \"c:/Program Files\" in English locale Windows systems).
 Non-nil values mean use the specified location as the
 directory in which \"R/\" is located.  For example, setting
@@ -1657,16 +1656,15 @@ Currently only used when `ess-microsoft-p'.  If you change the
 value of this variable, you need to restart Emacs for it to take
 effect.  It also needs to be set before you load ess-site as its
 value is used once only when ESS is loaded."
-
   :group 'ess
   :type '(choice (directory) (const nil)))
 
 (defcustom ess-rterm-version-paths nil
-  "Stores the full path file names of Rterm versions, computed via
-\\[ess-find-rterm].  If you have versions of R in locations other than
-in ../../R-*/bin/Rterm.exe or ../../rw*/bin/Rterm.exe, relative to the
-directory in the `exec-path' variable containing your default location
-of Rterm, you will need to redefine this variable with a
+  "Stores the full path file names of Rterm versions computed via \\[ess-find-rterm].
+If you have versions of R in locations other than in
+../../R-*/bin/Rterm.exe or ../../rw*/bin/Rterm.exe, relative to
+the directory in the `exec-path' variable containing your default
+location of Rterm, you will need to redefine this variable with a
 `custom-set-variables' statement in your site-start.el or .emacs
 file."
   :group 'ess-R
@@ -1743,8 +1741,7 @@ version of the pathname."
   'inferior-ESS-elsewhere-program-name
   'inferior-ESS-elsewhere-program "ESS 18.10")
 (defcustom inferior-ESS-elsewhere-program "sh"
-  "Program name to invoke an inferior ESS with program on a
-different computer."
+  "Program name to invoke an inferior ESS with program on a different computer."
   :group 'ess-proc
   :type 'string)
 
@@ -1797,17 +1794,6 @@ These arguments are currently passed only to S+6 and higher."
   :group 'ess-SPLUS
   :type 'string)
 
-
-(defvaralias 'inferior-Sqpe-start-args 'inferior-Sqpe+-start-args)
-(defcustom inferior-Sqpe+-start-args " "
-  "Default is empty.  Can be used for license manager information, for example
-`(setq inferior-Sqpe+-start-args \" S_ELMHOST=@123.456.789.012  ELMTIMEOUT=60 \")'."
-  ;; (setq inferior-Sqpe+-start-args " S_ELMHOST=@123.456.789.012  ELMTIMEOUT=60 ")  ;; use this line as the model for your site-start.el
-  :group 'ess-SPLUS
-  :type 'string
-  )
-
-
 (defcustom inferior-Splus-objects-command "objects(where=%d)\n"
   "Format string for R command to get a list of objects at position %d.
 Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
@@ -1851,7 +1837,7 @@ version of the pathname."
 
 (defcustom ess-S-quit-kill-buffers-p nil
   "Controls whether S buffers should also be killed once a process is killed.
-This is used only when an iESS process is killed using C-c C-q.
+This is used only when an iESS process is killed using \\[ess-quit].
 Possible values:
 nil - do not kill any S buffers associated with the process.
 t - kill S buffers associated with the process.
@@ -1914,8 +1900,8 @@ for editing and then to be returned to the process.")
   "Initialization commands sent to the ESS process.")
 
 (defcustom inferior-ess-help-filetype nil
-  "S-Plus and Sqpe for Windows use the \"chm\" (compiled html) filetype
-for help files.  The default value is nil for other systems."
+  "S-Plus and Sqpe for Windows use the \"chm\" (compiled html) filetype for help files.
+The default value is nil for other systems."
   :group 'ess-proc
   :type '(choice (const nil) (string)))
 (make-variable-buffer-local 'inferior-ess-help-filetype)
@@ -1975,7 +1961,7 @@ Otherwise, they get their own temporary buffer."
   "Non-nil means ess-eval- commands display commands in the process buffer.
 If t, ESS waits after each line of the command for the process
 output. This results in a nice sequence of input and output but
-stalls emacs on long output (like Sys.sleep(5) in R).
+stalls Emacs on long output (like Sys.sleep(5) in R).
 
 If 'nowait, ESS still shows the input commands, but don't wait
 for the process. Thus all the output is printed after the input
@@ -1985,14 +1971,12 @@ If nil, ESS doesn't print input commands and doesn't wait for the process.
 
 This variable also affect the evaluation of input code in
 iESS. The effect is similar to the above. If t then ess waits for
-the process output, otherwise not.
-"
+the process output, otherwise not."
   :group 'ess-proc
   :type '(choice (const t) (const nowait) (const nil)))
 
 (defcustom ess-eval-deactivate-mark (fboundp 'deactivate-mark); was nil till 2010-03-22
-  "Non-nil means that after ess-eval- commands the mark is deactivated,
- (see \\[deactivate-mark])."
+  "Non-nil means that after ess-eval- commands the mark is deactivated."
   :group 'ess-proc
   :type 'boolean)
 
@@ -2109,8 +2093,8 @@ Really set in <ess-lang>-customize-alist in ess[dl]-*.el")
   "tryCatch(base::print(base::names(%s), max=1e6), error=function(e){})\n"
   "Format string for ESS command to extract names from an object *safely*.
 
-%s is replaced by an \"object name\" -- usually a list or data frame, but in R also
- e.g., 'package:stats'."
+%s is replaced by an \"object name\" -- usually a list or data
+frame, but in R also e.g., 'package:stats'."
   :group 'ess-command
   :type 'string)
 
@@ -2250,9 +2234,9 @@ See also function `ess-create-object-name-db'.")
   ess-R-function-name-regexp)
 
 (defvar ess-font-lock-keywords nil
-  "Internal. Holds a name of the dialect sepcific font-lock
-keywords in the current buffer. See `ess-R-font-lock-keywords'
-for an example.")
+  "Holds a name of the dialect sepcific font-lock keywords in the current buffer.
+See `ess-R-font-lock-keywords' for an example. This is an
+internal variable.")
 
 (defvar ess-fl-keyword:fun-calls
   (cons "\\(\\sw+\\)[\t ]*(" '(1 ess-function-call-face keep))
@@ -2289,7 +2273,7 @@ for an example.")
 
 (defvar ess-S-fl-keyword:assign-ops
   (cons (regexp-opt ess-S-assign-ops) 'ess-assignment-face)
-  "Font-lock assign operators")
+  "Font-lock assign operators.")
 
 (defvar ess-S-fl-keyword:constants
   (cons (regexp-opt ess-S-constants 'words) 'ess-constant-face)
