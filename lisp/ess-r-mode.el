@@ -1007,7 +1007,7 @@ With argument UPDATE, update cached packages list."
                       (ess-completing-read "Package to install" ess--packages-cache))))
     (process-send-string (get-process ess-current-process-name)
                          (format "install.packages('%s')\n" package))
-    (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))))
+    (display-buffer (buffer-name (ess-get-process-buffer)))))
 
 (defun ess-setRepositories ()
   "Call setRepositories()."

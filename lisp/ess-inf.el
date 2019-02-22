@@ -1386,7 +1386,8 @@ similar to `load-library' Emacs function."
     (setq pack (ess-completing-read "Load" packs))
     (ess-load-library--override pack)
     (ess--mark-search-list-as-changed)
-    (display-buffer (buffer-name (process-buffer (get-process ess-current-process-name))))))
+    (display-buffer (buffer-name (ess-get-process-buffer))
+                    '(nil . ((inhibit-same-window . t))))))
 
 (cl-defgeneric ess-installed-packages ()
   "Return a list of installed packages.")
@@ -1644,7 +1645,9 @@ place (see `ess-r-set-evaluation-env') evaluation of multiline
 input will fail."
   (interactive)
   (ess-force-buffer-current)
-  (display-buffer (ess-get-process-buffer) nil
+  (display-buffer (ess-get-process-buffer)
+                  ;; Use a different window for the process buffer:
+                  '(nil (inhibit-same-window . t))
                   ;; Pass t to reusable-frames if users have help in
                   ;; own frames, otherwise help frames get split to
                   ;; display the inferior.
@@ -2272,7 +2275,7 @@ is run automatically by \\[ess-quit]."
                      ess-local-process-name
                      (equal ess-local-process-name the-procname))
             (kill-buffer buf)))))
-    (display-buffer buf)
+    (display-buffer buf '(nil (inhibit-same-window . t)))
     buf))
 
 (defun inferior-ess-reload (&optional start-args)
@@ -2992,10 +2995,9 @@ is for compatibility with `next-error' and is ignored."
 (defun ess-error (msg)
   "Something bad has happened.
 Display the S buffer, and cause an error displaying MSG."
+  (declare (obsolete error "ESS 18.10"))
   (display-buffer (process-buffer (get-process ess-local-process-name)))
   (error msg))
-
-(make-obsolete 'ess-error nil "18.10")
 
 (provide 'ess-inf)
 ;;; ess-inf.el ends here
