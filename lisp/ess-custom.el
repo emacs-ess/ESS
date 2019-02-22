@@ -1672,65 +1672,6 @@ file."
   :group 'ess-R
   :type '(repeat string))
 
-(defcustom ess-SHOME-versions
-  ;;   ess-program-files  ~= "c:/progra~1"  for typical locales/languages
-  (mapcar
-   (lambda (ch) (concat ess-program-files ch))
-   '("/Insightful/splus62"
-     "/Insightful/splus61"
-     "/MathSoft/splus6"
-     "/spls45se"
-     "/Insightful/splus62netclient"
-     "/Insightful/splus62net/server"
-     "/Insightful/splus61netclient"
-     "/Insightful/splus61net/server"
-     "/Insightful/splus6se"
-     "/Insightful/splus61se"
-     "/Insightful/splus62se"
-     "/Insightful/splus70"
-     "/Insightful/splus71"
-     "/Insightful/splus8.0.1"
-     "/Insightful/splus8.0.4"
-     "/Insightful/splus80"
-     "/TIBCO/splus81"
-     "/TIBCO/splus82"
-     ))
-  "List of possible values of the environment variable SHOME for recent
-releases of S-Plus.  These are the default locations for several
-current and recent releases of S-Plus.  If any of these pathnames
-correspond to a directory on your machine, running the function
-`ess-sqpe-versions-create' will create a function, for example,
-\\[splus70], that will start the corresponding version Sqpe inside an
-emacs buffer in iESS[S] mode.  If you have versions of S-Plus in
-locations other than these default values, redefine this variable with
-a `custom-set-variables' statement in your site-start.el or .emacs
-file.  The list of functions actually created appears in the *ESS*
-buffer and should appear in the \"ESS / Start Process / Other\"
-menu."
-  :group 'ess-SPLUS
-  :type '(repeat string))
-
-(defcustom ess-SHOME-versions-64
-  ;;   ess-program-files-64  ~= "c:/progra~1"  for typical locales/languages
-  (mapcar
-   (lambda (ch) (concat ess-program-files-64 ch))
-   '("/TIBCO/splus82"
-     ))
-  "List of possible values of the environment variable SHOME for recent
-releases of 64-bit S-Plus.  These are the default locations for several
-current and recent releases of S-Plus.  If any of these pathnames
-correspond to a directory on your machine, running the function
-`ess-sqpe-versions-create' will create a function, for example,
-\\[splus70], that will start the corresponding version Sqpe inside an
-emacs buffer in iESS[S] mode.  If you have versions of 64-bit S-Plus in
-locations other than these default values, redefine this variable with
-a `custom-set-variables' statement in your site-start.el or .emacs
-file.  The list of functions actually created appears in the *ESS*
-buffer and should appear in the \"ESS / Start Process / Other\"
-menu."
-  :group 'ess-SPLUS
-  :type '(repeat string))
-
 (define-obsolete-variable-alias 'inferior-S3-program-name
   'inferior-S3-program "ESS 18.10")
 (defcustom inferior-S3-program "/disk05/s/S"
