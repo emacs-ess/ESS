@@ -2307,6 +2307,18 @@ completion also provides function arguments. If function is a generic,
 completion will provide all the arguments of @code{S3} methods known to
 @code{R}.
 
+@cindex Space in function argument completion
+In R versions newer than 2.14.1, ESS uses R's built-in completion
+engine and will honor its settings. You may read about them by issuing
+@code{?rc.options} at the prompt. For example, to have the equals sign
+for function arguments contain spaces on both sides (e.g.
+@code{lm(for)} suggests @code{formula = } rather than
+@code{formula=}), you can adjust @code{funarg.suffix}:
+
+@example
+utils::rc.options(funarg.suffix = " = ")
+@end example
+
 A related functionality is @xref{ESS ElDoc}, which displays function
 arguments in the echo area whenever the point is inside a function call.
 
