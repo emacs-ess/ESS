@@ -139,7 +139,7 @@ suplied, it is used instead of `inferior-ess-help-command'."
          (old-hb-p (get-buffer hb-name))
          (tbuffer (get-buffer-create hb-name)))
     (when (or (not old-hb-p)
-              current-prefix-arg
+              (ess-process-get 'sp-for-help-changed?)
               (ess--help-get-bogus-buffer-substring old-hb-p))
       (ess-with-current-buffer tbuffer
         (ess--flush-help-into-current-buffer object command)
@@ -149,6 +149,13 @@ suplied, it is used instead of `inferior-ess-help-command'."
               ess-help-type 'help)))
     (unless (ess--help-kill-bogus-buffer-maybe tbuffer)
       (ess-display-help tbuffer))))
+
+(defun ess-help-revert-buffer (_ignore-auto _noconfirm)
+  "Revert the current help buffer.
+This reloads the documentation. IGNORE-AUTO and NOCONFIRM are
+ignored."
+  (ess-process-put 'sp-for-help-changed? t)
+  (ess-display-help-on-object ess-help-object))
 
 ;;;###autoload
 (defalias 'ess-help 'ess-display-help-on-object)
@@ -614,6 +621,7 @@ ESS-specific variables `ess-help-own-frame',
   ;; FIXME
   ;; (if ess-mode-syntax-table ;;set in advance by ess-setq-local
   ;;     (set-syntax-table ess-mode-syntax-table))
+  (setq-local revert-buffer-function #'ess-help-revert-buffer)
   (setq show-trailing-whitespace nil))
 
 
