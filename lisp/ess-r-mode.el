@@ -2261,6 +2261,31 @@ state.")
         inferior-ess-help-command inferior-ess-r-help-command)
   (ess-r-help-add-links))
 
+(defun ess-r-help-usage-objects ()
+  "Return a list of objects in the usage section for the current help buffer.
+In other words, if in the help buffer for \"qt\", return '(\"dt\"
+\"pt\" \"qt\" \"rt\"). If the current buffer does not have a
+usage section, return nil."
+  (unless (derived-mode-p 'ess-r-help-mode)
+    (error "Not an R help buffer"))
+  (save-excursion
+    (save-restriction
+      (let (usage-objects)
+        (widen)
+        (goto-char (point-min))
+        ;; Narrow the buffer to just the "Usage" section
+        (when-let ((beg-of-usage (re-search-forward "^Usage:" nil t))
+                   (end-of-usage (re-search-forward "^[^[:space:]]")))
+          (forward-line -1)
+          (narrow-to-region beg-of-usage (point))
+          (goto-char (point-min))
+          ;; Match objects until a parens
+          (while (re-search-forward (rx bol (0+ whitespace) (group (1+ (not (any "("))))) end-of-usage t)
+            (add-to-list 'usage-objects (match-string-no-properties 1))
+            ;; Skip past function arguments
+            (forward-list)))
+        usage-objects))))
+
 (define-button-type 'ess-r-help-link
   'follow-link t
   'action (lambda (_) (ess-r-help-button-action)))
@@ -2274,7 +2299,8 @@ state.")
   "Add links to the help buffer."
   (let ((help-topics (when (ess-process-live-p)
                        (ess-help-get-topics ess-local-process-name)))
-        (inhibit-read-only t))
+        (inhibit-read-only t)
+        (usage-objects (ess-r-help-usage-objects)))
     (save-excursion
       ;; Search for fancy quotes only. If users have
       ;; options(useFancyQuotes) set to something other than TRUE this
@@ -2286,7 +2312,8 @@ state.")
                          (substring text nil (- (length text) 2))
                        text)))
           (when (and (member text help-topics)
-                     (not (string= text ess-help-object)))
+                     (not (string= text ess-help-object))
+                     (not (member text usage-objects)))
             (delete-region (match-beginning 0) (match-end 0))
             (insert-text-button text
                                 'ess-r-help-link-text text

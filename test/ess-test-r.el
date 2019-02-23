@@ -524,6 +524,39 @@ the_dat <- read.csv(\"foo.csv\")"
   (comint-next-prompt 1)
   (should (equal (line-number-at-pos) 3)))
 
+(ert-deftest ess-r-help-usage-objects-test ()
+  (with-temp-buffer
+    (let ((major-mode 'ess-r-help-mode))
+      (insert "The Student t Distribution
+
+Description:
+
+     Density, distribution function, quantile function and random
+     generation for the t distribution with df degrees of freedom
+     (and optional non-centrality parameter ‘ncp’).
+
+Usage:
+
+     dt(x, df, ncp, log = FALSE)
+     pt(q, df, ncp, lower.tail = TRUE, log.p = FALSE)
+     qt(p, df, ncp, lower.tail = TRUE, log.p = FALSE)
+     rt(n, df, ncp)
+
+Arguments:
+")
+      (should (equal (ess-r-help-usage-objects) '("rt" "qt" "pt" "dt")))))
+  (with-temp-buffer
+    (let ((major-mode 'ess-r-help-mode))
+      ;; Ensure we don't return "environment" or "parent.frame"
+      (insert "Usage:
+
+     ggplot(data = NULL, mapping = aes(), ...,
+       environment = parent.frame())
+
+Arguments:
+")
+      (should (equal (ess-r-help-usage-objects) '("ggplot"))))))
+
 (provide 'ess-test-r)
 
 ;;; ess-test-r.el ends here
