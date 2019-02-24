@@ -1642,58 +1642,6 @@ file."
   :group 'ess-S
   :type 'string)
 
-(define-obsolete-variable-alias 'inferior-S+3-program-name
-  'inferior-S+3-program "ESS 18.10")
-(define-obsolete-variable-alias 'inferior-S-program-name
-  'inferior-S+3-program "ESS 18.10")
-(defcustom inferior-S+3-program "Splus"
-  "Program name for invoking an inferior ESS with S+3()."
-  :group 'ess-SPLUS
-  :type '(choice (string) file))
-
-(define-obsolete-variable-alias 'inferior-S+4-program-name
-  'inferior-S+4-program "ESS 18.10")
-(defcustom inferior-S+4-program
-  (concat ess-program-files "/spls45se/cmd/Splus.exe")
-  "Program name for invoking an external GUI S+4.
-The default value is correct for a default installation of
-S-Plus 4.5 Student Edition and with bash as the shell.
-For any other version or location, change this value in ess-site.el or
-site-start.el.  Use the 8.3 version of the pathname.
-Use double backslashes if you use the msdos shell."
-  :group 'ess-SPLUS
-  :type 'string)
-
-(defcustom inferior-S+4-print-command "S_PRINT_COMMAND=emacsclientw.exe"
-  "Destination of print icon in S+4 Commands window."
-  :group 'ess-SPLUS
-  :type 'string)
-
-(defcustom inferior-S+4-editor-pager-command
-  "options(editor='emacsclient.exe', pager='emacsclientw.exe')"
-  "Programs called by the editor() and pager() functions
-in S+4 Commands window and in Sqpe+4 buffer."
-  :group 'ess-S
-  :type 'string)
-
-(define-obsolete-variable-alias 'inferior-Sqpe+4-program-name
-  'inferior-Sqpe+4-program "ESS 18.10")
-(defcustom inferior-Sqpe+4-program
-  (concat ess-program-files "/spls45se/cmd/Sqpe.exe")
-  "Program name for invoking an inferior ESS with Sqpe+4()."
-  :group 'ess-SPLUS
-  :type '(choice (const nil) (string)))
-
-(defcustom inferior-Sqpe+4-SHOME-name
-  (if ess-microsoft-p (concat ess-program-files "/spls45se" ""))
-  "SHOME name for invoking an inferior ESS with Sqpe+4().
-The default value is correct for a default installation of
-S-Plus 4.5 Student Edition.  For any other version or location,
-change this value in ess-site.el or site-start.el.  Use the 8.3
-version of the pathname."
-  :group 'ess-SPLUS
-  :type '(choice (const nil) (string)))
-
 (define-obsolete-variable-alias
   'inferior-S-elsewhere-program-name
   'inferior-S-elsewhere-program "ESS 18.10")
@@ -1702,38 +1650,12 @@ version of the pathname."
   :group 'ess-proc
   :type 'string)
 
-(define-obsolete-variable-alias
-  'inferior-ESS-elsewhere-program-name
-  'inferior-ESS-elsewhere-program "ESS 18.10")
-(defcustom inferior-ESS-elsewhere-program "sh"
-  "Program name to invoke an inferior ESS with program on a different computer."
-  :group 'ess-proc
-  :type 'string)
-
-(define-obsolete-variable-alias 'inferior-S4-program-name
-  'inferior-S4-program "ESS 18.10")
-(defcustom inferior-S4-program "S4"
-  "Program name to invoke an inferior ESS with S4()."
-  :group 'ess-S
-  :type '(choice (string) (file)))
-
-(define-obsolete-variable-alias 'inferior-S+5-program-name
-  'inferior-S+5-program "ESS 18.10")
-(defcustom inferior-S+5-program "Splus5"
-  "Program name to invoke an inferior ESS with S+5()."
-  :group 'ess-SPLUS
-  :type '(choice (string) (file)))
-
 (defvaralias 'S+6-dialect-name 'S+-dialect-name)
 (defcustom S+-dialect-name "S+"
   "Name of 'dialect' for S-PLUS 6.x and later.
 Easily changeable in a user's `.emacs'."
   :group 'ess-SPLUS
   :type 'string)
-
-(defvaralias 'inferior-S+6-program 'inferior-S+-program)
-(define-obsolete-variable-alias 'inferior-S+6-program-name
-  'inferior-S+-program "ESS 18.10")
 
 (define-obsolete-variable-alias 'inferior-S+-program-name
   'inferior-S+-program "ESS 18.10")
@@ -1764,41 +1686,6 @@ These arguments are currently passed only to S+6 and higher."
 Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
   :group 'ess-command
   :type 'string)
-
-(defvaralias 'inferior-S+6-print-command 'inferior-S+-print-command)
-
-(defcustom inferior-S+-print-command "S_PRINT_COMMAND=emacsclientw.exe"
-  "Destination of print icon in S+ for Windows Commands window."
-  :group 'ess-SPLUS
-  :type 'string)
-
-(defvaralias 'inferior-S+6-editor-pager-command 'inferior-S+-editor-pager-command)
-(defcustom inferior-S+-editor-pager-command
-  "options(editor='emacsclient.exe', pager='emacsclientw.exe')"
-  "Programs called by the editor() and pager() functions in S+
-for Windows Commands window and in Sqpe+6 for Windows buffer."
-  :group 'ess-SPLUS
-  :type 'string)
-
-(defvaralias 'inferior-Sqpe+6-program 'inferior-Sqpe+-program)
-(define-obsolete-variable-alias 'inferior-Sqpe+-program-name
-  'inferior-Sqpe+-program "ESS 18.10")
-(defcustom inferior-Sqpe+-program
-  (concat ess-program-files "/TIBCO/splus82/cmd/Sqpe.exe")
-  "Program name for invoking an inferior ESS with Sqpe+6() for Windows."
-  :group 'ess-S
-  :type '(choice (const nil) (string)))
-
-(defvaralias 'inferior-Sqpe+6-SHOME-name 'inferior-Sqpe+-SHOME-name)
-(defcustom inferior-Sqpe+-SHOME-name
-  (if ess-microsoft-p (concat ess-program-files "/TIBCO/splus82" ""))
-  "SHOME name for invoking an inferior ESS with Sqpe+6 and higher for Windows.
-The default value is correct for a default installation of
-S-Plus 8.1.  For any other version or location,
-change this value in ess-site.el or site-start.el.  Use the 8.3
-version of the pathname."
-  :group 'ess-SPLUS
-  :type '(choice (const nil) (string)))
 
 (defcustom ess-S-quit-kill-buffers-p nil
   "Controls whether S buffers should also be killed once a process is killed.
@@ -1864,19 +1751,9 @@ for editing and then to be returned to the process.")
 (defvar-local inferior-ess-language-start nil
   "Initialization commands sent to the ESS process.")
 
-(defcustom inferior-ess-help-filetype nil
-  "S-Plus and Sqpe for Windows use the \"chm\" (compiled html) filetype for help files.
-The default value is nil for other systems."
-  :group 'ess-proc
-  :type '(choice (const nil) (string)))
-(make-variable-buffer-local 'inferior-ess-help-filetype)
-
-(defvar inferior-S-program  inferior-S+3-program
-  "Program name for invoking an inferior ESS with S.")
-
 (define-obsolete-variable-alias 'inferior-ess-program-name
   'inferior-ess-program "ESS 18.10")
-(defvar-local inferior-ess-program nil ;inferior-S-program
+(defvar-local inferior-ess-program nil
   "Default program name for invoking `inferior-ess'.
 The other variables ...-program should be changed, for the
 corresponding program.")
@@ -2080,10 +1957,6 @@ from `inferior-ess-primary-prompt' and `inferior-ess-secondary-prompt'.")
 (defvar ess-S+-change-sp-regexp
   "\\(attach(\\([^)]\\|$\\)\\|detach(\\|collection(\\|library(\\|module(\\|source(\\)"
   "The regexp for matching the S-plus commands that change the search path.")
-
-(defvar ess-S-change-sp-regexp
-  "\\(attach(\\([^)]\\|$\\)\\|detach(\\|library(\\|source(\\)"
-  "The regexp for matching the S commands that change the search path.")
 
 (defvaralias 'ess-R-change-sp-regexp 'ess-r-change-sp-regexp)
 (defvar ess-r-change-sp-regexp
