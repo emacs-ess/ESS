@@ -1332,14 +1332,6 @@ to edit more than one object at a time, though.
   :group 'ess-edit
   :type 'string)
 
-
-;;*;; Hooks
-
-(defcustom ess-mode-hook nil
-  "Hook for customizing ESS each time it is entered."
-  :group 'ess-hooks
-  :type 'hook)
-
 (defcustom ess-pre-run-hook nil
   "Hook to call before starting up ESS.
 Good for setting up your directory."
@@ -1352,37 +1344,10 @@ Good for evaluating ESS code."
   :group 'ess-hooks
   :type 'hook)
 
-(defcustom inferior-ess-mode-hook nil
-  "Hook for customizing inferior ESS mode.
-Called after `inferior-ess-mode' is entered and variables have
-been initialised."
-  :group 'ess-hooks
-  :type 'hook)
-
-(defcustom ess-help-mode-hook nil
-  "Functions to call when entering `ess-help-mode'."
-  :group 'ess-hooks
-  :type 'hook)
-
 (defcustom ess-send-input-hook nil
   "Hook called just before line input is sent to the process."
   :group 'ess-hooks
   :type 'hook)
-
-(defcustom ess-transcript-mode-hook nil
-  "Hook for customizing ESS transcript mode."
-  :group 'ess-hooks
-  :type 'hook)
-
-(defcustom Rnw-mode-hook nil
-  "Hook run when entering Rnw mode."
-  :type 'hook
-  :group 'ess-R)
-
-(defcustom SAS-mode-hook nil
-  "Hook to run when entering SAS mode."
-  :type 'hook
-  :group 'ess-sas)
 
 (defcustom ess-pdf-viewer-pref nil
   "External pdf viewer you like to use from ESS.

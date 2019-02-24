@@ -39,6 +39,11 @@
 (require 'executable)
 (require 'ess-sas-l)
 
+(defcustom SAS-mode-hook nil
+  "Hook to run when entering SAS mode."
+  :type 'hook
+  :group 'ess-sas)
+
 (defvar inferior-SAS-args "-stdio -linesize 80 -noovp -nosyntaxcheck"
   "Arguments to use for starting SAS.")
 

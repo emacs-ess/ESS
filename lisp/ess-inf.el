@@ -69,6 +69,13 @@
 (declare-function tramp-file-name-localname "tramp")
 (declare-function tramp-file-name-hop "tramp")
 
+(defcustom inferior-ess-mode-hook nil
+  "Hook for customizing inferior ESS mode.
+Called after `inferior-ess-mode' is entered and variables have
+been initialised."
+  :group 'ess-hooks
+  :type 'hook)
+
 (defvar inferior-ess-mode-syntax-table
   (let ((tab (copy-syntax-table comint-mode-syntax-table)))
     tab)

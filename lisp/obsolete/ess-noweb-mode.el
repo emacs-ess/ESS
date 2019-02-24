@@ -84,6 +84,11 @@
 (require 'ess-custom)
 (require 'ess-utils)
 
+(defcustom Rnw-mode-hook nil
+  "Hook run when entering Rnw mode."
+  :type 'hook
+  :group 'ess-R)
+
 (defvar weave-process)
 
 

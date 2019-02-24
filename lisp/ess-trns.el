@@ -45,6 +45,11 @@
 ;;;; * Commands for ess-transcript-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defcustom ess-transcript-mode-hook nil
+  "Hook for customizing ESS transcript mode."
+  :group 'ess-hooks
+  :type 'hook)
+
 ;;*;; Major mode definition
 (defvar ess-transcript-mode-map
   (let ((map (make-sparse-keymap)))

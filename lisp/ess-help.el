@@ -48,6 +48,12 @@
 (declare-function ess-r-help-mode 'ess-r-mode)
 (declare-function ess-stata-help-mode "ess-stata-lang")
 
+
+(defcustom ess-help-mode-hook nil
+  "Functions to call when entering `ess-help-mode'."
+  :group 'ess-hooks
+  :type 'hook)
+
 (defvar ess--help-frame nil
   "Stores the frame used for displaying R help buffers.")
 

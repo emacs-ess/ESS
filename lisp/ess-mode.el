@@ -41,6 +41,13 @@
 ;; ESS mode
 ;; Major mode definition
 
+;;*;; Hooks
+
+(defcustom ess-mode-hook nil
+  "Hook for customizing ESS each time it is entered."
+  :group 'ess-hooks
+  :type 'hook)
+
 (defvar ess-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map [remap yank] 'ess-yank)
