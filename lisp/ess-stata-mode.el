@@ -99,6 +99,7 @@
 ;;;###autoload
 (define-derived-mode ess-stata-mode ess-mode "ESS[STA]"
   "Major mode for editing Stata source."
+  :group 'ess-Stata
   (ess-setq-vars-local STA-customize-alist)
   (setq-local comint-use-prompt-regexp t)
   (setq-local comment-column 40)
@@ -172,12 +173,14 @@ This function is placed in `ess-presend-filter-functions'.
 
 (define-derived-mode inferior-ess-stata-mode inferior-ess-mode "iESS"
   "Inferior `stata' mode."
+  :group 'ess-proc
   (ess-setq-vars-local STA-customize-alist)
   (setq-local comint-use-prompt-regexp t)
   (setq font-lock-defaults '(ess-STA-mode-font-lock-defaults nil nil ((?\. . "w")))))
 
 
 (define-derived-mode ess-stata-transcript-mode ess-transcript-mode "ESS Transcript"
+  :group 'ess-Stata
   :syntax-table ess-stata-mode-syntax-table
   "Stata transcript mode."
   (ess-setq-vars-local STA-customize-alist)

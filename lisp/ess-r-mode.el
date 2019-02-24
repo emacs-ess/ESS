@@ -649,6 +649,7 @@ new position."
 ;;;###autoload
 (define-derived-mode ess-r-mode ess-mode "ESS[R]"
   "Major mode for editing R source.  See `ess-mode' for more help."
+  :group 'ess-R
   (ess-setq-vars-local ess-r-customize-alist)
   (setq-local ess-font-lock-keywords 'ess-R-font-lock-keywords)
   (setq-local paragraph-start (concat "\\s-*$\\|" page-delimiter))
@@ -944,6 +945,7 @@ use \"bin/Rterm.exe\"."
 (define-derived-mode ess-r-transcript-mode ess-transcript-mode "ESS R Transcript"
   "A Major mode for R transcript files."
   :syntax-table ess-r-mode-syntax-table
+  :group 'ess
   (ess-setq-vars-local ess-r-customize-alist)
   (setq-local ess-font-lock-keywords 'ess-R-font-lock-keywords)
   (setq-local paragraph-start (concat "\\s-*$\\|" page-delimiter))
@@ -2207,6 +2209,7 @@ state.")
 
 (define-derived-mode inferior-ess-r-mode inferior-ess-mode "iESS"
   "Major mode for interacting with inferior R processes."
+  :group 'ess-proc
   (setq-local ess-font-lock-keywords 'inferior-ess-r-font-lock-keywords)
   (setq-local comint-process-echoes (eql ess-eval-visibly t))
   ;; eldoc
@@ -2248,6 +2251,7 @@ state.")
 
 (define-derived-mode ess-r-help-mode ess-help-mode "R Help"
   "Major mode for help buffers."
+  :group 'ess-help
   (setq ess-dialect "R"
         ess-help-web-search-command #'ess-r-sos
         ess-build-help-command-function #'ess-r-build-help-command

@@ -72,6 +72,7 @@
 (define-derived-mode ess-rutils-mode special-mode "R utils"
   "Major mode for output from `ess-rutils-local-pkgs' and `ess-rutils-repos-pkgs'.
 Useful bindings to handle package loading and installing."
+  :group 'ess-R
   (setq ess-dialect "R"))
 
 (defun ess-rutils-local-pkgs ()

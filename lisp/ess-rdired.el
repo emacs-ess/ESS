@@ -137,6 +137,7 @@ the function which prints the output for rdired.")
 `ess-rdired' provides a dired-like mode for R objects.  It shows the
 list of current objects in the current environment, one-per-line.  You
 can then examine these objects, plot them, and so on."
+  :group 'ess-R
   (setq mode-name (concat "RDired " ess-local-process-name))
   (setq tabulated-list-format
         `[("Name" 18 t)

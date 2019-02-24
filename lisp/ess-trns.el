@@ -113,6 +113,7 @@ the process buffer first.
 
 Type \\[ess-transcript-clean-region] to delete all outputs and prompts
 in the region, leaving only the commands."
+  :group 'ess
   (setq buffer-read-only t
         ess-local-process-name nil
         mode-line-process '(" [" ess-local-process-name "]"))

@@ -618,6 +618,7 @@ ESS-specific variables `ess-help-own-frame',
 
 (define-derived-mode ess-help-mode special-mode "ESS Help"
   "Mode for viewing ESS help files."
+  :group 'ess-help
   ;; FIXME
   ;; (if ess-mode-syntax-table ;;set in advance by ess-setq-local
   ;;     (set-syntax-table ess-mode-syntax-table))

@@ -1863,6 +1863,7 @@ meaning as for `ess-eval-region'."
 To learn more about how to use inferior ess modes, see Info
 node `(ess)Top'. If you accidentally suspend your process, use
 \\[comint-continue-subjob] to continue it."
+  :group 'ess-proc
   ;; initialize all custom vars:
   (when ess-customize-alist
     (ess-setq-vars-local ess-customize-alist))

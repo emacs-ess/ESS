@@ -2324,6 +2324,7 @@ If there is no active R session, this command triggers an error."
 
 (define-derived-mode ess-watch-mode special-mode "ESS watch"
   "Major mode in `ess-watch' window."
+  :group 'ess-tracebug
   (let ((cur-block (max 1 (ess-watch-block-at-point)))
         (dummy-string
          (ess-tracebug--propertize "|" 'current-watch-bar 'font-lock-keyword-face)))

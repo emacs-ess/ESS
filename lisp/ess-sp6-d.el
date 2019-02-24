@@ -139,7 +139,8 @@ New way to do it."
 (defalias 'S+6-transcript-mode 'S+-transcript-mode)
 (define-derived-mode S+-transcript-mode ess-transcript-mode "ESS S Transcript"
   "S-PLUS 6 transcript mode."
-  :syntax-table S-syntax-table)
+  :syntax-table S-syntax-table
+  :group 'ess-S)
 
 (defvar ess-s-versions '("Splus")
   "List of partial strings for versions of S to access within ESS.

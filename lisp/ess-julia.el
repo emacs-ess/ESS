@@ -371,6 +371,7 @@ It makes underscores and dots word constituent chars.")
 ;;;###autoload
 (define-derived-mode ess-julia-mode julia-mode "ESS[julia]"
   "Major mode for julia files."
+  :group 'ess-Julia
   (setq-local ess-local-customize-alist ess-julia-customize-alist)
   (setq ess-dialect "julia")
   (ess-setq-vars-local ess-julia-customize-alist)
@@ -397,6 +398,7 @@ It makes underscores and dots word constituent chars.")
 
 (define-derived-mode inferior-ess-julia-mode inferior-ess-mode "iESS[julia]"
   "Major mode for inferior julia processes."
+  :group 'ess-Julia
   (ess-setq-vars-local ess-julia-customize-alist)
   (setq-local comint-use-prompt-regexp t)
   (setq ess-dialect "julia")
@@ -467,6 +469,7 @@ always be passed to julia, put them in the variable
 
 (define-derived-mode ess-julia-help-mode ess-help-mode "ESS[Julia] Help"
   "Major mode for Julia documentation."
+  :group 'ess-help
   (let ((inhibit-read-only t))
     ;; Julia help buffers can contain color if julia starts with
     ;; --color=yes

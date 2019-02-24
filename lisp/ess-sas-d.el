@@ -201,6 +201,7 @@ Better logic needed!  (see 2 uses, in this file).")
 ;;;###autoload
 (define-derived-mode SAS-mode ess-mode "[SAS]"
   "Major mode for editing SAS source.  See `ess-mode' for more help."
+  :group 'ess-sas
   (ess-setq-vars-local SAS-customize-alist)
   (setq ess-customize-alist SAS-customize-alist)
   (setq ess-local-customize-alist SAS-customize-alist)

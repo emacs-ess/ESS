@@ -139,6 +139,7 @@ A .lst file is a SAS listing file when:
 
 (define-derived-mode SAS-log-mode SAS-mode "ESS[LOG]"
   "`ess-transcript-mode' for SAS."
+  :group 'ess-sas
   (ess-transcript-minor-mode 1)
   (setq buffer-read-only t) ;; to protect the buffer.
   (buffer-disable-undo))
@@ -147,6 +148,7 @@ A .lst file is a SAS listing file when:
 (define-derived-mode SAS-listing-mode special-mode "ESS[LST]"
   "Fundamental mode with `ess-listing-minor-mode' and read-only."
   :keymap sas-mode-local-map
+  :group 'ess-sas
   (ess-listing-minor-mode 1)
   (buffer-disable-undo))
 
@@ -1551,6 +1553,7 @@ page ;
 
 (define-derived-mode sas-dir-mode special-mode "SAS"
   "Major mode for managing sas files."
+  :group 'ess-sas
   (setq sas-directory-name (expand-file-name default-directory)))
 
 

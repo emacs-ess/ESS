@@ -1221,7 +1221,8 @@ PROC is the stata process. Does not change point."
 (define-derived-mode ess-stata-help-mode ess-help-mode "Stata help"
   "Major mode for displaying Stata help in a read-only buffer.
 Active commands are Help (\\[stata-help]) and hyperlink
-(\\[stata-rehelp] or mouse-2).")
+(\\[stata-rehelp] or mouse-2)."
+  :group 'ess-Stata)
 
 ;;; Suggested function from Brendan Halpin:
 (defvar ess-STA-delimit-do-file "delimit-do.do")
