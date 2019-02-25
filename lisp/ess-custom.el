@@ -37,7 +37,6 @@
 (defvar ess-microsoft-p (memq system-type '(ms-dos windows-nt))
   "Value is t if the OS is one of Microsoft's, nil otherwise.")
 
-
 ;; Customization Groups
 
 (defgroup ess nil
@@ -76,11 +75,6 @@
   :group 'ess
   :prefix "ess-")
 
-(defgroup ess-origS nil
-  "ESS: Original S Dialect from Bell Labs/AT&T."
-  :group 'ess-S
-  :prefix "ess-")
-
 (defgroup ess-SPLUS nil
   "ESS: S-PLUS Dialect of S."
   :group 'ess-S
@@ -106,17 +100,12 @@
   :group 'ess
   :prefix "ess-")
 
-(defgroup ess-mouse nil ;; FIXME: this is not used yet <--> ./ess-mous.el
-  "ESS: Mouse."
-  :group 'ess
-  :prefix "ess-")
-
 (defgroup ess-roxy nil
   "Mode for editing in-code Roxygen documentation."
   :group 'ess
   :group 'convenience
   :group 'ess-extras
-  :prefix "ess-" ;; << -- added for ESS integration  FIXME??
+  :prefix "ess-"
   :group 'tools)
 
 (defgroup ess-extras nil
