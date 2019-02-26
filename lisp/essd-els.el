@@ -146,7 +146,7 @@ DIALECT is the desired ess-dialect. If nil, ask for dialect"
      (format "\n(ESS-remote): ess-dialect=%s, buf=%s\n" ess-dialect
              (current-buffer)))
     (ess-setq-vars-local ess-customize-alist)
-    (inferior-ess-mode)
+    (ess--inferior-major-mode ess-dialect)
     (set (make-local-variable 'ess-remote) t)
     (setq ess-local-process-name (or proc-name ess-current-process-name))
 
