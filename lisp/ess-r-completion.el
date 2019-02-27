@@ -158,9 +158,9 @@ to look up any doc strings."
       nil)))
 
 (defun ess-complete-object-name ()
-  "Perform completion on `ess-language' object preceding point.
-Uses \\[ess-r-complete-object-name] when `ess-use-R-completion' is non-nil,
-or \\[ess-internal-complete-object-name] otherwise."
+  "Perform completion on object preceding point.
+Uses `ess-r-complete-object-name' when `ess-use-R-completion' is non-nil,
+and `ess-internal-complete-object-name' otherwise."
   (interactive)
   (if (ess-make-buffer-current)
       (if ess-use-R-completion
