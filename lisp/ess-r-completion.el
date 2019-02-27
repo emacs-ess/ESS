@@ -171,10 +171,7 @@ or \\[ess-internal-complete-object-name] otherwise."
       (message "No ESS process associated with current buffer")
       nil)))
 
-(defun ess-list-object-completions nil
-  "List all possible completions of the object name at point."
-  (interactive)
-  (ess-complete-object-name))
+(defalias 'ess-list-object-completions #'ess-complete-object-name)
 
 (defun ess-complete-object-name-deprecated ()
   "Gives a deprecated message."
