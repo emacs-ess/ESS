@@ -4,6 +4,9 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item ESS[R]: Fixed longstanding indentation issues involving
+@code{::} and @code{:::} operators.
+
 @item Implement a more reliable check for the process busy state.
 Background actions such as completion and directory synchronization
 should not block the process and should not cause printing of the

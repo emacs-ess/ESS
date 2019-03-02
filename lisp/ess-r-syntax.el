@@ -1500,9 +1500,10 @@ without curly braces."
                           ,(skip-chars-backward "\"'")))
           (setq climbed t)))
       ;; Recurse if we find an indexing char
-      (when (memq (char-before) '(?$ ?@))
-        (forward-char -1)
-        (ess-climb-object))
+      (let ((tok (ess-token-before)))
+        (when (member (ess-token-type tok) '("$" "@" "::" ":::"))
+          (goto-char (ess-token-start tok))
+          (ess-climb-object)))
       climbed)))
 
 ;; Todo: split name and object climbing

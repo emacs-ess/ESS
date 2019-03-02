@@ -91,3 +91,94 @@ function_call()
     if (test2)
         stuff2
 
+
+
+##### Continutations
+
+### 1a ---------------------------------------------------------------
+
+object <-
+    fun_call() %>%
+    ¶fun_call()
+
+##! (ess-climb-continuations)
+
+¶object <-
+    fun_call() %>%
+    fun_call()
+
+
+### 1b ---------------------------------------------------------------
+
+object <-
+    fun_call() %>% fun_call() %>%
+    ¶fun_call()
+
+##! (ess-climb-continuations)
+
+¶object <-
+    fun_call() %>% fun_call() %>%
+    fun_call()
+
+
+### 1c ---------------------------------------------------------------
+
+object <-
+    namespace::fun_call() %>%
+    ¶fun_call()
+
+object <-
+    namespace:::fun_call() %>%
+    ¶fun_call()
+
+object <-
+    object@fun_call() %>%
+    ¶fun_call()
+
+object <-
+    object$fun_call() %>%
+    ¶fun_call()
+
+##! (ess-climb-continuations)
+
+¶object <-
+    namespace::fun_call() %>%
+    fun_call()
+
+¶object <-
+    namespace:::fun_call() %>%
+    fun_call()
+
+¶object <-
+    object@fun_call() %>%
+    fun_call()
+
+¶object <-
+    object$fun_call() %>%
+    fun_call()
+
+
+
+##### Expressions
+
+### 1 Sticky operators -----------------------------------------------
+
+object@field¶
+object$field¶
+namespace::object¶
+namespace:::object¶
+
+##! (ess-climb-expression)
+
+¶object@field
+¶object$field
+¶namespace::object
+¶namespace:::object
+
+##! (ess-climb-object)
+
+¶object@field
+¶object$field
+¶namespace::object
+¶namespace:::object
+

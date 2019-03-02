@@ -1102,6 +1102,51 @@ fun_call(argument <<-
 funcall(!stuff1 ||
         stuff2)
 
+## 37 (issue #857)
+fun_call({
+
+    stuff <-
+        namespace:::fun_call() %>%
+        fun_call()
+
+    stuff
+})
+
+fun_call({
+    stuff <-
+        namespace::fun_call() %>%
+        fun_call()
+    stuff
+})
+
+## 38a (issue #412)
+
+namespace::fun_call() %>%
+    namespace::fun_call() %>%
+    namespace::fun_call() %>%
+    namespace::fun_Call()
+
+## 38b
+
+namespace:::fun_call() %>%
+    namespace:::fun_call() %>%
+    namespace:::fun_call() %>%
+    namespace:::fun_Call()
+
+## 38c
+
+object@fun_call() %>%
+    object@fun_call() %>%
+    object@fun_call() %>%
+    object@fun_Call()
+
+## 38d
+
+object$fun_call() %>%
+    object$fun_call() %>%
+    object$fun_call() %>%
+    object$fun_Call()
+
 
 ### Comments
 
