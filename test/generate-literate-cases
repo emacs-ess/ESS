@@ -11,7 +11,7 @@
 
 (require 'ert)
 (require 'ess-r-mode)
-(load (expand-file-name "ess-literate-tests.el" ess-test-path) nil t)
+(load (expand-file-name "ess-test-literate.el" ess-test-path) nil t)
 
 (message "\nStarting literate tests")
 
