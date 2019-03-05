@@ -205,7 +205,7 @@
   "Help section keys for S4.")
 
 
-(defconst ess-help-S+-sec-regex "^[A-Z. ---]+:$"
+(defconst ess-help-S+-sec-regex "^[A-Z.]+:$"
   "Reg(ular) Ex(pression) of section headers in help file.")
 
  ; Function Definitions

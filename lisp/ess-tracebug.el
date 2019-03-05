@@ -1924,7 +1924,7 @@ ARGS are ignored to allow using this function in process hooks."
           (inhibit-field-text-motion t))
       (forward-line -1)
       (end-of-line)
-      (looking-back "\\%>\\%[ \t]*" (point-at-bol)))))
+      (looking-back "%>%[ \t]*" (point-at-bol)))))
 
 (defvar ess--bp-identifier 1)
 (defcustom ess-bp-type-spec-alist

@@ -94,7 +94,7 @@ Useful bindings to handle package loading and installing."
   "Return name of the package on current line."
   (save-excursion
     (beginning-of-line)
-    (if (looking-at "*")
+    (if (looking-at "\\*")
         nil
       (forward-char 2)
       (let (beg)

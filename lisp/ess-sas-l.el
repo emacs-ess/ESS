@@ -828,7 +828,7 @@ number."
             ;; added 6/27/94  to leave "* ;" comments alone.
             ((progn
                (back-to-indentation)
-               (and (not (looking-at "*/"))
+               (and (not (looking-at "\\*/"))
                     (looking-at (concat sas-indent-ignore-comment "\\|/\\*"))))
              (setq indent (current-indentation)))
             ;;  Case where current statement not DATA, PROC etc...
@@ -861,7 +861,7 @@ number."
                 ((save-excursion
                    (progn
                      (beginning-of-sas-statement 1 t)
-                     (and (not (looking-at "*/"))
+                     (and (not (looking-at "\\*/"))
                           (looking-at sas-indent-ignore-comment))))
                  (setq indent cur-ind))
                 ((progn
@@ -934,7 +934,7 @@ This will (hopefully) be fixed in later versions."
       (let ((prev-end (point)))
         (beginning-of-sas-statement 1)
         (while (and (not (bobp))
-                    (not (looking-at "*/"))
+                    (not (looking-at "\\*/"))
                     (looking-at sas-indent-ignore-comment))
           (skip-chars-backward sas-white-chars)
           (if (bobp) nil
@@ -1471,7 +1471,7 @@ be submitted instead.  `sas-submitable' is automatically sets to t."
   "Add local variables code to end of sas source file."
   (interactive)
   (save-excursion
-    (if (re-search-forward "* *Local Variables: *;" nil t)
+    (if (re-search-forward "\\* *Local Variables: *;" nil t)
         ()
       (goto-char (point-max))
       (insert "
