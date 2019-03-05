@@ -290,7 +290,6 @@ HELP-TYPE to be stored in `ess-help-type' local variable,
 ACTION is a function with no argument (default is `ess--button-action'),
 HELP-ECHO if given becomes the help-echo property of the button,
 REG-START gives the start location from where to search linkifying, and HELP-OBJECT becomes `ess-help-object'."
-  (interactive)
   (let ((inhibit-modification-hooks t)
         (alist          ess-local-customize-alist)
         (pname ess-local-process-name)
