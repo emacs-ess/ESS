@@ -947,6 +947,7 @@ use \"bin/Rterm.exe\"."
   :syntax-table ess-r-mode-syntax-table
   :group 'ess
   (ess-setq-vars-local ess-r-customize-alist)
+  (setq-local comint-prompt-regexp inferior-S-prompt)
   (setq-local ess-font-lock-keywords 'ess-R-font-lock-keywords)
   (setq-local paragraph-start (concat "\\s-*$\\|" page-delimiter))
   (setq-local paragraph-separate (concat "\\s-*$\\|" page-delimiter))

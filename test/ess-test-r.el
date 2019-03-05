@@ -509,6 +509,21 @@ the_dat <- read.csv(\"foo.csv\")"
       (should (equal ess-help-object "plot.default"))
       (should (derived-mode-p 'ess-r-help-mode)))))
 
+(ert-deftest ess-transcript-comint-prompt-test ()
+  ;; Bug#853
+  (insert "> set.seed(1); (i <- rnorm(7))
+[1] -0.6264538  0.1836433 -0.8356286  1.5952808  0.3295078 -0.8204684  0.4874291
+> rep(i, 3)
+ [1] -0.6264538  0.1836433 -0.8356286  1.5952808  0.3295078 -0.8204684  0.4874291
+ [8] -0.6264538  0.1836433 -0.8356286  1.5952808  0.3295078 -0.8204684  0.4874291
+[15] -0.6264538  0.1836433 -0.8356286  1.5952808  0.3295078 -0.8204684  0.4874291
+> sum(i)
+[1] 0.3133101")
+  (ess-r-transcript-mode)
+  (goto-char (point-min))
+  (comint-next-prompt 1)
+  (should (equal (line-number-at-pos) 3)))
+
 (provide 'ess-test-r)
 
 ;;; ess-test-r.el ends here

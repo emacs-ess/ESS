@@ -159,8 +159,6 @@ is not already."
 (defun ess-transcript-send-command-and-move ()
   "Send the command on this line, and move point to the next command."
   (interactive)
-  ;; (ess-transcript-send-command) ;; This doesn't work properly
-  ;; replacement code begins
   (let* ((proc (or ess-local-process-name
                    (ess-request-a-process "Evaluate into which process? " t)))
          (ess-buf (ess-get-process-buffer proc)))
@@ -171,7 +169,6 @@ is not already."
       (with-current-buffer ess-buf
         (goto-char (point-max))
         (ess-eval-linewise input nil nil nil 1))))
-  ;; replacement code ends
   (goto-char ess-temp-point)
   (comint-next-prompt 1))
 
