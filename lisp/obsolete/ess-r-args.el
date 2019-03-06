@@ -199,6 +199,11 @@ Defaults to `ess-S-non-functions'.")
   "Non-nil means re-assign \"(\" to \\[ess-r-args-auto-show].")
 (make-obsolete-variable 'ess-r-args-electric-paren "Use `eldoc-mode' instead." "ESS 18.10")
 
+(defun ess-message (format-string &rest args)
+  "Shortcut for \\[message] only if `ess-show-load-messages' is non-nil."
+  (when (bound-and-true-p ess-show-load-messages)
+    (message format-string args)))
+
 (defun ess-r-args-current-function ()
   "Returns the name of the R function assuming point is currently
 within the argument list or nil if no possible function name is

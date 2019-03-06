@@ -52,12 +52,6 @@
 (declare-function tramp-file-name-localname "tramp")
 (declare-function tramp-file-name-hop "tramp")
 
-;;; FIXME: Used in ./obsolete/xyz.el only; remove once gone.
-(defun ess-message (format-string &rest args)
-  "Shortcut for \\[message] only if `ess-show-load-messages' is non-nil."
-  (when (bound-and-true-p ess-show-load-messages)
-    (message format-string args)))
-
 
 ;;*;; elisp tools
 
