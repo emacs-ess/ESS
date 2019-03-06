@@ -455,7 +455,7 @@ filled if `ess-roxy-fill-param-p' is non-nil."
            (args (ess-roxy-merge-args args-fun args-ent))
            (roxy-str (ess-roxy-guess-str))
            (line-break "")
-           here key template tag-def)
+           here template tag-def)
       (ess-roxy-goto-func-def)
       (if (not (= (forward-line -1) 0))
           (progn
@@ -518,8 +518,7 @@ roxygen entry."
 Return 0 if no deletions were made other wise the point at where
 the last deletion ended"
   (save-excursion
-    (let* ((args nil)
-           (cont t)
+    (let* ((cont t)
            (field-beg 0)
            entry-beg entry-end field-end)
       (ess-roxy-goto-end-of-entry)
@@ -818,8 +817,7 @@ Assumes point is at the beginning of the function."
 (defun ess-roxy-tag-completion ()
   "Completion data for Emacs >= 24."
   (when (save-excursion (re-search-backward "@\\<\\(\\w*\\)" (point-at-bol) t))
-    (let ((token (match-string-no-properties 1))
-          (beg (match-beginning 1))
+    (let ((beg (match-beginning 1))
           (end (match-end 1)))
       (when (and end (= end (point)))
         (list beg end (append ess-roxy-tags-noparam ess-roxy-tags-param) :exclusive 'no)))))
@@ -896,9 +894,6 @@ Else call `ess-indent-command'."
   "Fill a roxygen block.
 FUN should be a filling function and ARGS gets passed to it."
   (let* ((saved-pos (point))
-         (saved-line (line-number-at-pos))
-         (saved-col (current-column))
-         (buffer (current-buffer))
          (par-start (save-excursion
                       (if (save-excursion
                             (and (backward-paragraph)
