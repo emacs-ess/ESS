@@ -73,7 +73,6 @@
 (defvar offset)
 (defvar prefix-break)
 (defvar prev-containing-sexp)
-(defvar start)
 (defvar start-pos)
 (defvar style)
 (defvar type)
@@ -562,7 +561,7 @@ the package directory was selected in the first place."
           dir))
     dir))
 
-(defun R-initialize-on-start (&optional proc string)
+(defun R-initialize-on-start ()
   "This function is run after the first R prompt.
 Executed in process buffer."
   (interactive)
@@ -1101,7 +1100,7 @@ Placed into `ess-presend-filter-functions' for R dialects."
     (concat cmd "(\"" string "\"" rargs file ")\n")))
 
 (cl-defmethod ess-build-load-command (string &context ((string= ess-dialect "R") (eql t))
-                                             &optional visibly output file &rest args)
+                                             &optional visibly output file &rest _args)
   (let* ((namespace (or file (ess-r-get-evaluation-env)))
          (cmd (if namespace ".ess.ns_source" ".ess.source"))
          (rargs (ess-r-build-args visibly output namespace)))
@@ -1198,11 +1197,11 @@ selected (see `ess-r-set-evaluation-env')."
    (t
     (ess-send-string process (buffer-substring start end) visibly message type))))
 
-(defun ess-r-send-region-namespaced (proc beg end &optional visibly message)
+(defun ess-r-send-region-namespaced (proc start end &optional visibly message)
   "Ask for for the package and devSource region into it."
-  (let* ((pkg-name (or (ess-r-get-evaluation-env)
-                       (ess-r-set-evaluation-env))))
-    (message (ess-r-build-eval-message (or message "Eval region"))))
+  (or (ess-r-get-evaluation-env)
+      (ess-r-set-evaluation-env))
+  (message (ess-r-build-eval-message (or message "Eval region")))
   (ess-send-string proc (buffer-substring start end) visibly message))
 
 
@@ -1258,7 +1257,7 @@ selected (see `ess-r-set-evaluation-env')."
              (ess-display-help-on-object help-match)
              (process-send-string proc "\n"))
             (help-?-match
-             (ess-help-r--display-help-? proc string help-?-match)
+             (ess-help-r--display-help-? string help-?-match)
              (process-send-string proc "\n"))
             (page-match
              (switch-to-buffer-other-window
@@ -1268,7 +1267,7 @@ selected (see `ess-r-set-evaluation-env')."
              (process-send-string proc "\n")))
       t)))
 
-(defun ess-help-r--display-help-? (proc string help-?-match)
+(defun ess-help-r--display-help-? (string help-?-match)
   (cond ((string-match "\\?\\?\\(.+\\)" help-?-match)
          (ess--display-indexed-help-page (concat help-?-match "\n")
                                          "^\\([^ \t\n]+::[^ \t\n]+\\)[ \t\n]+"
@@ -1304,10 +1303,10 @@ selected (see `ess-r-set-evaluation-env')."
          (src-dir (expand-file-name "R" pkg-dir)))
     (if (not (or (bound-and-true-p ess-remote)
                  (file-remote-p (ess-get-process-variable 'default-directory))))
-        (inferior-ess-r-load-ESSR--local pkg-dir src-dir)
+        (inferior-ess--r-load-ESSR--local src-dir)
       (inferior-ess-r-load-ESSR--remote pkg-dir src-dir))))
 
-(defun inferior-ess-r-load-ESSR--local (pkg-dir src-dir)
+(defun inferior-ess--r-load-ESSR--local (src-dir)
   (let ((cmd (format "local({
                           source('%s/.load.R', local=TRUE) #define load.ESSR
                           load.ESSR('%s')
@@ -1371,7 +1370,7 @@ Then run `inferior-ess-r-reload-hook'."
 (defun ess-r-indent-line ()
   "Indent current line as ESS R code.
 Return the amount the indentation changed by."
-  (let ((indent (ess-calculate-indent nil))
+  (let ((indent (ess-calculate-indent))
         beg shift-amt
         (case-fold-search nil)
         (pos (- (point-max) (point))))
@@ -1440,7 +1439,7 @@ Return the amount the indentation changed by."
             (append (cdr ess-prefixed-block-patterns)
                     '("}?[ \t]*else")))))
 
-(defun ess-calculate-indent (&optional parse-start)
+(defun ess-calculate-indent ()
   "Return appropriate indentation for current line as ESS code.
 In usual case returns an integer: the column to indent to.
 Returns nil if line starts inside a string, t if in a comment."
@@ -1804,7 +1803,6 @@ Returns nil if line starts inside a string, t if in a comment."
          (from-line (progn
                       (goto-char (1+ (or from containing-sexp)))
                       (line-number-at-pos)))
-         (prev-pos (1- (point)))
          max-col)
     (while (< (line-number-at-pos) to-line)
       (forward-line)
@@ -1872,9 +1870,7 @@ Returns nil if line starts inside a string, t if in a comment."
 (defun ess-calculate-indent--continued ()
   "If a continuation line, return an indent of this line, otherwise nil."
   (save-excursion
-    (let* ((start-line (line-number-at-pos))
-           (prev-pos 0)
-           (cascade (eq (ess-offset-type 'continued) 'cascade))
+    (let* ((cascade (eq (ess-offset-type 'continued) 'cascade))
            (climbed (ess-climb-continuations cascade))
            max-col)
       (when climbed
@@ -2033,8 +2029,6 @@ state.")
 
 (defun ess-fill-args (&optional style)
   (let ((start-pos (point-min))
-        (orig-col (current-column))
-        (orig-line (line-number-at-pos))
         (bounds (ess-args-bounds 'marker))
         ;; Set undo boundaries manually
         (undo-inhibit-record-point t)
@@ -2281,7 +2275,7 @@ usage section, return nil."
           (goto-char (point-min))
           ;; Match objects until a parens
           (while (re-search-forward (rx bol (0+ whitespace) (group (1+ (not (any "("))))) end-of-usage t)
-            (add-to-list 'usage-objects (match-string-no-properties 1))
+            (push (match-string-no-properties 1) usage-objects)
             ;; Skip past function arguments
             (forward-list)))
         usage-objects))))
