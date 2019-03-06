@@ -1145,47 +1145,6 @@ nil and not t, query for each instance."
 This is used to make face adjustment a no-op when a buffer does
 not contain chunks.")
 
-(defvar ess-adjust-face-intensity 2
-  "Default intensity for adjusting faces.")
-
-(defun ess-adjust-face-background (start end &optional intensity)
-  "Adjust face background between START and END.
-On dark background, lighten.  Oposite on light."
-  (let* ((intensity (or intensity ess-adjust-face-intensity))
-         (color (color-lighten-name
-                 (face-background 'default)
-                 (if (eq (frame-parameter nil 'background-mode) 'light)
-                     (- intensity)
-                   intensity)))
-         (face (list (cons 'background-color color))))
-    (with-silent-modifications
-      (ess-adjust-face-properties start end 'face face))))
-
-;; Taken from font-lock.el.
-(defun ess-adjust-face-properties (start end prop value)
-  "Tweaked `font-lock-prepend-text-property'.
-Adds the `ess-face-adjusted' property so we only adjust face once."
-  (let ((val (if (listp value) value (list value))) next prev)
-    (while (/= start end)
-      (setq next (next-single-property-change start prop nil end)
-            prev (get-text-property start prop))
-      ;; Canonicalize old forms of face property.
-      (and (memq prop '(face font-lock-face))
-           (listp prev)
-           (or (keywordp (car prev))
-               (memq (car prev) '(foreground-color background-color)))
-           (setq prev (list prev)))
-      (add-text-properties start next
-                           (list prop (append val (if (listp prev) prev (list prev)))
-                                 'ess-face-adjusted t))
-      (setq start next))))
-
-(defun ess-find-overlay (pos prop)
-  (cl-some (lambda (overlay)
-             (when (overlay-get overlay prop)
-               overlay))
-           (overlays-at pos)))
-
 (defun ess-sleep ()
   "Put Emacs to sleep for `ess-sleep-for-shell' seconds (floats work)."
   (sleep-for ess-sleep-for-shell))
