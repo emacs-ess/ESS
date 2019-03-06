@@ -1350,8 +1350,7 @@ expression."
 
 (defun ess-continuations-bounds (&optional marker)
   (save-excursion
-    (let ((orig-point (point))
-          (beg (progn
+    (let ((beg (progn
                  (ess-escape-continuations)
                  (point))))
       (when beg
@@ -1524,7 +1523,7 @@ without curly braces."
 
 (defun ess-jump-name ()
   (ess-save-excursion-when-nil
-    (let (climbed quote-char)
+    (let (climbed)
       (skip-chars-forward " \t")
       ;; Jump over backquoted names
       (cond ((and (eq (char-after) ?`)
