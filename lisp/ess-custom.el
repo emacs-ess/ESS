@@ -700,10 +700,6 @@ TAB command is used."
   :type 'boolean
   :group 'ess-edit)
 
-(defvar-local ess-indent-line-function nil
-  "Function to be used for the current dialect
-nil means to use R/S indentation.")
-
 (define-obsolete-variable-alias 'ess-indent-level 'ess-indent-offset "15.09")
 (defvar ess-indent-offset 2
   "Main indentation offset that is commonly inherited by other offsets.

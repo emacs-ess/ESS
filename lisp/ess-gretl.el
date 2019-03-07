@@ -522,7 +522,7 @@ end keywords as associated values.")
   (setq-local comment-add 1)
   (setq-local comment-start-skip "\\s<+\\s-*")
   (setq-local comment-column 40)
-  (setq-local ess-indent-line-function 'gretl-indent-line)
+  (setq-local indent-line-function #'gretl-indent-line)
   (setq-local ess-local-customize-alist gretl-customize-alist)
   (when (fboundp 'ess-add-toolbar) (ess-add-toolbar)))
 

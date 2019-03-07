@@ -77,9 +77,7 @@
     (paragraph-ignore-fill-prefix . t)
     ;;(comment-indent-function  . 'S-comment-indent)
     ;;(ess-comment-indent           . 'S-comment-indent)
-    ;;(ess-indent-line                      . 'S-indent-line)
     ;;(ess-calculate-indent           . 'ess-calculate-indent)
-    (indent-line-function         . 'ess-indent-line)
     ;;(ess-keep-dump-files          . 'ask)
     ;; For Changelog add, require ' ' before <- : "attr<-" is a function name :
     (add-log-current-defun-header-regexp . "^\\(.+\\)\\s-+<-[ \t\n]*function"))

@@ -480,7 +480,7 @@ with `ess-roxy-hide-show-p' non-nil, call
         (whole-exp
          ;; If arg, always indent this line as S
          ;; and shift remaining lines of expression the same amount.
-         (let ((shift-amt (ess-indent-line))
+         (let ((shift-amt (funcall indent-line-function))
                beg end)
            (save-excursion
              (if ess-tab-always-indent
@@ -499,7 +499,6 @@ with `ess-roxy-hide-show-p' non-nil, call
                 (skip-chars-backward " \t")
                 (not (bolp))))
          (insert-tab))
-        ;; call ess-indent-line
         (t (funcall indent-line-function))))
 
 (defun ess-indent-or-complete ()
@@ -545,14 +544,8 @@ default of `ess-tab-complete-in-script' is nil. Also see
 (defun ess-indent-line ()
   "Indent current line as ESS code.
 Return the amount the indentation changed by."
-  ;; fixme: make this work with standard indent-line-function
-  (cond ((fboundp ess-indent-line-function)
-         (funcall ess-indent-line-function))
-        ;; else S and R default behavior
-        ((fboundp 'ess-r-indent-line)
-         (ess-r-indent-line))
-        ;; fallback on Emacs
-        (t (funcall indent-line-function))))
+  (declare (obsolete 'indent-line-function "ESS 19.04"))
+  (funcall indent-line-function))
 
 
 ;;; Dump Objects

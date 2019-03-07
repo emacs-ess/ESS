@@ -277,7 +277,7 @@ Better logic needed!  (see 2 uses, in this file).")
                                                                 (bolp)))))
                                                   (progn
                                                     (insert last-command-event)
-                                                    (ess-indent-line)
+                                                    (funcall indent-line-function)
                                                     (save-excursion
                                                       (if insertpos (goto-char (1+ insertpos)))
                                                       (delete-char -1))))
