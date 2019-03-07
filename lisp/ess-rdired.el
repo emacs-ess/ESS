@@ -271,9 +271,9 @@ Like `ess-rdired-view', but the object gets its own buffer name."
           (ess-command (concat "mode(" (ess-rdired-get objname) ")\n")
                        tmpbuf )
           (set-buffer tmpbuf)
-          (message (concat
-                    objname ": "
-                    (buffer-substring (+ 4 (point-min)) (1- (point-max)))))
+          (message "%s" (concat
+                         objname ": "
+                         (buffer-substring (+ 4 (point-min)) (1- (point-max)))))
           (kill-buffer tmpbuf)))))
 
 (defalias 'ess-rdired-expunge #'ess-rdired-delete)
