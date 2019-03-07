@@ -334,6 +334,7 @@ works."
 See also `ess-first-tab-never-complete'."
   :group 'ess
   :type 'boolean)
+(make-obsolete-variable 'ess-tab-complete-in-script 'tab-always-indent "ESS 19.04" 'set)
 
 (define-obsolete-variable-alias 'ess-first-tab-never-completes-p
   'ess-first-tab-never-complete "ESS 19.04")
@@ -693,12 +694,7 @@ bracket."
 
 ;;;*;;; Indentation parameters
 
-(defcustom ess-tab-always-indent t
-  "Non-nil means TAB should always reindent the current line.
-This happens regardless of where in the line point is when the
-TAB command is used."
-  :type 'boolean
-  :group 'ess-edit)
+(define-obsolete-variable-alias 'ess-tab-always-indent 'tab-always-indent "ESS 19.04")
 
 (define-obsolete-variable-alias 'ess-indent-level 'ess-indent-offset "15.09")
 (defvar ess-indent-offset 2

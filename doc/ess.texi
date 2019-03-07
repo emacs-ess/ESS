@@ -1689,14 +1689,9 @@ The indentation commands provided by ESS are:
 
 Try to indent first, and if code is already properly indented, complete
 instead.  In ess-mode, only tries completion if
-@code{ess-tab-complete-in-script} is non-nil.  See also
+@code{tab-always-indent} is @code{'complete}.  See also
 @code{ess-first-tab-never-complete}.
 @end deffn
-
-@defvr {User Option} ess-tab-complete-in-script
-If non-@code{nil}, @kbd{TAB} in script buffers tries to complete if
-there is nothing to indent.
-@end defvr
 
 @defvr {User Option} ess-first-tab-never-complete
 If non-@code{nil}, @kbd{TAB} never tries to complete in ess-mode.  The

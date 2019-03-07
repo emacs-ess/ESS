@@ -21,7 +21,7 @@
 ;; https://www.r-project.org/Licenses/
 ;;
 ;;; Commentary:
-;; 
+;;
 ;;; Code:
 
 (require 'ess)
@@ -260,9 +260,6 @@ Comments are indented in a similar way to Emacs-lisp mode:
 \\[ess-indent-exp] command indents each line of the syntactic unit following point.
 
 Variables controlling indentation style:
- `ess-tab-always-indent'
-    Non-nil means TAB in ESS mode should always reindent the current line,
-    regardless of where in the line point is when the TAB command is used.
  `ess-indent-offset'
     Indentation of ESS statements within surrounding block.
     The surrounding block's indentation is the indentation of the line on
@@ -460,16 +457,17 @@ suppresses messaging."
 
 (defun ess-indent-command (&optional whole-exp)
   "Indent current line as ESS code, or in some cases insert a tab character.
-If `ess-tab-always-indent' is non-nil (the default), always
-indent current line. Otherwise, indent the current line only if
-point is at the left margin or in the line's indentation;
-otherwise insert a tab. A numeric argument, regardless of its
-value, means indent rigidly all the lines of the expression
-starting after point so that this line becomes properly indented.
-The relative indentation among the lines of the expression are
-preserved. If in a roxygen block at the beginning of the line
-with `ess-roxy-hide-show-p' non-nil, call
-`ess-roxy-toggle-hiding' instead."
+If `tab-always-indent' is non-nil, always indent current line.
+Otherwise, indent the current line only if point is at the left
+margin or in the line's indentation; otherwise insert a tab. If
+given, WHOLE-EXP means indent rigidly all the lines of the
+expression starting after point so that this line becomes
+properly indented. The relative indentation among the lines of
+the expression are preserved.
+
+If in a roxygen block at the beginning of the line with
+`ess-roxy-hide-show-p' non-nil, call `ess-roxy-toggle-hiding'
+instead of indenting."
   (interactive "P")
   (cond ((and (fboundp 'ess-roxy-entry-p)
               (fboundp 'ess-roxy-toggle-hiding)
@@ -483,7 +481,7 @@ with `ess-roxy-hide-show-p' non-nil, call
          (let ((shift-amt (funcall indent-line-function))
                beg end)
            (save-excursion
-             (if ess-tab-always-indent
+             (if tab-always-indent
                  (beginning-of-line))
              (setq beg (point))
              (backward-up-list 1)
@@ -494,7 +492,7 @@ with `ess-roxy-hide-show-p' non-nil, call
              (setq beg (point)))
            (if (> end beg)
                (indent-code-rigidly beg end shift-amt))))
-        ((and (not ess-tab-always-indent)
+        ((and (not tab-always-indent)
               (save-excursion
                 (skip-chars-backward " \t")
                 (not (bolp))))
@@ -503,9 +501,8 @@ with `ess-roxy-hide-show-p' non-nil, call
 
 (defun ess-indent-or-complete ()
   "When region is selected indent the region.
-Otherwise, if `ess-tab-complete-in-script' is non-nil, try to
-indent, if code is already indented, complete instead. The
-default of `ess-tab-complete-in-script' is nil. Also see
+Otherwise, if `tab-always-indent' is 'complete, try to indent, if
+code is already indented, complete instead. Also see
 `ess-first-tab-never-complete'."
   (interactive)
   (if (use-region-p)
@@ -513,8 +510,9 @@ default of `ess-tab-complete-in-script' is nil. Also see
     (let ((shift (let ((indent (current-indentation)))
                    (ess-indent-command)
                    (- (current-indentation) indent))))
-      (when (and ess-tab-complete-in-script
-                 (numberp shift) ;; can be nil if ess-tab-always-indent is nil
+      (when (and (or (equal tab-always-indent 'complete)
+                     ess-tab-complete-in-script)
+                 (numberp shift) ;; can be nil if tab-always-indent is nil
                  (equal shift 0)
                  (or (eq last-command 'ess-indent-or-complete)
                      (null ess-first-tab-never-complete)

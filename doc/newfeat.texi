@@ -104,6 +104,9 @@ This includes @code{ess-show-buffer-action},
 @code{inferior-ess-frame-alist}. See above about ESS respecting
 @code{display-buffer-alist}.
 
+@item Variables @code{ess-tab-always-indent} and @code{ess-tab-complete-in-script}.
+Use the Emacs-wide setting of @code{tab-always-indent} instead.
+
 @item @code{inferior-ess-*-start-file} variables.
 All modes except Stata did not respect customization of this variable.
 In order to load a file on startup, you should put a function on
