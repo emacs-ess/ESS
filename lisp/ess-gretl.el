@@ -504,9 +504,7 @@ end keywords as associated values.")
 ;; command for that version of Julia is made available.  ")
 
 (defcustom inferior-gretl-args ""
-  "String of arguments used when starting gretl.
-These arguments are currently not passed to other versions of gretl that have
-been created using the variable `ess-r-versions'."
+  "String of arguments used when starting gretl."
   :group 'ess-gretl
   :type 'string)
 

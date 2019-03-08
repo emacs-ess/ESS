@@ -77,6 +77,30 @@
 (defvar style)
 (defvar type)
 
+(define-obsolete-variable-alias 'ess-r-versions 'ess-r-runner-prefixes "ESS 19.04")
+(defcustom ess-r-runner-prefixes
+  (let ((r-ver '("R-1" "R-2" "R-3" "R-devel" "R-patched")))
+    (if (eq system-type 'darwin) (append r-ver '("R32" "R64")) r-ver))
+  "List of partial strings for versions of R to access within ESS.
+Each string specifies the start of a filename. If a filename
+beginning with one of these strings is found on variable
+`exec-path', a command for that version of R is made available.
+For example, if the file \"R-1.8.1\" is found and this variable
+includes the string \"R-1\", a function called `R-1.8.1' will be
+available to run that version of R. If duplicate versions of the
+same program are found (which happens if the same path is listed
+on variable `exec-path' more than once), they are ignored by
+calling `delete-dups'. Set this variable to nil to disable
+searching for other versions of R. Setting this variable directly
+does not take effect; use either \\[customize-option] or set the
+value by using `ess-r-runners-reset'."
+  :group 'ess-R
+  :type '(repeat string)
+  :set #'ess-r-runners-reset
+  ;; Use `custom-initialize-default' since we call
+  ;; `ess-r-define-runners' at the end of this file directly.
+  :initialize #'custom-initialize-default)
+
 
 
 ;;*;; Mode definition
@@ -435,27 +459,9 @@ fill=TRUE); try(traceback(), silent=TRUE)})\n")
 ;; (add-to-list 'compilation-error-regexp-alist-alist
 ;;              '(R_C "^\\([^-+ [:digit:]][^: \t\n]+\\):\\([0-9]+\\):\\([0-9]+\\):"  2 3 nil 2 1))
 
-
-(defvar ess-r-versions
-  (let ((r-ver '("R-1" "R-2" "R-3" "R-devel" "R-patched")))
-    (if (eq system-type 'darwin) (append r-ver '("R32" "R64")) r-ver))
-  "List of partial strings for versions of R to access within ESS.
-Each string specifies the start of a filename.  If a filename
-beginning with one of these strings is found on `exec-path', a
-command for that version of R is made available.  For example, if the
-file \"R-1.8.1\" is found and this variable includes the string
-\"R-1\", a function called `M-x R-1.8.1' will be available to run that
-version of R.
-If duplicate versions of the same program are found (which happens if
-the same path is listed on `exec-path' more than once), they are
-ignored by calling `delete-dups'.
-Set this variable to nil to disable searching for other versions of R.
-If you set this variable, you need to restart Emacs (and set this variable
-before ess-site is loaded) for it to take effect.")
-
 (define-obsolete-variable-alias 'ess-r-versions-created 'ess-r-created-runners "ESS 18.10")
 (defvar ess-r-created-runners nil
-  "List of R-versions found from `ess-r-versions' on the system.")
+  "List of R-versions found from `ess-r-runner-prefixes' on the system.")
 
 
 ;;;*;;; Mode init
@@ -732,14 +738,13 @@ Returns either Name, a string, or a (Name . Path) cons, such as
 
 (defun ess-r-define-runners ()
   "Generate functions for starting other versions of R.
-See `ess-r-versions' for strings that determine which functions
+See `ess-r-runner-prefixes' for strings that determine which functions
 are created.  On MS Windows, this works using
 `ess-rterm-version-paths' instead.
 
 The functions will normally be placed on the menubar and stored
 as `ess-r-created-runners' upon ESS initialization."
-  (when ess-r-versions
-    ;; try to find R versions in ess-r-versions.
+  (when ess-r-runner-prefixes
     (let ((versions
            ;; Find which versions of R we want.  Remove the pathname, leaving just
            ;; the name of the executable.
@@ -750,7 +755,7 @@ as `ess-r-created-runners' upon ESS initialization."
               (mapcar #'file-name-nondirectory
                       (apply #'nconc
                              (mapcar #'ess-find-exec-completions
-                                     ess-r-versions)))))))
+                                     ess-r-runner-prefixes)))))))
       ;; Iterate over each string in VERSIONS, creating a new defun each time.
       (setq ess-r-created-runners versions)
       (if ess-microsoft-p
@@ -764,6 +769,17 @@ as `ess-r-created-runners' upon ESS initialization."
                                 ess-r-created-runners)))
           (easy-menu-add-item ess-mode-menu '("Start Process")
                               (cons "Other" new-menu)))))))
+
+(defun ess-r-runners-reset (sym val)
+  "Regenerate runners.
+Set SYM to VAL, call `fmakunbound' on all elements of
+`ess-r-created-runners', then define new runners."
+  (set-default sym val)
+  (dolist (f ess-r-created-runners)
+    (fmakunbound (intern f)))
+  (setq ess-r-created-runners nil)
+  (ess-r-define-runners))
+
 (define-obsolete-function-alias
   'ess-r-versions-create 'ess-r-define-runners "ESS 18.10")
 
@@ -926,7 +942,7 @@ use \"bin/Rterm.exe\"."
             (ess-flatten-list
              (mapcar (lambda (r-prefix)
                        (file-name-all-completions r-prefix ess-R-root-dir))
-                     (append '("rw") ess-r-versions))))))
+                     (append '("rw") ess-r-runner-prefixes))))))
       (mapcar (lambda (dir)
                 (let ((R-path
                        (concat ess-R-root-dir

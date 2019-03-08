@@ -48,7 +48,7 @@ R on GNU/Linux systems and other Unix-like systems (macOS): If you have
 R-1.8.1}.  By default, ESS will find versions of R beginning ``R-1'',
 ``R-2'', ``R-3'', ``R-devel'', or ``R-patched''.  If your versions of R
 are called other names, consider renaming them with a symbolic link or
-change the variable @code{ess-r-versions}.  To see which functions have
+change the variable @code{ess-r-runners-prefixes}.  To see which functions have
 been created for starting different versions of R, type @kbd{M-x R-} and
 then hit [Tab].  These other versions of R can also be started from the
 "ESS->Start Process->Other" menu.
@@ -66,47 +66,6 @@ Once ESS has found these extra versions of R, it will then create a new
 function, called @kbd{M-x R-newest}, which will call the newest version
 of R that it found.  (ESS examines the date in the first line of
 information from @code{R --version} to determine which is newest.)
-
-S on Unix systems: If you have "Splus7" on your @code{exec-path}, it can
-be started using @kbd{M-x Splus7}.  By default, ESS will find all
-executables beginning "Splus" on your path.  If your versions of S are
-called other names, consider renaming them with a symbolic link or
-change the variable @code{ess-s-versions}.  To see which functions have
-been created for starting different versions of Splus, type @kbd{M-x
-Splus} and then hit [Tab].  These other versions of Splus can also be
-started from the "ESS->Start Process->Other" menu.
-
-A second mechanism is also available for running other versions of Splus.
-The variable @code{ess-s-versions-list} is a list of lists; each sublist
-should be of the form: (DEFUN-NAME PATH ARGS).  DEFUN-NAME is the name
-of the new emacs function you wish to create to start the new S process;
-PATH is the full path to the version of S you want to run; ARGS is an
-optional string of command-line arguments to pass to the S process.
-Here is an example setting:
-@example
-(setq ess-s-versions-list
-      '( ("Splus64" "/usr/local/bin/Splus64")
-         ("Splus64-j" "/usr/local/bin/Splus64" "-j")))
-@end example
-which will then allow you to do @kbd{M-x Splus64-j} to start  Splus64
-with the corresponding command line arguments.
-
-If you change the value of either @code{ess-r-versions} or
-@code{ess-s-versions-list}, you should put them in your Emacs
-configuration file before ess-site is loaded, since the new Emacs
-functions are created when ESS is loaded.
-
-Sqpe (S-Plus running inside an Emacs buffer) on Windows systems: If you
-have an older version of S-Plus (S-Plus 6.1 for example) on your system,
-ir can be started inside an Emacs buffer with @kbd{M-x splus61}.  By
-default, ESS will find versions of S-Plus located in the installation
-directories that Insightful uses by default.  If your versions of S-Plus
-are anywhere else, you will need to change the variable
-@code{ess-SHOME-versions}.  To see which functions have been created for
-starting different versions of S-Plus, type @kbd{M-x spl} and then hit
-[Tab].  These other versions of S-Plus can also be started from the
-"ESS->Start Process->Other" menu.
-
 
 @node Philosophies for using ESS(R), Example ESS usage, iESS(R)--Inferior ESS processes, ESS for R
 @comment  node-name,  next,  previous,  up
