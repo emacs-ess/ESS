@@ -35,7 +35,6 @@
 ;; The only ESS file this file should depend on is ess-custom.el
 (require 'cl-lib)
 (require 'comint)
-(require 'ess)
 (require 'ess-custom)
 (require 'ido)
 (require 'newcomment)
@@ -1155,7 +1154,7 @@ not contain chunks.")
   (mapc (lambda (pair)
           (make-local-variable (car pair))
           (set (car pair) (eval (cdr pair)))
-          (when ess--make-local-vars-permanent
+          (when (bound-and-true-p ess--make-local-vars-permanent)
             (put (car pair) 'permanent-local t))) ;; hack for Rnw
         alist))
 

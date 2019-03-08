@@ -81,11 +81,6 @@ for ESS, such as icons.")
                     "../etc/ess, ../etc, ../../etc/ess or ./etc"))
           (sit-for 4))))))
 
-(defvar-local ess--make-local-vars-permanent nil
-  "If this variable is non-nil in a buffer make all variable permannet.
-Used in noweb modes.")
-(put 'ess--make-local-vars-permanent 'permanent-local t)
-
 
 ;; Versions
 

@@ -100,6 +100,11 @@
 ;; (defconst ess-noweb-mode-RCS-Name
 ;;   " ")
 
+(defvar-local ess--make-local-vars-permanent nil
+  "If this variable is non-nil in a buffer make all variable permannet.
+Used in noweb modes.")
+(put 'ess--make-local-vars-permanent 'permanent-local t)
+
 (defvar ess-noweb-mode-prefix "\M-n"
   "Prefix key to use for noweb mode commands.
 The value of this variable is checked as part of loading noweb mode.

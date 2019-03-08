@@ -38,6 +38,7 @@
   (require 'tramp)
   (require 'subr-x))
 (require 'ess-utils)
+(require 'ess)
 
 (require 'ansi-color)
 (require 'comint)
