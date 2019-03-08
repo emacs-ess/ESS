@@ -557,8 +557,7 @@ SWITCHES is passed to `comint-exec'."
                           procname
                           inferior-ess-program
                           nil
-                          (ess-line-to-list-of-words
-                           switches)))))
+                          (split-string switches)))))
     buffer))
 
 

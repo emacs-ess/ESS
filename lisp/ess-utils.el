@@ -100,12 +100,6 @@ THING can be 'function, 'paragraph, or 'line."
    ((eql thing 'paragraph) (forward-paragraph))
    ((eql thing 'function) (end-of-defun) (skip-chars-backward " \t\n"))))
 
-(defun ess-line-end-position (&optional N)
-  "Return the 'point' at the end of N lines. N defaults to 1, i.e., current line."
-  (save-excursion
-    (end-of-line N)
-    (point)))
-
 (defun ess-search-except (regexp &optional except backward)
   "Search for a REGEXP and store as match 1.
 Optionally ignore strings that match exceptions."
@@ -185,21 +179,7 @@ Drops 'nil' entries."
 (define-obsolete-function-alias 'ess-delete-blank-lines
   'delete-blank-lines "ESS 19.04")
 
-;; Parse a line into its constituent parts (words separated by
-;; whitespace).    Return a list of the words.
-;; Taken from rlogin.el, from the comint package, from XEmacs 20.3.
-(defun ess-line-to-list-of-words (line)
-  (if (listp line)
-      line
-    (let ((list nil)
-          (posn 0))
-      ;; (match-data (match-data)))
-      (while (string-match "[^ \t\n]+" line posn)
-        (setq list (cons (substring line (match-beginning 0) (match-end 0))
-                         list))
-        (setq posn (match-end 0)))
-      (store-match-data (match-data))
-      (nreverse list))))
+(define-obsolete-function-alias 'ess-line-to-list-of-words #'split-string "ESS 19.04")
 
 
 ;;*;; System
