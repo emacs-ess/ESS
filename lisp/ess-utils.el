@@ -151,10 +151,6 @@ nil."
       (if (bufferp file-or-buffer) file-or-buffer
         (find-buffer-visiting file-or-buffer))))
 
-(defun ess-return-list (ess-arg)
-  "If ESS-ARG is a list return it, else return ESS-ARG in a list."
-  (if (listp ess-arg) ess-arg (list ess-arg)))
-
 (defun ess-uniq (list predicate)
   "Uniquify LIST, stably, deleting elements using PREDICATE.
 Return the list with subsequent duplicate items removed by side effects.
@@ -223,38 +219,22 @@ Drops 'nil' entries."
       t)))
 
 (define-obsolete-function-alias 'ess-find-exec 'ess-find-exec-completions "ESS 19.04")
-(defun ess-find-exec-completions (ess-root-arg &optional ess-exec-dir)
-  "Given the root of an executable file name, find all possible completions.
-Search for the executables in ESS-EXEC-DIR (which defaults to
-`exec-path' if no value is given)."
-  (let* ((ess-exec-path
-          (if ess-exec-dir (ess-return-list ess-exec-dir) exec-path))
-         (ess-tmp-exec nil)
-         (ess-tmp-dir nil)
-         (ess-tmp-files nil)
-         (ess-tmp-file nil))
-    (while ess-exec-path
-      (setq ess-tmp-dir (car ess-exec-path)
-            ess-exec-path (cdr ess-exec-path))
-      (when
-          (and (> (length ess-tmp-dir) 0)
-               (file-accessible-directory-p ess-tmp-dir))
+(defun ess-find-exec-completions (root)
+  "Given the ROOT of an executable file name, find all possible completions.
+Search for the executables in the variable `exec-path'."
+  (let (executables)
+    (dolist (dir exec-path)
+      (when (and (> (length dir) 0)
+                 (file-accessible-directory-p dir))
         ;; the first test above excludes "" from exec-path, which can be
         ;; problematic with Tramp.
-        (setq ess-tmp-files
-              (file-name-all-completions ess-root-arg ess-tmp-dir))
-        (while ess-tmp-files
-          (setq ess-tmp-file
-                (concat (file-name-as-directory ess-tmp-dir)
-                        (car ess-tmp-files))
-                ess-tmp-files (cdr ess-tmp-files))
-          (if (and (file-executable-p ess-tmp-file)
-                   (not (backup-file-name-p ess-tmp-file))
-                   (not (file-directory-p ess-tmp-file)))
-              ;; we have found a possible executable, so keep it.
-              (setq ess-tmp-exec
-                    (nconc ess-tmp-exec (list ess-tmp-file)))))))
-    ess-tmp-exec))
+        (dolist (f (file-name-all-completions root dir))
+          (setq f (expand-file-name f dir))
+          (when (and (file-executable-p f)
+                     (not (backup-file-name-p f))
+                     (not (file-directory-p f)))
+            (push f executables)))))
+    executables))
 
 (defun ess-drop-non-directories (file-strings)
   "Drop all entries in FILE-STRINGS that do not \"look like\" directories."
