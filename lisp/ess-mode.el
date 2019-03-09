@@ -465,17 +465,16 @@ suppresses messaging."
 
 (defun ess-indent-command (&optional whole-exp)
   "Indent current line as ESS code, or in some cases insert a tab character.
-If `ess-tab-always-indent' is non-nil (the default), always indent
-current line.  Otherwise, indent the current line only if point is at
-the left margin or in the line's indentation; otherwise insert a tab.
-A numeric argument, regardless of its value, means indent rigidly all
-the lines of the expression starting after point so that this line
-becomes properly indented.  The relative indentation among the lines
-of the expression are preserved.
-
-If in a roxygen block at the beginning of the line with
-`ess-roxy-hide-show-p' non-nil, call `ess-roxy-toggle-hiding'
-instead of indenting."
+If `ess-tab-always-indent' is non-nil (the default), always
+indent current line. Otherwise, indent the current line only if
+point is at the left margin or in the line's indentation;
+otherwise insert a tab. A numeric argument, regardless of its
+value, means indent rigidly all the lines of the expression
+starting after point so that this line becomes properly indented.
+The relative indentation among the lines of the expression are
+preserved. If in a roxygen block at the beginning of the line
+with `ess-roxy-hide-show-p' non-nil, call
+`ess-roxy-toggle-hiding' instead."
   (interactive "P")
   (cond ((and (fboundp 'ess-roxy-entry-p)
               (fboundp 'ess-roxy-toggle-hiding)
@@ -517,7 +516,9 @@ default of `ess-tab-complete-in-script' is nil. Also see
   (interactive)
   (if (use-region-p)
       (indent-region (region-beginning) (region-end))
-    (let ((shift (ess-indent-command)))
+    (let ((shift (let ((indent (current-indentation)))
+                   (ess-indent-command)
+                   (- (current-indentation) indent))))
       (when (and ess-tab-complete-in-script
                  (numberp shift) ;; can be nil if ess-tab-always-indent is nil
                  (equal shift 0)
