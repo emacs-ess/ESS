@@ -1216,12 +1216,12 @@ This handles Tramp when working on a remote."
   ;; Pop up an inferior window
   (save-selected-window
     (ess-switch-to-ESS t))
+  (setq filename (ess-load-file--normalise-file filename))
   (ess-load-file--override filename))
 
 (cl-defgeneric ess-load-file--override (filename)
-  (let ((file (ess-load-file--normalise-file filename)))
-    (let ((command (ess-build-load-command file nil t)))
-      (ess-send-string (ess-get-process) command t))))
+  (let ((command (ess-build-load-command file nil t)))
+    (ess-send-string (ess-get-process) command t)))
 
 ;; C-c C-l  *used to* eval code:
 (defun ess-msg-and-comint-dynamic-list-input-ring ()

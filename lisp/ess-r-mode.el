@@ -1179,7 +1179,6 @@ attached packages."
 
 This prompts for a package when no package is currently
 selected (see `ess-r-set-evaluation-env')."
-  (interactive)
   (ess-force-buffer-current "R process to use: ")
   (let* ((pkg-name (ess-r-get-evaluation-env))
          (command (ess-build-load-command file nil t pkg-name)))
