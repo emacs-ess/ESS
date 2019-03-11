@@ -163,8 +163,8 @@ A .lst file is a SAS listing file when:
   :group 'ess-sas
   :type  'integer)
 
-(defcustom sas-indent-ignore-comment "*"
-  "Comments that start with this string are ignored in indentation."
+(defcustom sas-indent-ignore-comment "\\*"
+  "Comments that start with this regular expression are ignored in indentation."
   :group 'ess-sas
   :type  'string)
 
