@@ -259,39 +259,37 @@ about which objects are exported and which stay hidden in the
 namespace.")
 
 (defun ess-r-font-lock-syntactic-face-function (state)
-  (let ((string-end (save-excursion
-                      (and (nth 3 state)
-                           (ess-goto-char (nth 8 state))
-                           (ess-forward-sexp)
-                           (point)))))
-    (when (eq (nth 3 state) ?`)
-      (put-text-property (nth 8 state) string-end 'ess-r-backquoted t))
-    (cond
-     ((eq (nth 3 state) ?%)
-      (if (eq (point) (1- string-end))
-          (when (cdr (assq 'ess-fl-keyword:operators ess-R-font-lock-keywords))
-            'ess-operator-face)
-        (if (cdr (assq 'ess-R-fl-keyword:%op% ess-R-font-lock-keywords))
-            'ess-%op%-face
-          'default)))
-     ((save-excursion
-        (and (cdr (assq 'ess-R-fl-keyword:fun-defs ess-R-font-lock-keywords))
-             (ess-goto-char string-end)
-             (ess-looking-at "<-")
-             (ess-goto-char (match-end 0))
-             (ess-looking-at "function\\b" t)))
-      font-lock-function-name-face)
-     ((save-excursion
-        (and (cdr (assq 'ess-fl-keyword:fun-calls ess-R-font-lock-keywords))
-             (ess-goto-char string-end)
-             (ess-looking-at "(")))
-      ess-function-call-face)
-     ((eq (nth 3 state) ?`)
-      'default)
-     ((nth 3 state)
-      font-lock-string-face)
-     (t
-      font-lock-comment-face))))
+  (if (nth 3 state)
+      ;; string case
+      (let ((string-end (save-excursion
+                          (ess-goto-char (nth 8 state))
+                          (ess-forward-sexp)
+                          (point))))
+        (cond
+         ((eq (nth 3 state) ?%)
+          (if (eq (point) (1- string-end))
+              (when (cdr (assq 'ess-fl-keyword:operators ess-R-font-lock-keywords))
+                'ess-operator-face)
+            (if (cdr (assq 'ess-R-fl-keyword:%op% ess-R-font-lock-keywords))
+                'ess-%op%-face
+              'default)))
+         ((save-excursion
+            (and (cdr (assq 'ess-R-fl-keyword:fun-defs ess-R-font-lock-keywords))
+                 (ess-goto-char string-end)
+                 (ess-looking-at "<-")
+                 (ess-goto-char (match-end 0))
+                 (ess-looking-at "function\\b" t)))
+          font-lock-function-name-face)
+         ((save-excursion
+            (and (cdr (assq 'ess-fl-keyword:fun-calls ess-R-font-lock-keywords))
+                 (ess-goto-char string-end)
+                 (ess-looking-at "(")))
+          ess-function-call-face)
+         ((eq (nth 3 state) ?`)
+          'default)
+         (t
+          font-lock-string-face)))
+    font-lock-comment-face))
 
 (defvar ess-r--non-fn-kwds
   '("in" "else" "break" "next" "repeat"))
