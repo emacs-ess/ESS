@@ -167,28 +167,23 @@
      ["Eval region | func | para & step" ess-eval-region-or-function-or-paragraph-and-step t]
      ["Eval region | line & step" ess-eval-region-or-line-visibly-and-step t]
      "-----"
-     ["Eval buffer"     ess-eval-buffer                   t]
+     ["Eval buffer"     ess-eval-buffer                    t]
      ["Eval buffer till here" ess-eval-buffer-from-beg-to-here t]
      ["Eval buffer from here" ess-eval-buffer-from-here-to-end t]
-     ["Eval region"     ess-eval-region                   t]
-     ["Eval function"   ess-eval-function                 t]
-     ["Eval line"       ess-eval-line                     t]
+     ["Eval region"     ess-eval-region                    t]
+     ["Eval function"   ess-eval-function                  t]
+     ["Eval line"       ess-eval-line                      t]
      ["Eval line & step" ess-eval-line-and-step            t]
      ["Eval paragraph"   ess-eval-paragraph                t]
-     ["Eval paragraph & step" ess-eval-paragraph-and-step      t]
-     ["Eval chunk"      ess-eval-chunk           ess-noweb-mode]
-     ["Eval chunk and step"      ess-eval-chunk-and-step  ess-noweb-mode]
-     ["Eval thread"     ess-eval-thread          ess-noweb-mode]
-     ["About"           (ess-goto-info "Evaluating code") t]
+     ["Eval paragraph & step" ess-eval-paragraph-and-step  t]
+     ["About"           (ess-goto-info "Evaluating code")  t]
      )
     ("Eval and Go"
      ["Eval buffer"     ess-eval-buffer-and-go            t]
      ["Eval region"     ess-eval-region-and-go            t]
      ["Eval function"   ess-eval-function-and-go          t]
      ["Eval line"       ess-eval-line-and-go              t]
-     ["Eval paragraph"   ess-eval-paragraph-and-go         t]
-     ["Eval chunk"      ess-eval-chunk-and-go    ess-noweb-mode]
-     ["Eval thread"     ess-eval-thread-and-go   ess-noweb-mode]
+     ["Eval paragraph"  ess-eval-paragraph-and-go         t]
      ["About"           (ess-goto-info "Evaluating code") t]
      )
     ("Motion"
@@ -197,14 +192,14 @@
      "-----"
      ["Backward list"           backward-list                   t]
      ["Forward list"            forward-list                    t]
-     ["Next parenthesis"                down-list                       t]
+     ["Next parenthesis"        down-list                       t]
      ["Enclosing parenthesis"   backward-up-list                t]
      ["Backward sexp"           backward-sexp                   t]
      ["Forward sexp"            forward-sexp                    t]
      ["About"                   (Info-goto-node "(Emacs)Lists") t]
      )
     ("ESS Edit"
-     ["Edit new object"         ess-dump-object-into-edit-buffer t]
+     ["Edit new object"   ess-dump-object-into-edit-buffer      t]
      ["Complete Filename" comint-replace-by-expanded-filename   t]
      ["Complete File or Object"   ess-indent-or-complete        t]
      ["Kill sexp"         kill-sexp                             t]
