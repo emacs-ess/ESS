@@ -1220,7 +1220,7 @@ This handles Tramp when working on a remote."
   (ess-load-file--override filename))
 
 (cl-defgeneric ess-load-file--override (filename)
-  (let ((command (ess-build-load-command file nil t)))
+  (let ((command (ess-build-load-command filename nil t)))
     (ess-send-string (ess-get-process) command t)))
 
 ;; C-c C-l  *used to* eval code:
