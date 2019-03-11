@@ -325,6 +325,7 @@ don't want it.
 See info node `(ido) Top' for more information about how ido
 works."
   :group 'ess
+  :require 'ido
   :type 'boolean)
 
 

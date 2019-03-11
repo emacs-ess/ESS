@@ -36,7 +36,6 @@
 (require 'cl-lib)
 (require 'comint)
 (require 'ess-custom)
-(require 'ido)
 (require 'newcomment)
 (defvar ac-modes)
 (declare-function ess-eval-linewise "ess-inf")
@@ -413,16 +412,20 @@ ess-[dialect]-font-lock-keywords variable."
 (defvar ido-context-switch-command)
 (defvar ido-directory-too-big)
 (defvar ido-directory-nonreadable)
+(defvar ido-current-directory)
+(defvar ido-enable-flex-matching)
+(declare-function ido-read-internal "ido" (item prompt hist &optional default require-match initial))
 
 (defun ess-completing-read (prompt collection &optional predicate
                                    require-match initial-input hist def)
   "Read a string in the minibuffer, with completion.
 Use `ido-completing-read' if IDO interface is present, or fall
-back on classical `completing-read' otherwise. Meaning of
-arguments is as in `completing-read' (PROMPT is automatically
-suffixed with ': ' and (default %s) when needed). If HIST is null
-use `ess--completing-hist' as history. See also `ess-use-ido'."
-  (let ((use-ido (and ess-use-ido (featurep 'ido))))
+back on classical `completing-read' otherwise. Meaning of PROMPT,
+COLLECTION, PREDICATE, REQUIRE-MATCH, INITIAL-INPUT, HIST, and
+DEF is as in `completing-read'. PROMPT is automatically suffixed
+with ': ' and (default %s) when needed. If HIST is nil use
+`ess--completing-hist' as history. See also `ess-use-ido'."
+  (let ((use-ido (and ess-use-ido (require 'ido nil t))))
     (setq hist (or hist 'ess--completing-hist))
     (when (and def (not use-ido)) ;; ido places in front and highlights the default
       (setq prompt (format "%s(default %s)" prompt def)))
