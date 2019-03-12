@@ -2899,7 +2899,7 @@ Uses `temp-buffer-show-function' and respects
 (defun ess--inject-code-from-file (file)
   ;; this is different from ess-load-file
   (let ((content (with-temp-buffer
-                   (insert-file-contents file)
+                   (insert-file-contents-literally file)
                    (buffer-string))))
     (when (string= ess-dialect "R")
       ;; don't detect intermediate prompts

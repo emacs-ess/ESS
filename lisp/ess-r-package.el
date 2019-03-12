@@ -199,7 +199,7 @@ Root is determined by locating `ess-r-package-root-file'."
         (case-fold-search t))
     (when (file-exists-p file)
       (with-temp-buffer
-        (insert-file-contents file)
+        (insert-file-contents-literally file)
         (goto-char (point-min))
         (when (re-search-forward "package: \\(.*\\)" nil t)
           (match-string 1))))))

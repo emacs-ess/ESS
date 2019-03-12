@@ -1335,7 +1335,7 @@ selected (see `ess-r-set-evaluation-env')."
   (let* ((loadremote (expand-file-name "LOADREMOTE" pkg-dir))
          (r-load-code (if (file-exists-p loadremote)
                           (with-temp-buffer
-                            (insert-file-contents loadremote)
+                            (insert-file-contents-literally loadremote)
                             (buffer-string))
                         (error "Cannot find ESSR source code"))))
     (unless (ess-boolean-command (format r-load-code essr-version) nil 0.1)
