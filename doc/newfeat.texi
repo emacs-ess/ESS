@@ -12,7 +12,7 @@ Background actions such as completion and directory synchronization
 should not block the process and should not cause printing of the
 extraneous output to the interpreter.
 
-@item Activate @code{goto-address-mode} for url and emal highlighting in inferior buffers. 
+@item Activate @code{goto-address-mode} for url and email highlighting in inferior buffers.
 
 @item @code{smart-underscore} and @code{ess-smart-S-assign-key} have been removed.
 Users who liked the previous behavior (i.e. underscore inserting ``<-'')
