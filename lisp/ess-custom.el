@@ -1947,17 +1947,8 @@ from `inferior-ess-primary-prompt' and `inferior-ess-secondary-prompt'.")
 
 ;;*;; Process-dependent variables
 
-(defvar ess-search-list nil
-  "Deprecated. Use (ess-search-list) or (ess-process-get 'search-list) instead.")
-(make-obsolete-variable 'ess-search-list nil "ESS[12.09]")
-
 (defvar-local ess-sl-modtime-alist nil
   "Alist of modification times for all ess directories accessed this session.")
-
-(defvar ess-sp-change nil
-  "Variable not used. Use (ess-process-get 'sp-for-help-changed?) instead.")
-(make-obsolete-variable 'ess-sp-change nil "ESS[12.09]")
-;; (make-variable-buffer-local 'ess-sp-change)
 
 (defvar-local ess-prev-load-dir/file nil
   "This symbol saves the (directory . file) pair used in the last
