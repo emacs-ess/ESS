@@ -364,7 +364,6 @@ REG-START gives the start location from where to search linkifying, and HELP-OBJ
   "Provide help on object at the beginning of line.
 It's intended to be used in R-index help pages. Load the package
 if necessary.  It is bound to RET and C-m in R-index pages."
-  (interactive)
   (let* ((string (button-label button))
          (command
           (cond ((equal ess-dialect "R")

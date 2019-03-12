@@ -1094,7 +1094,6 @@ highlighted.")
 (defun ess--dbg-remove-empty-lines (string)
   "Remove empty lines from STRING (which interfere with evals) during debug.
 This function is placed in `ess-presend-filter-functions'."
-  ;; the process here is an ugly reliance on dynamic scope
   (if (and ess--dbg-del-empty-p (ess-process-get 'dbg-active))
       (replace-regexp-in-string "\n\\s *$" "" string)
     string))
@@ -1534,7 +1533,6 @@ It's called from `inferior-ess-tracebug-output-filter'. DBUFF
 must be the *ess.dbg* buffer associated with the process. If
 OTHER-WINDOW is non nil, attempt to open the location in a
 different window."
-  (interactive)
   (let (t-debug-position ref)
     (with-current-buffer dbuff
       (setq ref (ess--dbg-get-next-ref -1 (point-max) ess--dbg-last-ref-marker
@@ -1698,7 +1696,6 @@ of the search.  REG is the regular expression to search with.  nF
 - sub-expression of REG giving the 'file'; defaults to 1.  nL -
 giving the 'line'; defaults to 2.  nC - sub-expr giving the
 'column'; defaults to 3."
-  (interactive "p")
   (unless ess--dbg-buf-p
     (error "Not in *ess.dbg* buffer"))
   (setq nF (or nF 1)
