@@ -1708,31 +1708,6 @@ giving the 'line'; defaults to 2.  nC - sub-expr giving the
       (list (match-string nF) (match-string-no-properties nL) (match-string-no-properties nC))
     nil))
 
-(defun ess--dbg-next-ref-function (n &optional reset)
-  "Advance to the next reference and visit the location given by the reference.
-This is the value of `next-error-function' in *ess.dbg* buffers."
-  (interactive "p")
-  (if reset
-      (set-marker ess--dbg-current-ref ess--dbg-last-ref-marker))
-  (let ((loc (ess--dbg-get-next-ref n nil ess--dbg-current-ref))  ;; moves point to next/prev ref if any
-                                        ; loc is  (file . line_nr)
-        dbuff)
-    (if loc
-        (progn
-          (set-marker ess--dbg-current-ref (line-end-position))
-          (set-marker overlay-arrow-position (line-beginning-position))
-          (setq dbuff (ess--dbg-find-buffer  (car loc)))
-          (pop-to-buffer-same-window dbuff)
-          (save-restriction
-            (widen)
-            (goto-char 1)
-            (forward-line (1- (cdr loc))))
-          (move-marker ess--dbg-current-debug-position (line-beginning-position)) ; move the overlay-arrow
-          (back-to-indentation))
-      (if (>= 0 (or n 1))
-          (error "Moved past first debug line")
-        (error "Moved past last debug line")))))
-
 (defun ess--debug-keys-message-string (&optional map)
   (let ((overriding-local-map (or map ess-debug-minor-mode-map)))
     (substitute-command-keys
