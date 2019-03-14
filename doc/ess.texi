@@ -654,6 +654,18 @@ process.
          (dedicated . t))))
 @end example
 
+By default, ESS usually prefers splitting the frame into multiple
+windows so that you can work with both the R script and the R REPL
+visible at once. If you want to override this behavior so that the
+script buffer and the process buffer share the same window, you can do
+so like this:
+
+@example
+(setq display-buffer-alist
+      '(("*R" . ((display-buffer-same-window) (inhibit-same-window . nil)))
+        ("\\.R$" . ((display-buffer-same-window) (inhibit-same-window . nil)))))
+@end example
+
 @node Entering commands
 @chapter Interacting with the ESS process
 @cindex entering commands
