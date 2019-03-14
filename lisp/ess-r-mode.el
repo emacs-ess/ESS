@@ -568,9 +568,6 @@ the package directory was selected in the first place."
 (defun R-initialize-on-start ()
   "This function is run after the first R prompt.
 Executed in process buffer."
-  (interactive)
-  ;; sometimes needed (MM w/ Emacs 25.1, on F24 where PAGER is 'more'):
-  ;; carefully set "pager" option  "when needed":
   (let ((pager-cmd (format
                     "if(identical(getOption('pager'),
                                   file.path(R.home(), 'bin', 'pager')))
