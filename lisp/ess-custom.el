@@ -124,6 +124,46 @@
 
 ;;*;; Options and Initialization
 
+;;;###autoload
+(defcustom ess-lisp-directory
+  (directory-file-name
+   (file-name-directory
+    (or load-file-name
+        buffer-file-name)))
+  "Directory containing ess-site.el(c) and other ESS Lisp files."
+  :group 'ess
+  :type 'directory
+  :package-version '(ess . "19.04"))
+
+(defcustom ess-etc-directory
+  ;; Try to detect the `etc' folder only if not alread set up by distribution
+  (let (dir)
+    (dolist (d '("./etc/" "../../etc/ess/" "../etc/" "../etc/ess/"))
+      (setq d (expand-file-name d ess-lisp-directory))
+      (when (file-directory-p d)
+        (setq dir d)))
+    dir)
+  "Location of the ESS etc/ directory.
+The ESS etc directory stores various auxillary files that are useful
+for ESS, such as icons."
+  :group 'ess
+  :type 'directory
+  :package-version '(ess . "19.04"))
+
+;; Depending on how ESS is loaded the `load-path' might not contain
+;; the `lisp' directory. For this reason we need to add it before we
+;; start requiring ESS files
+;;;###autoload
+(add-to-list 'load-path (file-name-as-directory ess-lisp-directory))
+;; Add ess-lisp-directory/obsolete to load-path; files here will
+;; automatically warn that they are obsolete when loaded.
+;;;###autoload
+(add-to-list 'load-path (file-name-as-directory (expand-file-name "obsolete" ess-lisp-directory)))
+
+(unless (file-directory-p ess-etc-directory)
+  (display-warning 'ess (format "Could not find directory `ess-etc-directory': %s"
+                                ess-etc-directory) :error))
+
 ;; Menus and pulldowns.
 
 (defcustom ess-imenu-use-p (fboundp 'imenu)

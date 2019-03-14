@@ -47,40 +47,6 @@
 (defvar reporter-prompt-for-summary-p)
 
 
-;;*;; Internal ESS tools and variables
-
-(defvar ess-lisp-directory
-  (directory-file-name
-   (file-name-directory
-    (if load-file-name
-        (file-truename load-file-name)
-      (locate-library "ess-utils") )))
-  "Directory containing ess-site.el(c) and other ESS Lisp files.")
-
-(defvar ess-etc-directory nil
-  "Location of the ESS etc/ directory.
-The ESS etc directory stores various auxillary files that are useful
-for ESS, such as icons.")
-;; Try to detect the `etc' folder only if not alread set up by distribution
-(unless ess-etc-directory
-  (let ((path-list '("../etc/ess/" "../etc/" "../../etc/ess/" "./etc/")))
-    (while (and (listp path-list) (consp path-list))
-      (setq ess-etc-directory
-            (expand-file-name (concat ess-lisp-directory "/"
-                                      (car path-list))))
-      (if (file-directory-p ess-etc-directory)
-          (setq path-list nil)
-        (setq ess-etc-directory nil)
-        (setq path-list (cdr path-list))
-        (when (null path-list)
-          (beep 0) (beep 0)
-          (message (concat
-                    "ERROR:ess-etc-directory\n"
-                    "Relative to ess-lisp-directory, one of the following must exist:\n"
-                    "../etc/ess, ../etc, ../../etc/ess or ./etc"))
-          (sit-for 4))))))
-
-
 ;; Versions
 
 ;; updated by 'make'!

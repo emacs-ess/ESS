@@ -54,43 +54,9 @@
 
 ;; DEBUG: (setq ess-show-load-messages t); instead of nil above
 
-;; This sets `ess-lisp-directory' either from the current directory
-;; when the file is being `load'ed, or from the installed location
-;; otherwise. This way, users can load ESS without having added ESS to
-;; `load-path'.
-(defvar ess-lisp-directory
-  ;; A nice default
-  (directory-file-name
-   (file-name-directory
-    (if load-file-name
-        (file-truename load-file-name)
-      (locate-library "ess-site") )))
-  "Directory containing ess-site.el(c) and other ESS Lisp files.")
-
-(defvar ess-etc-directory nil
-  "Location of the ESS etc/ directory.
-The ESS etc directory stores various auxillary files that are useful
-for ESS, such as icons.")
-
-
-;; Depending on how ESS is loaded the `load-path' might not contain
-;; the `lisp' directory. For this reason we need to add it before we
-;; start requiring ESS files
-(add-to-list 'load-path (file-name-as-directory ess-lisp-directory))
-;; Add ess-lisp-directory/obsolete to load-path; files here will
-;; automatically warn that they are obsolete when loaded.
-(add-to-list 'load-path (file-name-as-directory (expand-file-name "obsolete" ess-lisp-directory)))
-
 (require 'ess-utils)
 (ess-write-to-dribble-buffer
  (format "[ess-site:] ess-lisp-directory = '%s'" ess-lisp-directory))
-
-
-;; If ess.info is not found, then ess-lisp-directory/../doc/info is added
-;; resurrecting Stephen's version with a bug-fix
-(unless (locate-file "ess.info" Info-default-directory-list)
-  (add-to-list 'Info-default-directory-list (expand-file-name "../doc/info/" ess-lisp-directory)))
-
 
 ;;; Loading popular dialects (they should become optional in the future)
 
