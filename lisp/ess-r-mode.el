@@ -599,7 +599,6 @@ Executed in process buffer."
 When ARG is positive, search for beginning of function backward,
 otherwise forward. Value of ARG is currently ignored. Return the
 new position."
-  (interactive)
   (setq arg (or arg 1))
   (let ((init-point (point))
         done)
@@ -623,7 +622,6 @@ new position."
 When ARG is positive, search for end of function forward,
 otherwise backward. Value of ARG is currently ignored. Return the
 new position."
-  (interactive)
   (setq arg (or arg 1))
   (let* ((start-pos (point))
          (search-fn (lambda ()
