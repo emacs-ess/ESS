@@ -290,18 +290,6 @@ to look up any doc strings."
             doc))))))
 
 
-;;; IMENU
-(defvar ess-julia-imenu-generic-expression
-  ;; don't use syntax classes, screws egrep
-  '(("Function (_)" "[ \t]*function[ \t]+\\(_[^ \t\n]*\\)" 1)
-    ("Function" "^[ \t]*function[ \t]+\\([^_][^\t\n]*\\)" 1)
-    ("Const" "[ \t]*const \\([^ \t\n]*\\)" 1)
-    ("Type"  "^[ \t]*[a-zA-Z0-9_]*type[a-zA-Z0-9_]* \\([^ \t\n]*\\)" 1)
-    ("Require"      " *\\(\\brequire\\)(\\([^ \t\n)]*\\)" 2)
-    ("Include"      " *\\(\\binclude\\)(\\([^ \t\n)]*\\)" 2)
-    ))
-
-
 ;;; CORE
 (defvar ess-julia-customize-alist
   '((inferior-ess-primary-prompt   . "a> ") ;; from julia>
@@ -389,9 +377,7 @@ It makes underscores and dots word constituent chars.")
   (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
   (add-hook 'completion-at-point-functions 'ess-julia-object-completion nil 'local)
   (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
-  (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
-  (setq imenu-generic-expression ess-julia-imenu-generic-expression)
-  (imenu-add-to-menubar "Imenu-jl"))
+  (if (fboundp 'ess-add-toolbar) (ess-add-toolbar)))
 
 ;; Inferior mode
 (defvar inferior-ess-julia-mode-syntax-table
