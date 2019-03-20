@@ -1354,7 +1354,6 @@ selected (see `ess-r-set-evaluation-env')."
         (sprocess (ess-get-process ess-current-process-name)))
     (when (not sprocess) (error "No ESS process running"))
     (ess-cleanup)
-    (goto-char (marker-position (process-mark sprocess)))
     (ess-send-string sprocess cmd t)))
 
 (defcustom inferior-ess-r-reload-hook nil
