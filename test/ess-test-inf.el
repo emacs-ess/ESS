@@ -23,9 +23,7 @@
 (require 'ess-test-r-utils)
 
 
-;;; Startup
-
-;;; Code:
+;;*;; Startup
 
 (defun ess-r-tests-startup-output ()
   (let* ((proc (ess-vanila-R))
@@ -48,7 +46,7 @@
     (should (string= default-directory user-emacs-directory))))
 
 
-;;; Evaluation
+;;*;; Evaluation
 
 (ert-deftest ess-command-test ()
   (with-r-running nil
@@ -92,7 +90,7 @@
 
 
 
-;;; Inferior interaction
+;;*;; Inferior interaction
 
 (defmacro ess-test-interactive-eval (out-string &rest body)
   "Evaluate BODY in a temp buffer with `R-mode' on.
@@ -156,7 +154,7 @@ OUT-STRING is the content of the region captured by
                      (format "setwd('%s')" temporary-file-directory)))))
 
 
-;;; Sending input
+;;*;; Sending input
 
 (ert-deftest ess-inf-send-input-invisible-test ()
   (let ((ess-eval-visibly nil))
@@ -236,7 +234,7 @@ some. text
       )))
 
 
-;;; Inferior utils
+;;*;; Inferior utils
 
 (ert-deftest ess-build-eval-command-test ()
   (should (not (ess-build-eval-command "command()")))
