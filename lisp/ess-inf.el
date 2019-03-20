@@ -2283,7 +2283,7 @@ is run automatically by \\[ess-quit]."
                      ess-local-process-name
                      (equal ess-local-process-name the-procname))
             (kill-buffer buf)))))
-    (display-buffer buf '(nil (inhibit-same-window . t)))
+    (display-buffer buf)
     buf))
 
 (defun inferior-ess-reload (&optional start-args)
