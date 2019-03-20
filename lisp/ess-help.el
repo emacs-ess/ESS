@@ -591,28 +591,28 @@ ESS-specific variables `ess-help-own-frame',
 ;; One reason for the following menu is to <TEACH> the user about key strokes
 (defvar ess-help-mode-menu
   '("ESS-help"
-    ["Search Forward"		isearch-forward t]
-    ["Next Section"			ess-skip-to-next-section t]
-    ["Previous Section"		ess-skip-to-previous-section t]
-    ["Help on Section Skipping"	ess-describe-sec-map t]
-    ["Beginning of Buffer"		beginning-of-buffer t]
-    ["End of Buffer"		end-of-buffer t]
+    ["Search forward"		isearch-forward t]
+    ["Next section"		ess-skip-to-next-section t]
+    ["Previous section"		ess-skip-to-previous-section t]
+    ["Help on section skipping"	ess-describe-sec-map t]
+    ["Beginning of buffer"	beginning-of-buffer t]
+    ["End of buffer"		end-of-buffer t]
     "-"
-    ["Help on ..."			ess-display-help-on-object t]
+    ["Help on ..."		ess-display-help-on-object t]
     ["Apropos of ..."		ess-display-help-apropos t]
-    ["Index of ..."			ess-display-package-index t]
-    ["Vignettes"			ess-display-vignettes t]
-    ["Open in Browser"		ess-display-help-in-browser t]
+    ["Index of ..."		ess-display-package-index t]
+    ["Vignettes"		ess-display-vignettes t]
+    ["Open in browser"		ess-display-help-in-browser t]
     "-"
-    ["Eval Line"			ess-eval-line-and-step t]
-    ["Eval Paragraph & step"	ess-eval-paragraph-and-step t]
-    ["Eval Region & Go"		ess-eval-region-and-go t]
-    ["Switch to ESS Process"	ess-switch-to-ESS t]
-    ["Switch to End of ESS Proc."	ess-switch-to-end-of-ESS t]
-    ["Switch _the_ Process"		ess-switch-process t]
+    ["Eval line"		ess-eval-line-and-step t]
+    ["Eval paragraph & step"	ess-eval-paragraph-and-step t]
+    ["Eval region & go"		ess-eval-region-and-go t]
+    ["Switch to ESS process"	ess-switch-to-ESS t]
+    ["Switch to end of ESS proc." ess-switch-to-end-of-ESS t]
+    ["Switch _the_ process"	ess-switch-process t]
     "-"
-    ["Kill Buffer"			kill-this-buffer t]
-    ["Kill Buffer & Go"		ess-kill-buffer-and-go t]
+    ["Kill buffer"		kill-this-buffer t]
+    ["Kill buffer & go"		ess-kill-buffer-and-go t]
     "-"
     ["Handy commands"		ess-handy-commands t])
   "Menu used in ess-help mode.")
