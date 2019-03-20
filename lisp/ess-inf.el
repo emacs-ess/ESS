@@ -1831,7 +1831,6 @@ meaning as for `ess-eval-region'."
       :filter ess--generate-eval-visibly-submenu ))
     "------"
     ("Utils"
-     ;; need a toggle switch for above, AJR.
      ["Attach directory"	ess-execute-attach	t]
      ["Display object list"	ess-execute-objects	t]
      ["Display search list"	ess-execute-search	t]
@@ -2584,10 +2583,13 @@ directory in the `load-path'."
   (interactive)
   (if (ess-make-buffer-current) nil
     (error "Not an ESS process buffer"))
-  (setq ess-sl-modtime-alist nil)
-  (setq ess-object-list nil)
-  (setq ess-object-name-db nil)         ; perhaps it would be better to reload?
+  (setq
+   ess-sl-modtime-alist nil
+   ess-object-list nil
+   ess-object-name-db nil ; perhaps it would be better to reload?
+   )
   (ess-process-put 'sp-for-help-changed? t)
+  ;; Action! :
   (ess-get-modtime-list))
 
 (defun ess-filename-completion ()
@@ -2693,19 +2695,18 @@ don't recompile first object in the search list."
          (cache-name (or cache-var-name 'ess-sl-modtime-alist))
          pack newalist)
     (while searchlist
-      (setq pack (car searchlist))
-      (setq newalist
-            (append
-             newalist
-             (list (or (assoc pack (symbol-value cache-name))
-                       (append
-                        (list pack (ess-dir-modtime pack))
-                        (prog2
-                            (message "Forming completions for %s..." pack)
-                            (ess-object-names pack index)
-                          (message "Forming completions for %s...done" pack)))))))
-      (setq index (1+ index))
-      (setq searchlist (cdr searchlist)))
+      (setq
+       pack  (car searchlist)
+       newalist (append newalist
+               (list (or (assoc pack (symbol-value cache-name))
+                         (append
+                          (list pack (ess-dir-modtime pack))
+                          (prog2
+                              (message "Forming completions for %s..." pack)
+                              (ess-object-names pack index)
+                            (message "Forming completions for %s...done" pack))))))
+       index  (1+ index)
+       searchlist  (cdr searchlist)))
     ;;DBG:
     (ess-write-to-dribble-buffer
      (format "(%s): created new alist of length %d\n"
