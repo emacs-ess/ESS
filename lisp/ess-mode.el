@@ -142,7 +142,7 @@
     ("Process"
      ["Goto end of process buffer"  ess-switch-to-end-of-ESS        t]
      ["Switch to process buffer"    ess-switch-to-inferior-or-script-buffer t]
-     ["Switch Process"   ess-switch-process              t]
+     ["Switch process"   ess-switch-process              t]
      ;; ["Recreate R and S versions known to ESS" (ess-r-s-versions-creation+menu) t]
      ("Start Process"
       ["R"     R   :help "Start a new R process" :active t]
@@ -160,7 +160,9 @@
       ;; :help "Read about starting a new ESS process" :active t]
       )
      ("Eval visibly "
-      :filter ess--generate-eval-visibly-submenu))
+      :filter ess--generate-eval-visibly-submenu)
+     ["Quit process" ess-quit t]
+     ["Reload process" inferior-ess-reload t])
     "------"
     ("ESS Eval"
      ["Eval region | func | para" ess-eval-region-or-function-or-paragraph t]
