@@ -1812,14 +1812,14 @@ meaning as for `ess-eval-region'."
   inferior-ess-mode-menu inferior-ess-mode-map
   "Menu for use in Inferior S mode"
   '("iESS"
-    ["What is this? (beta)"   ess-mouse-me                  t]
-    ["Quit"                 ess-quit                        t]
-    ["Reload"               inferior-ess-reload             t]
+    ["Quit"			ess-quit			t]
+    ["Reload process"		inferior-ess-reload             t]
+    ["What is this? (beta)"     ess-mouse-me			t]
     ;; ["Send and move"  ess-transcript-send-command-and-move  t]
-    ["Copy command"   comint-copy-old-input                 t]
-    ["Send command"   inferior-ess-send-input               t]
-    ["Switch to Script Buffer" ess-switch-to-inferior-or-script-buffer t]
-    ["Get help on S object"   ess-display-help-on-object    t]
+    ["Copy command"		comint-copy-old-input		t]
+    ["Send command"		inferior-ess-send-input		t]
+    ["Switch to script buffer"	ess-switch-to-inferior-or-script-buffer t]
+    ["Get help on S object"	ess-display-help-on-object	t]
     "------"
     ("Process"
      ["Process Echoes" (lambda () (interactive)
@@ -1835,9 +1835,9 @@ meaning as for `ess-eval-region'."
      ["Attach directory"	ess-execute-attach	t]
      ["Display object list"	ess-execute-objects	t]
      ["Display search list"	ess-execute-search	t]
-     ["Edit S Object"  ess-dump-object-into-edit-buffer t]
+     ["Edit S object"  ess-dump-object-into-edit-buffer t]
      ["Enter S command"		ess-execute		t]
-     ["Jump to Error"		ess-parse-errors	t]
+     ["Jump to error"		ess-parse-errors	t]
      ["Load source file"	ess-load-file		t]
      ["Resynch S completions"	ess-resynch		t]
      ["Recreate R versions known to ESS"
