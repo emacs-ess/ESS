@@ -1814,6 +1814,7 @@ meaning as for `ess-eval-region'."
   '("iESS"
     ["What is this? (beta)"   ess-mouse-me                  t]
     ["Quit"                 ess-quit                        t]
+    ["Reload"               inferior-ess-reload             t]
     ;; ["Send and move"  ess-transcript-send-command-and-move  t]
     ["Copy command"   comint-copy-old-input                 t]
     ["Send command"   inferior-ess-send-input               t]
@@ -1831,15 +1832,16 @@ meaning as for `ess-eval-region'."
     "------"
     ("Utils"
      ;; need a toggle switch for above, AJR.
-     ["Attach directory"        ess-execute-attach      t]
-     ["Display object list"     ess-execute-objects	t]
-     ["Display search list"     ess-execute-search	t]
-     ["Edit S Object"	ess-dump-object-into-edit-buffer t]
-     ["Enter S command"         ess-execute             t]
-     ["Jump to Error"           ess-parse-errors        t]
-     ["Load source file"    ess-load-file           t]
+     ["Attach directory"	ess-execute-attach	t]
+     ["Display object list"	ess-execute-objects	t]
+     ["Display search list"	ess-execute-search	t]
+     ["Edit S Object"  ess-dump-object-into-edit-buffer t]
+     ["Enter S command"		ess-execute		t]
+     ["Jump to Error"		ess-parse-errors	t]
+     ["Load source file"	ess-load-file		t]
      ["Resynch S completions"	ess-resynch		t]
-     ;; ["Recreate R and S versions known to ESS" (ess-r-s-versions-creation+menu) t]
+     ["Recreate R versions known to ESS"
+      (lambda () (interactive) (ess-r-redefine-runners 'verbose)) t]
      )
     "------"
     ("start-dev" :visible nil); <-- ??

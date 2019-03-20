@@ -736,7 +736,7 @@ Returns either Name, a string, or a (Name . Path) cons, such as
         (cons val long-path)
       val)))
 
-(defun ess-r-define-runners ()
+(defun ess-r-define-runners (&optional verbose)
   "Generate functions for starting other versions of R.
 See `ess-r-runner-prefixes' for strings that determine which functions
 are created.  On MS Windows, this works using
@@ -758,6 +758,9 @@ as `ess-r-created-runners' upon ESS initialization."
                                      ess-r-runner-prefixes)))))))
       ;; Iterate over each string in VERSIONS, creating a new defun each time.
       (setq ess-r-created-runners versions)
+      (if verbose
+        (message "Recreated %d R versions known to ESS: %s"
+                 (length versions) versions))
       (if ess-microsoft-p
           (cl-mapcar (lambda (v p) (ess-define-runner v "R" p)) versions ess-rterm-version-paths)
         (mapc (lambda (v) (ess-define-runner v "R")) versions))
@@ -768,17 +771,25 @@ as `ess-r-created-runners' upon ESS initialization."
         (let ((new-menu (mapcar (lambda(x) (vector x (intern x) t))
                                 ess-r-created-runners)))
           (easy-menu-add-item ess-mode-menu '("Start Process")
-                              (cons "Other" new-menu)))))))
+                              (cons "Other" new-menu))
+          (easy-menu-add-item inferior-ess-mode-menu '("Process")
+                              (cons "R processes" new-menu)))))))
 
-(defun ess-r-runners-reset (sym val)
-  "Regenerate runners.
-Set SYM to VAL, call `fmakunbound' on all elements of
-`ess-r-created-runners', then define new runners."
-  (set-default sym val)
+;;;###autoload
+(defun ess-r-redefine-runners (&optional verbose)
+  "Regenerate runners, i.e. `M-x R-*` possibilities.
+ Call `fmakunbound' on all elements of `ess-r-created-runners', then define new runners."
+  (interactive "P")
   (dolist (f ess-r-created-runners)
     (fmakunbound (intern f)))
   (setq ess-r-created-runners nil)
-  (ess-r-define-runners))
+  (ess-r-define-runners verbose))
+
+(defun ess-r-runners-reset (sym val)
+  "Regenerate runners.
+Set SYM to VAL and call `ess-r-redefine-runners'."
+  (set-default sym val)
+  (ess-r-redefine-runners))
 
 (define-obsolete-function-alias
   'ess-r-versions-create 'ess-r-define-runners "ESS 18.10")
