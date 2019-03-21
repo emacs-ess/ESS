@@ -80,7 +80,8 @@ VISIBLY is not currently used."
     (require 'url)
     (goto-char (point-min))
     (let (out)
-      (while (re-search-forward "toctree.*href=\"\\(.+\\)\">\\(.+\\)</a" nil t)
+      (while (re-search-forward
+              "toctext[ \"]+href=\"\\([^>]+\\)\">\\([^<]+\\)</a" nil t)
         (push (propertize (match-string 2)
                           :manual (concat url (match-string 1)))
               out))
@@ -94,7 +95,8 @@ VISIBLY is not currently used."
   ;; <li class="toctree-l1"><a class="reference internal" href="introduction/">Introduction</a></li>
   (let* ((pages (or ess-julia--manual-topics
                     (setq ess-julia--manual-topics
-                          (ess-julia--retrive-topics "https://docs.julialang.org/en/latest/manual/"))))
+                          (ess-julia--retrive-topics
+                           "https://docs.julialang.org/en/latest/"))))
          (page (ess-completing-read "Lookup:" pages nil t)))
     (browse-url (get-text-property 1 :manual page))))
 
