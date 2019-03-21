@@ -2243,10 +2243,9 @@ and @code{ess-display-buffer-reuse-frame}.
 @vindex ess-first-tab-never-complete
 
 The @key{TAB} key is for completion. The value of the variable
-@code{ess-first-tab-never-complete} controls when completion is allowed
-controls when completion is allowed to occur.  In @code{ess-mode}
-@key{TAB} first tries to indent, and if there is nothing to indent,
-complete the object name instead.
+@code{ess-first-tab-never-complete} controls when completion is allowed to
+occur. In @code{ess-mode} @key{TAB} first tries to indent, and if there is
+nothing to indent, complete the object name instead.
 
 @table @kbd
 @item TAB
