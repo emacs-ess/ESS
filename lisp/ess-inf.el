@@ -247,9 +247,7 @@ This may be useful for debugging."
                                  '(display-buffer-pop-up-frame))))
           ;; create the process
           (setq buf
-                (inferior-ess--make-comint buf-name-str
-                                           procname
-                                           infargs))
+                (inferior-ess--make-comint buf procname infargs))
 
           (set-buffer buf)
           (set 'default-directory cur-dir)
@@ -530,10 +528,10 @@ This marks the process with a message, at a particular time point."
            (format "\nProcess %s %s at %s\n"
                    (process-name proc) message (current-time-string))))))))
 
-(defun inferior-ess--make-comint (bufname procname switches)
+(defun inferior-ess--make-comint (buf procname switches)
   "Make a comint process in buffer BUFNAME with process PROCNAME.
 SWITCHES is passed to `comint-exec'."
-  (let*  ((buffer (get-buffer-create bufname))
+  (let*  ((buffer (get-buffer-create buf))
           (proc (get-process procname)))
     ;; If no process, or nuked process, crank up a new one Otherwise,
     ;; leave buffer and existing process alone.
