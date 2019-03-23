@@ -172,12 +172,12 @@ This may be useful for debugging."
                                temp-ess-dialect)
                            temp-ess-dialect))
            ;; Find the next non-existent process N (*R:N*)
-           (procname (let ((ntry 1))
+           (proc-name (let ((ntry 1))
                        (while (get-process (ess-proc-name ntry temp-dialect))
                          (setq ntry (1+ ntry)))
                        (ess-proc-name ntry temp-dialect)))
-           (inf-name (funcall ess-gen-proc-buffer-name-function procname))
-           (cur-dir (inferior-ess--maybe-prompt-startup-directory procname temp-dialect))
+           (inf-name (funcall ess-gen-proc-buffer-name-function proc-name))
+           (cur-dir (inferior-ess--maybe-prompt-startup-directory proc-name temp-dialect))
            (default-directory cur-dir)
            buf)
       (cond
@@ -214,7 +214,7 @@ This may be useful for debugging."
 
       (let* ((infargs (or ess-start-args
                           inferior-ess-start-args))
-             (proc (get-process procname)))
+             (proc (get-process proc-name)))
         ;; If ESS process NAME is running, switch to it
         (if (and proc (comint-check-proc (process-buffer proc)))
             (progn ;; fixme: when does this happen? -> log:
@@ -222,7 +222,7 @@ This may be useful for debugging."
               (pop-to-buffer (process-buffer proc)))
           ;; Otherwise, crank up a new process
           (ess--inferior-major-mode ess-dialect)
-          (setq ess-local-process-name procname)
+          (setq ess-local-process-name proc-name)
           (with-current-buffer buf
             (rename-buffer inf-name t))
           ;; Show the buffer
@@ -233,7 +233,7 @@ This may be useful for debugging."
                                  '(display-buffer-pop-up-frame))))
           ;; create the process
           (setq buf
-                (inferior-ess--make-comint buf procname infargs))
+                (inferior-ess--make-comint buf proc-name infargs))
 
           (set-buffer buf)
           (set 'default-directory cur-dir)
@@ -243,10 +243,10 @@ This may be useful for debugging."
           ;; set the process sentinel to save the history
           (set-process-sentinel proc 'ess-process-sentinel)
           ;; add this process to ess-process-name-list, if needed
-          (let ((conselt (assoc procname ess-process-name-list)))
+          (let ((conselt (assoc proc-name ess-process-name-list)))
             (unless conselt
               (setq ess-process-name-list
-                    (cons (cons procname nil) ess-process-name-list))))
+                    (cons (cons proc-name nil) ess-process-name-list))))
           (ess-make-buffer-current)
           (goto-char (point-max))
           (setq ess-sl-modtime-alist nil)
@@ -260,7 +260,7 @@ This may be useful for debugging."
             (ess-wait-for-process proc nil 0.01 t))
 
           (unless (and proc (eq (process-status proc) 'run))
-            (error "Process %s failed to start" procname))
+            (error "Process %s failed to start" proc-name))
 
           (set (make-local-variable 'font-lock-fontify-region-function)
                #'inferior-ess-fontify-region)
