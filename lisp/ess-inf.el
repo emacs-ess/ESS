@@ -212,9 +212,9 @@ This may be useful for debugging."
       ;; variables they need.
       (ess-setq-vars-local ess-customize-alist)
 
-      (let* ((inf-args (or ess-start-args
-                           inferior-ess-start-args))
-             (proc (get-process proc-name)))
+      (let ((inf-args (or ess-start-args
+                          inferior-ess-start-args))
+            (proc (get-process proc-name)))
         ;; If ESS process NAME is running, switch to it
         (if (and proc (comint-check-proc (process-buffer proc)))
             (progn ;; fixme: when does this happen? -> log:
