@@ -179,12 +179,12 @@ This may be useful for debugging."
            (inf-name (funcall ess-gen-proc-buffer-name-function proc-name))
            (cur-dir (inferior-ess--maybe-prompt-startup-directory proc-name temp-dialect))
            (default-directory cur-dir)
-           buf)
+           inf-buf)
       (cond
        ;; 1) try to use current buffer, if inferior-ess-mode but no process
        ((and (not (comint-check-proc (current-buffer)))
              (derived-mode-p 'inferior-ess-mode))
-        (setq buf (current-buffer))
+        (setq inf-buf (current-buffer))
         ;; don't change existing buffer name in this case; It is very
         ;; commong to restart the process in the same buffer.
         (setq inf-name (buffer-name)))
@@ -193,11 +193,11 @@ This may be useful for debugging."
        ;; fixme: buffer name might have been changed, iterate over all
        ;; inferior-ess buffers
        ((get-buffer inf-name)
-        (setq buf (get-buffer inf-name)))
+        (setq inf-buf (get-buffer inf-name)))
 
        ;; 3)  Pick up a transcript file or create a new buffer
        (t
-        (setq buf (if ess-ask-about-transfile
+        (setq inf-buf (if ess-ask-about-transfile
                       (let ((transfilename (read-file-name "Use transcript file (default none):"
                                                            cur-dir
                                                            "")))
@@ -206,7 +206,7 @@ This may be useful for debugging."
                           (find-file-noselect (expand-file-name  transfilename))))
                     (get-buffer-create inf-name)))))
 
-      (set-buffer buf)
+      (set-buffer inf-buf)
       (set 'default-directory cur-dir)
       ;; TODO: Get rid of this, we should rely on modes to set the
       ;; variables they need.
@@ -223,22 +223,22 @@ This may be useful for debugging."
           ;; Otherwise, crank up a new process
           (ess--inferior-major-mode ess-dialect)
           (setq-local ess-local-process-name proc-name)
-          (with-current-buffer buf
+          (with-current-buffer inf-buf
             (rename-buffer inf-name t))
           ;; Show the buffer
           ;; TODO: Remove inferior-ess-own-frame after ESS 19.04, then just have:
-          ;; (pop-to-buffer buf)
-          (pop-to-buffer buf (with-no-warnings
-                               (when inferior-ess-own-frame
-                                 '(display-buffer-pop-up-frame))))
+          ;; (pop-to-buffer inf-buf)
+          (pop-to-buffer inf-buf (with-no-warnings
+                                   (when inferior-ess-own-frame
+                                     '(display-buffer-pop-up-frame))))
           ;; create the process
-          (setq buf
-                (inferior-ess--make-comint buf proc-name inf-args))
+          (setq inf-buf
+                (inferior-ess--make-comint inf-buf proc-name inf-args))
 
-          (set-buffer buf)
+          (set-buffer inf-buf)
           (set 'default-directory cur-dir)
 
-          (setq proc (get-buffer-process buf))
+          (setq proc (get-buffer-process inf-buf))
 
           ;; set the process sentinel to save the history
           (set-process-sentinel proc 'ess-process-sentinel)
