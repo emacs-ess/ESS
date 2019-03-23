@@ -212,8 +212,8 @@ This may be useful for debugging."
       ;; variables they need.
       (ess-setq-vars-local ess-customize-alist)
 
-      (let* ((infargs (or ess-start-args
-                          inferior-ess-start-args))
+      (let* ((inf-args (or ess-start-args
+                           inferior-ess-start-args))
              (proc (get-process proc-name)))
         ;; If ESS process NAME is running, switch to it
         (if (and proc (comint-check-proc (process-buffer proc)))
@@ -233,7 +233,7 @@ This may be useful for debugging."
                                  '(display-buffer-pop-up-frame))))
           ;; create the process
           (setq buf
-                (inferior-ess--make-comint buf proc-name infargs))
+                (inferior-ess--make-comint buf proc-name inf-args))
 
           (set-buffer buf)
           (set 'default-directory cur-dir)
