@@ -176,6 +176,7 @@ This may be useful for debugging."
                         (while (get-process (ess-proc-name ntry temp-dialect))
                           (setq ntry (1+ ntry)))
                         (ess-proc-name ntry temp-dialect)))
+           (proc (get-process proc-name))
            (inf-buf (inferior-ess--get-proc-buffer-create proc-name))
            (inf-name (buffer-name inf-buf))
            (cur-dir (inferior-ess--maybe-prompt-startup-directory proc-name temp-dialect))
@@ -188,8 +189,7 @@ This may be useful for debugging."
       (ess-setq-vars-local ess-customize-alist)
 
       (let ((inf-args (or ess-start-args
-                          inferior-ess-start-args))
-            (proc (get-process proc-name)))
+                          inferior-ess-start-args)))
         ;; If ESS process NAME is running, switch to it
         (if (and proc (comint-check-proc (process-buffer proc)))
             (progn ;; fixme: when does this happen? -> log:
