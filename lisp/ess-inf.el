@@ -180,10 +180,6 @@ This may be useful for debugging."
            (cur-dir (inferior-ess--maybe-prompt-startup-directory procname temp-dialect))
            (default-directory cur-dir)
            buf)
-      (ess-write-to-dribble-buffer
-       (format "(inf-ess 1.1): procname=%s temp-dialect=%s, buf-name=%s \n"
-               procname temp-dialect inf-name))
-
       (cond
        ;; 1) try to use current buffer, if inferior-ess-mode but no process
        ((and (not (comint-check-proc (current-buffer)))
@@ -215,10 +211,6 @@ This may be useful for debugging."
       ;; TODO: Get rid of this, we should rely on modes to set the
       ;; variables they need.
       (ess-setq-vars-local ess-customize-alist)
-
-      (ess-write-to-dribble-buffer
-       (format "(inf-ess 2.1): ess-language=%s, ess-dialect=%s buf=%s \n"
-               ess-language  ess-dialect (current-buffer)))
 
       (let* ((infargs (or ess-start-args
                           inferior-ess-start-args))
