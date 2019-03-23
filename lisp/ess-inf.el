@@ -176,35 +176,10 @@ This may be useful for debugging."
                         (while (get-process (ess-proc-name ntry temp-dialect))
                           (setq ntry (1+ ntry)))
                         (ess-proc-name ntry temp-dialect)))
-           (inf-name (funcall ess-gen-proc-buffer-name-function proc-name))
+           (inf-buf (inferior-ess--get-proc-buffer-create proc-name))
+           (inf-name (buffer-name inf-buf))
            (cur-dir (inferior-ess--maybe-prompt-startup-directory proc-name temp-dialect))
-           (default-directory cur-dir)
-           inf-buf)
-      (cond
-       ;; 1) try to use current buffer, if inferior-ess-mode but no process
-       ((and (not (comint-check-proc (current-buffer)))
-             (derived-mode-p 'inferior-ess-mode))
-        (setq inf-buf (current-buffer))
-        ;; don't change existing buffer name in this case; It is very
-        ;; commong to restart the process in the same buffer.
-        (setq inf-name (buffer-name)))
-
-       ;; 2)  Take the *R:N* buffer if already exists (and contains dead proc!)
-       ;; fixme: buffer name might have been changed, iterate over all
-       ;; inferior-ess buffers
-       ((get-buffer inf-name)
-        (setq inf-buf (get-buffer inf-name)))
-
-       ;; 3)  Pick up a transcript file or create a new buffer
-       (t
-        (setq inf-buf (if ess-ask-about-transfile
-                      (let ((transfilename (read-file-name "Use transcript file (default none):"
-                                                           cur-dir
-                                                           "")))
-                        (if (string= transfilename "")
-                            (get-buffer-create inf-name)
-                          (find-file-noselect (expand-file-name  transfilename))))
-                    (get-buffer-create inf-name)))))
+           (default-directory cur-dir))
 
       (set-buffer inf-buf)
       (set 'default-directory cur-dir)
@@ -274,6 +249,31 @@ This may be useful for debugging."
           (unless no-wait
             (ess-write-to-dribble-buffer "(inferior-ess 3): waiting for process after hook")
             (ess-wait-for-process proc)))))))
+
+(defun inferior-ess--get-proc-buffer-create (proc-name)
+  "Get a process buffer, creating a new one if needed."
+  (let ((inf-name (funcall ess-gen-proc-buffer-name-function proc-name)))
+    (cond
+     ;; Try to use current buffer, if inferior-ess-mode but no process.
+     ;; Don't change existing buffer name in this case. It is very
+     ;; commong to restart the process in the same buffer.
+     ((and (not (comint-check-proc (current-buffer)))
+           (derived-mode-p 'inferior-ess-mode))
+      (current-buffer))
+     ;; Take the *R:N* buffer if already exists (and contains dead proc!)
+     ;; fixme: buffer name might have been changed, iterate over all
+     ;; inferior-ess buffers.
+     ((get-buffer inf-name))
+     ;; Pick up a transcript file
+     (ess-ask-about-transfile
+      (let ((transfilename (read-file-name
+                            "Use transcript file (default none):" nil "")))
+        (if (string= transfilename "")
+            (get-buffer-create inf-name)
+          (find-file-noselect (expand-file-name transfilename)))))
+     ;; Create a new buffer
+     (t
+      (get-buffer-create inf-name)))))
 
 (defun ess--accumulation-buffer (proc)
   (let ((abuf (process-get proc :accum-buffer)))
