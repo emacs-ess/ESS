@@ -222,7 +222,7 @@ This may be useful for debugging."
               (pop-to-buffer (process-buffer proc)))
           ;; Otherwise, crank up a new process
           (ess--inferior-major-mode ess-dialect)
-          (setq ess-local-process-name proc-name)
+          (setq-local ess-local-process-name proc-name)
           (with-current-buffer buf
             (rename-buffer inf-name t))
           ;; Show the buffer
