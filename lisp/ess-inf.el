@@ -179,7 +179,7 @@ This may be useful for debugging."
            (buf-name-str (funcall ess-gen-proc-buffer-name-function procname))
            (cur-dir (inferior-ess--maybe-prompt-startup-directory procname temp-dialect))
            (default-directory cur-dir)
-           buf method)
+           buf)
       (ess-write-to-dribble-buffer
        (format "(inf-ess 1.1): procname=%s temp-dialect=%s, buf-name=%s \n"
                procname temp-dialect buf-name-str))
@@ -191,15 +191,13 @@ This may be useful for debugging."
         (setq buf (current-buffer))
         ;; don't change existing buffer name in this case; It is very
         ;; commong to restart the process in the same buffer.
-        (setq buf-name-str (buffer-name))
-        (setq method 1))
+        (setq buf-name-str (buffer-name)))
 
        ;; 2)  Take the *R:N* buffer if already exists (and contains dead proc!)
        ;; fixme: buffer name might have been changed, iterate over all
        ;; inferior-ess buffers
        ((get-buffer buf-name-str)
-        (setq buf (get-buffer buf-name-str))
-        (setq method 2))
+        (setq buf (get-buffer buf-name-str)))
 
        ;; 3)  Pick up a transcript file or create a new buffer
        (t
@@ -210,11 +208,7 @@ This may be useful for debugging."
                         (if (string= transfilename "")
                             (get-buffer-create buf-name-str)
                           (find-file-noselect (expand-file-name  transfilename))))
-                    (get-buffer-create buf-name-str)))
-        (setq method 3)))
-
-      (ess-write-to-dribble-buffer
-       (format "(inf-ess 2.0) Method #%d start=%s buf=%s\n" method cur-dir buf))
+                    (get-buffer-create buf-name-str)))))
 
       (set-buffer buf)
       (set 'default-directory cur-dir)
