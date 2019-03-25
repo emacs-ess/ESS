@@ -251,10 +251,6 @@ This may be useful for debugging."
      ((and (not (comint-check-proc (current-buffer)))
            (derived-mode-p 'inferior-ess-mode))
       (current-buffer))
-     ;; Take the *R:N* buffer if already exists (and contains dead proc!)
-     ;; fixme: buffer name might have been changed, iterate over all
-     ;; inferior-ess buffers.
-     ((get-buffer inf-name))
      ;; Pick up a transcript file
      (ess-ask-about-transfile
       (let ((transfilename (read-file-name
@@ -262,7 +258,8 @@ This may be useful for debugging."
         (if (string= transfilename "")
             (get-buffer-create inf-name)
           (find-file-noselect (expand-file-name transfilename)))))
-     ;; Create a new buffer
+     ;; Create a new buffer or take the *R:N* buffer if already exists
+     ;; (it should contain a dead process)
      (t
       (get-buffer-create inf-name)))))
 
