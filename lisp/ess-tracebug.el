@@ -43,7 +43,6 @@
 ;;; Code:
 
 (eval-when-compile
-  (require 'cl)
   (require 'cl-lib)
   (require 'tramp)
   (require 'subr-x))
@@ -1639,7 +1638,7 @@ If FILENAME is not found at all, ask the user where to find it if
         buffer name)
     (setq dirs (cons default-directory dirs)) ;; TODO: should be R working dir
     ;; 1. search already open buffers for match (associated file might not even exist yet)
-    (dolist (bf (buffer-list))
+    (cl-dolist (bf (buffer-list))
       (with-current-buffer  bf
         (when (and buffer-file-name
                    (or (and (file-name-absolute-p filename)
