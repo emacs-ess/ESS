@@ -183,7 +183,7 @@ This may be useful for debugging."
            (default-directory cur-dir))
 
       (set-buffer inf-buf)
-      (set 'default-directory cur-dir)
+      (setq-local default-directory cur-dir)
       ;; TODO: Get rid of this, we should rely on modes to set the
       ;; variables they need.
       (ess-setq-vars-local ess-customize-alist)
@@ -211,7 +211,7 @@ This may be useful for debugging."
                 (inferior-ess--make-comint inf-buf proc-name inf-args))
 
           (set-buffer inf-buf)
-          (set 'default-directory cur-dir)
+          (setq-local default-directory cur-dir)
 
           (setq proc (get-buffer-process inf-buf))
 
@@ -224,7 +224,7 @@ This may be useful for debugging."
                     (cons (cons proc-name nil) ess-process-name-list))))
           (ess-make-buffer-current)
           (goto-char (point-max))
-          (setq ess-sl-modtime-alist nil)
+          (setq-local ess-sl-modtime-alist nil)
 
           ;; add the process filter to catch certain output
           (set-process-filter proc 'inferior-ess-output-filter)
