@@ -219,8 +219,6 @@ This may be useful for debugging."
                     (cons (cons proc-name nil) ess-process-name-list))))
           (ess-make-buffer-current)
           (goto-char (point-max))
-          (setq-local ess-sl-modtime-alist nil)
-
           ;; add the process filter to catch certain output
           (set-process-filter proc 'inferior-ess-output-filter)
           (inferior-ess-mark-as-busy proc)
@@ -231,13 +229,10 @@ This may be useful for debugging."
 
           (unless (and proc (eq (process-status proc) 'run))
             (error "Process %s failed to start" proc-name))
-
-          (set (make-local-variable 'font-lock-fontify-region-function)
-               #'inferior-ess-fontify-region)
-
           (when ess-setwd-command
             (ess-set-working-directory cur-dir))
-
+          (setq-local font-lock-fontify-region-function #'inferior-ess-fontify-region)
+          (setq-local ess-sl-modtime-alist nil)
           (run-hooks 'ess-post-run-hook)
 
           ;; user initialization can take some time ...
