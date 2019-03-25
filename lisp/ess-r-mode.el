@@ -39,7 +39,6 @@
 (require 'compile)
 (require 'easymenu)
 (require 'eldoc)
-(require 'seq)
 (require 'ess-mode)
 (require 'ess-help)
 (require 'ess-s-lang)
