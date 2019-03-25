@@ -206,8 +206,7 @@ This may be useful for debugging."
           (pop-to-buffer inf-buf (with-no-warnings
                                    (when inferior-ess-own-frame
                                      '(display-buffer-pop-up-frame))))
-          ;; create the process
-          (inferior-ess--make-comint inf-buf proc-name inf-args)
+          (inferior-ess--start-process inf-buf proc-name inf-args)
 
           (setq proc (get-buffer-process inf-buf))
 
@@ -510,7 +509,7 @@ This marks the process with a message, at a particular time point."
            (format "\nProcess %s %s at %s\n"
                    (process-name proc) message (current-time-string))))))))
 
-(defun inferior-ess--make-comint (buf proc-name switches)
+(defun inferior-ess--start-process (buf proc-name switches)
   "Make a comint process in buffer BUFNAME with process PROCNAME.
 SWITCHES is passed to `comint-exec'."
   (let  ((proc (get-process proc-name)))
