@@ -1046,7 +1046,7 @@ With argument UPDATE, update cached packages list."
         (ess-command (format mirror-cmd mirror))
       (when-let ((M1 (ess-get-words-from-vector "local({out <- getCRANmirrors(local.only=TRUE); print(paste(out$Name,'[',out$URL,']', sep=''))})\n"))
                  (mirror (ess-completing-read "Choose CRAN mirror" M1 nil t))
-                 (url (seq-contains M1 mirror #'string=)))
+                 (url (car (cl-member mirror M1 :test #'string=))))
         (setq ess--CRAN-mirror (progn (string-match "\\(.*\\)\\[\\(.*\\)\\]$" url)
                                       (match-string 2 url)))
         (ess-command (format mirror-cmd ess--CRAN-mirror)))))
