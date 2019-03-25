@@ -172,63 +172,24 @@ This may be useful for debugging."
                                temp-ess-dialect)
                            temp-ess-dialect))
            ;; Find the next non-existent process N (*R:N*)
-           (procname (let ((ntry 1))
-                       (while (get-process (ess-proc-name ntry temp-dialect))
-                         (setq ntry (1+ ntry)))
-                       (ess-proc-name ntry temp-dialect)))
-           (buf-name-str (funcall ess-gen-proc-buffer-name-function procname))
-           (cur-dir (inferior-ess--maybe-prompt-startup-directory procname temp-dialect))
-           (default-directory cur-dir)
-           buf method)
-      (ess-write-to-dribble-buffer
-       (format "(inf-ess 1.1): procname=%s temp-dialect=%s, buf-name=%s \n"
-               procname temp-dialect buf-name-str))
+           (proc-name (let ((ntry 1))
+                        (while (get-process (ess-proc-name ntry temp-dialect))
+                          (setq ntry (1+ ntry)))
+                        (ess-proc-name ntry temp-dialect)))
+           (proc (get-process proc-name))
+           (inf-buf (inferior-ess--get-proc-buffer-create proc-name))
+           (inf-name (buffer-name inf-buf))
+           (cur-dir (inferior-ess--maybe-prompt-startup-directory proc-name temp-dialect))
+           (default-directory cur-dir))
 
-      (cond
-       ;; 1) try to use current buffer, if inferior-ess-mode but no process
-       ((and (not (comint-check-proc (current-buffer)))
-             (derived-mode-p 'inferior-ess-mode))
-        (setq buf (current-buffer))
-        ;; don't change existing buffer name in this case; It is very
-        ;; commong to restart the process in the same buffer.
-        (setq buf-name-str (buffer-name))
-        (setq method 1))
-
-       ;; 2)  Take the *R:N* buffer if already exists (and contains dead proc!)
-       ;; fixme: buffer name might have been changed, iterate over all
-       ;; inferior-ess buffers
-       ((get-buffer buf-name-str)
-        (setq buf (get-buffer buf-name-str))
-        (setq method 2))
-
-       ;; 3)  Pick up a transcript file or create a new buffer
-       (t
-        (setq buf (if ess-ask-about-transfile
-                      (let ((transfilename (read-file-name "Use transcript file (default none):"
-                                                           cur-dir
-                                                           "")))
-                        (if (string= transfilename "")
-                            (get-buffer-create buf-name-str)
-                          (find-file-noselect (expand-file-name  transfilename))))
-                    (get-buffer-create buf-name-str)))
-        (setq method 3)))
-
-      (ess-write-to-dribble-buffer
-       (format "(inf-ess 2.0) Method #%d start=%s buf=%s\n" method cur-dir buf))
-
-      (set-buffer buf)
-      (set 'default-directory cur-dir)
+      (set-buffer inf-buf)
+      (setq-local default-directory cur-dir)
       ;; TODO: Get rid of this, we should rely on modes to set the
       ;; variables they need.
       (ess-setq-vars-local ess-customize-alist)
 
-      (ess-write-to-dribble-buffer
-       (format "(inf-ess 2.1): ess-language=%s, ess-dialect=%s buf=%s \n"
-               ess-language  ess-dialect (current-buffer)))
-
-      (let* ((infargs (or ess-start-args
-                          inferior-ess-start-args))
-             (proc (get-process procname)))
+      (let ((inf-args (or ess-start-args
+                          inferior-ess-start-args)))
         ;; If ESS process NAME is running, switch to it
         (if (and proc (comint-check-proc (process-buffer proc)))
             (progn ;; fixme: when does this happen? -> log:
@@ -236,36 +197,34 @@ This may be useful for debugging."
               (pop-to-buffer (process-buffer proc)))
           ;; Otherwise, crank up a new process
           (ess--inferior-major-mode ess-dialect)
-          (setq ess-local-process-name procname)
-          (with-current-buffer buf
-            (rename-buffer buf-name-str t))
+          (setq-local ess-local-process-name proc-name)
+          (with-current-buffer inf-buf
+            (rename-buffer inf-name t))
           ;; Show the buffer
           ;; TODO: Remove inferior-ess-own-frame after ESS 19.04, then just have:
-          ;; (pop-to-buffer buf)
-          (pop-to-buffer buf (with-no-warnings
-                               (when inferior-ess-own-frame
-                                 '(display-buffer-pop-up-frame))))
+          ;; (pop-to-buffer inf-buf)
+          (pop-to-buffer inf-buf (with-no-warnings
+                                   (when inferior-ess-own-frame
+                                     '(display-buffer-pop-up-frame))))
           ;; create the process
-          (setq buf
-                (inferior-ess-make-comint buf-name-str
-                                          procname
-                                          infargs))
+          (setq inf-buf
+                (inferior-ess--make-comint inf-buf proc-name inf-args))
 
-          (set-buffer buf)
-          (set 'default-directory cur-dir)
+          (set-buffer inf-buf)
+          (setq-local default-directory cur-dir)
 
-          (setq proc (get-buffer-process buf))
+          (setq proc (get-buffer-process inf-buf))
 
           ;; set the process sentinel to save the history
           (set-process-sentinel proc 'ess-process-sentinel)
           ;; add this process to ess-process-name-list, if needed
-          (let ((conselt (assoc procname ess-process-name-list)))
+          (let ((conselt (assoc proc-name ess-process-name-list)))
             (unless conselt
               (setq ess-process-name-list
-                    (cons (cons procname nil) ess-process-name-list))))
+                    (cons (cons proc-name nil) ess-process-name-list))))
           (ess-make-buffer-current)
           (goto-char (point-max))
-          (setq ess-sl-modtime-alist nil)
+          (setq-local ess-sl-modtime-alist nil)
 
           ;; add the process filter to catch certain output
           (set-process-filter proc 'inferior-ess-output-filter)
@@ -276,7 +235,7 @@ This may be useful for debugging."
             (ess-wait-for-process proc nil 0.01 t))
 
           (unless (and proc (eq (process-status proc) 'run))
-            (error "Process %s failed to start" procname))
+            (error "Process %s failed to start" proc-name))
 
           (set (make-local-variable 'font-lock-fontify-region-function)
                #'inferior-ess-fontify-region)
@@ -290,6 +249,31 @@ This may be useful for debugging."
           (unless no-wait
             (ess-write-to-dribble-buffer "(inferior-ess 3): waiting for process after hook")
             (ess-wait-for-process proc)))))))
+
+(defun inferior-ess--get-proc-buffer-create (proc-name)
+  "Get a process buffer, creating a new one if needed."
+  (let ((inf-name (funcall ess-gen-proc-buffer-name-function proc-name)))
+    (cond
+     ;; Try to use current buffer, if inferior-ess-mode but no process.
+     ;; Don't change existing buffer name in this case. It is very
+     ;; commong to restart the process in the same buffer.
+     ((and (not (comint-check-proc (current-buffer)))
+           (derived-mode-p 'inferior-ess-mode))
+      (current-buffer))
+     ;; Take the *R:N* buffer if already exists (and contains dead proc!)
+     ;; fixme: buffer name might have been changed, iterate over all
+     ;; inferior-ess buffers.
+     ((get-buffer inf-name))
+     ;; Pick up a transcript file
+     (ess-ask-about-transfile
+      (let ((transfilename (read-file-name
+                            "Use transcript file (default none):" nil "")))
+        (if (string= transfilename "")
+            (get-buffer-create inf-name)
+          (find-file-noselect (expand-file-name transfilename)))))
+     ;; Create a new buffer
+     (t
+      (get-buffer-create inf-name)))))
 
 (defun ess--accumulation-buffer (proc)
   (let ((abuf (process-get proc :accum-buffer)))
@@ -530,10 +514,10 @@ This marks the process with a message, at a particular time point."
            (format "\nProcess %s %s at %s\n"
                    (process-name proc) message (current-time-string))))))))
 
-(defun inferior-ess-make-comint (bufname procname switches)
+(defun inferior-ess--make-comint (buf procname switches)
   "Make a comint process in buffer BUFNAME with process PROCNAME.
 SWITCHES is passed to `comint-exec'."
-  (let*  ((buffer (get-buffer-create bufname))
+  (let*  ((buffer (get-buffer-create buf))
           (proc (get-process procname)))
     ;; If no process, or nuked process, crank up a new one Otherwise,
     ;; leave buffer and existing process alone.
