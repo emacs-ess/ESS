@@ -176,7 +176,6 @@ This may be useful for debugging."
                         (while (get-process (ess-proc-name ntry temp-dialect))
                           (setq ntry (1+ ntry)))
                         (ess-proc-name ntry temp-dialect)))
-           (proc (get-process proc-name))
            (inf-buf (inferior-ess--get-proc-buffer-create proc-name))
            (inf-name (buffer-name inf-buf))
            (cur-dir (inferior-ess--maybe-prompt-startup-directory proc-name temp-dialect))
@@ -190,26 +189,17 @@ This may be useful for debugging."
 
       (let ((inf-args (or ess-start-args
                           inferior-ess-start-args)))
-        ;; If ESS process NAME is running, switch to it
-        (if (and proc (comint-check-proc (process-buffer proc)))
-            (progn ;; fixme: when does this happen? -> log:
-              (ess-write-to-dribble-buffer (format "(inf-ess ..): popping to proc\n"))
-              (pop-to-buffer (process-buffer proc)))
-          ;; Otherwise, crank up a new process
-          (ess--inferior-major-mode ess-dialect)
-          (setq-local ess-local-process-name proc-name)
-          (with-current-buffer inf-buf
-            (rename-buffer inf-name t))
-          ;; Show the buffer
-          ;; TODO: Remove inferior-ess-own-frame after ESS 19.04, then just have:
-          ;; (pop-to-buffer inf-buf)
-          (pop-to-buffer inf-buf (with-no-warnings
-                                   (when inferior-ess-own-frame
-                                     '(display-buffer-pop-up-frame))))
-          (inferior-ess--start-process inf-buf proc-name inf-args)
-
-          (setq proc (get-buffer-process inf-buf))
-
+        (ess--inferior-major-mode ess-dialect)
+        (setq-local ess-local-process-name proc-name)
+        (with-current-buffer inf-buf
+          (rename-buffer inf-name t))
+        ;; Show the buffer
+        ;; TODO: Remove inferior-ess-own-frame after ESS 19.04, then just have:
+        ;; (pop-to-buffer inf-buf)
+        (pop-to-buffer inf-buf (with-no-warnings
+                                 (when inferior-ess-own-frame
+                                   '(display-buffer-pop-up-frame))))
+        (let ((proc (inferior-ess--start-process inf-buf proc-name inf-args)))
           ;; set the process sentinel to save the history
           (set-process-sentinel proc 'ess-process-sentinel)
           ;; add this process to ess-process-name-list, if needed
@@ -242,7 +232,8 @@ This may be useful for debugging."
         inf-buf))))
 
 (defun inferior-ess--get-proc-buffer-create (proc-name)
-  "Get a process buffer, creating a new one if needed."
+  "Get a process buffer, creating a new one if needed.
+This always returns a process-less buffer."
   (let ((inf-name (funcall ess-gen-proc-buffer-name-function proc-name)))
     (cond
      ;; Try to use current buffer, if inferior-ess-mode but no process.
@@ -257,7 +248,10 @@ This may be useful for debugging."
                             "Use transcript file (default none):" nil "")))
         (if (string= transfilename "")
             (get-buffer-create inf-name)
-          (find-file-noselect (expand-file-name transfilename)))))
+          (let ((buf (find-file-noselect (expand-file-name transfilename))))
+            (if (comint-check-proc (get-buffer-process buf))
+                (error "Can't start a transcripted session if it already exists")
+              buf)))))
      ;; Create a new buffer or take the *R:N* buffer if already exists
      ;; (it should contain a dead process)
      (t
@@ -529,7 +523,7 @@ SWITCHES is passed to `comint-exec'."
                           inferior-ess-program
                           nil
                           (split-string switches)))))
-    buf))
+    (get-buffer-process buf)))
 
 
 ;;*;; Requester functions called at startup
