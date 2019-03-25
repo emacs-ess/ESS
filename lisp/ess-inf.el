@@ -207,11 +207,7 @@ This may be useful for debugging."
                                    (when inferior-ess-own-frame
                                      '(display-buffer-pop-up-frame))))
           ;; create the process
-          (setq inf-buf
-                (inferior-ess--make-comint inf-buf proc-name inf-args))
-
-          (set-buffer inf-buf)
-          (setq-local default-directory cur-dir)
+          (inferior-ess--make-comint inf-buf proc-name inf-args)
 
           (setq proc (get-buffer-process inf-buf))
 
@@ -514,15 +510,14 @@ This marks the process with a message, at a particular time point."
            (format "\nProcess %s %s at %s\n"
                    (process-name proc) message (current-time-string))))))))
 
-(defun inferior-ess--make-comint (buf procname switches)
+(defun inferior-ess--make-comint (buf proc-name switches)
   "Make a comint process in buffer BUFNAME with process PROCNAME.
 SWITCHES is passed to `comint-exec'."
-  (let*  ((buffer (get-buffer-create buf))
-          (proc (get-process procname)))
+  (let  ((proc (get-process proc-name)))
     ;; If no process, or nuked process, crank up a new one Otherwise,
     ;; leave buffer and existing process alone.
     (cond ((or (not proc) (not (memq (process-status proc) '(run stop))))
-           (with-current-buffer  buffer
+           (with-current-buffer  buf
              (if (eq (buffer-size) 0) nil
                (goto-char (point-max))
                (insert "\^L\n")))    ; page boundaries = Interactive sessions
@@ -537,12 +532,12 @@ SWITCHES is passed to `comint-exec'."
                      (copy-sequence tramp-remote-process-environment))
                    (list "STATATERM=emacs"
                          (format "PAGER=%s" inferior-ess-pager)))))
-             (comint-exec buffer
-                          procname
+             (comint-exec buf
+                          proc-name
                           inferior-ess-program
                           nil
                           (split-string switches)))))
-    buffer))
+    buf))
 
 
 ;;*;; Requester functions called at startup
