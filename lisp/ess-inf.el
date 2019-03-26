@@ -2573,7 +2573,8 @@ directory in the `load-path'."
                  (> (point) (process-mark (get-buffer-process (current-buffer)))))
         (narrow-to-region (process-mark (get-buffer-process (current-buffer)))
                           (point-max))))
-    (when (ess-inside-string-or-comment-p (point))
+    (when (and (not (equal ?` (nth 3 (syntax-ppss (point)))))
+               (ess-inside-string-or-comment-p (point)))
       (append (comint-filename-completion) '(:exclusive no)))))
 
 (defun ess-complete-filename ()
