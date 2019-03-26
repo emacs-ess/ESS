@@ -43,6 +43,8 @@
 ;;; Code:
 
 (eval-when-compile
+  (when (< emacs-major-version 26)
+    (require 'cl))
   (require 'cl-lib)
   (require 'tramp)
   (require 'subr-x))
