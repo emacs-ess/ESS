@@ -238,34 +238,41 @@ generated the latter."
                       (while (get-process (ess-proc-name ntry temp-dialect))
                         (setq ntry (1+ ntry)))
                       (ess-proc-name ntry temp-dialect)))
-         (inf-name (funcall ess-gen-proc-buffer-name-function proc-name))
-         (buf (cond
-               ;; Try to use current buffer, if inferior-ess-mode but
-               ;; no process
-               ((and (not (comint-check-proc (current-buffer)))
-                     (derived-mode-p 'inferior-ess-mode))
-                ;; Don't change existing buffer name in this case. It
-                ;; is very commong to restart the process in the same
-                ;; buffer.
-                (setq proc-name ess-local-process-name)
-                (current-buffer))
-               ;; Pick up a transcript file
-               (ess-ask-about-transfile
-                (let ((transfilename (read-file-name
-                                      "Use transcript file (default none):" nil "")))
-                  (if (string= transfilename "")
-                      (get-buffer-create inf-name)
-                    (let ((buf (find-file-noselect (expand-file-name transfilename))))
-                      (if (comint-check-proc (get-buffer-process buf))
-                          (error "Can't start a transcripted session if it already exists")
-                        buf)))))
-               ;; Create a new buffer or take the *R:N* buffer if
-               ;; already exists (it should contain a dead process)
-               (t
-                (get-buffer-create inf-name)))))
-    (with-current-buffer buf
-      (setq-local ess-local-process-name proc-name))
-    buf))
+         (inf-name (funcall ess-gen-proc-buffer-name-function proc-name)))
+    (let ((buf (cond
+                ;; Try to use current buffer, if inferior-ess-mode but
+                ;; no process
+                ((and (not (comint-check-proc (current-buffer)))
+                      (derived-mode-p 'inferior-ess-mode))
+                 ;; Don't change existing buffer name in this case. It
+                 ;; is very commong to restart the process in the same
+                 ;; buffer.
+                 (setq proc-name ess-local-process-name)
+                 (current-buffer))
+                ;; Pick up a transcript file
+                (ess-ask-about-transfile
+                 (let ((transfilename (read-file-name
+                                       "Use transcript file (default none):" nil "")))
+                   (if (string= transfilename "")
+                       (get-buffer-create inf-name)
+                     (let ((buf (find-file-noselect (expand-file-name transfilename))))
+                       (if (comint-check-proc (get-buffer-process buf))
+                           (error "Can't start a transcripted session if it already exists")
+                         buf)))))
+                ;; Create a new buffer or take the *R:N* buffer if
+                ;; already exists (it should contain a dead process)
+                (t
+                 (get-buffer-create inf-name)))))
+      ;; We generated a new process name but there might still be a
+      ;; live process in the buffer in corner cases because of
+      ;; `ess-gen-proc-buffer-name-function` or if the user renames
+      ;; inferior buffers
+      (when (comint-check-proc buf)
+        (error "Can't start a new session in buffer `%s` because one already exists"
+               inf-name))
+      (with-current-buffer buf
+        (setq-local ess-local-process-name proc-name))
+      buf)))
 
 (defun ess--accumulation-buffer (proc)
   (let ((abuf (process-get proc :accum-buffer)))
