@@ -247,6 +247,13 @@
                  (let (ess-eval-empty)
                    (goto-char (point-min))
                    (ess-next-code-line)
+                   (point)))))
+  (should (eql 4
+               (ess-r-test-with-temp-text "1+1"
+                 (let (ess-eval-empty)
+                   (goto-char (point-min))
+                   (end-of-line)
+                   (ess-next-code-line)
                    (point))))))
 
 (ert-deftest ess-Rout-file-test ()

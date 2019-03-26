@@ -60,28 +60,32 @@ success, return 0. Otherwise, go as far as possible and return
 -1."
   (interactive "p")
   (or arg (setq arg 1))
-  (if (or ess-eval-empty
-          (and (fboundp 'ess-roxy-entry-p)
-               (ess-roxy-entry-p)))
-      (forward-line arg)
-    (beginning-of-line)
-    (let ((pos (point))
-          (n 0)
-          (inc (if (> arg 0) 1 -1)))
-      (while (and (/= arg 0) (= n 0))
-        (setq n (forward-line inc))     ; n=0 is success
-        (comment-beginning)
-        (beginning-of-line)
-        (forward-comment (* inc (buffer-size))) ;; as suggested in info file
-        (if (or skip-to-eob
-                (not (looking-at ess-no-skip-regexp))) ;; don't go to eob or whatever
-            (setq arg (- arg inc))
-          (goto-char pos)
-          (setq arg 0)
-          (forward-line 1)) ;; stop at next empty line
-        (setq pos (point)))
-      (goto-char pos)
-      n)))
+  (unless (or (and (>= arg 1)
+                   (eobp))
+              (and (<= arg 0)
+                   (bobp)))
+    (if (or ess-eval-empty
+            (and (fboundp 'ess-roxy-entry-p)
+                 (ess-roxy-entry-p)))
+        (forward-line arg)
+      (beginning-of-line)
+      (let ((pos (point))
+            (n 0)
+            (inc (if (> arg 0) 1 -1)))
+        (while (and (/= arg 0) (= n 0))
+          (setq n (forward-line inc))     ; n=0 is success
+          (comment-beginning)
+          (beginning-of-line)
+          (forward-comment (* inc (buffer-size))) ;; as suggested in info file
+          (if (or skip-to-eob
+                  (not (looking-at ess-no-skip-regexp))) ;; don't go to eob or whatever
+              (setq arg (- arg inc))
+            (goto-char pos)
+            (setq arg 0)
+            (forward-line 1)) ;; stop at next empty line
+          (setq pos (point)))
+        (goto-char pos)
+        n))))
 
 (defun ess-goto-line (line)
   (save-restriction
