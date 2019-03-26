@@ -39,8 +39,6 @@
 (require 'newcomment)
 (defvar ac-modes)
 (declare-function ess-eval-linewise "ess-inf")
-(declare-function evil-visual-state-p "evil")
-(declare-function evil-normal-state "evil")
 (declare-function color-lighten-name "color")
 (declare-function tramp-dissect-file-name "tramp")
 ;; The following declares can be removed once we drop Emacs 25
@@ -660,11 +658,15 @@ Otherwise try a list of fixed known viewers."
                       (delete-overlay ess-current-region-overlay)))))
 
 (defun ess-deactivate-mark ()
-  (cond ((and (featurep 'evil) (bound-and-true-p evil-mode))
-         (when (evil-visual-state-p)
-           (evil-normal-state)))
-        (mark-active
-         (deactivate-mark))))
+  "Deactivate the mark, if active.
+If `evil-mode' is on, switch to `evil-normal-state'."
+  (if (and (bound-and-true-p evil-mode)
+           (fboundp 'evil-visual-state-p)
+           (evil-visual-state-p))
+      (when (fboundp 'evil-normal-state)
+        (evil-normal-state))
+    (when mark-active
+      (deactivate-mark))))
 
 ;; SJE: 2009-01-30 -- this contribution from
 ;; Erik Iverson <iverson@biostat.wisc.edu>

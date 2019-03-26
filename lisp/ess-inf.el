@@ -58,7 +58,7 @@
 (declare-function inferior-ess-julia-mode "ess-julia")
 (declare-function inferior-ess-stata-mode "ess-stata-mode")
 
-(declare-function ess-mode "ess")
+(declare-function ess-mode "ess-mode" ())
 (declare-function ess-complete-object-name "ess-r-completion")
 
 (defvar add-log-current-defun-header-regexp)

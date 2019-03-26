@@ -45,7 +45,7 @@
 (require 'ess-inf)
 (require 'ess-utils)
 
-(declare-function ess-r-help-mode 'ess-r-mode)
+(declare-function ess-r-help-mode "ess-r-mode")
 (declare-function ess-stata-help-mode "ess-stata-lang")
 
 
