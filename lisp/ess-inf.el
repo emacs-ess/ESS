@@ -172,7 +172,6 @@ This may be useful for debugging."
                                temp-ess-dialect)
                            temp-ess-dialect))
            (inf-buf (inferior-ess--get-proc-buffer-create temp-dialect))
-           (inf-name (buffer-name inf-buf))
            (proc-name (with-current-buffer inf-buf ess-local-process-name))
            (cur-dir (inferior-ess--maybe-prompt-startup-directory proc-name temp-dialect))
            (default-directory cur-dir))
@@ -186,8 +185,6 @@ This may be useful for debugging."
       (let ((inf-args (or ess-start-args
                           inferior-ess-start-args)))
         (ess--inferior-major-mode ess-dialect)
-        (with-current-buffer inf-buf
-          (rename-buffer inf-name t))
         ;; Show the buffer
         ;; TODO: Remove inferior-ess-own-frame after ESS 19.04, then just have:
         ;; (pop-to-buffer inf-buf)
