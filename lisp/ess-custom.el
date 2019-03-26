@@ -116,6 +116,7 @@
 (defgroup ess-faces nil
   "Faces and face options for ESS modes."
   :group 'ess
+  :group 'faces
   :prefix "ess-")
 
 
