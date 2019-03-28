@@ -769,7 +769,6 @@ as `ess-r-created-runners' upon ESS initialization."
           (easy-menu-add-item inferior-ess-mode-menu '("Process")
                               (cons "R processes" new-menu)))))))
 
-;;;###autoload
 (defun ess-r-redefine-runners (&optional verbose)
   "Regenerate runners, i.e. `M-x R-*` possibilities.
  Call `fmakunbound' on all elements of `ess-r-created-runners', then define new runners."
