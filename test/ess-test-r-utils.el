@@ -96,13 +96,12 @@ inserted text."
 	       (goto-char (point-min))))
        ,@body)))
 
-(defun ess-vanila-R ()
+(defun run-ess-r-vanilla ()
   "Start vanila R process and return the process object."
   (save-window-excursion
     (let ((inhibit-message ess-inhibit-message-in-tests)
           (ess-ask-for-ess-directory nil))
-      (R "--vanilla"))
-    (ess-get-process)))
+      (R "--vanilla"))))
 
 (defun ess-send-input-to-R (input &optional type)
   "Eval INPUT and return the entire content of the REPL buffer.
@@ -115,7 +114,7 @@ prompts in the output are replaced with '> '. There is no full
 proof way to test for prompts given that process output could be
 split arbitrary."
   (let ((prompt-regexp "^\\([+.>] \\)\\{2,\\}")
-        (proc (ess-vanila-R))
+        (proc (get-buffer-process (run-ess-r-vanilla)))
         (inhibit-message ess-inhibit-message-in-tests))
     ;; just in case
     (ess-wait-for-process proc)
@@ -189,7 +188,7 @@ representative to the common interactive use with tracebug on."
      (save-window-excursion
        (switch-to-buffer r-file-buffer)
        (R-mode)
-       (let* ((*proc* (ess-vanila-R))
+       (let* ((*proc* (get-buffer-process (run-ess-r-vanilla)))
               (ess-local-process-name (process-name *proc*))
               (output-buffer (process-buffer *proc*)))
          (unwind-protect

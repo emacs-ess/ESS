@@ -26,7 +26,7 @@
 ;;*;; Startup
 
 (defun ess-r-tests-startup-output ()
-  (let* ((proc (ess-vanila-R))
+  (let* ((proc (get-buffer-process (run-ess-r-vanilla)))
          (output-buffer (process-buffer proc)))
     (unwind-protect
         (with-current-buffer output-buffer
@@ -44,6 +44,17 @@
       (should (string= default-directory user-emacs-directory))
       (should (string= (inferior-ess-default-directory) temporary-file-directory)))
     (should (string= default-directory user-emacs-directory))))
+
+(ert-deftest ess-test-inferior-return-value ()
+  (let ((inhibit-message ess-inhibit-message-in-tests)
+        (ess-ask-for-ess-directory nil)
+        proc)
+    (unwind-protect
+        (let ((val (R)))
+          (should (bufferp val))
+          (setq proc (get-buffer-process val)))
+      (kill-process proc))))
+
 
 
 ;;*;; Evaluation

@@ -522,29 +522,30 @@ will be prompted to enter arguments interactively."
       (when ess-microsoft-p ;; default-process-coding-system would break UTF locales on Unix
         (setq default-process-coding-system '(undecided-dos . undecided-dos))))
 
-    (inferior-ess r-start-args cust-alist gdbp)
+    (let ((inf-buf (inferior-ess r-start-args cust-alist gdbp)))
 
-    (ess-process-put 'funargs-pre-cache ess-r--funargs-pre-cache)
+      (ess-process-put 'funargs-pre-cache ess-r--funargs-pre-cache)
 
-    (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
-    (add-hook 'completion-at-point-functions 'ess-r-object-completion nil 'local)
-    (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
-    (add-hook 'xref-backend-functions #'ess-r-xref-backend nil 'local)
-    (setq comint-input-sender 'inferior-ess-r-input-sender)
+      (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
+      (add-hook 'completion-at-point-functions 'ess-r-object-completion nil 'local)
+      (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
+      (add-hook 'xref-backend-functions #'ess-r-xref-backend nil 'local)
+      (setq comint-input-sender 'inferior-ess-r-input-sender)
 
-    (if gdbp
-        (progn
-          ;; We need to use callback, because R might start with a gdb process
-          (ess-process-put 'callbacks '(R-initialize-on-start))
-          ;; trigger the callback
-          (process-send-string (get-process ess-local-process-name) "\n"))
-      (ess-wait-for-process)
-      (R-initialize-on-start)
-      (comint-goto-process-mark))
+      (if gdbp
+          (progn
+            ;; We need to use callback, because R might start with a gdb process
+            (ess-process-put 'callbacks '(R-initialize-on-start))
+            ;; trigger the callback
+            (process-send-string (get-process ess-local-process-name) "\n"))
+        (ess-wait-for-process)
+        (R-initialize-on-start)
+        (comint-goto-process-mark))
 
-    (ess-write-to-dribble-buffer
-     (format "(R): inferior-ess-language-start=%s\n"
-             inferior-ess-language-start))))
+      (ess-write-to-dribble-buffer
+       (format "(R): inferior-ess-language-start=%s\n"
+               inferior-ess-language-start))
+      inf-buf)))
 
 ;;;###autoload
 (defalias 'R #'run-ess-r)

@@ -238,7 +238,8 @@ This may be useful for debugging."
           ;; user initialization can take some time ...
           (unless no-wait
             (ess-write-to-dribble-buffer "(inferior-ess 3): waiting for process after hook")
-            (ess-wait-for-process proc)))))))
+            (ess-wait-for-process proc)))
+        inf-buf))))
 
 (defun inferior-ess--get-proc-buffer-create (proc-name)
   "Get a process buffer, creating a new one if needed."
