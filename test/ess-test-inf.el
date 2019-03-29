@@ -26,7 +26,7 @@
 ;;*;; Startup
 
 (defun ess-r-tests-startup-output ()
-  (let* ((proc (get-buffer-process (run-ess-r-vanilla)))
+  (let* ((proc (get-buffer-process (run-ess-test-r-vanilla)))
          (output-buffer (process-buffer proc)))
     (unwind-protect
         (with-current-buffer output-buffer
@@ -63,8 +63,8 @@
         proc)
     (unwind-protect
         (progn
-          (setq proc (get-buffer-process (run-ess-r-vanilla)))
-          (should (string= (cadr (should-error (run-ess-r-vanilla)))
+          (setq proc (get-buffer-process (run-ess-test-r-vanilla)))
+          (should (string= (cadr (should-error (run-ess-test-r-vanilla)))
                            (format-message error-msg))))
       (kill-process proc))))
 

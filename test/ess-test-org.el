@@ -25,7 +25,7 @@
 
 (defun test-org-R-ouput (expect input)
   (declare (indent 1))
-  (let ((proc (get-buffer-process (run-ess-r-vanilla)))
+  (let ((proc (get-buffer-process (run-ess-test-r-vanilla)))
         (org-confirm-babel-evaluate nil)
         (ess-ask-for-ess-directory nil)
         (inhibit-message ess-inhibit-message-in-tests))
