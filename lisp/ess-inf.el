@@ -237,10 +237,7 @@ generated the latter from NAME."
                                        "Use transcript file (default none):" nil "")))
                    (if (string= transfilename "")
                        (get-buffer-create inf-name)
-                     (let ((buf (find-file-noselect (expand-file-name transfilename))))
-                       (if (comint-check-proc (get-buffer-process buf))
-                           (error "Can't start a transcripted session if it already exists")
-                         buf)))))
+                     (find-file-noselect (expand-file-name transfilename)))))
                 ;; Create a new buffer or take the *R:N* buffer if
                 ;; already exists (it should contain a dead process)
                 (t
