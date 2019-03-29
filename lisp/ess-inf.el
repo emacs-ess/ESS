@@ -1518,6 +1518,7 @@ VIS has same meaning as for `ess-eval-region'."
 Prefix arg VIS toggles visibility of ess-code as for
 `ess-eval-region'. Returns nil if not inside a function."
   (interactive "P")
+  (ess-force-buffer-current)
   (save-excursion
     (ignore-errors
       ;; Evaluation is forward oriented
