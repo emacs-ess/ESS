@@ -293,7 +293,7 @@ Variables controlling indentation style:
 
 Furthermore, \\[ess-set-style] command enables you to set up predefined ess-mode
 indentation style. See `ess-style-alist' for predefined styles."
-  :grop 'ess
+  :group 'ess
   ;; TODO: get rid of these and rely on modes to set variables properly
   (when-let ((alist (buffer-local-value 'ess-local-customize-alist (current-buffer))))
     (ess-setq-vars-local alist))
