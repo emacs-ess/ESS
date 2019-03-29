@@ -175,13 +175,11 @@ This may be useful for debugging."
            (proc-name (with-current-buffer inf-buf ess-local-process-name))
            (cur-dir (inferior-ess--maybe-prompt-startup-directory proc-name temp-dialect))
            (default-directory cur-dir))
-
       (set-buffer inf-buf)
       (setq-local default-directory cur-dir)
       ;; TODO: Get rid of this, we should rely on modes to set the
       ;; variables they need.
       (ess-setq-vars-local ess-customize-alist)
-
       (let ((inf-args (or ess-start-args
                           inferior-ess-start-args)))
         (ess--inferior-major-mode ess-dialect)
@@ -192,23 +190,11 @@ This may be useful for debugging."
                                  (when inferior-ess-own-frame
                                    '(display-buffer-pop-up-frame))))
         (let ((proc (inferior-ess--start-process inf-buf proc-name inf-args)))
-          ;; set the process sentinel to save the history
-          (set-process-sentinel proc 'ess-process-sentinel)
-          ;; add this process to ess-process-name-list, if needed
-          (let ((conselt (assoc proc-name ess-process-name-list)))
-            (unless conselt
-              (setq ess-process-name-list
-                    (cons (cons proc-name nil) ess-process-name-list))))
           (ess-make-buffer-current)
           (goto-char (point-max))
-          ;; add the process filter to catch certain output
-          (set-process-filter proc 'inferior-ess-output-filter)
-          (inferior-ess-mark-as-busy proc)
-
           (unless no-wait
             (ess-write-to-dribble-buffer "(inferior-ess: waiting for process to start (before hook)\n")
             (ess-wait-for-process proc nil 0.01 t))
-
           (unless (and proc (eq (process-status proc) 'run))
             (error "Process %s failed to start" proc-name))
           (when ess-setwd-command
@@ -216,8 +202,7 @@ This may be useful for debugging."
           (setq-local font-lock-fontify-region-function #'inferior-ess-fontify-region)
           (setq-local ess-sl-modtime-alist nil)
           (run-hooks 'ess-post-run-hook)
-
-          ;; user initialization can take some time ...
+          ;; User initialization can take some time ...
           (unless no-wait
             (ess-write-to-dribble-buffer "(inferior-ess 3): waiting for process after hook")
             (ess-wait-for-process proc)))
@@ -535,7 +520,17 @@ process-less buffer because it was created with
                  inferior-ess-program
                  nil
                  (split-string switches)))
-  (get-buffer-process buf))
+  (let ((proc (get-buffer-process buf)))
+    ;; Set the process hooks
+    (set-process-sentinel proc 'ess-process-sentinel)
+    (set-process-filter proc 'inferior-ess-output-filter)
+    (inferior-ess-mark-as-busy proc)
+    ;; Add this process to ess-process-name-list, if needed
+    (let ((conselt (assoc proc-name ess-process-name-list)))
+      (unless conselt
+        (setq ess-process-name-list
+              (cons (cons proc-name nil) ess-process-name-list))))
+    proc))
 
 
 ;;*;; Requester functions called at startup
