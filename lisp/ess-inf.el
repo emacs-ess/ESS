@@ -511,33 +511,31 @@ This marks the process with a message, at a particular time point."
                    (process-name proc) message (current-time-string))))))))
 
 (defun inferior-ess--start-process (buf proc-name switches)
-  "Make a comint process in buffer BUFNAME with process PROCNAME.
-SWITCHES is passed to `comint-exec'."
-  (let  ((proc (get-process proc-name)))
-    ;; If no process, or nuked process, crank up a new one Otherwise,
-    ;; leave buffer and existing process alone.
-    (cond ((or (not proc) (not (memq (process-status proc) '(run stop))))
-           (with-current-buffer  buf
-             (if (eq (buffer-size) 0) nil
-               (goto-char (point-max))
-               (insert "\^L\n")))    ; page boundaries = Interactive sessions
-           (let ((process-environment
-                  (nconc
-                   (list "STATATERM=emacs"
-                         (format "PAGER=%s" inferior-ess-pager))
-                   process-environment))
-                 (tramp-remote-process-environment
-                  (nconc ;; it contains a pager already, so append
-                   (when (boundp 'tramp-remote-process-environment)
-                     (copy-sequence tramp-remote-process-environment))
-                   (list "STATATERM=emacs"
-                         (format "PAGER=%s" inferior-ess-pager)))))
-             (comint-exec buf
-                          proc-name
-                          inferior-ess-program
-                          nil
-                          (split-string switches)))))
-    (get-buffer-process buf)))
+  "Make a comint process in buffer BUF with process PROC-NAME.
+SWITCHES is passed to `comint-exec'. BUF is guaranteed to be a
+process-less buffer because it was created with
+`inferior-ess--get-proc-buffer-create'."
+  (with-current-buffer buf
+    (if (eq (buffer-size) 0) nil
+      (goto-char (point-max))
+      (insert "\^L\n")))
+  (let ((process-environment
+         (nconc
+          (list "STATATERM=emacs"
+                (format "PAGER=%s" inferior-ess-pager))
+          process-environment))
+        (tramp-remote-process-environment
+         (nconc ;; it contains a pager already, so append
+          (when (boundp 'tramp-remote-process-environment)
+            (copy-sequence tramp-remote-process-environment))
+          (list "STATATERM=emacs"
+                (format "PAGER=%s" inferior-ess-pager)))))
+    (comint-exec buf
+                 proc-name
+                 inferior-ess-program
+                 nil
+                 (split-string switches)))
+  (get-buffer-process buf))
 
 
 ;;*;; Requester functions called at startup
