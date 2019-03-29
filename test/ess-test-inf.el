@@ -55,6 +55,18 @@
           (setq proc (get-buffer-process val)))
       (kill-process proc))))
 
+(ert-deftest ess-test-inferior-live-process-error ()
+  (let ((ess-gen-proc-buffer-name-function
+         ;; Generate same inferior name each time
+         (lambda (&rest args) "" "foo"))
+        (error-msg "Can't start a new session in buffer `foo` because one already exists")
+        proc)
+    (unwind-protect
+        (progn
+          (setq proc (get-buffer-process (run-ess-r-vanilla)))
+          (should (string= (cadr (should-error (run-ess-r-vanilla)))
+                           (format-message error-msg))))
+      (kill-process proc))))
 
 
 ;;*;; Evaluation
