@@ -223,18 +223,18 @@ This may be useful for debugging."
             (ess-wait-for-process proc)))
         inf-buf))))
 
-(defun inferior-ess--get-proc-buffer-create (temp-dialect)
+(defun inferior-ess--get-proc-buffer-create (name)
   "Get a process buffer, creating a new one if needed.
 This always returns a process-less buffer. The variable
 `ess-local-process-name' is set in the buffer with the name of
 the next process to spawn. This name may be different from the
 buffer name, depending on how `ess-gen-proc-buffer-name-function'
-generated the latter."
+generated the latter from NAME."
   (let* ((proc-name (let ((ntry 1))
                       ;; Find the next non-existent process N (*R:N*)
-                      (while (get-process (ess-proc-name ntry temp-dialect))
+                      (while (get-process (ess-proc-name ntry name))
                         (setq ntry (1+ ntry)))
-                      (ess-proc-name ntry temp-dialect)))
+                      (ess-proc-name ntry name)))
          (inf-name (funcall ess-gen-proc-buffer-name-function proc-name)))
     (let ((buf (cond
                 ;; Try to use current buffer, if inferior-ess-mode but
