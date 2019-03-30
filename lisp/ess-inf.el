@@ -82,7 +82,7 @@ been initialised."
     tab)
   "Syntax table for `inferior-ess-mode'.")
 
-(defun ess--inferior-major-mode (dialect)
+(defun inferior-ess--set-major-mode (dialect)
   "Set major mode according to DIALECT."
   (cond ((string= "R" dialect)
          (progn (require 'ess-r-mode)
@@ -182,7 +182,7 @@ This may be useful for debugging."
       (ess-setq-vars-local ess-customize-alist)
       (let ((inf-args (or ess-start-args
                           inferior-ess-start-args)))
-        (ess--inferior-major-mode ess-dialect)
+        (inferior-ess--set-major-mode ess-dialect)
         ;; Show the buffer
         ;; TODO: Remove inferior-ess-own-frame after ESS 19.04, then just have:
         ;; (pop-to-buffer inf-buf)
