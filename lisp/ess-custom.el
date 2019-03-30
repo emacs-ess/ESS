@@ -1847,9 +1847,6 @@ This is an internal varialbe used by tools like `ess-developer'
 and `ess-tracebug'.")
 (put 'ess--local-mode-line-process-indicator 'risky-local-variable t)
 
-(defvar ess-process-name-list nil
-  "Alist of active ESS processes.")
-
 ;;*;; Inferior ESS commands
 
 (defvar-local ess-load-command "source('%s')\n"

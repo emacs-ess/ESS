@@ -492,6 +492,11 @@ This marks the process with a message, at a particular time point."
            (format "\nProcess %s %s at %s\n"
                    (process-name proc) message (current-time-string))))))))
 
+;; FIXME: This list is structured as '(("R:2") ("R")). It doesn't
+;; appear the CDR are used. Can probably just be '("R:2" "R").
+(defvar ess-process-name-list nil
+  "Alist of active ESS processes.")
+
 (defun inferior-ess--start-process (buf proc-name switches)
   "Make a comint process in buffer BUF with process PROC-NAME.
 SWITCHES is passed to `comint-exec'. BUF is guaranteed to be a
@@ -668,6 +673,8 @@ happens interactively (when possible)."
 
 ;;*;; Multiple process handling code
 
+;; FIXME: It seems the only effect of this function is to remove dead
+;; processes from `ess-process-name-list'. Am I missing something?
 (defun ess-make-buffer-current nil
   "Make the process associated with the current buffer the current ESS process.
 Returns the name of the process, or nil if the current buffer has none."
