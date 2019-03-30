@@ -116,12 +116,13 @@ New way to do it."
   (setq ess-customize-alist S+-customize-alist)
   (ess-write-to-dribble-buffer
    (format "\n(S+): ess-dialect=%s, buf=%s\n" ess-dialect (current-buffer)))
-  (inferior-ess)
-  (ess-command ess-S+--injected-code)
-  (if inferior-ess-language-start
+  (let ((inf-buf (inferior-ess)))
+    (ess-command ess-S+--injected-code)
+    (when inferior-ess-language-start
       (ess-eval-linewise inferior-ess-language-start))
-  (with-ess-process-buffer nil
-    (run-mode-hooks 'ess-S+-post-run-hook)))
+    (with-current-buffer inf-buf
+      (run-mode-hooks 'ess-S+-post-run-hook))
+    inf-buf))
 
 
 (defalias 'S+6-mode 'S+-mode)

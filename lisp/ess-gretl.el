@@ -553,8 +553,8 @@ to gretl, put them in the variable `inferior-gretl-args'."
 		       (concat "Starting Args [other than `"
 			       inferior-gretl-args
 			       "'] ? "))
-		    nil))))
-    (inferior-ess r-start-args)
+		    nil)))
+         (inf-buf (inferior-ess r-start-args)))
     (set (make-local-variable 'indent-line-function) 'gretl-indent-line)
     (set (make-local-variable 'gretl-basic-offset) 4)
     (setq indent-tabs-mode nil)
@@ -562,9 +562,9 @@ to gretl, put them in the variable `inferior-gretl-args'."
     ;; (if inferior-ess-language-start
     ;; 	(ess-eval-linewise inferior-ess-language-start
     ;; 			   nil nil nil 'wait-prompt)))
-    (with-ess-process-buffer nil
+    (with-current-buffer inf-buf
       (run-mode-hooks 'ess-gretl-post-run-hook))
-    ))
+    inf-buf))
 
 
 ;;;; IMENU

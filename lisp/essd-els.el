@@ -71,9 +71,10 @@ The default value is nil."
   (ess-write-to-dribble-buffer
    (format "\n(S+elsewhere): ess-dialect=%s, buf=%s\n" ess-dialect
            (current-buffer)))
-  (inferior-ess)
-  (if inferior-ess-language-start
-      (ess-eval-linewise inferior-ess-language-start)))
+  (let ((inf-buf (inferior-ess)))
+    (when inferior-ess-language-start
+      (ess-eval-linewise inferior-ess-language-start))
+    inf-buf))
 
 (defun S+elsewhere-mode (&optional _proc-name)
   "Major mode for editing S+3 source.  See `ess-mode' for more help."
