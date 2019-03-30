@@ -74,6 +74,7 @@
 (defvar ess-r-mode-syntax-table)
 (declare-function ess-fill-args "ess-r-mode")
 (declare-function ess-fill-continuations "ess-r-mode")
+(declare-function inferior-ess-r-force "ess-r-mode")
 
 (defvar-local ess-roxy-re nil
   "Regular expression to recognize roxygen blocks.")
@@ -638,6 +639,7 @@ point. Place it in a buffer and return that buffer."
                     (not (eobp))
                     (not (looking-at-p ess-roxy-re))))
         (append-to-file beg (point) tmpf))
+      (inferior-ess-r-force)
       (ess-force-buffer-current)
       (unless (ess-boolean-command (concat "print(suppressWarnings(require(" ess-roxy-package
                                            ", quietly=TRUE)))\n"))
