@@ -1374,7 +1374,7 @@ Then run `inferior-ess-r-reload-hook'."
   (run-hooks 'inferior-ess-r-reload-hook))
 
 (defun inferior-ess-r-force (&optional prompt force no-autostart ask-if-1)
-  (setq ess-dialect "R")
+  (setq-local ess-dialect "R")
   (ess-force-buffer-current prompt force no-autostart ask-if-1))
 
 
