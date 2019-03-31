@@ -113,7 +113,7 @@ Used to remove keywords added by function `ess-roxy-mode'.")
                  (1 'font-lock-keyword-face prepend))
                 (,(concat ess-roxy-re " *\\(@"
                           (regexp-opt '("param" "importFrom" "importClassesFrom"
-                                        "importMethodsFrom")
+                                        "importMethodsFrom" "describeIn")
                                       'words)
                           "\\)\\(?:[ \t]+\\(\\(?:\\sw+,?\\)+\\)\\)")
                  (1 'font-lock-keyword-face prepend)

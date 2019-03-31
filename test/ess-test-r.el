@@ -313,6 +313,37 @@ add <- function(x, y) {
                     (buffer-substring-no-properties (point-min) (point-max)))))
       (ert-skip "Roxygen2 not installed"))))
 
+(ert-deftest ess-test-roxy-font-lock ()
+  (ess-r-test-with-temp-text
+      "#' a function
+#'
+#' @param x the param
+#' @param y the other param
+my_mean <- function(x, y){
+  mean(x) + mean(y)
+}"
+    (font-lock-ensure)
+    (goto-char (point-min))
+    (search-forward "@par")
+    (should (equal (face-at-point) 'font-lock-keyword-face))
+    (search-forward "x")
+    (forward-char -1)
+    (should (equal (face-at-point) 'font-lock-variable-name-face))
+    (search-forward "the para")
+    (should (equal (face-at-point) 'font-lock-comment-face)))
+  (ess-r-test-with-temp-text
+      "#' @describeIn foo
+#' @export
+foo <- function(x){
+  mean(x)
+}"
+    (font-lock-ensure)
+    (goto-char (point-min))
+    (search-forward "@des")
+    (should (equal (face-at-point) 'font-lock-keyword-face))
+    (search-forward "@exp")
+    (should (equal (face-at-point) 'font-lock-variable-name-face))))
+
 (ert-deftest ess-roxy-get-function-args-test ()
   (ess-r-test-with-temp-text
       "#' a function
