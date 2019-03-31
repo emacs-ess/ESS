@@ -482,7 +482,7 @@ my_mean2 <- function(z){
 library(knitr)
 x <- function(a) mean(a)
 
-y <- function(c){
+y = function(c){
   sum(c)
 }
 

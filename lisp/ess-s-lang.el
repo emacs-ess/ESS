@@ -464,16 +464,15 @@ and I need to relearn emacs lisp (but I had to, anyway."
 
 ;; don't use syntax classes, bad for etags
 (defvar ess-imenu-S-generic-expression
-  '(("Functions" "^\\([^ \t\n]+\\)[ \t\n]*<-[ \t\n]*function[ ]*(" 1)
+  '(("Functions" "^\\([^ \t\n]+\\)[ \t\n]*\\(?:<-\\|=\\)[ \t\n]*function[ ]*(" 1)
     ("Classes" "^.*setClass(\\(.*\\)," 1)
     ("Coercions" "^.*setAs(\\([^,]+,[^,]*\\)," 1) ; show from and to
     ("Generics" "^.*setGeneric(\\([^,]*\\)," 1)
     ("Methods" "^.*set\\(Group\\|Replace\\)?Method(\\([^,]+,[^,]*\\)" 2)
-    ;;[ ]*\\(signature=\\)?(\\(.*,?\\)*\\)," 1)
-    ;;
-    ;;("Other" "^\\(.+\\)\\s-*<-[ \t\n]*[^\\(function\\|read\\|.*data\.frame\\)]" 1)
     ("Package" "^.*\\(library\\|require\\)(\\([^)]*\\)" 2)
-    ("Data" "^\\(.+\\)[ \t\n]-*<-[ \t\n]*\\(read\\|.*data\.frame\\).*(" 1)))
+    ("Data" "^\\(.+\\)[ \t\n]-*\\(?:<-\\|=\\)[ \t\n]*\\(read\\|.*data\\.frame\\).*(" 1))
+  "Imenu generic expression for S modes.
+See `imenu-generic-expression'.")
 
 (defun ess-imenu-S (&optional _arg)
   "S Language Imenu support for ESS.

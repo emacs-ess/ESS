@@ -75,6 +75,8 @@ The frequency is governed by the new option
 This automatically inserts a newline after an opening curly brace in R
 buffers. To enable it, customize @code{ess-r-mode-hook}.
 
+@item ESS[R]: imenu now supports assignment with the equals sign.
+
 @item ESS removed support for many unused languages.
 This includes old versions of S+, ARC, OMG, VST, and XLS.
 
