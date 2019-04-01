@@ -183,7 +183,7 @@ your R functions in specified source directories.
 @section Why should I use ESS?
 
 Statistical packages are powerful software systems for manipulating and
-analyzing data, but their user interfaces often leave something something
+analyzing data, but their user interfaces often leave something
 to be desired:  they offer weak editor functionality and they differ
 among themselves so markedly that you have to re-learn how to do those
 things for each package.  ESS is a package which is designed to make
