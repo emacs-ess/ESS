@@ -52,7 +52,6 @@
 (require 'compile)
 (require 'overlay)
 (require 'ring)
-(require 'ess-custom)
 (require 'ess-utils)
 
 (defvar text-scale-mode-amount)

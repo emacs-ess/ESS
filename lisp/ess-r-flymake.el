@@ -33,7 +33,6 @@
 ;;; Code:
 
 (eval-when-compile (require 'cl-lib))
-(require 'ess-custom)
 (require 'ess-inf)
 (require 'flymake)
 (require 'project)

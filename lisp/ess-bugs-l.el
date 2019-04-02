@@ -28,7 +28,6 @@
 (require 'shell)
 (require 'comint)
 (require 'ess-utils)
-(require 'ess-custom)
 (defvar ess-bugs-command)
 (defvar ess-bugs-chains)
 (defvar ess-jags-command)

@@ -31,7 +31,6 @@
 ;;; Code:
 (require 'cl-lib)
 (require 'project)
-(require 'ess-custom)
 (require 'ess-inf)
 (require 'ess-utils)
 

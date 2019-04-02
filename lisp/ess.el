@@ -43,8 +43,7 @@
 ;;
 ;;; Code:
 
-(require 'ess-custom)
-
+(require 'ess-utils)
 (defvar reporter-prompt-for-summary-p)
 
 

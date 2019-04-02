@@ -50,7 +50,6 @@
 ;;; Code:
 
 (require 'ess-mode)
-(require 'ess-custom)
 (require 'ess-sas-a)
 
 (declare-function SAS-mode "ess-sas-d")

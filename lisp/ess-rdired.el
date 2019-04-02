@@ -73,7 +73,6 @@
 
 ;;; Code:
 
-(require 'ess-custom)
 (require 'ess-inf)
 
 (eval-when-compile

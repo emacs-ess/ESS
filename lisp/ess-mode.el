@@ -29,7 +29,6 @@
 (eval-when-compile
   (require 'cl-lib)
   (require 'subr-x))
-(require 'ess-custom)
 (require 'ess-utils)
 (require 'ess-inf)
 

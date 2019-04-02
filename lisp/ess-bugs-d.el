@@ -26,7 +26,6 @@
 (require 'ess-bugs-l)
 (require 'ess-utils)
 (require 'ess-inf)
-(require 'ess-custom)
 (require 'ess-mode)
 
 (defvar ess-bugs-command "OpenBUGS" "Default BUGS program in PATH.")

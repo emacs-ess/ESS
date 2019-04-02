@@ -29,7 +29,6 @@
 ;;
 
 ;;; Code:
-(require 'ess-custom)
 (require 'ess-utils)
 (require 'ess-help)
 (require 'ess-inf)
