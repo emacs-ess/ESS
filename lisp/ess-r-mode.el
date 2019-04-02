@@ -489,6 +489,9 @@ will be prompted to enter arguments interactively."
    (format
     "\n(R): ess-dialect=%s, buf=%s, start-arg=%s\n current-prefix-arg=%s\n"
     ess-dialect (current-buffer) start-args current-prefix-arg))
+  (unless (executable-find inferior-ess-r-program)
+    (display-warning 'ess (format "%s could not be found on the system. Try running `R-newest' instead, which searches your system for R." inferior-ess-r-program) :error)
+    (user-error "%s program not found" inferior-ess-r-program))
   (let* ((r-always-arg
           (if (or ess-microsoft-p (eq system-type 'cygwin))
               "--ess "
