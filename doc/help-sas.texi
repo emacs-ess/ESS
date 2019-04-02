@@ -4,8 +4,7 @@ Tom Cook.  Those editing features and new advanced features are part of
 @ESS{[SAS]}.  The user interface of @ESS{[SAS]} has similarities with @ESS{[S]}
 and the @SAS{} Display Manager.
 
-@comment  node-name,  next,  previous,  up
-@node ESS(SAS)--Design philosophy, ESS(SAS)--Editing files, ESS for SAS, ESS for SAS
+@node ESS(SAS)--Design philosophy
 @section ESS[SAS]--Design philosophy
 
 @ESS{[SAS]} was designed to aid the user in writing and maintaining @SAS{}
@@ -26,8 +25,7 @@ and syntax highlighting, are provided transparently; appealing to
 advanced @ESS{[SAS]} users.
 @end enumerate
 
-@comment  node-name,  next,  previous,  up
-@node ESS(SAS)--Editing files, ESS(SAS)--TAB key, ESS(SAS)--Design philosophy, ESS for SAS
+@node ESS(SAS)--Editing files
 @section ESS[SAS]--Editing files
 
 @ESS{[SAS]} is the mode for editing @SAS{} language files.  This mode handles:
@@ -69,8 +67,7 @@ first line is highlighted; for @file{.log} files, only the first line of a
 single/double quotes in @code{CARDS} data lines are @strong{NOT} ignored; in an
 iterative @code{DO} statement, @code{TO} and @code{BY} are not highlighted.
 
-@comment  node-name,  next,  previous,  up
-@node  ESS(SAS)--TAB key, ESS(SAS)--Batch SAS processes, ESS(SAS)--Editing files, ESS for SAS
+@node  ESS(SAS)--TAB key
 @section ESS[SAS]--@key{TAB} key
 
 Two options.  The @key{TAB} key is bound by default to
@@ -99,8 +96,7 @@ prior to a @code{require}/@code{load}:
 Under the alternate behavior, @key{TAB} is bound to @wkbd{M-x tab-to-tab-stop}
 and the stops are defined by @code{ess-sas-tab-stop-list}.
 
-@comment  node-name,  next,  previous,  up
-@node  ESS(SAS)--Batch SAS processes, ESS(SAS)--Function keys for batch processing, ESS(SAS)--TAB key, ESS for SAS
+@node  ESS(SAS)--Batch SAS processes
 @section ESS[SAS]--Batch SAS processes
 
 Submission of a @SAS{} batch job is dependent on your environment.
@@ -222,8 +218,7 @@ Make your editing changes and submit again.
 @key{F3} (@key{F8})
 @end example
 
-@comment  node-name,  next,  previous,  up
-@node  ESS(SAS)--Function keys for batch processing, iESS(SAS)--Interactive SAS processes, ESS(SAS)--Batch SAS processes, ESS for SAS
+@node  ESS(SAS)--Function keys for batch processing
 @section ESS[SAS]--Function keys for batch processing
 
 The setup of function keys for @SAS{} batch processing
@@ -482,9 +477,7 @@ landscape (first line for "global" key mapping, second for "local"):
 (define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-a4-landscape)
 @end example
 
-
-@comment  node-name,  next,  previous,  up
-@node  iESS(SAS)--Interactive SAS processes, iESS(SAS)--Common problems, ESS(SAS)--Function keys for batch processing, ESS for SAS
+@node  iESS(SAS)--Interactive SAS processes
 @section iESS[SAS]--Interactive SAS processes
 
 Inferior @ESS{} (@iESS{}) is the method for interfacing with interactive
@@ -581,8 +574,7 @@ never need to read it or write to it.  Refer to the @file{.lst} and
 
 Troubleshooting: @xref{iESS(SAS)--Common problems}.
 
-@comment  node-name,  next,  previous,  up
-@node   iESS(SAS)--Common problems, ESS(SAS)--Graphics, iESS(SAS)--Interactive SAS processes, ESS for SAS
+@node   iESS(SAS)--Common problems
 @section iESS[SAS]--Common problems
 
 @enumerate
@@ -636,8 +628,7 @@ shell script appears.
 @comment @end example
 @comment @end enumerate
 
-@comment  node-name,  next,  previous,  up
-@node   ESS(SAS)--Graphics, ESS(SAS)--Windows, iESS(SAS)--Common problems, ESS for SAS
+@node   ESS(SAS)--Graphics
 @section ESS[SAS]--Graphics
 
 Output from a @SAS{/GRAPH} @code{PROC} can be displayed in a @SAS{/GRAPH}
@@ -658,8 +649,7 @@ proc plot;
 run;
 @end example
 
-@comment  node-name,  next,  previous,  up
-@node   ESS(SAS)--Windows,  , ESS(SAS)--Graphics, ESS for SAS
+@node   ESS(SAS)--Windows
 @section ESS[SAS]--Windows
 
 @itemize @bullet

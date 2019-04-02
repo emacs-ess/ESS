@@ -6,7 +6,6 @@
 
 @include ess-defs.texi
 @node Announce
-@comment  node-name,  next,  previous,  up
 @chapter ANNOUNCING ESS
 @cindex ANNOUNCE
 
@@ -44,35 +43,35 @@ please read the README files that come with ESS.
 * New Features::
 @end menu
 
-@node Latest Version, Current Features, Announce, Announce
+@node Latest Version
 @section Getting the Latest Version
 @include installation.texi
 
-@node Current Features, Requirements, Latest Version, Announce
+@node Current Features
 @section Current Features
 @include currfeat.texi
 
-@node Requirements, Mailing List, Current Features, Announce
+@node Requirements
 @section Requirements
 @include requires.texi
 
-@node Mailing List, Reporting Bugs, Requirements, Announce
+@node Mailing List
 @section Mailing List
 @include mailing.texi
 
-@node Reporting Bugs, Authors, Mailing List, Announce
+@node Reporting Bugs
 @section Reporting Bugs
 @include bugrept.texi
 
-@node Authors, License, Reporting Bugs, Announce
+@node Authors
 @section Authors
 @include authors.texi
 
-@node License, New Features, Authors, Announce
+@node License
 @section License
 @include license.texi
 
-@node New Features,  , License, Announce
+@node New Features
 @section New Features
 @include newfeat.texi
 

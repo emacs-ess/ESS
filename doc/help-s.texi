@@ -1,5 +1,4 @@
-@node ESS(R)--Editing files, iESS(R)--Inferior ESS processes, ESS for R, ESS for R
-@comment  node-name,  next,  previous,  up -- don't use @ESS ..
+@node ESS(R)--Editing files
 @section ESS[R]--Editing files
 
 @ESS{[R]} mode should be automatically turned on when visiting a file
@@ -8,8 +7,7 @@ features discussed previously.  Alternatively, type @kbd{M-x R-mode} to
 put the current buffer into R mode.  However, one will have to start up
 an inferior process to take advantage of the interactive features.
 
-@node iESS(R)--Inferior ESS processes, Philosophies for using ESS(R), ESS(R)--Editing files, ESS for R
-@comment  node-name,  next,  previous,  up
+@node iESS(R)--Inferior ESS processes
 @section iESS[R]--Inferior ESS processes
 
 To start up iESS mode for R, use:
@@ -67,8 +65,7 @@ function, called @kbd{M-x R-newest}, which will call the newest version
 of R that it found.  (ESS examines the date in the first line of
 information from @code{R --version} to determine which is newest.)
 
-@node Philosophies for using ESS(R), Example ESS usage, iESS(R)--Inferior ESS processes, ESS for R
-@comment  node-name,  next,  previous,  up
+@node Philosophies for using ESS(R)
 @section Philosophies for using ESS[R]
 
 There are two philosophies for using ESS.  Most modern best practices
@@ -89,7 +86,7 @@ manual focuses on.
 (setq ess-mode-silently-save nil)
 @end example
 
-@node Example ESS usage, , Philosophies for using ESS(R), ESS for R
+@node Example ESS usage
 @section Example ESS usage
 
 We present some basic examples for using ESS to interact with R

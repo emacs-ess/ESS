@@ -6,7 +6,6 @@
 
 @include ess-defs.texi
 @node General Information
-@comment  node-name,  next,  previous,  up
 @chapter General Information: README
 @cindex README
 
@@ -70,20 +69,15 @@ Table of Contents
 * Authors::
 @end menu
 
-@node License, Installation, General Information, General Information
-@comment  node-name,  next,  previous,  up
+@node License
 @section License
-
 @include license.texi
 
-@c    vvvvvvvvvvvv node name  *must* match the one in ./ess.texi !
-@node Installation, Starting up, License, General Information
-@comment  node-name,  next,  previous,  up
+@node Installation
 @section Installation
 @include installation.texi
 
-@node Starting up, Current Features, Installation, General Information
-@comment  node-name,  next,  previous,  up
+@node Starting up
 @section Starting an ESS process
 To start an @Sl{} session on Unix or on Windows when you
 use the Cygwin bash shell, simply type @kbd{M-x S RET}.
@@ -91,32 +85,27 @@ use the Cygwin bash shell, simply type @kbd{M-x S RET}.
 To start an @Sl{} session on Windows when you
 use the MSDOS prompt shell, simply type @kbd{M-x S+6-msdos RET}.
 
-@node Current Features, New Features, Starting up, General Information
-@comment  node-name,  next,  previous,  up
+@node Current Features
 @section Current Features
 
 @include currfeat.texi
 
-@node New Features, Reporting Bugs, Current Features, General Information
-@comment  node-name,  next,  previous,  up
+@node New Features
 @section New Features
 
 @include newfeat.texi
 
-@node Reporting Bugs, Mailing Lists, New Features, General Information
-@comment  node-name,  next,  previous,  up
+@node Reporting Bugs
 @section Reporting Bugs
 
 @include bugrept.texi
 
-@node Mailing Lists, Authors, Reporting Bugs, General Information
-@comment  node-name,  next,  previous,  up
+@node Mailing Lists
 @section Mailing Lists
 
 @include mailing.texi
 
-@node Authors,  , Mailing Lists, General Information
-@comment  node-name,  next,  previous,  up
+@node Authors
 @section Authors
 
 @include authors.texi

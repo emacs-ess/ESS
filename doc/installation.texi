@@ -13,7 +13,7 @@ you. See @ref{Activating and Loading ESS} for more details.
 * Check Installation::
 @end menu
 
-@node Installing from a third-party repository, Installing from source
+@node Installing from a third-party repository
 @section Installing from a third-party repository
 
 ESS is packaged by many third party repositories. Many GNU/Linux
@@ -31,7 +31,7 @@ After installing, users should make sure ESS is activated or loaded in
 each Emacs session. See @ref{Activating and Loading ESS}. Depending on
 install method, this may be taken care of automatically.
 
-@node Installing from source, Activating and Loading ESS, Installing from a third-party repository
+@node Installing from source
 @section Installing from source
 
 Stable versions of ESS are available at the
@@ -76,7 +76,7 @@ run correctly on macOS, you will need to adjust the @file{PREFIX}
 path in @file{Makeconf}. The necessary code and instructions are
 commented in that file.
 
-@node Activating and Loading ESS, Check Installation, Installing from source
+@node Activating and Loading ESS
 @section Activating and Loading ESS
 
 After installing ESS, you must activate or load it each Emacs session.
@@ -114,7 +114,7 @@ or
 In your configuration file, depending on whether you want all ESS
 features or only R related features.
 
-@node Check Installation,  , Activating and Loading ESS
+@node Check Installation
 @section Check Installation
 Restart Emacs and check that ESS was loaded from a correct
 location with @code{M-x ess-version}.
