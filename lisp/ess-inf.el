@@ -1248,7 +1248,11 @@ wrapping the code into:
     ...
  })"
   (let ((out-buffer (or out-buffer (get-buffer-create " *ess-command-output*")))
-        (proc (ess-command--get-proc proc no-prompt-check)))
+        (proc (ess-command--get-proc proc no-prompt-check))
+        ;; Set `inhibit-quit' to t to avoid dumping R output to the
+        ;; process buffer if `ess-command' gets interrupted for some
+        ;; reason. See bugs #794 and #842
+        (inhibit-quit t))
     (with-current-buffer (process-buffer proc)
       (let ((primary-prompt inferior-ess-primary-prompt)
             (oldpb (process-buffer proc))
