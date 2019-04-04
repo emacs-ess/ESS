@@ -8,8 +8,8 @@
 ## Installation variables for your emacs variant
 ##
 ## Variable        Description
-## EMACS           use emacs for GNU Emacs, xemacs for XEmacs
-## EMACSBATCH      emacs/xemacs command for compiling elisp files
+## EMACS           Path to GNU Emacs
+## EMACSBATCH      Emacs command for compiling elisp files
 ## SITELISP        Destination of site-lisp; but some variants have no site-lisp
 ## LISPDIR         Destination of compiled elisp files
 ## INFODIR         Destination of info files
@@ -25,13 +25,6 @@ SITELISP=$(PREFIX)/share/emacs/site-lisp
 LISPDIR=$(SITELISP)/ess
 INFODIR=$(PREFIX)/share/info
 ETCDIR =$(PREFIX)/share/emacs/etc/ess
-
-##__ XEmacs __
-#EMACS=$(PREFIX)/bin/xemacs
-#SITELISP=$(PREFIX)/share/xemacs/site-packages/lisp
-#LISPDIR=$(SITELISP)/ess
-#INFODIR=$(PREFIX)/share/xemacs/site-packages/info
-#ETCDIR =$(PREFIX)/share/xemacs/site-packages/etc/ess
 
 ##__ GNU Emacs __  for Mac OS X with NeXTstep (Cocoa or GNUstep)
 # PREFIX=/Applications/Emacs.app/Contents/Resources
@@ -49,7 +42,6 @@ ETCDIR =$(PREFIX)/share/emacs/etc/ess
 # INFODIR=/Applications/Aquamacs.app/Contents/Resources/info
 # ETCDIR=$(PREFIX)/ess-mode/etc
 
-## the following command is the same for recent versions of both Emacs and XEmacs
 EMACSBATCH ?= $(EMACS) -batch -Q
 
 ## Section 2

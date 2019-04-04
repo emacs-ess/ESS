@@ -53,5 +53,5 @@ S
 @end macro
 
 @macro initfile{}
-@file{~/.emacs} or @file{~/.xemacs/init.el}
+@file{~/.emacs} or @file{~/.emacs.d/init.el}
 @end macro

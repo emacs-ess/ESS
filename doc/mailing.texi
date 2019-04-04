@@ -12,7 +12,7 @@ The purposes of the mailing list include
 @item
  helping users of ESS to get along with it.
 @item
- discussing aspects of using ESS on Emacs and XEmacs.
+ discussing aspects of using ESS.
 @item
  suggestions for improvements.
 @item

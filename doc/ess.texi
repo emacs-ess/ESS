@@ -2691,7 +2691,7 @@ The entry is immediately preceding the object to document and all lines
 start with the Roxygen prefix string, in this case @code{##'}. ESS
 provides support to edit these documentation entries by providing line
 filling, navigation, template generation etc. Syntax highlighting is
-provided for Emacs but not for XEmacs.
+provided.
 
 Roxygen is customized by the variables in the customization group ``Ess
 Roxy''. Customizables include the Roxygen prefix, use of folding

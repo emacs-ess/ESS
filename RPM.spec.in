@@ -27,7 +27,7 @@ ESS provides an intelligent, consistent interface between the user and
 the software.  ESS interfaces with S-PLUS, R, SAS, BUGS and other
 statistical analysis packages under the Unix, Microsoft Windows, and
 Apple Mac OS operating systems.  ESS is a package for the GNU Emacs
-and XEmacs text editors whose features ESS uses to streamline the
+text editors whose features ESS uses to streamline the
 creation and use of statistical software.  ESS knows the syntax and
 grammar of statistical analysis packages and provides consistent
 display and editing features based on that knowledge.  ESS assists in

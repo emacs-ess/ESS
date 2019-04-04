@@ -13,7 +13,7 @@
 This is the README file for the distribution of ESS version
 @include ../VERSION
 
-ESS is a GNU Emacs and XEmacs mode for interactive statistical
+ESS is a GNU Emacs package for interactive statistical
 programming and data analysis.  Languages supported: the S family (S,
 S-PLUS and R), SAS, BUGS/JAGS and Stata.  ESS grew out of the
 desire for bug fixes and extensions to S-mode and SAS-mode as well as a
