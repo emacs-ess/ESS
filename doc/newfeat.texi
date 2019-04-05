@@ -4,6 +4,14 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item iESS: Process runners now return the inferior buffer.
+Note that callers of inferior runners should not assume that the current
+buffer has been set to the inferior buffer. Instead, use
+@code{with-current-buffer} with the return value of the inferior.
+
+@item iESS[SAS]: The SAS keymap was only set in iESS buffers
+called `*SAS*`. This is now fixed.
+
 @item ESS[R]: Fixed longstanding indentation issues involving
 @code{::} and @code{:::} operators.
 

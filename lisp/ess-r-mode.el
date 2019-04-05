@@ -523,29 +523,27 @@ will be prompted to enter arguments interactively."
         (setq default-process-coding-system '(undecided-dos . undecided-dos))))
 
     (let ((inf-buf (inferior-ess r-start-args cust-alist gdbp)))
-
-      (ess-process-put 'funargs-pre-cache ess-r--funargs-pre-cache)
-
-      (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
-      (add-hook 'completion-at-point-functions 'ess-r-object-completion nil 'local)
-      (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
-      (add-hook 'xref-backend-functions #'ess-r-xref-backend nil 'local)
-      (setq comint-input-sender 'inferior-ess-r-input-sender)
-
-      (if gdbp
-          (progn
-            ;; We need to use callback, because R might start with a gdb process
-            (ess-process-put 'callbacks '(R-initialize-on-start))
-            ;; trigger the callback
-            (process-send-string (get-process ess-local-process-name) "\n"))
-        (ess-wait-for-process)
-        (R-initialize-on-start)
-        (comint-goto-process-mark))
-
-      (ess-write-to-dribble-buffer
-       (format "(R): inferior-ess-language-start=%s\n"
-               inferior-ess-language-start))
-      inf-buf)))
+      (with-current-buffer inf-buf
+        (ess-process-put 'funargs-pre-cache ess-r--funargs-pre-cache)
+        (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
+        (add-hook 'completion-at-point-functions 'ess-r-object-completion nil 'local)
+        (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
+        (add-hook 'xref-backend-functions #'ess-r-xref-backend nil 'local)
+        (setq comint-input-sender 'inferior-ess-r-input-sender)
+        (if gdbp
+            (progn
+              ;; We need to use callback, because R might start with a gdb process
+              (ess-process-put 'callbacks '(R-initialize-on-start))
+              ;; Trigger the callback
+              (process-send-string (get-process ess-local-process-name) "\n"))
+          (ess-wait-for-process)
+          (R-initialize-on-start)
+          (comint-goto-process-mark))
+        (ess-write-to-dribble-buffer
+         (format "(R): inferior-ess-language-start=%s\n"
+                 inferior-ess-language-start)))
+      ;; FIXME: Current ob-R expects current buffer set to process buffer
+      (set-buffer inf-buf))))
 
 ;;;###autoload
 (defalias 'R #'run-ess-r)

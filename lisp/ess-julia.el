@@ -434,23 +434,23 @@ always be passed to julia, put them in the variable
                                      (concat " [other than '" inferior-julia-args "']"))
                                  " ? "))
 		              nil))))
-      (inferior-ess jl-start-args)
-
-      (ess--tb-start)
-      ;; remove ` from julia's logo
-      (goto-char (point-min))
-      (while (re-search-forward "`" nil t)
-        (replace-match "'"))
-      ;; remove an offending unmatched parenthesis
-      (goto-char (point-min))
-      (forward-line 4)
-      (when (re-search-forward "(" nil t)
-        (replace-match "|"))
-      (goto-char (point-max))
-      ;; --> julia helpers from ../etc/ess-julia.jl :
-      (ess--inject-code-from-file (format "%sess-julia.jl" ess-etc-directory))
-      (with-ess-process-buffer nil
-        (run-mode-hooks 'ess-julia-post-run-hook)))))
+      (let ((inf-buf (inferior-ess jl-start-args)))
+        (ess--tb-start)
+        ;; Remove ` from julia's logo
+        (goto-char (point-min))
+        (while (re-search-forward "`" nil t)
+          (replace-match "'"))
+        ;; Remove an offending unmatched parenthesis
+        (goto-char (point-min))
+        (forward-line 4)
+        (when (re-search-forward "(" nil t)
+          (replace-match "|"))
+        (goto-char (point-max))
+        ;; --> julia helpers from ../etc/ess-julia.jl :
+        (ess--inject-code-from-file (format "%sess-julia.jl" ess-etc-directory))
+        (with-current-buffer inf-buf
+          (run-mode-hooks 'ess-julia-post-run-hook))
+        inf-buf))))
 
 (cl-defmethod ess--help-major-mode (&context ((string= ess-dialect "julia") (eql t)))
   (ess-julia-help-mode))

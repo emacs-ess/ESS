@@ -307,10 +307,10 @@ Better logic needed!  (see 2 uses, in this file).")
              temp-dialect))
     (ess-SAS-pre-run-hook temp-dialect)
     (setq ess-eval-visibly-p nil)
-    (inferior-ess)
-    (with-current-buffer "*SAS*"
-      (use-local-map sas-mode-local-map))))
-
+    (let ((inf-buf (inferior-ess)))
+      (with-current-buffer inf-buf
+        (use-local-map sas-mode-local-map))
+      inf-buf)))
 
 (defun ess-multi-frame-SAS ()
   "Put running SAS buffers into separate frames.

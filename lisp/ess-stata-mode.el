@@ -150,20 +150,21 @@ This function is placed in `ess-presend-filter-functions'.
    (format "(STA): ess-dialect=%s , buf=%s \n"
            ess-dialect
            (current-buffer)))
-  (let ((sta-start-args 
-         (concat inferior-STA-start-args
-                 (when start-args (read-string "Starting Args [possibly -k####] ? ")))))
-    (inferior-ess sta-start-args)
-    (let ((proc (get-process ess-local-process-name)))
-      (while (process-get proc 'sec-prompt)
-        ;; get read of all --more-- if stata.msg is too long.
-        (ess-send-string proc "q")
-        (ess-wait-for-process proc t))
-      (ess-send-string proc "set more off")
-      (goto-char (point-max))
-      (with-current-buffer (process-buffer proc)
-        (add-hook 'ess-presend-filter-functions 'ess-sta-remove-comments nil 'local)
-        (run-mode-hooks 'ess-stata-post-run-hook)))))
+  (let* ((sta-start-args
+          (concat inferior-STA-start-args
+                  (when start-args (read-string "Starting Args [possibly -k####] ? "))))
+         (inf-buf (inferior-ess sta-start-args))
+         (inf-proc (get-buffer-process inf-buf)))
+    (while (process-get inf-proc 'sec-prompt)
+      ;; get read of all --more-- if stata.msg is too long.
+      (ess-send-string inf-proc "q")
+      (ess-wait-for-process inf-proc t))
+    (ess-send-string inf-proc "set more off")
+    (goto-char (point-max))
+    (with-current-buffer inf-buf
+      (add-hook 'ess-presend-filter-functions 'ess-sta-remove-comments nil 'local)
+      (run-mode-hooks 'ess-stata-post-run-hook))
+    inf-buf))
 
 (defvar inferior-ess-stata-mode-syntax-table
   (let ((tab (copy-syntax-table ess-stata-mode-syntax-table)))
