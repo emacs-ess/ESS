@@ -486,7 +486,6 @@ end keywords as associated values.")
     (ess-smart-operators		. ess-r-smart-operators)
     (inferior-ess-exit-command		. "exit\n")
     ;;harmful for shell-mode's C-a: -- but "necessary" for ESS-help?
-    (inferior-ess-start-args		. "")
     (inferior-ess-language-start	. nil)
     (ess-STERM		. "iESS")
     )

@@ -125,14 +125,13 @@ If `ess-plain-first-buffername', then initial process is number-free."
                         (= n 1))) ; if not both first and plain-first add number
               (concat ":" (number-to-string n)))))
 
-(defun inferior-ess (&optional ess-start-args customize-alist no-wait)
+(defun inferior-ess (&optional start-args customize-alist no-wait)
   "Start inferior ESS process.
-
 Without a prefix argument, starts a new ESS process, or switches
-to the ESS process associated with the current buffer.  With
-ESS-START-ARGS (perhaps specified via \\[universal-argument]),
-starts the process with those args.  The current buffer is used
-if it is an `inferior-ess-mode' or `ess-transcript-mode' buffer.
+to the ESS process associated with the current buffer. With
+START-ARGS (perhaps specified via \\[universal-argument]), starts
+the process with those args. The current buffer is used if it is
+an `inferior-ess-mode' or `ess-transcript-mode' buffer.
 
 If `ess-ask-about-transfile' is non-nil, you will be asked for a
 transcript file to use.  If there is no transcript file, the
@@ -140,8 +139,6 @@ buffer name will be like *R* or *R2*, determined by
 `ess-gen-proc-buffer-name-function'.
 
 Takes the program name from the variable `inferior-ess-program'.
-Arguments to `inferior-ess-program' can be given with
-`inferior-ess-start-args'.
 
 See Info node `(ess)Customizing startup' and
 `display-buffer-alist' to control where and how the buffer is
@@ -180,33 +177,31 @@ This may be useful for debugging."
         ;; TODO: Get rid of this, we should rely on modes to set the
         ;; variables they need.
         (ess-setq-vars-local ess-customize-alist)
-        (let ((inf-args (or ess-start-args
-                            inferior-ess-start-args)))
-          (inferior-ess--set-major-mode ess-dialect)
-          ;; Show the buffer
-          ;; TODO: Remove inferior-ess-own-frame after ESS 19.04, then just have:
-          ;; (pop-to-buffer inf-buf)
-          (pop-to-buffer inf-buf (with-no-warnings
-                                   (when inferior-ess-own-frame
-                                     '(display-buffer-pop-up-frame))))
-          (let ((proc (inferior-ess--start-process inf-buf proc-name inf-args)))
-            (ess-make-buffer-current)
-            (goto-char (point-max))
-            (unless no-wait
-              (ess-write-to-dribble-buffer "(inferior-ess: waiting for process to start (before hook)\n")
-              (ess-wait-for-process proc nil 0.01 t))
-            (unless (and proc (eq (process-status proc) 'run))
-              (error "Process %s failed to start" proc-name))
-            (when ess-setwd-command
-              (ess-set-working-directory cur-dir))
-            (setq-local font-lock-fontify-region-function #'inferior-ess-fontify-region)
-            (setq-local ess-sl-modtime-alist nil)
-            (run-hooks 'ess-post-run-hook)
-            ;; User initialization can take some time ...
-            (unless no-wait
-              (ess-write-to-dribble-buffer "(inferior-ess 3): waiting for process after hook")
-              (ess-wait-for-process proc)))
-          inf-buf)))))
+        (inferior-ess--set-major-mode ess-dialect)
+        ;; Show the buffer
+        ;; TODO: Remove inferior-ess-own-frame after ESS 19.04, then just have:
+        ;; (pop-to-buffer inf-buf)
+        (pop-to-buffer inf-buf (with-no-warnings
+                                 (when inferior-ess-own-frame
+                                   '(display-buffer-pop-up-frame))))
+        (let ((proc (inferior-ess--start-process inf-buf proc-name start-args)))
+          (ess-make-buffer-current)
+          (goto-char (point-max))
+          (unless no-wait
+            (ess-write-to-dribble-buffer "(inferior-ess: waiting for process to start (before hook)\n")
+            (ess-wait-for-process proc nil 0.01 t))
+          (unless (and proc (eq (process-status proc) 'run))
+            (error "Process %s failed to start" proc-name))
+          (when ess-setwd-command
+            (ess-set-working-directory cur-dir))
+          (setq-local font-lock-fontify-region-function #'inferior-ess-fontify-region)
+          (setq-local ess-sl-modtime-alist nil)
+          (run-hooks 'ess-post-run-hook)
+          ;; User initialization can take some time ...
+          (unless no-wait
+            (ess-write-to-dribble-buffer "(inferior-ess 3): waiting for process after hook")
+            (ess-wait-for-process proc)))
+        inf-buf))))
 
 (defun inferior-ess--get-proc-buffer-create (name)
   "Get a process buffer, creating a new one if needed.

@@ -79,9 +79,7 @@
 
      (ess-directory-function           . S+-directory-function)
      (ess-setup-directory-function     . S+-setup-directory-function)
-     (inferior-ess-start-args          . inferior-S+-start-args)
-     (ess-STERM                        . "iESS")
-     )
+     (ess-STERM                        . "iESS"))
    S+common-cust-alist)
 
   "Variables to customize for S+.")
@@ -116,7 +114,7 @@ New way to do it."
   (setq ess-customize-alist S+-customize-alist)
   (ess-write-to-dribble-buffer
    (format "\n(S+): ess-dialect=%s, buf=%s\n" ess-dialect (current-buffer)))
-  (let ((inf-buf (inferior-ess)))
+  (let ((inf-buf (inferior-ess inferior-S+-start-args)))
     (ess-command ess-S+--injected-code)
     (when inferior-ess-language-start
       (ess-eval-linewise inferior-ess-language-start))

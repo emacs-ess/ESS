@@ -381,7 +381,6 @@ To be used as part of `font-lock-defaults' keywords."
      (inferior-ess-search-list-command      . "search()\n")
      (inferior-ess-help-command             . inferior-ess-r-help-command)
      (inferior-ess-exit-command             . "q()")
-     (inferior-ess-start-args               . "")
      (ess-error-regexp-alist                . ess-r-error-regexp-alist)
      (ess-describe-object-at-point-commands . 'ess-r-describe-object-at-point-commands)
      (ess-STERM                             . "iESS")

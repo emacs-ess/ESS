@@ -39,9 +39,13 @@
 (require 'ess-stata-mode)
 (require 'ess-trns)
 (require 'ess-utils)
+
+;; Easily changeable in a user's .emacs
 (defvar S+elsewhere-dialect-name "S+6"
   "Name of 'dialect' for S-PLUS at another location.")
-                                        ;easily changeable in a user's .emacs
+
+(defvar S+elsewhere-start-args "-i"
+  "Arguments for `S+elsewhere-dialect-name'.")
 
 (defcustom inferior-ess-remote-pager nil
   "Remote pager to use for reporting help files and similar things.
@@ -57,7 +61,6 @@ The default value is nil."
      (ess-object-name-db-file           . "ess-spelsewhere-namedb.el" )
      (inferior-ess-program              . inferior-S-elsewhere-program)
      (inferior-ess-help-command         . "help(\"%s\", pager=\"cat\", window=F)\n")
-     (inferior-ess-start-args           . "-i")
      (ess-STERM  . "iESS")
      )
    S+common-cust-alist)
@@ -71,7 +74,7 @@ The default value is nil."
   (ess-write-to-dribble-buffer
    (format "\n(S+elsewhere): ess-dialect=%s, buf=%s\n" ess-dialect
            (current-buffer)))
-  (let ((inf-buf (inferior-ess)))
+  (let ((inf-buf (inferior-ess S+elsewhere-start-args)))
     (when inferior-ess-language-start
       (ess-eval-linewise inferior-ess-language-start))
     inf-buf))
