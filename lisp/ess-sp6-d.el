@@ -111,10 +111,9 @@
   "Call 'Splus6', based on S version 4, from Bell Labs.
 New way to do it."
   (interactive)
-  (setq ess-customize-alist S+-customize-alist)
   (ess-write-to-dribble-buffer
    (format "\n(S+): ess-dialect=%s, buf=%s\n" ess-dialect (current-buffer)))
-  (let ((inf-buf (inferior-ess inferior-S+-start-args)))
+  (let ((inf-buf (inferior-ess nil S+-customize-alist)))
     (ess-command ess-S+--injected-code)
     (when inferior-ess-language-start
       (ess-eval-linewise inferior-ess-language-start))
@@ -128,7 +127,6 @@ New way to do it."
 (defun S+-mode (&optional proc-name)
   "Major mode for editing S+ source.  See `ess-mode' for more help."
   (interactive)
-  (setq ess-customize-alist S+-customize-alist)
   (setq-local ess-local-customize-alist S+-customize-alist)
   (ess-mode)
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))

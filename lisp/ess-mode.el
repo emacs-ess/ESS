@@ -565,7 +565,7 @@ generate the source buffer."
                        ess-source-directory
                      (with-current-buffer (process-buffer (ess-get-process
                                                            ess-local-process-name))
-                       (ess-setq-vars-local ess-customize-alist)
+                       (ess-setq-vars-local ess-local-customize-alist)
                        (apply ess-source-directory nil)))))
          (filename (concat dirname (format ess-dump-filename-template object)))
          (old-buff (get-file-buffer filename)))
@@ -631,7 +631,6 @@ generate the source buffer."
      (format "%s does not exist. Bad dump, starting fresh." filename)))
   ;; Generate a buffer with the dumped data
   (find-file-other-window filename)
-  (setq-local ess-local-customize-alist ess-customize-alist)
   (ess-mode)
   (auto-save-mode 1)            ; Auto save in this buffer
   (setq ess-local-process-name ess-current-process-name)

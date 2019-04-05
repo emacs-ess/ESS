@@ -208,7 +208,6 @@ Better logic needed!  (see 2 uses, in this file).")
   "Major mode for editing SAS source.  See `ess-mode' for more help."
   :group 'ess-sas
   (ess-setq-vars-local SAS-customize-alist)
-  (setq ess-customize-alist SAS-customize-alist)
   (setq ess-local-customize-alist SAS-customize-alist)
   (setq-local sentence-end ";[\t\n */]*")
   (setq-local paragraph-start "^[ \t]*$")
@@ -299,7 +298,6 @@ Better logic needed!  (see 2 uses, in this file).")
 (defun SAS ()
   "Call 'SAS', from SAS Institute."
   (interactive)
-  (setq-default ess-customize-alist SAS-customize-alist)
   (let* ((temp-dialect "SAS")) ;(cdr (rassoc ess-dialect SAS-customize-alist))))
     (ess-write-to-dribble-buffer
      (format "(SAS): ess-dial=%s, temp-dial=%s\n"
@@ -309,7 +307,7 @@ Better logic needed!  (see 2 uses, in this file).")
     (setq ess-eval-visibly-p nil)
     ;; FIXME: `inferior-SAS-args' is defined from
     ;; `inferior-SAS-args-temp' in `ess-SAS-pre-run-hook'
-    (let ((inf-buf (inferior-ess inferior-SAS-args)))
+    (let ((inf-buf (inferior-ess nil SAS-customize-alist)))
       (with-current-buffer inf-buf
         (use-local-map sas-mode-local-map))
       inf-buf)))

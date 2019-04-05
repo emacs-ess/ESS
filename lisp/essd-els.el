@@ -70,11 +70,10 @@ The default value is nil."
   "Call 'S-PLUS 3.x', the 'Real Thing'  from StatSci."
   ;; git commit 104c4d7c56bc239ea245562763caa317bc3a1a84
   (declare (obsolete ess-remote "2000"))
-  (setq ess-customize-alist S+elsewhere-customize-alist)
   (ess-write-to-dribble-buffer
    (format "\n(S+elsewhere): ess-dialect=%s, buf=%s\n" ess-dialect
            (current-buffer)))
-  (let ((inf-buf (inferior-ess S+elsewhere-start-args)))
+  (let ((inf-buf (inferior-ess nil S+elsewhere-customize-alist)))
     (when inferior-ess-language-start
       (ess-eval-linewise inferior-ess-language-start))
     inf-buf))
@@ -82,7 +81,6 @@ The default value is nil."
 (defun S+elsewhere-mode (&optional _proc-name)
   "Major mode for editing S+3 source.  See `ess-mode' for more help."
   (declare (obsolete ess-remote "2000"))
-  (setq ess-customize-alist S+elsewhere-customize-alist)
   (setq-local ess-local-customize-alist S+elsewhere-customize-alist)
   (ess-mode))
 
@@ -145,11 +143,11 @@ DIALECT is the desired ess-dialect. If nil, ask for dialect"
   (interactive)
   (ess-add-ess-process)
   ;; Need to select a remote-customize-alist
-  (let ((ess-customize-alist (ess-select-alist-dialect dialect)))
+  (let ((customize-alist (ess-select-alist-dialect dialect)))
     (ess-write-to-dribble-buffer
      (format "\n(ESS-remote): ess-dialect=%s, buf=%s\n" ess-dialect
              (current-buffer)))
-    (ess-setq-vars-local ess-customize-alist)
+    (ess-setq-vars-local customize-alist)
     (inferior-ess--set-major-mode ess-dialect)
     (set (make-local-variable 'ess-remote) t)
     (setq ess-local-process-name (or proc-name ess-current-process-name))

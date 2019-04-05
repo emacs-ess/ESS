@@ -809,14 +809,14 @@ optional argument is non-nil, then set-buffer rather than switch."
   "And now for something completely different."
   (interactive)
   ;;(ess-sas-file-path)
-  (setq ess-customize-alist SAS-customize-alist)
+  (setq ess-local-customize-alist SAS-customize-alist)
   ;; (let ((ess-temp-sas-file
   ;;        (nth 0 (split-string
   ;;                (car (last (split-string ess-sas-file-path "\\([a-zA-Z][a-zA-Z]:\\|]\\)"))) "[.]"))))
     (setq ess-sas-shell-buffer "*iESS[SAS]*")
     (ess-sas-goto-shell)
     (ess-add-ess-process)
-    (ess-setq-vars-local ess-customize-alist)
+    (ess-setq-vars-local ess-local-customize-alist)
     (inferior-ess-mode)
     (ess-eval-linewise (concat ess-sas-submit-command " " ess-sas-submit-command-options " -stdio"))
                                ;;" -altlog " ess-temp-sas-file ".log -altprint "

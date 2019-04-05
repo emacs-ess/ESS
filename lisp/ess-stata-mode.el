@@ -144,7 +144,6 @@ This function is placed in `ess-presend-filter-functions'.
 (defun stata (&optional start-args)
   "Call Stata."
   (interactive "P")
-  (setq ess-customize-alist STA-customize-alist)
   (ess-write-to-dribble-buffer
    (format "(STA): ess-dialect=%s , buf=%s \n"
            ess-dialect
@@ -152,7 +151,7 @@ This function is placed in `ess-presend-filter-functions'.
   (let* ((sta-start-args
           (concat inferior-STA-start-args
                   (when start-args (read-string "Starting Args [possibly -k####] ? "))))
-         (inf-buf (inferior-ess sta-start-args))
+         (inf-buf (inferior-ess sta-start-args STA-customize-alist))
          (inf-proc (get-buffer-process inf-buf)))
     (while (process-get inf-proc 'sec-prompt)
       ;; get read of all --more-- if stata.msg is too long.

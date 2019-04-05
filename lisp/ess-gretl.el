@@ -510,7 +510,6 @@ end keywords as associated values.")
 ;;;###autoload
 (define-derived-mode ess-gretl-mode ess-mode "ESS[gretl]"
   "Major mode for editing gretl source.  See `ess-mode' for more help."
-  ;; (setq ess-customize-alist gretl-customize-alist)
   ;;(setq imenu-generic-expression R-imenu-generic-expression)
   (ess-setq-vars-local gretl-customize-alist)
   (setq font-lock-defaults `(,gretl-font-lock-keywords))
@@ -540,7 +539,6 @@ to gretl, put them in the variable `inferior-gretl-args'."
   ;; get settings, notably inferior-ess-r-program :
   ;; (if (null inferior-gretl-program)
   ;;     (error "'inferior-gretl-program' does not point to 'gretl-release-basic' executable")
-  (setq ess-customize-alist gretl-customize-alist)
   (ess-write-to-dribble-buffer   ;; for debugging only
    (format
     "\n(Gretl): ess-dialect=%s, buf=%s"
@@ -553,7 +551,7 @@ to gretl, put them in the variable `inferior-gretl-args'."
 			       inferior-gretl-args
 			       "'] ? "))
 		    nil)))
-         (inf-buf (inferior-ess r-start-args)))
+         (inf-buf (inferior-ess r-start-args gretl-customize-alist)))
     (set (make-local-variable 'indent-line-function) 'gretl-indent-line)
     (set (make-local-variable 'gretl-basic-offset) 4)
     (setq indent-tabs-mode nil)

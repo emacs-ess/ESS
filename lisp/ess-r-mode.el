@@ -506,22 +506,15 @@ will be prompted to enter arguments interactively."
           (concat r-always-arg
                   inferior-R-args " "   ; add space just in case
                   start-args))
-         (cust-alist (copy-alist ess-r-customize-alist))
          (gdbp (string-match-p "gdb" r-start-args))
          use-dialog-box)
-
-    (when gdbp
-      (setcdr (assoc 'inferior-ess-secondary-prompt cust-alist)
-              (format "\\(%s\\)\\|\\((gdb) \\)"
-                      (cdr (assoc 'inferior-ess-secondary-prompt cust-alist)))))
-
     (when (or ess-microsoft-p
               (eq system-type 'cygwin))
       (setq use-dialog-box nil)
       (when ess-microsoft-p ;; default-process-coding-system would break UTF locales on Unix
         (setq default-process-coding-system '(undecided-dos . undecided-dos))))
 
-    (let ((inf-buf (inferior-ess r-start-args cust-alist gdbp)))
+    (let ((inf-buf (inferior-ess r-start-args ess-r-customize-alist gdbp)))
       (with-current-buffer inf-buf
         (ess-process-put 'funargs-pre-cache ess-r--funargs-pre-cache)
         (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
@@ -2219,6 +2212,7 @@ state.")
 (define-derived-mode inferior-ess-r-mode inferior-ess-mode "iESS"
   "Major mode for interacting with inferior R processes."
   :group 'ess-proc
+  (ess-setq-vars-local ess-r-customize-alist)
   (setq-local ess-font-lock-keywords 'inferior-ess-r-font-lock-keywords)
   (setq-local comint-process-echoes (eql ess-eval-visibly t))
   ;; eldoc

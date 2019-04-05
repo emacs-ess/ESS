@@ -419,7 +419,6 @@ always be passed to julia, put them in the variable
   ;; get settings, notably inferior-julia-program :
   (if (null inferior-julia-program)
       (error "'inferior-julia-program' does not point to 'julia' or 'julia-basic' executable")
-    (setq ess-customize-alist ess-julia-customize-alist)
     (ess-write-to-dribble-buffer   ;; for debugging only
      (format
       "\n(julia): ess-dialect=%s, buf=%s, start-arg=%s\n current-prefix-arg=%s\n"
@@ -433,7 +432,7 @@ always be passed to julia, put them in the variable
                                      (concat " [other than '" inferior-julia-args "']"))
                                  " ? "))
 		              nil))))
-      (let ((inf-buf (inferior-ess jl-start-args)))
+      (let ((inf-buf (inferior-ess jl-start-args ess-julia-customize-alist)))
         (ess--tb-start)
         ;; Remove ` from julia's logo
         (goto-char (point-min))

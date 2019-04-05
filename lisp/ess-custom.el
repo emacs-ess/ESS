@@ -2477,13 +2477,6 @@ See also `ess-verbose'."
 (defvar ess-dribble-buffer "*ESS*"
   "Buffer or name of buffer for printing debugging information.")
 
-(defvar ess-customize-alist nil
-  "Variable settings to use for proper behavior.
-Not buffer local!")
-;; TODO: fixme We cannot make it local as yet, Not list is set on inferior startup.
-;; (make-variable-buffer-local 'ess-customize-alist)
-;; (defvaralias 'ess-local-customize-alist 'ess-customize-alist)
-
 (defvar-local ess-local-customize-alist nil
   "Buffer local settings for proper behavior.
 Used to store the values for passing on to newly created buffers.")
