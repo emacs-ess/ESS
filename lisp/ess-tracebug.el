@@ -2333,18 +2333,17 @@ This is the trigger function.  See documentation of
 (defun ess-watch-refresh-buffer-visibly (wbuf &optional sleep no-prompt-check)
   "Eval `ess-watch-command' and direct the output into the WBUF.
 Call `ess-watch-buffer-show' to make the buffer visible, without
-selecting it.
+selecting it. SLEEP and NO-PROMPT-CHECK get passed to `ess-command'.
 
 This function is used for refreshing the watch window after each step during
 the debugging."
   ;; assumes that the ess-watch-mode is on!!
   ;; particularly ess-watch-current-block-overlay is installed
-  (interactive)
   (ess-watch-buffer-show wbuf) ;; if visible do nothing
   (let ((pname ess-local-process-name)) ;; watch might be used from different dialects, need to reset
     (with-current-buffer wbuf
-      (let ((curr-block (max 1 (ess-watch-block-at-point)))) ;;can be 0 if
-        (setq buffer-read-only nil)
+      (let ((curr-block (max 1 (ess-watch-block-at-point))) ;;can be 0 if
+            (inhibit-read-only t))
         (when pname
           (setq ess-local-process-name pname))
         (ess-command  ess-watch-command wbuf sleep no-prompt-check)
@@ -2352,8 +2351,7 @@ the debugging."
         (goto-char (point-min))
         (delete-region (point-at-bol) (+ 1 (point-at-eol)))
         (ess-watch-set-current curr-block)
-        (set-window-point (get-buffer-window wbuf) (point))
-        (setq buffer-read-only t)))))
+        (set-window-point (get-buffer-window wbuf) (point))))))
 
 (defun ess-watch-buffer-show (buffer-or-name)
   "Make watch buffer BUFFER-OR-NAME visible, and position acordingly.
