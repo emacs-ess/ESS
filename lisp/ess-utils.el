@@ -1105,14 +1105,6 @@ nil and not t, query for each instance."
     (forward-line -1)
     (delete-region (point-at-eol) (point-max))))
 
-(defvar ess-adjust-chunk-faces t
-  "Whether to adjust background color in code chunks.")
-
-(defvar-local ess-buffer-has-chunks nil
-  "Internal usage: indicates whether a buffer has chunks.
-This is used to make face adjustment a no-op when a buffer does
-not contain chunks.")
-
 (defun ess-sleep ()
   "Put Emacs to sleep for `ess-sleep-for-shell' seconds (floats work)."
   (sleep-for ess-sleep-for-shell))
