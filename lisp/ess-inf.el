@@ -175,7 +175,6 @@ This may be useful for debugging."
            (proc-name (with-current-buffer inf-buf ess-local-process-name))
            (cur-dir (inferior-ess--maybe-prompt-startup-directory proc-name temp-dialect))
            (default-directory cur-dir))
-      (setq-local ess-local-process-name proc-name)
       (with-current-buffer inf-buf
         (setq-local default-directory cur-dir)
         ;; TODO: Get rid of this, we should rely on modes to set the
