@@ -2320,16 +2320,14 @@ This is the trigger function.  See documentation of
   (interactive)
   (ess-force-buffer-current)
   (let ((wbuf (get-buffer-create ess-watch-buffer))
-        (pname ess-local-process-name)
-        (alist (symbol-value ess-local-customize-alist)))
-    (set-buffer wbuf)
-    (ess-setq-vars-local alist)
+        (pname ess-local-process-name))
+    (pop-to-buffer wbuf
+                   ;; not strongly dedicated
+                   '(nil . ((dedicated . 1))))
     (setq ess-local-process-name pname)
     (ess-watch-mode)
-    (ess-watch-refresh-buffer-visibly wbuf) ;; evals the ess-command and displays the buffer if not visible
-    (pop-to-buffer wbuf)
-    (set-window-dedicated-p (selected-window) 1) ;; not strongly dedicated
-    ))
+    ;; evals the ess-command and displays the buffer if not visible
+    (ess-watch-refresh-buffer-visibly wbuf)))
 
 
 (defun ess-watch-refresh-buffer-visibly (wbuf &optional sleep no-prompt-check)
