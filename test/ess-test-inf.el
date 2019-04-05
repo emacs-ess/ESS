@@ -68,6 +68,11 @@
                            (format-message error-msg))))
       (kill-process proc))))
 
+(ert-deftest ess-test-inferior-local-process-name ()
+  (let (ess-local-process-name)
+    (with-bare-r-running
+      (should ess-local-process-name))))
+
 
 ;;*;; Evaluation
 

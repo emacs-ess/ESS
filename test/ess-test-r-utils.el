@@ -169,6 +169,15 @@ split arbitrary."
       (set-buffer-modified-p nil)
       (should (not-change-on-indent buff)))))
 
+(defmacro with-bare-r-running (&rest body)
+  (declare (indent 0) (debug (form body)))
+  `(let (proc)
+     (unwind-protect
+         (progn
+           (setq proc (get-buffer-process (run-ess-test-r-vanilla)))
+           ,@body)
+       (kill-process proc))))
+
 ;; !!! NB: proc functionality from now on uses inferior-ess-ordinary-filter and
 ;; !!! *proc* dynamic var
 (defmacro with-r-running (buffer-or-file &rest body)
