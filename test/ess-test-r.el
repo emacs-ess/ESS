@@ -565,8 +565,11 @@ the_dat <- read.csv(\"foo.csv\")"
   (should (equal (line-number-at-pos) 3)))
 
 (ert-deftest ess-r-help-usage-objects-test ()
-  (with-temp-buffer
-    (let ((major-mode 'ess-r-help-mode))
+  (skip-unless (not noninteractive))
+  (with-r-running nil
+    (let ((ess-dialect "R")
+          (inhibit-read-only t))
+      (ess--help-major-mode)
       (insert "The Student t Distribution
 
 Description:
@@ -584,18 +587,11 @@ Usage:
 
 Arguments:
 ")
-      (should (equal (ess-r-help-usage-objects) '("rt" "qt" "pt" "dt")))))
-  (with-temp-buffer
-    (let ((major-mode 'ess-r-help-mode))
-      ;; Ensure we don't return "environment" or "parent.frame"
-      (insert "Usage:
-
-     ggplot(data = NULL, mapping = aes(), ...,
-       environment = parent.frame())
-
-Arguments:
-")
-      (should (equal (ess-r-help-usage-objects) '("ggplot"))))))
+      (should (equal (ess-r-help-usage-objects)
+                     '(("dt" "x" "df" "ncp" "log")
+                       ("pt" "q" "df" "ncp" "lower.tail" "log.p")
+                       ("qt" "p" "df" "ncp" "lower.tail" "log.p")
+                       ("rt" "n" "df" "ncp")))))))
 
 (provide 'ess-test-r)
 
