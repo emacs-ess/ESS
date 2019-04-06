@@ -822,20 +822,21 @@ process if process associated with current buffer has
 died. `ess-local-process-name' is set to the name of the process
 selected.  `ess-dialect' is set to the dialect associated with
 the process selected. ASK-IF-1 asks user for the process, even if
-there is only one process running."
+there is only one process running.  Returns the inferior buffer if
+it was successfully forced, throws an error otherwise."
   (interactive
    (list (concat ess-dialect " process to use: ") current-prefix-arg nil))
-  ;; fixme: why the above interactive is not working in emacs 24?
-  (setq prompt (or prompt "Process to use: "))
   (let ((proc-name (ess-make-buffer-current)))
-    (if (and (not force) proc-name (get-process proc-name))
-        nil ; do nothing
-      ;; Make sure the source buffer is attached to a process
-      (if (and ess-local-process-name (not force) no-autostart)
-          (error "Process %s has died" ess-local-process-name)
-        ;; ess-local-process-name is nil -- which process to attach to
-        (let ((proc (ess-request-a-process prompt 'no-switch ask-if-1)))
-          (setq ess-local-process-name proc))))))
+    (cond ((and (not force) proc-name (get-process proc-name)))
+          ;; Make sure the source buffer is attached to a process
+          ((and ess-local-process-name (not force) no-autostart)
+           (error "Process %s has died" ess-local-process-name))
+          ;; Request a process if `ess-local-process-name' is nil
+          (t
+           (let* ((prompt (or prompt "Process to use: "))
+                  (proc (ess-request-a-process prompt 'no-switch ask-if-1)))
+             (setq ess-local-process-name proc)))))
+  (process-buffer (get-process ess-local-process-name)))
 
 (defalias 'inferior-ess-force #'ess-force-buffer-current)
 
