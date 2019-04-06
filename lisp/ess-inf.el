@@ -129,6 +129,11 @@ If `ess-plain-first-buffername', then initial process is number-free."
                         (= n 1))) ; if not both first and plain-first add number
               (concat ":" (number-to-string n)))))
 
+(defvar-local inferior-ess--start-name nil
+  "Program name used to start the inferior process.")
+(defvar-local inferior-ess--start-args nil
+  "Arguments used to start the inferior process.")
+
 (defun inferior-ess (start-args customize-alist &optional no-wait)
   "Start inferior ESS process.
 Without a prefix argument, starts a new ESS process, or switches
@@ -173,11 +178,15 @@ This may be useful for debugging."
          (cur-dir (inferior-ess--maybe-prompt-startup-directory proc-name temp-dialect))
          (default-directory cur-dir))
     (with-current-buffer inf-buf
-      (setq-local default-directory cur-dir)
       ;; TODO: Get rid of this, we should rely on modes to set the
       ;; variables they need.
       (ess-setq-vars-local customize-alist)
       (inferior-ess--set-major-mode ess-dialect)
+        ;; Set local variables after changing mode because they might
+        ;; not be permanent
+        (setq default-directory cur-dir)
+        (setq inferior-ess--start-name inferior-ess-program)
+        (setq inferior-ess--start-args start-args)
       ;; Read the history file
       (when ess-history-file
         (setq comint-input-ring-file-name

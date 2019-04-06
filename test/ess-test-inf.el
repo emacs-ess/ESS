@@ -68,6 +68,12 @@
                            (format-message error-msg))))
       (kill-process proc))))
 
+(ert-deftest ess-test-inferior-local-start-args ()
+  (with-r-running nil
+    (with-current-buffer *inf-buf*
+      (should (equal inferior-ess--start-name "R"))
+      (should (equal inferior-ess--start-args "--no-readline  --vanilla")))))
+
 
 ;;*;; Evaluation
 

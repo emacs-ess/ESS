@@ -183,10 +183,10 @@ representative to the common interactive use with tracebug on."
        (R-mode)
        (let* ((*proc* (get-buffer-process (run-ess-test-r-vanilla)))
               (ess-local-process-name (process-name *proc*))
-              (output-buffer (process-buffer *proc*)))
+              (*inf-buf* (process-buffer *proc*)))
          (unwind-protect
              (progn
-               (setq ess-r-tests-current-output-buffer (process-buffer *proc*))
+               (setq ess-r-tests-current-output-buffer *inf-buf*)
                (let ((inhibit-read-only t))
                  (with-current-buffer ess-r-tests-current-output-buffer
                    (erase-buffer)))
