@@ -46,6 +46,7 @@
 (require 'ess-utils)
 
 (declare-function ess-r-help-mode "ess-r-mode")
+(declare-function inferior-ess-r-force "ess-r-mode")
 (declare-function ess-stata-help-mode "ess-stata-lang")
 
 
@@ -386,6 +387,8 @@ With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e., from all installed
 With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e., from all installed
  packages, which can be *very* slow."
   (interactive "P")
+  (require 'ess-r-mode)
+  (inferior-ess-r-force)
   (let* ((vslist (with-current-buffer
                      (ess-command
                       (format ".ess_vignettes(%s)\n" (if all "TRUE" "")))
