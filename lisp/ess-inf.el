@@ -2253,24 +2253,29 @@ is run automatically by \\[ess-quit]."
 START-ARGS gets passed to the dialect-specific
 `inferior-ess-reload-override'."
   (interactive)
-  (inferior-ess-force)
-  ;; Interrupt early so we can get working directory
-  (ess-interrupt)
-  (save-window-excursion
-    ;; Make sure we don't ask for directory again
-    ;; Use current working directory as default
-    (let ((project-find-functions nil)
-          (ess-directory-function nil)
-          (ess-startup-directory (ess-get-working-directory))
-          (ess-ask-for-ess-directory nil)
-          (proc (ess-get-process)))
-      (ess-quit 'no-save)
-      (inferior-ess--wait-for-exit proc)
-      (with-current-buffer (process-buffer proc)
-        (inferior-ess-reload--override start-args)))))
+  (let* ((inf-buf (inferior-ess-force))
+         (inf-proc (get-buffer-process inf-buf))
+         (start-name (with-current-buffer inf-buf
+                       inferior-ess--start-name))
+         (start-args (or start-args
+                         (with-current-buffer inf-buf
+                           inferior-ess--start-args))))
+    ;; Interrupt early so we can get working directory
+    (ess-interrupt)
+    (save-window-excursion
+      ;; Make sure we don't ask for directory again
+      ;; Use current working directory as default
+      (let ((project-find-functions nil)
+            (ess-directory-function nil)
+            (ess-startup-directory (ess-get-working-directory))
+            (ess-ask-for-ess-directory nil))
+        (ess-quit 'no-save)
+        (inferior-ess--wait-for-exit inf-proc)
+        (with-current-buffer inf-buf
+          (inferior-ess-reload--override start-name start-args))))))
 
-(cl-defmethod inferior-ess-reload--override (start-args)
-  (user-error "Reloading not implemented for %s %s" ess-dialect start-args))
+(cl-defmethod inferior-ess-reload--override (_start-name _start-args)
+  (user-error "Reloading not implemented for %s" ess-dialect))
 
 (defun inferior-ess--wait-for-exit (proc)
   "Wait for process exit.

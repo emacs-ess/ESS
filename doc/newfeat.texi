@@ -4,6 +4,11 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item ESS[R]: There is a new menu entry for reloading the R process.
+It is otherwise bound to @code{C-c C-e C-r}. Reloading now reuses the
+same process name and start arguments that were used to start the
+process.
+
 @item iESS: Process runners now return the inferior buffer.
 Note that callers of inferior runners should not assume that the current
 buffer has been set to the inferior buffer. Instead, use

@@ -74,6 +74,18 @@
       (should (equal inferior-ess--start-name "R"))
       (should (equal inferior-ess--start-args "--no-readline  --vanilla")))))
 
+(ert-deftest ess-test-inferior-reload-start-data ()
+  (let* ((r-path (executable-find "R"))
+         (inferior-ess-r-program r-path)
+         proc)
+    (unwind-protect
+        (progn
+          (setq proc (get-buffer-process (run-ess-test-r-vanilla)))
+          (with-current-buffer (process-buffer proc)
+            (should (equal inferior-ess--start-name r-path))
+            (should (equal inferior-ess--start-args "--no-readline  --vanilla"))))
+      (kill-process proc))))
+
 
 ;;*;; Evaluation
 
