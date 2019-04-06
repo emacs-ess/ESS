@@ -27,33 +27,27 @@
 
 (defvar ess-inhibit-message-in-tests nil)
 
+(defmacro with-ess-test-file (file &rest body)
+  (declare (indent 1) (debug (&rest body)))
+  `(let ((inhibit-message ess-inhibit-message-in-tests)
+         (*file* ,file))
+     (save-window-excursion
+       (set-buffer (if *file*
+                       (find-file-noselect *file*)
+                     (generate-new-buffer " *with-r-file-temp*")))
+       ,@body)))
+
 (defmacro with-r-file (file &rest body)
   (declare (indent 1) (debug (&rest body)))
-  `(apply #'with-r-file- (list ,file '(,@body))))
-
-(defun with-r-file- (file body)
-  (let ((inhibit-message ess-inhibit-message-in-tests)
-        (r-file-buffer (if file
-                           (find-file-noselect file)
-                         (generate-new-buffer " *with-r-file-temp*"))))
-    (save-window-excursion
-      (switch-to-buffer r-file-buffer)
-      (R-mode)
-      (mapcar #'eval body))))
+  `(with-ess-test-file ,file
+     (R-mode)
+     ,@body))
 
 (defmacro with-c-file (file &rest body)
   (declare (indent 1) (debug (&rest body)))
-  `(apply #'with-c-file- (list ,file '(,@body))))
-
-(defun with-c-file- (file body)
-  (let ((inhibit-message ess-inhibit-message-in-tests)
-        (c-file-buffer (if file
-                           (find-file-noselect file)
-                         (generate-new-buffer " *with-c-file-temp*"))))
-    (save-window-excursion
-      (switch-to-buffer c-file-buffer)
-      (c-mode)
-      (mapcar #'eval body))))
+  `(with-ess-test-file ,file
+     (c-mode)
+     ,@body))
 
 ;; Borrowed from org
 (defmacro ess-r-test-with-temp-text (text &rest body)
