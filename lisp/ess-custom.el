@@ -1781,6 +1781,9 @@ for editing and then to be returned to the process.")
 The other variables ...-program should be changed, for the
 corresponding program.")
 
+(make-obsolete-variable 'inferior-ess-start-args
+                        "Use the language specific variables like `inferior-R-args'"
+                        "ESS 19.04")
 (defvar inferior-ess-start-args ""
   "String of arguments passed to the ESS process.
 If you wish to pass arguments to a process, see e.g. `inferior-R-args'.")

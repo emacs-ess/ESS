@@ -83,7 +83,6 @@
     (inferior-ess-primary-prompt   . "[.:] \\|--more--") 
     (inferior-ess-secondary-prompt . "--more--")
     (comint-use-prompt-regexp      . t)
-    (inferior-ess-start-args       . inferior-STA-start-args)
     (inferior-ess-search-list-command   . "set more off\n search()\n")
     (comment-start                . "/\* ")
     (comment-end                  . " \*/")

@@ -307,7 +307,9 @@ Better logic needed!  (see 2 uses, in this file).")
              temp-dialect))
     (ess-SAS-pre-run-hook temp-dialect)
     (setq ess-eval-visibly-p nil)
-    (let ((inf-buf (inferior-ess)))
+    ;; FIXME: `inferior-SAS-args' is defined from
+    ;; `inferior-SAS-args-temp' in `ess-SAS-pre-run-hook'
+    (let ((inf-buf (inferior-ess inferior-SAS-args)))
       (with-current-buffer inf-buf
         (use-local-map sas-mode-local-map))
       inf-buf)))
