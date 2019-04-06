@@ -2328,6 +2328,79 @@ usage section, return nil."
                                 'type 'ess-r-help-link
                                 'help-echo (format "mouse-2, RET: Help on %s" text))))))))
 
+(cl-defmethod ess--display-vignettes-override (all
+                                               &context ((string= ess-dialect "R") (eql t)))
+  "Display R vignettes in ess-help-like buffer..
+With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e.,
+from all installed packages, which can be very slow."
+  (inferior-ess-r-force)
+  (let* ((vslist (with-current-buffer
+                     (ess-command
+                      (format ".ess_vignettes(%s)\n" (if all "TRUE" "")))
+                   (goto-char (point-min))
+                   (when (re-search-forward "(list" nil t)
+                     (goto-char (match-beginning 0))
+                     (ignore-errors (eval (read (current-buffer)))))))
+         (proc-name ess-current-process-name)
+         (alist ess-local-customize-alist)
+         (remote (file-remote-p default-directory))
+         (buff (get-buffer-create (format "*[%s]vignettes*" ess-dialect)))
+         (inhibit-modification-hooks t)
+         (inhibit-read-only t))
+    (with-current-buffer buff
+      (setq buffer-read-only nil)
+      (delete-region (point-min) (point-max))
+      (ess-setq-vars-local (eval alist))
+      (setq ess-local-process-name proc-name)
+      (ess--help-major-mode)
+      (setq ess-help-sec-regex "^\\w+:$"
+            ess-help-type 'vignettes)
+      (set-buffer-modified-p 'nil)
+      (goto-char (point-min))
+      (dolist (el vslist)
+        (let ((pack (car el)))
+          (insert (format "\n\n%s:\n\n" (propertize pack 'face 'underline)))
+          (dolist (el2 (cdr el))
+            (let ((path (if remote
+                            (with-no-warnings
+                              ;; Have to wrap this in with-no-warnings because
+                              ;; otherwise the byte compiler complains about
+                              ;; calling tramp-make-tramp-file-name with an
+                              ;; incorrect number of arguments on Both 26+ and 25 emacses.
+                              (if (>= emacs-major-version 26)
+                                  (with-parsed-tramp-file-name default-directory nil
+                                    (tramp-make-tramp-file-name method user domain host port (nth 1 el2)))
+                                (with-parsed-tramp-file-name default-directory nil
+                                  (tramp-make-tramp-file-name method user host (nth 1 el2)))))
+                          (nth 1 el2))))
+              (insert-text-button "Pdf"
+                                  'mouse-face 'highlight
+                                  'action (if remote
+                                              #'ess--action-open-in-emacs
+                                            #'ess--action-R-open-vignette)
+                                  'follow-link t
+                                  'vignette (file-name-sans-extension (nth 2 el2))
+                                  'package pack
+                                  'help-echo (concat path "/doc/" (nth 2 el2)))
+              (insert " ")
+              (insert-text-button "Rnw"
+                                  'mouse-face 'highlight
+                                  'action #'ess--action-open-in-emacs
+                                  'follow-link t
+                                  'help-echo (concat path "/doc/" (nth 3 el2)))
+              (insert " ")
+              (insert-text-button "R"
+                                  'mouse-face 'highlight
+                                  'action #'ess--action-open-in-emacs
+                                  'follow-link t
+                                  'help-echo (concat path "/doc/" (nth 4 el2)))
+              (insert (format "\t%s\n" (nth 0 el2)))))))
+      (goto-char (point-min))
+      (insert (propertize "\t\t**** Vignettes ****\n" 'face 'bold-italic))
+      (unless (eobp) (delete-char 1))
+      (setq buffer-read-only t))
+    (ess-display-help buff)))
+
 
 
 
