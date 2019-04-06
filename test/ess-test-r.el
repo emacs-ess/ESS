@@ -28,7 +28,7 @@
 
 (ert-deftest ess-r-inherits-prog-mode-test ()
   (let ((prog-mode-hook (lambda () (setq ess-test-prog-hook t))))
-    (with-r-file nil
+    (with-ess-test-r-file nil
       (should (derived-mode-p 'prog-mode))
       (should ess-test-prog-hook)
       (should
@@ -417,7 +417,7 @@ my_mean2 <- function(z){
     (should (eql (point) 28))))
 
 (ert-deftest ess-r-beginning/end-of-defun-test ()
-  (with-r-file (expand-file-name "navigation.R" ess-test-fixtures-directory)
+  (with-ess-test-r-file (expand-file-name "navigation.R" ess-test-fixtures-directory)
     (goto-char (point-min))
     (end-of-defun 1)
     (should (looking-back "fn1\n"))
@@ -441,7 +441,7 @@ my_mean2 <- function(z){
     (should (looking-back "fn3\n"))))
 
 (ert-deftest ess-r-beginning/end-of-function-test ()
-  (with-r-file (expand-file-name "navigation.R" ess-test-fixtures-directory)
+  (with-ess-test-r-file (expand-file-name "navigation.R" ess-test-fixtures-directory)
     (goto-char (point-min))
     (ess-r-end-of-function 1)
     (should (looking-at " ## end of fn1"))
@@ -467,7 +467,7 @@ my_mean2 <- function(z){
     (should (looking-at " ## end of fn3"))))
 
 (ert-deftest ess-r-goto-beginning/end-of-function-or-para-test ()
-  (with-r-file (expand-file-name "navigation.R" ess-test-fixtures-directory)
+  (with-ess-test-r-file (expand-file-name "navigation.R" ess-test-fixtures-directory)
     (goto-char (point-min))
     (ess-goto-end-of-function-or-para)
     (should (looking-back "fn1\n"))
@@ -490,7 +490,7 @@ my_mean2 <- function(z){
     (should (looking-at "fn3 <-"))))
 
 (ert-deftest ess-r-beggining/end-of-defun-ignore-inner-fn-test ()
-  (with-r-file (expand-file-name "navigation.R" ess-test-fixtures-directory)
+  (with-ess-test-r-file (expand-file-name "navigation.R" ess-test-fixtures-directory)
     (re-search-forward "fn5_body")
     (beginning-of-defun)
     (should (looking-at "fn4 <- "))

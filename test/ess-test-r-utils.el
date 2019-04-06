@@ -37,13 +37,13 @@
                      (generate-new-buffer " *with-r-file-temp*")))
        ,@body)))
 
-(defmacro with-r-file (file &rest body)
+(defmacro with-ess-test-r-file (file &rest body)
   (declare (indent 1) (debug (&rest body)))
   `(with-ess-test-file ,file
      (R-mode)
      ,@body))
 
-(defmacro with-c-file (file &rest body)
+(defmacro with-ess-test-c-file (file &rest body)
   (declare (indent 1) (debug (&rest body)))
   `(with-ess-test-file ,file
      (c-mode)

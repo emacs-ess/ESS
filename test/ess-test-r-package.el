@@ -29,18 +29,18 @@
       (text-mode)
       (hack-local-variables)
       (should (not ess-r-package-mode)))
-    (with-r-file "dummy-pkg/R/test.R"
+    (with-ess-test-r-file "dummy-pkg/R/test.R"
       (hack-local-variables)
       (should ess-r-package-mode))))
 
 (ert-deftest ess-r-package-auto-activation-in-shell-test ()
   (let ((inhibit-message ess-inhibit-message-in-tests)
         (kill-buffer-query-functions nil))
-    (with-r-file "dummy-pkg/R/test.R"
+    (with-ess-test-r-file "dummy-pkg/R/test.R"
       (shell)
       (should ess-r-package-mode)
       (kill-buffer))
-    (with-r-file "dummy-pkg/R/test.R"
+    (with-ess-test-r-file "dummy-pkg/R/test.R"
       (let ((ess-r-package-auto-activate t))
         (shell)
         (should ess-r-package-mode))
@@ -48,19 +48,19 @@
 
 (ert-deftest ess-r-package-auto-no-activation-in-shell-test ()
   (let ((kill-buffer-query-functions nil))
-    (with-r-file "dummy-pkg/R/test.R"
+    (with-ess-test-r-file "dummy-pkg/R/test.R"
       (let ((ess-r-package-exclude-modes '(shell-mode)))
         (shell)
         (should (not ess-r-package-mode))
         (kill-buffer)))
-    (with-r-file "dummy-pkg/R/test.R"
+    (with-ess-test-r-file "dummy-pkg/R/test.R"
       (let ((ess-r-package-auto-activate nil))
         (shell)
         (should (not ess-r-package-mode))
         (kill-buffer)))))
 
 (ert-deftest ess-r-package-vars-test ()
-  (with-c-file "dummy-pkg/src/test.c"
+  (with-ess-test-c-file "dummy-pkg/src/test.c"
     (let ((r-setwd-cmd (cdr (assq 'ess-setwd-command ess-r-customize-alist)))
           (r-getwd-cmd (cdr (assq 'ess-getwd-command ess-r-customize-alist))))
       (should (string= ess-setwd-command r-setwd-cmd))
@@ -83,12 +83,12 @@
 (ert-deftest ess-r-package-package-info-test ()
   (let ((kill-buffer-query-functions nil)
         (ess-r-package-auto-activate nil))
-    (with-r-file "dummy-pkg/R/test.R"
+    (with-ess-test-r-file "dummy-pkg/R/test.R"
       (let ((pkg-info (ess-r-package-info)))
         (should (string= (plist-get pkg-info :name) "foo"))
         (should (string-match-p "dummy-pkg$" (plist-get pkg-info :root)))
         (kill-buffer)))
-    (with-c-file "dummy-pkg/src/test.c"
+    (with-ess-test-c-file "dummy-pkg/src/test.c"
       (let ((pkg-info (ess-r-package-info)))
         (should (string= (plist-get pkg-info :name) "foo"))
         (should (string-match-p "dummy-pkg$" (plist-get pkg-info :root)))
