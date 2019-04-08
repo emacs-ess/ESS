@@ -176,32 +176,31 @@ This may be useful for debugging."
         ;; TODO: Get rid of this, we should rely on modes to set the
         ;; variables they need.
         (ess-setq-vars-local customize-alist)
-        (let ((inf-args start-args))
-          (inferior-ess--set-major-mode ess-dialect)
-          ;; Show the buffer
-          ;; TODO: Remove inferior-ess-own-frame after ESS 19.04, then just have:
-          ;; (pop-to-buffer inf-buf)
-          (pop-to-buffer inf-buf (with-no-warnings
-                                   (when inferior-ess-own-frame
-                                     '(display-buffer-pop-up-frame))))
-          (let ((proc (inferior-ess--start-process inf-buf proc-name inf-args)))
-            (ess-make-buffer-current)
-            (goto-char (point-max))
-            (unless no-wait
-              (ess-write-to-dribble-buffer "(inferior-ess: waiting for process to start (before hook)\n")
-              (ess-wait-for-process proc nil 0.01 t))
-            (unless (and proc (eq (process-status proc) 'run))
-              (error "Process %s failed to start" proc-name))
-            (when ess-setwd-command
-              (ess-set-working-directory cur-dir))
-            (setq-local font-lock-fontify-region-function #'inferior-ess-fontify-region)
-            (setq-local ess-sl-modtime-alist nil)
-            (run-hooks 'ess-post-run-hook)
-            ;; User initialization can take some time ...
-            (unless no-wait
-              (ess-write-to-dribble-buffer "(inferior-ess 3): waiting for process after hook")
-              (ess-wait-for-process proc)))
-          inf-buf)))))
+        (inferior-ess--set-major-mode ess-dialect)
+        ;; Show the buffer
+        ;; TODO: Remove inferior-ess-own-frame after ESS 19.04, then just have:
+        ;; (pop-to-buffer inf-buf)
+        (pop-to-buffer inf-buf (with-no-warnings
+                                 (when inferior-ess-own-frame
+                                   '(display-buffer-pop-up-frame))))
+        (let ((proc (inferior-ess--start-process inf-buf proc-name start-args)))
+          (ess-make-buffer-current)
+          (goto-char (point-max))
+          (unless no-wait
+            (ess-write-to-dribble-buffer "(inferior-ess: waiting for process to start (before hook)\n")
+            (ess-wait-for-process proc nil 0.01 t))
+          (unless (and proc (eq (process-status proc) 'run))
+            (error "Process %s failed to start" proc-name))
+          (when ess-setwd-command
+            (ess-set-working-directory cur-dir))
+          (setq-local font-lock-fontify-region-function #'inferior-ess-fontify-region)
+          (setq-local ess-sl-modtime-alist nil)
+          (run-hooks 'ess-post-run-hook)
+          ;; User initialization can take some time ...
+          (unless no-wait
+            (ess-write-to-dribble-buffer "(inferior-ess 3): waiting for process after hook")
+            (ess-wait-for-process proc)))
+        inf-buf))))
 
 (defun inferior-ess--get-proc-buffer-create (name)
   "Get a process buffer, creating a new one if needed.
