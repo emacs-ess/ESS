@@ -53,7 +53,7 @@
 (declare-function company-doc-buffer "company")
 
 (defcustom inferior-julia-args ""
-  "String of arguments (see 'julia --help') used when starting julia."
+  "String of arguments (see `julia --help') used when starting julia."
   :group 'ess-julia
   :type 'string)
 
@@ -408,7 +408,7 @@ It makes underscores and dots word constituent chars.")
   "Functions run in process buffer after starting julia process.")
 
 ;;;###autoload
-(defun julia (&optional start-args)
+(defun run-ess-julia (&optional start-args)
   "Start an inferior julia process.
 Optional prefix START-ARGS (\\[universal-argument]) allows to set
 command line arguments, such as --load=<file>. This should be OS
@@ -449,6 +449,9 @@ always be passed to julia, put them in the variable
         (with-current-buffer inf-buf
           (run-mode-hooks 'ess-julia-post-run-hook))
         inf-buf))))
+
+;;;###autoload
+(defalias 'julia #'run-ess-julia)
 
 (cl-defmethod ess--help-major-mode (&context ((string= ess-dialect "julia") (eql t)))
   (ess-julia-help-mode))
