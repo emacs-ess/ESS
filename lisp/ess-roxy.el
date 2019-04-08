@@ -135,7 +135,7 @@ Use you regular key for `outline-show-entry' to reveal it.")
       (progn
         (setq-local ess-roxy-re (concat "^" (string-trim comment-start) "+'"))
         (font-lock-add-keywords nil (ess-roxy-generate-keywords))
-        (add-hook 'completion-at-point-functions #'ess-roxy-complete-tag 'local) ;; should be first
+        (add-hook 'completion-at-point-functions #'ess-roxy-complete-tag nil t)
         ;; Hideshow Integration
         (when ess-roxy-hide-show-p
           (hs-minor-mode 1)
