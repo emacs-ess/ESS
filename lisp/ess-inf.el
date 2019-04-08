@@ -168,7 +168,7 @@ This may be useful for debugging."
                                temp-ess-dialect)
                            temp-ess-dialect))
            (inf-buf (inferior-ess--get-proc-buffer-create temp-dialect))
-           (proc-name (with-current-buffer inf-buf ess-local-process-name))
+           (proc-name (buffer-local-value 'ess-local-process-name inf-buf))
            (cur-dir (inferior-ess--maybe-prompt-startup-directory proc-name temp-dialect))
            (default-directory cur-dir))
       (with-current-buffer inf-buf
