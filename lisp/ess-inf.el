@@ -2255,11 +2255,9 @@ START-ARGS gets passed to the dialect-specific
   (interactive)
   (let* ((inf-buf (inferior-ess-force))
          (inf-proc (get-buffer-process inf-buf))
-         (start-name (with-current-buffer inf-buf
-                       inferior-ess--start-name))
+         (start-name (buffer-local-value 'inferior-ess--start-name inf-buf))
          (start-args (or start-args
-                         (with-current-buffer inf-buf
-                           inferior-ess--start-args))))
+                         (buffer-local-value 'inferior-ess--start-args inf-buf))))
     ;; Interrupt early so we can get working directory
     (ess-interrupt)
     (save-window-excursion

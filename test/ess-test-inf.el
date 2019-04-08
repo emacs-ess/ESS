@@ -70,9 +70,8 @@
 
 (ert-deftest ess-test-inferior-local-start-args ()
   (with-r-running nil
-    (with-current-buffer *inf-buf*
-      (should (equal inferior-ess--start-name "R"))
-      (should (equal inferior-ess--start-args "--no-readline  --vanilla")))))
+    (should (equal (buffer-local-value 'inferior-ess--start-name *inf-buf*) "R"))
+    (should (equal (buffer-local-value 'inferior-ess--start-args *inf-buf*) "--no-readline  --vanilla"))))
 
 (ert-deftest ess-test-inferior-reload-start-data ()
   (let* ((r-path (executable-find "R"))
@@ -81,9 +80,9 @@
     (unwind-protect
         (progn
           (setq proc (get-buffer-process (run-ess-test-r-vanilla)))
-          (with-current-buffer (process-buffer proc)
-            (should (equal inferior-ess--start-name r-path))
-            (should (equal inferior-ess--start-args "--no-readline  --vanilla"))))
+          (let ((inf-buf (process-buffer proc)))
+            (should (equal (buffer-local-value 'inferior-ess--start-name inf-buf) r-path))
+            (should (equal (buffer-local-value 'inferior-ess--start-args inf-buf) "--no-readline  --vanilla"))))
       (kill-process proc))))
 
 
