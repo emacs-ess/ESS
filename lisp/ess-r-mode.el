@@ -660,6 +660,7 @@ new position."
   (setq font-lock-defaults '(ess-build-font-lock-keywords nil nil ((?\. . "w") (?\_ . "w"))))
   (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
   (add-hook 'completion-at-point-functions 'ess-r-object-completion nil 'local)
+  (add-hook 'completion-at-point-functions #'ess-r-package-completion nil 'local)
   (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
   (add-hook 'xref-backend-functions #'ess-r-xref-backend nil 'local)
 

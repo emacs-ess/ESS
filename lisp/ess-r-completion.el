@@ -414,23 +414,6 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     (require-match 'never)
     (doc-buffer (company-doc-buffer (ess-r-get-arg-help-string arg)))))
 
-(defvar-local ess-r--installed-packages-cache nil
-  "A cache of installed packages.
-Don't use this value directly. Instead, use function
-`ess-r--installed-packages-cache', which initializes the cache if
-necessary.")
-
-(defun ess-r--installed-packages-cache ()
-  "Return the cache of installed packages.
-If there is no cache, call `ess-installed-packages' to initialize
-it. Do not update the cache."
-  (when-let ((proc (ess-get-next-available-process)))
-    (with-current-buffer (process-buffer proc)
-      (or ess-r--installed-packages-cache
-          (setq ess-r--installed-packages-cache
-                (ess-installed-packages))))))
-
-;; completion for library names -- only active within 'library(...)'
 (defun company-R-library (command &optional arg &rest ignored)
   (interactive (list 'interactive))
   (cl-case command
@@ -439,10 +422,23 @@ it. Do not update the cache."
                          '("library" "require"))
                  (let ((start (ess-symbol-start)))
                    (and start (buffer-substring start (point))))))
-    (candidates (all-completions arg (ess-r--installed-packages-cache)))
+    (candidates (all-completions arg (ess-installed-packages)))
     (annotation "<pkg>")
     (duplicates nil)
     (sorted t)))
+
+;; FIXME: There's a lot of overlap between `ess-r-package-completion'
+;; and `company-R-library'. Can we merge them somehow?
+(defun ess-r-package-completion ()
+  "Return installed packages if in a call to library or require.
+Return format suitable for `completion-at-point-functions'."
+  (when (member (car (ess--fn-name-start))
+                '("library" "require"))
+    (list (ess-symbol-start)
+          (point)
+          (ess-installed-packages)
+          :annotation-function
+          (lambda (_) " <pkg>"))))
 
 
 ;;; AC SOURCES
