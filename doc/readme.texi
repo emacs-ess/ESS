@@ -69,15 +69,15 @@ Table of Contents
 * Authors::
 @end menu
 
-@node License
+@node License, Installation, General Information, General Information
 @section License
 @include license.texi
 
-@node Installation
+@node Installation, Starting up, License, General Information
 @section Installation
 @include installation.texi
 
-@node Starting up
+@node Starting up, Current Features, Installation, General Information
 @section Starting an ESS process
 To start an @Sl{} session on Unix or on Windows when you
 use the Cygwin bash shell, simply type @kbd{M-x S RET}.
@@ -85,27 +85,27 @@ use the Cygwin bash shell, simply type @kbd{M-x S RET}.
 To start an @Sl{} session on Windows when you
 use the MSDOS prompt shell, simply type @kbd{M-x S+6-msdos RET}.
 
-@node Current Features
+@node Current Features, New Features, Starting up, General Information
 @section Current Features
 
 @include currfeat.texi
 
-@node New Features
+@node New Features, Reporting Bugs, Current Features, General Information
 @section New Features
 
 @include newfeat.texi
 
-@node Reporting Bugs
+@node Reporting Bugs, Mailing Lists, New Features, General Information
 @section Reporting Bugs
 
 @include bugrept.texi
 
-@node Mailing Lists
+@node Mailing Lists, Authors, Reporting Bugs, General Information
 @section Mailing Lists
 
 @include mailing.texi
 
-@node Authors
+@node Authors,  , Mailing Lists, General Information
 @section Authors
 
 @include authors.texi

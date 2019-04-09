@@ -43,35 +43,35 @@ please read the README files that come with ESS.
 * New Features::
 @end menu
 
-@node Latest Version
+@node Latest Version, Current Features, Announce, Announce
 @section Getting the Latest Version
 @include installation.texi
 
-@node Current Features
+@node Current Features, Requirements, Latest Version, Announce
 @section Current Features
 @include currfeat.texi
 
-@node Requirements
+@node Requirements, Mailing List, Current Features, Announce
 @section Requirements
 @include requires.texi
 
-@node Mailing List
+@node Mailing List, Reporting Bugs, Requirements, Announce
 @section Mailing List
 @include mailing.texi
 
-@node Reporting Bugs
+@node Reporting Bugs, Authors, Mailing List, Announce
 @section Reporting Bugs
 @include bugrept.texi
 
-@node Authors
+@node Authors, License, Reporting Bugs, Announce
 @section Authors
 @include authors.texi
 
-@node License
+@node License, New Features, Authors, Announce
 @section License
 @include license.texi
 
-@node New Features
+@node New Features,  , License, Announce
 @section New Features
 @include newfeat.texi
 
