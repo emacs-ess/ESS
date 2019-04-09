@@ -506,7 +506,7 @@ will be prompted to enter arguments interactively."
           (concat r-always-arg
                   inferior-R-args " "   ; add space just in case
                   start-args))
-         (gdbp (string-match-p "gdb" r-start-args))
+         (debug (string-match-p "gdb\\|lldb" r-start-args))
          use-dialog-box)
     (when (or ess-microsoft-p
               (eq system-type 'cygwin))
@@ -514,7 +514,7 @@ will be prompted to enter arguments interactively."
       (when ess-microsoft-p ;; default-process-coding-system would break UTF locales on Unix
         (setq default-process-coding-system '(undecided-dos . undecided-dos))))
 
-    (let ((inf-buf (inferior-ess r-start-args ess-r-customize-alist gdbp)))
+    (let ((inf-buf (inferior-ess r-start-args ess-r-customize-alist debug)))
       (with-current-buffer inf-buf
         (ess-process-put 'funargs-pre-cache ess-r--funargs-pre-cache)
         (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
@@ -522,7 +522,7 @@ will be prompted to enter arguments interactively."
         (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
         (add-hook 'xref-backend-functions #'ess-r-xref-backend nil 'local)
         (setq comint-input-sender 'inferior-ess-r-input-sender)
-        (if gdbp
+        (if debug
             (progn
               ;; We need to use callback, because R might start with a gdb process
               (ess-process-put 'callbacks '(R-initialize-on-start))
