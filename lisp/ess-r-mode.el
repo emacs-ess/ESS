@@ -525,7 +525,7 @@ will be prompted to enter arguments interactively."
         (if debug
             (progn
               ;; We need to use callback, because R might start with a gdb process
-              (ess-process-put 'callbacks '(R-initialize-on-start))
+              (ess-process-put 'callbacks '(inferior-ess-r--init-callback))
               ;; Trigger the callback
               (process-send-string (get-buffer-process inf-buf) "r\n"))
           (ess-wait-for-process)
@@ -554,6 +554,9 @@ the package directory was selected in the first place."
             tests-dir
           dir))
     dir))
+
+(defun inferior-ess-r--init-callback (_proc _name)
+  (R-initialize-on-start))
 
 (defun R-initialize-on-start ()
   "This function is run after the first R prompt.
