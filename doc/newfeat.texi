@@ -4,6 +4,12 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item ESS no longer provides julia-mode.
+You will need to install julia-mode in order to successfully install
+ESS. Julia-mode is currently hosted at
+@url{https://github.com/JuliaEditorSupport/julia-emacs}. If you install
+ESS from MELPA, this change does not affect you.
+
 @item iESS: Process runners now return the inferior buffer.
 Note that callers of inferior runners should not assume that the current
 buffer has been set to the inferior buffer. Instead, use

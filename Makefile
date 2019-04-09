@@ -14,12 +14,8 @@ endif
 
 ESSR-VERSION := $(shell sed -n "s/;; ESSR-Version: *\(.*\) */\1/p" lisp/ess.el)
 
-
-.PHONY: all install uninstall
-all install uninstall: $(ETC_FILES)
-	cd lisp; $(MAKE) $@
-	cd doc; $(MAKE) $@
-	cd etc; $(MAKE) $@
+.PHONY: all
+all: lisp doc etc autoloads
 
 .PHONY: version
 version:
@@ -31,15 +27,15 @@ version:
 
 .PHONY: lisp
 lisp: version
-	cd lisp; $(MAKE)
+	$(MAKE) -C lisp all
 
 .PHONY: doc
 doc: version
-	cd doc; $(MAKE)
+	$(MAKE) -C doc all
 
 .PHONY: etc
 etc: version
-	cd etc; $(MAKE)
+	$(MAKE) -C etc all
 
 .PHONY: test
 test: version
@@ -47,13 +43,6 @@ test: version
 
 test-%: version
 	$(MAKE) -C test $*
-
-generate-indent-cases:
-	cd test; $(EMACS) --script generate-indent-cases
-
-.PHONY: julia
-julia:
-	@cd lisp; $(MAKE) julia-mode.el
 
 .PHONY: autoloads
 autoloads:
@@ -69,6 +58,13 @@ essr: VERSION
 	@git add etc/ESSR.rds lisp/ess.el etc/ESSR/R/.load.R
 	git commit -m"ESSR Version $(ESSR-VERSION)"
 	git tag "ESSRv"$(ESSR-VERSION)
+
+install: all
+	mkdir $(ESSDIR)
+	$(INSTALL) -R ./* $(ESSDIR)/
+
+uninstall:
+	rm -rf $(ESSDIR)
 
 
 ## the rest of the targets are for ESS developer's use only :
@@ -214,9 +210,6 @@ buildrpm: dist
 builddeb:
 	dpkg-buildpackage -uc -us -rfakeroot -tc
 
-## Old Note (clean and distclean are now the same):
-## 'clean'     shall remove *exactly* those things that are *not* in version control
-## 'distclean' removes also things in VC (svn, when they are remade by "make"):
 clean distclean: cleanup-dist
 	rm -f ess-$(ESSVERSION).tar
 	cd etc; $(MAKE) $@

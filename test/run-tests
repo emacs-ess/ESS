@@ -9,6 +9,12 @@
   (setq ess-test-path (expand-file-name "." current-directory))
   (setq ess-root-path (expand-file-name "../lisp/" current-directory)))
 
+(if (getenv "CONTINUOUS_INTEGRATION")
+    ;; In travis, julia-mode is installed with package.el
+    (progn (require 'package)
+           (package-initialize))
+  (add-to-list 'load-path (getenv "JULIA_DIR")))
+
 (add-to-list 'load-path ess-root-path)
 (add-to-list 'load-path ess-test-path)
 

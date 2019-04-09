@@ -36,12 +36,12 @@ before_script:
   - mkdir ess-r
   - ln -s $(which R) $PWD/ess-r/R-3.2.1
   - export PATH=$PATH:$PWD/ess-r/
+  # Get julia-mode
+  - emacs --script targets/travis-get-dependencies.el
 
 script:
 - emacs --version
 - R --version
-- cd lisp; make julia-mode.elc
-- cd ..
 - make -C test -k all
 - make -C doc ../README
 # Create package.el-installable tar file, test that it installs
