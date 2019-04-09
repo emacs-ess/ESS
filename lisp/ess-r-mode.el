@@ -527,7 +527,7 @@ will be prompted to enter arguments interactively."
               ;; We need to use callback, because R might start with a gdb process
               (ess-process-put 'callbacks '(R-initialize-on-start))
               ;; Trigger the callback
-              (process-send-string (get-process ess-local-process-name) "\n"))
+              (process-send-string (get-buffer-process inf-buf) "r\n"))
           (ess-wait-for-process)
           (R-initialize-on-start)
           (comint-goto-process-mark))
