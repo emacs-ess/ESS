@@ -353,25 +353,25 @@ given field. Options should be separated by value of
   (interactive)
   (when ess-rutils-keys
     (define-key inferior-ess-mode-map [(control c) (control \.) (l)]
-      'ess-rutils-local-pkgs)
+      #'ess-rutils-local-pkgs)
     (define-key inferior-ess-mode-map [(control c) (control \.) (r)]
-      'ess-rutils-repos-pkgs)
+      #'ess-rutils-repos-pkgs)
     (define-key inferior-ess-mode-map [(control c) (control \.) (u)]
-      'ess-rutils-update-pkgs)
+      #'ess-rutils-update-pkgs)
     (define-key inferior-ess-mode-map [(control c) (control \.) (a)]
-      'ess-rutils-apropos)
+      #'ess-rutils-apropos)
     (define-key inferior-ess-mode-map [(control c) (control \.) (m)]
-      'ess-rutils-rm-all)
+      #'ess-rutils-rm-all)
     (define-key inferior-ess-mode-map [(control c) (control \.) (o)]
-      'ess-rdired)
+      #'ess-rdired)
     (define-key inferior-ess-mode-map [(control c) (control \.) (w)]
-      'ess-rutils-load-wkspc)
+      #'ess-rutils-load-wkspc)
     (define-key inferior-ess-mode-map [(control c) (control \.) (s)]
-      'ess-rutils-save-wkspc)
+      #'ess-rutils-save-wkspc)
     (define-key inferior-ess-mode-map [(control c) (control \.) (d)]
-      'ess-change-directory)
+      #'ess-change-directory)
     (define-key inferior-ess-mode-map [(control c) (control \.) (H)]
-      'ess-rutils-html-docs)))
+      #'ess-rutils-html-docs)))
 
 (easy-menu-define ess-rutils-mode-menu inferior-ess-mode-menu
   "Submenu of `inferior-ess-mode' to use with RUtils."

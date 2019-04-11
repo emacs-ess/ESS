@@ -173,13 +173,6 @@ and `ess-internal-complete-object-name' otherwise."
 
 (defalias 'ess-list-object-completions #'ess-complete-object-name)
 
-(defun ess-complete-object-name-deprecated ()
-  "Gives a deprecated message."
-  (interactive)
-  (ess-complete-object-name)
-  (message "C-c TAB is deprecated, completions has been moved to [M-TAB] (aka C-M-i)")
-  (sit-for 2 t))
-
 ;; This one is needed for R <= 2.6.x -- hence *not* obsoleting it
 (defun ess-internal-complete-object-name ()
   "Perform completion on `ess-language' object preceding point.

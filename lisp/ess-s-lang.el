@@ -438,9 +438,9 @@ If `ess-language' is not \"S\", call `self-insert-command' with ARG."
 (defun ess-add-MM-keys ()
   "Define MM's user keys."
   (declare (obsolete "Setup your own keybindings." "ESS 19.04"))
-  (define-key inferior-ess-mode-map "\C-cw" 'ess-execute-screen-options)
-  (define-key ess-mode-map          [?\M--] 'ess-insert-assign)
-  (define-key inferior-ess-mode-map [?\M--] 'ess-insert-assign))
+  (define-key inferior-ess-mode-map "\C-cw" #'ess-execute-screen-options)
+  (define-key ess-mode-map          [?\M--] #'ess-insert-assign)
+  (define-key inferior-ess-mode-map [?\M--] #'ess-insert-assign))
 
 (defun ess-dump-args-and-go (Sfunc)
   "Dump the function name, with arguments, to a buffer for editing.

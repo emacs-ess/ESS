@@ -51,15 +51,18 @@
 ;; Don't require tramp at run time. It's an expensive library to load.
 ;; Instead, guard calls with (require 'tramp) and silence the byte
 ;; compiler.
-(declare-function tramp-sh-handle-expand-file-name "tramp-sh")
-(declare-function tramp-dissect-file-name "tramp")
-(declare-function tramp-tramp-file-p "tramp")
-(declare-function inferior-ess-r-mode "ess-r-mode")
-(declare-function inferior-ess-julia-mode "ess-julia")
-(declare-function inferior-ess-stata-mode "ess-stata-mode")
+(declare-function tramp-sh-handle-expand-file-name "tramp-sh" (name &optional dir))
+(declare-function tramp-dissect-file-name "tramp" (name &optional nodefault))
+(declare-function tramp-tramp-file-p "tramp" (name))
+(declare-function inferior-ess-r-mode "ess-r-mode" ())
+(declare-function inferior-ess-julia-mode "ess-julia" ())
+(declare-function inferior-ess-stata-mode "ess-stata-mode" ())
 
 (declare-function ess-mode "ess-mode" ())
-(declare-function ess-complete-object-name "ess-r-completion")
+(declare-function ess-complete-object-name "ess-r-completion" ())
+;; FIXME:This one should not be necessary
+(declare-function ess-display-help-on-object "ess-help" (object &optional command))
+(declare-function ess-dump-object-into-edit-buffer "ess-mode" (object))
 
 (defvar add-log-current-defun-header-regexp)
 
@@ -1752,35 +1755,33 @@ meaning as for `ess-eval-region'."
 
 (defvar inferior-ess-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "\C-y"              'ess-yank)
-    (define-key map "\r"       'inferior-ess-send-input)
-    (define-key map "\C-a"     'comint-bol)
+    (define-key map "\C-y"              #'ess-yank)
+    (define-key map "\r"       #'inferior-ess-send-input)
+    (define-key map "\C-a"     #'comint-bol)
     ;; 2010-06-03 SJE
     ;; disabled this in favour of ess-dirs.  Martin was not sure why this
     ;; key was defined anyway in this mode.
-    ;;(define-key map "\M-\r"    'ess-transcript-send-command-and-move)
-    (define-key map "\C-c\M-l" 'ess-load-file);; no longer overwrites C-c C-l;
+    ;;(define-key map "\M-\r"    #'ess-transcript-send-command-and-move)
+    (define-key map "\C-c\M-l" #'ess-load-file);; no longer overwrites C-c C-l;
     ;; but for now the user deserves a message:
-    (define-key map "\C-c\C-l" 'ess-msg-and-comint-dynamic-list-input-ring)
-    (define-key map "\C-c`"      'ess-show-traceback)
-    (define-key map [(control ?c) ?~] 'ess-show-call-stack)
-    (define-key map "\C-c\C-d" 'ess-dump-object-into-edit-buffer)
-    (define-key map "\C-c\C-v" 'ess-display-help-on-object)
-    (define-key map "\C-c\C-q" 'ess-quit)
-    (define-key map "\C-c\C-s" 'ess-execute-search)
-    (define-key map "\C-c\C-x" 'ess-execute-objects)
-    (define-key map "\C-c\034" 'ess-abort) ; \C-c\C-backslash
-    (define-key map "\C-c\C-z" 'ess-switch-to-inferior-or-script-buffer) ; mask comint map
-    (define-key map "\C-d"     'delete-char)   ; EOF no good in S
-    (define-key map "\t"       'completion-at-point)
-    (define-key map "\C-c\t"   'ess-complete-object-name-deprecated)
-    (define-key map "\M-?"     'ess-list-object-completions)
-    (define-key map "\C-c\C-k" 'ess-request-a-process)
-    (define-key map ","        'ess-smart-comma)
-    (define-key map (kbd "C-c C-=") 'ess-cycle-assign)
-    (define-key map "\C-c\C-d"   'ess-doc-map)
-    (define-key map "\C-c\C-e"   'ess-extra-map)
-    (define-key map "\C-c\C-t"   'ess-dev-map)
+    (define-key map "\C-c\C-l" #'ess-msg-and-comint-dynamic-list-input-ring)
+    (define-key map "\C-c`"    #'ess-show-traceback)
+    (define-key map [(control ?c) ?~] #'ess-show-call-stack)
+    (define-key map "\C-c\C-d" #'ess-dump-object-into-edit-buffer)
+    (define-key map "\C-c\C-v" #'ess-display-help-on-object)
+    (define-key map "\C-c\C-q" #'ess-quit)
+    (define-key map "\C-c\C-s" #'ess-execute-search)
+    (define-key map "\C-c\C-x" #'ess-execute-objects)
+    (define-key map "\C-c\034" #'ess-abort) ; \C-c\C-backslash
+    (define-key map "\C-c\C-z" #'ess-switch-to-inferior-or-script-buffer) ; mask comint map
+    (define-key map "\C-d"     #'delete-char)   ; EOF no good in S
+    (define-key map "\t"       #'completion-at-point)
+    (define-key map "\M-?"     #'ess-list-object-completions)
+    (define-key map "\C-c\C-k" #'ess-request-a-process)
+    (define-key map ","        #'ess-smart-comma)
+    (define-key map "\C-c\C-d"  'ess-doc-map)
+    (define-key map "\C-c\C-e"  'ess-extra-map)
+    (define-key map "\C-c\C-t"  'ess-dev-map)
     map)
   "Keymap for `inferior-ess' mode.")
 
@@ -1835,10 +1836,10 @@ meaning as for `ess-eval-region'."
 (defvar ess-mode-minibuffer-map
   (let ((map (make-sparse-keymap)))
     (set-keymap-parent map minibuffer-local-map)
-    (define-key map "\t" 'ess-complete-object-name)
-    (define-key map "\C-\M-i" 'ess-complete-object-name) ;; doesn't work:(
-    (define-key map "\C-c\C-s" 'ess-execute-search)
-    (define-key map "\C-c\C-x" 'ess-execute-objects)
+    (define-key map "\t"       #'ess-complete-object-name)
+    (define-key map "\C-\M-i"  #'ess-complete-object-name) ;; doesn't work:(
+    (define-key map "\C-c\C-s" #'ess-execute-search)
+    (define-key map "\C-c\C-x" #'ess-execute-objects)
     map)
   "Keymap used in `ess-execute'.")
 
