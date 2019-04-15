@@ -325,7 +325,8 @@ A nil value means use the current buffer's default directory."
 
 (defcustom ess-history-directory nil
   "Directory to pick up `ess-history-file' from.
-If this is nil, the history file is relative to `ess-directory'."
+If this is nil, the history file is relative to the startup
+directory of the inferior process (see `ess-startup-directory')."
   :group 'ess
   :type '(choice (const nil) directory))
 
