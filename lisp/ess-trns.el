@@ -169,7 +169,6 @@ is not already."
       (with-current-buffer ess-buf
         (goto-char (point-max))
         (ess-eval-linewise input nil nil nil 1))))
-  (goto-char ess-temp-point)
   (comint-next-prompt 1))
 
 (defun ess-transcript-copy-command ()
