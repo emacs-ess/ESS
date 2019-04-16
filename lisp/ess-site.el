@@ -27,34 +27,35 @@
 ;; A copy of the GNU General Public License is available at
 ;; https://www.r-project.org/Licenses/
 
-
 ;;; Commentary:
 
-;; This file defines all the site-specific customizations for ESS.  It should be
-;; edited on a per-site basis.  Read the comments (1.1 in Section 1 to see if
-;; ess-site.el must be edited.  The final directory location of this file must be
-;; supplied in ess-lisp-directory.  The editing of remaining sections is
-;; optional.  It should then be byte-compiled, and users who wish to use ESS
-;; should add the path to ess-site to their `load-path' and require it:
+;; Load path, autoloads, and major modes
+;; ========================================
+;;
+;; This file defines all the site-specific customizations for ESS. It should be
+;; edited on a per-site basis. users who wish to use ESS should add the path to
+;; ess-site to their `load-path' and require it:
 ;;
 ;;    (add-to-list 'load-path "/path/to/ess/lisp-directory");;
 ;;    (require 'ess-site)
+;;
+;; For most users the variable ess-lisp-directory will automatically be set
+;; correctly. If you are working with an old emacs, one in which file-truename
+;; is not defined, then you might need to change the value of ess-lisp-directory
+;; to the directory which is to contain the file ess-site.elc. This is probably
+;; the current directory, or the value of LISPDIR if it was set in the Makefile.
+;;
+;; Debug startup: (setq ess-show-load-messages t)
 
 ;;; Code:
 
-;;;; Load path, autoloads, and major modes
-;;;; ========================================
-;;
-;; For most users the variable ess-lisp-directory will automatically
-;; be set correctly.  If you are working with an old emacs, one in
-;; which file-truename is not defined, then you might need to change
-;; the value of ess-lisp-directory to the directory which is to
-;; contain the file ess-site.elc.  This is probably the current
-;; directory, or the value of LISPDIR if it was set in the Makefile.
-
-;; DEBUG: (setq ess-show-load-messages t); instead of nil above
+(when load-file-name
+  ;; Modify this if ess-site.el is not in the ./lisp/ directory
+  (setq ess-lisp-directory (file-name-directory load-file-name))
+  (add-to-list 'load-path ess-lisp-directory))
 
 (require 'ess-utils)
+
 (ess-write-to-dribble-buffer
  (format "[ess-site:] ess-lisp-directory = '%s'" ess-lisp-directory))
 
