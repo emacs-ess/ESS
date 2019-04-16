@@ -126,10 +126,9 @@
 
 ;;;###autoload
 (defcustom ess-lisp-directory
-  (directory-file-name
-   (file-name-directory
-    (or load-file-name
-        buffer-file-name)))
+  (file-name-directory
+   (or load-file-name
+       buffer-file-name))
   "Directory containing ess-site.el(c) and other ESS Lisp files."
   :group 'ess
   :type 'directory
@@ -154,7 +153,7 @@ for ESS, such as icons."
 ;; the `lisp' directory. For this reason we need to add it before we
 ;; start requiring ESS files
 ;;;###autoload
-(add-to-list 'load-path (file-name-as-directory ess-lisp-directory))
+(add-to-list 'load-path ess-lisp-directory)
 ;; Add ess-lisp-directory/obsolete to load-path; files here will
 ;; automatically warn that they are obsolete when loaded.
 ;;;###autoload
