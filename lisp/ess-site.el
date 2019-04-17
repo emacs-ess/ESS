@@ -51,7 +51,8 @@
 
 (when load-file-name
   ;; Modify this if ess-site.el is not in the ./lisp/ directory
-  (setq ess-lisp-directory (file-name-directory load-file-name))
+  (defvar ess-lisp-directory (file-name-directory load-file-name)
+    "Directory containing ess-site.el(c) and other ESS Lisp files.")
   (add-to-list 'load-path ess-lisp-directory))
 
 (require 'ess-utils)
