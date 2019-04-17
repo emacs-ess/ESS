@@ -262,19 +262,6 @@ the following to your Emacs configuration file:
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.Rd\\'" . Rd-mode))
 
-;; FIXME: The following should be moved to ess-utils.el, no? (MM thinks)
-(defun ess-point (position)
-  "Return the value of point at a certain POSITION."
-  (save-excursion
-    (cond
-     ((eq position 'bol)  (beginning-of-line))
-     ((eq position 'eol)  (end-of-line))
-     ((eq position 'boi)  (back-to-indentation))
-     ((eq position 'bonl) (forward-line 1))
-     ((eq position 'bopl) (forward-line -1))
-     (t (error "Unknown buffer position requested: %s" position)))
-    (point)))
-
 (defun Rd-describe-major-mode ()
   "Describe the current major mode."
   (interactive)
@@ -312,7 +299,7 @@ the following to your Emacs configuration file:
       0)
      (t
       (let ((p (progn
-                 (re-search-forward "[ \t]*\\s)*" (ess-point 'eol) t)
+                 (re-search-forward "[ \t]*\\s)*" (point-at-eol) t)
                  (point))))
         (if (or (< (forward-line -1) 0)
                 (Rd-mode-in-verbatim-p))
@@ -322,7 +309,7 @@ the following to your Emacs configuration file:
                           (Rd-mode-in-preprocessor-line-p))
                       (not (bobp)))
             (forward-line -1))
-          (re-search-forward "[ \t]*\\s)*" (ess-point 'eol) t)
+          (re-search-forward "[ \t]*\\s)*" (point-at-eol) t)
           (prog1
               (+ (current-indentation)
                  (* (car (parse-partial-sexp (point) p))
