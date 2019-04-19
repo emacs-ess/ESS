@@ -433,32 +433,17 @@ fill=TRUE); try(traceback(), silent=TRUE)})\n")
 (defvar ess-r-error-regexp-alist '(R R1 R2 R3 R4 R-recover)
   "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
 
-;; Takes precidence over R1 below in english locales, and allows spaces in file path
-(add-to-list 'compilation-error-regexp-alist-alist
-             '(R "\\(\\(?: at \\|(@\\)\\([^#()\n]+\\)[#:]\\([0-9]+\\)\\)"  2 3 nil 2 1))
-
-(add-to-list 'compilation-error-regexp-alist-alist
+(dolist (l '(;; Takes precidence over R1 below in english locales, and allows spaces in file path
+             (R "\\(\\(?: at \\|(@\\)\\([^#()\n]+\\)[#:]\\([0-9]+\\)\\)"  2 3 nil 2 1)
              ;; valgrind style (stl_numeric.h:183)
-             '(R1 "(\\([^ ):\n]+\\):\\([0-9]+\\)?)" 1 2 nil 2))
-
-(add-to-list 'compilation-error-regexp-alist-alist
-             '(R2 "(\\(\\w+ \\([^())\n]+\\)#\\([0-9]+\\)\\))"  2 3 nil 2 1))
-
-;; Precedes R4 and allows spaces in file path
-(add-to-list 'compilation-error-regexp-alist-alist
-             ;; Starts at bol or with ": " (patterns 3,4,5,6,9)
-             '(R3 "\\(?:^ *\\|: ?\\)\\([^-+[:digit:] \t\n]:?[^: \t\n]*\\):\\([0-9]+\\):\\(?:\\([0-9]+\\):\\)?"  1 2 3 2 1))
-
-(add-to-list 'compilation-error-regexp-alist-alist
+             (R1 "(\\([^ ):\n]+\\):\\([0-9]+\\)?)" 1 2 nil 2)
+             (R2 "(\\(\\w+ \\([^())\n]+\\)#\\([0-9]+\\)\\))"  2 3 nil 2 1)
+             ;; Precedes R4 and allows spaces in file path, Starts at bol or with ": " (patterns 3,4,5,6,9)
+             (R3 "\\(?:^ *\\|: ?\\)\\([^-+[:digit:] \t\n]:?[^: \t\n]*\\):\\([0-9]+\\):\\(?:\\([0-9]+\\):\\)?"  1 2 3 2 1)
              ;; Don't start with digit; no spaces
-             '(R4 "\\([^-+ [:digit:]][^: \t\n]+\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1))
-
-(add-to-list 'compilation-error-regexp-alist-alist
-             '(R-recover " *[0-9]+: +\\([^:\n\t]+?\\)#\\([0-9]+:\\)"  1 2 nil 2 1))
-
-;; gnu C errors
-;; (add-to-list 'compilation-error-regexp-alist-alist
-;;              '(R_C "^\\([^-+ [:digit:]][^: \t\n]+\\):\\([0-9]+\\):\\([0-9]+\\):"  2 3 nil 2 1))
+             (R4 "\\([^-+ [:digit:]][^: \t\n]+\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1)
+             (R-recover " *[0-9]+: +\\([^:\n\t]+?\\)#\\([0-9]+:\\)"  1 2 nil 2 1)))
+  (cl-pushnew l compilation-error-regexp-alist-alist))
 
 (define-obsolete-variable-alias 'ess-r-versions-created 'ess-r-created-runners "ESS 18.10")
 (defvar ess-r-created-runners nil
