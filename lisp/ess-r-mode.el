@@ -2287,13 +2287,13 @@ usage section, return nil."
         (widen)
         (goto-char (point-min))
         ;; Narrow the buffer to just the "Usage" section
-        (when-let ((beg-of-usage (re-search-forward "^Usage:" nil t))
-                   (end-of-usage (re-search-forward "^[^[:space:]]")))
+        (when-let ((usage-beg (re-search-forward "^Usage:" nil t))
+                   (usage-end (re-search-forward "^[^[:space:]]" nil t)))
           (forward-line -1)
-          (narrow-to-region beg-of-usage (point))
+          (narrow-to-region usage-beg (point))
           (goto-char (point-min))
           ;; Match objects until a parens
-          (while (re-search-forward (rx bol (0+ whitespace) (group (1+ (not (any "("))))) end-of-usage t)
+          (while (re-search-forward (rx bol (0+ whitespace) (group (1+ (not (any "("))))) usage-end t)
             (push (match-string-no-properties 1) usage-objects)
             ;; Skip past function arguments
             (forward-list)))
