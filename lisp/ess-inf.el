@@ -158,60 +158,54 @@ This may be useful for debugging."
   ;; If no transfile, use buffer *S*
   ;; This function is primarily used to figure out the Process and
   ;; buffer names to use for inferior-ess.
-  (let* ((temp-ess-dialect (eval (cdr (assoc 'ess-dialect customize-alist)))))
-    (run-hooks 'ess-pre-run-hook)
-    (ess-write-to-dribble-buffer
-     (format "(inf-ess 1): lang=%s, dialect=%s, tmp-dialect=%s, buf=%s\n"
-             ess-language ess-dialect temp-ess-dialect (current-buffer)))
-    (let* ((process-environment process-environment)
-           ;; Use temp-ess-dialect if not R, R program name otherwise
-           (temp-dialect (if ess-use-inferior-program-in-buffer-name ;VS[23-02-2013]: fixme: this should not be here
-                             (if (string-equal temp-ess-dialect "R")
-                                 (file-name-nondirectory inferior-ess-r-program)
-                               temp-ess-dialect)
-                           temp-ess-dialect))
-           (inf-buf (inferior-ess--get-proc-buffer-create temp-dialect))
-           (proc-name (buffer-local-value 'ess-local-process-name inf-buf))
-           (cur-dir (inferior-ess--maybe-prompt-startup-directory proc-name temp-dialect))
-           (default-directory cur-dir))
-      (with-current-buffer inf-buf
-        (setq-local default-directory cur-dir)
-        ;; TODO: Get rid of this, we should rely on modes to set the
-        ;; variables they need.
-        (ess-setq-vars-local customize-alist)
-        (inferior-ess--set-major-mode ess-dialect)
-        ;; Show the buffer
-        ;; TODO: Remove inferior-ess-own-frame after ESS 19.04, then just have:
-        ;; (pop-to-buffer inf-buf)
-        (pop-to-buffer inf-buf (with-no-warnings
-                                 (when inferior-ess-own-frame
-                                   '(display-buffer-pop-up-frame))))
-        (let ((proc (inferior-ess--start-process inf-buf proc-name start-args)))
-          (ess-make-buffer-current)
-          (goto-char (point-max))
-          (unless no-wait
-            (ess-write-to-dribble-buffer "(inferior-ess: waiting for process to start (before hook)\n")
-            (ess-wait-for-process proc nil 0.01 t))
-          (unless (and proc (eq (process-status proc) 'run))
-            (error "Process %s failed to start" proc-name))
-          (when ess-setwd-command
-            (ess-set-working-directory cur-dir))
-          (setq-local font-lock-fontify-region-function #'inferior-ess-fontify-region)
-          (setq-local ess-sl-modtime-alist nil)
-          (run-hooks 'ess-post-run-hook)
-          ;; User initialization can take some time ...
-          (unless no-wait
-            (ess-write-to-dribble-buffer "(inferior-ess 3): waiting for process after hook")
-            (ess-wait-for-process proc)))
-        inf-buf))))
+  (run-hooks 'ess-pre-run-hook)
+  (let* ((dialect (eval (cdr (assoc 'ess-dialect customize-alist))))
+         (process-environment process-environment)
+         ;; Use dialect if not R, R program name otherwise
+         (program-name (if (and ess-use-inferior-program-in-buffer-name
+                                (string-equal dialect "R"))
+                           (file-name-nondirectory inferior-ess-r-program)
+                         dialect))
+         (inf-buf (inferior-ess--get-proc-buffer-create program-name dialect))
+         (proc-name (buffer-local-value 'ess-local-process-name inf-buf))
+         (cur-dir (inferior-ess--maybe-prompt-startup-directory proc-name dialect)))
+    ;; Show the buffer and select its window.
+    ;; TODO: Remove inferior-ess-own-frame after ESS 19.04, then just have:
+    ;; (pop-to-buffer inf-buf)
+    (pop-to-buffer inf-buf (with-no-warnings
+                             (when inferior-ess-own-frame
+                               '(display-buffer-pop-up-frame))))
+    (setq default-directory cur-dir)
+    ;; TODO: Get rid of this, we should rely on modes to set the
+    ;; variables they need.
+    (ess-setq-vars-local customize-alist)
+    (inferior-ess--set-major-mode ess-dialect)
+    (let ((proc (inferior-ess--start-process inf-buf proc-name start-args)))
+      (ess-make-buffer-current)
+      (unless no-wait
+        (ess-write-to-dribble-buffer "(inferior-ess: waiting for process to start (before hook)\n")
+        (ess-wait-for-process proc nil 0.01 t))
+      (unless (and proc (eq (process-status proc) 'run))
+        (error "Process %s failed to start" proc-name))
+      (when ess-setwd-command
+        (ess-set-working-directory cur-dir))
+      (setq-local font-lock-fontify-region-function #'inferior-ess-fontify-region)
+      (setq ess-sl-modtime-alist nil)
+      (run-hooks 'ess-post-run-hook)
+      ;; User initialization can take some time ...
+      (unless no-wait
+        (ess-write-to-dribble-buffer "(inferior-ess 3): waiting for process after hook")
+        (ess-wait-for-process proc)))
+    inf-buf))
 
-(defun inferior-ess--get-proc-buffer-create (name)
+(defun inferior-ess--get-proc-buffer-create (name dialect)
   "Get a process buffer, creating a new one if needed.
 This always returns a process-less buffer. The variable
 `ess-local-process-name' is set in the buffer with the name of
 the next process to spawn. This name may be different from the
 buffer name, depending on how `ess-gen-proc-buffer-name-function'
-generated the latter from NAME."
+generated the latter from NAME. `ess-dialect' is set to
+DIALECT."
   (let* ((proc-name (let ((ntry 1))
                       ;; Find the next non-existent process N (*R:N*)
                       (while (get-process (ess-proc-name ntry name))
@@ -247,7 +241,8 @@ generated the latter from NAME."
         (error "Can't start a new session in buffer `%s` because one already exists"
                inf-name))
       (with-current-buffer buf
-        (setq-local ess-local-process-name proc-name))
+        (setq ess-local-process-name proc-name)
+        (setq ess-dialect dialect))
       buf)))
 
 (defun ess--accumulation-buffer (proc)
