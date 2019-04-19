@@ -39,7 +39,6 @@
 (require 'cl-lib)
 (eval-when-compile
   (require 'tramp))
-(require 'easymenu)
 (require 'info)
 (require 'ess-mode)
 (require 'ess-inf)

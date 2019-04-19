@@ -37,8 +37,6 @@
   (require 'subr-x))
 (require 'cl-lib)
 (require 'compile)
-(require 'easymenu)
-(require 'eldoc)
 (require 'ess-mode)
 (require 'ess-help)
 (require 'ess-s-lang)

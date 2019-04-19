@@ -53,7 +53,6 @@
 ;;; Code:
 
 ;; Autoloads and requires
-(require 'ess-r-mode)
 (require 'ess-rdired)
 
 (defvar ess-rutils-buf "*R temp*"

@@ -50,7 +50,6 @@
 
 ;;; Code:
 
-(require 'ess-utils)
 (require 'ess-mode)
 
 (defgroup ess-toolbar nil

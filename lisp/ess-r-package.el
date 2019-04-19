@@ -30,9 +30,7 @@
 
 ;;; Code:
 (require 'cl-lib)
-(require 'project)
 (require 'ess-inf)
-(require 'ess-utils)
 
 (eval-when-compile
   (require 'subr-x))

@@ -34,9 +34,7 @@
 
 ;;; Autoloads:
 
-(require 'comint)
 (require 'shell)
-(require 'executable)
 (require 'ess-sas-l)
 
 (defcustom SAS-mode-hook nil

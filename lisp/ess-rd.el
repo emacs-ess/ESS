@@ -29,7 +29,6 @@
 ;;
 
 ;;; Code:
-(require 'ess-utils)
 (require 'ess-help)
 (require 'ess-inf)
 ;; Silence the byte compiler, see TODO below; can we remove these?

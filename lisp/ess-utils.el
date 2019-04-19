@@ -30,13 +30,12 @@
 
 ;;; Code:
 (require 'cl-lib)
+(require 'comint)
 (eval-when-compile
   (require 'tramp))
 ;; The only ESS file this file should depend on is ess-custom.el
-(require 'cl-lib)
-(require 'comint)
 (require 'ess-custom)
-(require 'newcomment)
+
 (defvar ac-modes)
 (declare-function ess-eval-linewise "ess-inf" (text &optional invisibly eob even-empty wait-last-prompt sleep-sec wait-sec))
 (declare-function color-lighten-name "color" (name percent))

@@ -60,7 +60,6 @@
 ;;; Code:
 
 (require 'ess-utils)
-(require 'ess-utils)
 (require 'hideshow)
 (require 'outline)
 (eval-when-compile

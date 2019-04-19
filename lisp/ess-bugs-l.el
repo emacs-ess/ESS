@@ -24,9 +24,7 @@
 
 ;;; Code:
 
-(require 'font-lock)
 (require 'shell)
-(require 'comint)
 (require 'ess-utils)
 (defvar ess-bugs-command)
 (defvar ess-bugs-chains)

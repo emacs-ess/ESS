@@ -28,9 +28,6 @@
 
 ;;; Code:
 (require 'comint)
-(require 'custom)
-(require 'executable)
-(require 'font-lock)
 
 ;; FIXME:  When Emacs is started from Cygwin shell in Windows,
 ;;         we have (equal window-system 'x) -and should use "--ess" in *d-r.el

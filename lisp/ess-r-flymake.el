@@ -35,7 +35,6 @@
 (eval-when-compile (require 'cl-lib))
 (require 'ess-inf)
 (require 'flymake)
-(require 'project)
 
 ;; Appease the byte compiler for Emacs 25. Remove after dropping
 ;; support for Emacs 25.

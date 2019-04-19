@@ -41,12 +41,11 @@
 ;;
 ;;; Code:
 
-(require 'compile)
-(require 'ess-utils)
-(require 'ess-r-mode)
 (require 'ess-help)
-(require 'julia-mode)
 (require 'ess-inf)
+(require 'ess-r-mode)
+(require 'ess-utils)
+(require 'julia-mode)
 
 (defvar ac-prefix)
 (declare-function company-in-string-or-comment "company")

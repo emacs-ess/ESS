@@ -34,7 +34,6 @@
 
 (require 'ess-mode)
 (require 'ess-help)
-(require 'ess-utils)
 (require 'ess-inf)
 
 (declare-function speedbar-add-supported-extension "speedbar" (extension))

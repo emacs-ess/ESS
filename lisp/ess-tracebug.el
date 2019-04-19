@@ -50,7 +50,6 @@
   (require 'subr-x))
 (require 'comint)
 (require 'compile)
-(require 'overlay)
 (require 'ring)
 (require 'ess-utils)
 

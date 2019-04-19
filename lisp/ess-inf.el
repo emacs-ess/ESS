@@ -39,14 +39,14 @@
   (require 'subr-x))
 (require 'ess-utils)
 (require 'ess)
+(require 'ess-tracebug)
 
 (require 'ansi-color)
 (require 'comint)
-(require 'overlay)
-(require 'project)
 (require 'compile)
 (require 'format-spec)
-(require 'ess-tracebug)
+(require 'overlay)
+(require 'project)
 
 ;; Don't require tramp at run time. It's an expensive library to load.
 ;; Instead, guard calls with (require 'tramp) and silence the byte

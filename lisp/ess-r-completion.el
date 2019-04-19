@@ -31,7 +31,6 @@
 ;;; ElDoc
 
 (require 'cl-lib)
-(require 'ess-utils)
 (require 'ess-inf)
 (require 'ess-help)
 

@@ -29,7 +29,6 @@
 (eval-when-compile
   (require 'cl-lib)
   (require 'subr-x))
-(require 'ess-utils)
 (require 'ess-inf)
 
 ;; Silence the byte compiler

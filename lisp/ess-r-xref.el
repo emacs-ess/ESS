@@ -29,7 +29,6 @@
 
 (require 'xref)
 (require 'ess-inf)
-(require 'ess-utils)
 (require 'ess-r-package)
 (require 'ess-tracebug)
 

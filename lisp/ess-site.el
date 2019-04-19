@@ -55,24 +55,12 @@
     "Directory containing ess-site.el(c) and other ESS Lisp files.")
   (add-to-list 'load-path ess-lisp-directory))
 
-(require 'ess-utils)
-
-(ess-write-to-dribble-buffer
- (format "[ess-site:] ess-lisp-directory = '%s'" ess-lisp-directory))
-
 ;;; Loading popular dialects (they should become optional in the future)
 
-;; R and Julia
-(require 'ess-sp6-d)
 (require 'ess-r-mode)
-
-(when (require 'julia-mode nil 'no-error)
-  (require 'ess-julia))
-
+(require 'ess-julia)
 ;; ess-remote
 (require 'essd-els)
-
-;; Stata, SAS, BUGS, and JAGS
 (require 'ess-stata-mode)
 (require 'ess-sas-d)
 (require 'ess-bugs-d)
@@ -83,9 +71,6 @@
 
 ;;; Toolbar support
 (require 'ess-toolbar)
-
-(ess-write-to-dribble-buffer "[ess-site:] *very* end ...")
-
 
 (provide 'ess-site)
 
