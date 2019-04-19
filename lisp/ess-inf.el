@@ -489,10 +489,8 @@ This marks the process with a message, at a particular time point."
            (format "\nProcess %s %s at %s\n"
                    (process-name proc) message (current-time-string))))))))
 
-;; FIXME: This list is structured as '(("R:2") ("R")). It doesn't
-;; appear the CDR are used. Can probably just be '("R:2" "R").
 (defvar ess-process-name-list nil
-  "Alist of active ESS processes.")
+  "A list of strings of active ESS processes.")
 
 (defun inferior-ess--start-process (buf proc-name switches)
   "Make a comint process in buffer BUF with process PROC-NAME.
@@ -525,10 +523,7 @@ process-less buffer because it was created with
     (set-process-filter proc 'inferior-ess-output-filter)
     (inferior-ess-mark-as-busy proc)
     ;; Add this process to ess-process-name-list, if needed
-    (let ((conselt (assoc proc-name ess-process-name-list)))
-      (unless conselt
-        (setq ess-process-name-list
-              (cons (cons proc-name nil) ess-process-name-list))))
+    (cl-pushnew proc-name ess-process-name-list)
     proc))
 
 
@@ -617,8 +612,8 @@ happens interactively (when possible)."
   (setq name (or name ess-local-process-name))
   (if (null name)
       (error "No ESS process is associated with this buffer now")
-    (update-ess-process-name-list)
-    (if (assoc name ess-process-name-list)
+    (ess-update-process-name-list)
+    (if (member name ess-process-name-list)
         (get-process name)
       ;; else :
       ;; was (error "Process %s is not running" name)
@@ -637,7 +632,7 @@ happens interactively (when possible)."
 
         ;; else: there are other running processes
         (if use-another ; connect to another running process : the first one
-            (let ((other-name (car (elt ess-process-name-list 0))))
+            (let ((other-name (elt ess-process-name-list 0)))
               ;; "FIXME": try to find the process name that matches *closest*
               (message "associating with *other* process '%s'" other-name)
               (ess-get-process other-name))
@@ -675,7 +670,7 @@ happens interactively (when possible)."
 (defun ess-make-buffer-current nil
   "Make the process associated with the current buffer the current ESS process.
 Returns the name of the process, or nil if the current buffer has none."
-  (update-ess-process-name-list)
+  (ess-update-process-name-list)
   ;; (if ess-local-process-name
   ;;     (setq ess-current-process-name ess-local-process-name))
   ess-local-process-name)
@@ -742,7 +737,7 @@ Returns the name of the selected process."
    (list "Switch to which ESS process? " current-prefix-arg))
                                         ; prefix sets 'noswitch
   (ess-write-to-dribble-buffer "ess-request-a-process: {beginning}\n")
-  (update-ess-process-name-list)
+  (ess-update-process-name-list)
 
   (setq ess-dialect (or ess-dialect
                         (ess-completing-read
@@ -754,15 +749,15 @@ Returns the name of the selected process."
   (let* ((pname-list (delq nil ;; keep only those mathing dialect
                            (append
                             (mapcar (lambda (lproc)
-                                      (and (equal ess-dialect
+                                      (and lproc
+                                           (not (equal ess-local-process-name lproc))
+                                           (equal ess-dialect
                                                   (buffer-local-value
                                                    'ess-dialect
-                                                   (process-buffer (get-process (car lproc)))))
-                                           (not (equal ess-local-process-name (car lproc)))
-                                           (car lproc)))
+                                                   (process-buffer (get-process lproc))))))
                                     ess-process-name-list)
                             ;; append local only if running
-                            (when (assoc ess-local-process-name ess-process-name-list)
+                            (when (member ess-local-process-name ess-process-name-list)
                               (list ess-local-process-name)))))
          (num-processes (length pname-list))
          (auto-started?))
@@ -784,11 +779,11 @@ Returns the name of the selected process."
           (ess-write-to-dribble-buffer
            (format "  ... request-a-process: buf=%s\n" (current-buffer)))
           (setq num-processes 1
-                pname-list (car ess-process-name-list)
+                pname-list ess-process-name-list
                 auto-started? t)))
     ;; now num-processes >= 1 :
-    (let* ((proc-buffers (mapcar (lambda (lproc)
-                                   (buffer-name (process-buffer (get-process lproc))))
+    (let* ((proc-buffers (mapcar (lambda (l)
+                                   (buffer-name (process-buffer (get-process l))))
                                  pname-list))
            (proc
             (if (or auto-started?
@@ -807,7 +802,7 @@ Returns the name of the selected process."
                 (if (equal buf "*new*")
                     (progn
                       (ess-start-process-specific ess-language ess-dialect) ;; switches to proc-buff
-                      (caar ess-process-name-list))
+                      (car ess-process-name-list))
                   (process-name (get-buffer-process buf))
                   ))
               )))
@@ -855,8 +850,7 @@ no such process has been found."
   (when dialect
     (let (proc)
       (catch 'found
-        (dolist (p (cons ess-local-process-name
-                         (mapcar 'car ess-process-name-list)))
+        (dolist (p (cons ess-local-process-name ess-process-name-list))
           (when p
             (setq proc (get-process p))
             (when (and proc
@@ -931,17 +925,19 @@ toggled."
   "Return the buffer associated with the ESS process named by NAME."
   (process-buffer (ess-get-process (or name ess-local-process-name))))
 
-(defun update-ess-process-name-list ()
+(defun ess-update-process-name-list ()
   "Remove names with no process."
   (let (defunct)
     (dolist (conselt ess-process-name-list)
-      (let ((proc (get-process (car conselt))))
+      (let ((proc (get-process conselt)))
         (unless (and proc (eq (process-status proc) 'run))
           (push conselt defunct))))
     (dolist (pointer defunct)
       (setq ess-process-name-list (delq pointer ess-process-name-list))))
-  (if (eq (length ess-process-name-list) 0)
-      (setq ess-current-process-name nil)))
+  (when (zerop (length ess-process-name-list))
+    (setq ess-current-process-name nil)))
+
+(define-obsolete-function-alias 'update-ess-process-name-list #'ess-update-process-name-list "ESS 19.04")
 
 
 ;;; Functions for evaluating code

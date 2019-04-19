@@ -136,7 +136,7 @@ set this command to \"%s(%s)\"."
     (if choose-process ;; previous behavior
         (ess-force-buffer-current "R process to load into: ")
       ;; else
-      (update-ess-process-name-list)
+      (ess-update-process-name-list)
       (cond ((= 0 (length ess-process-name-list))
              (message "no ESS processes running; starting R")
              (sit-for 1); so the user notices before the next msgs/prompt

@@ -115,8 +115,7 @@ buffer on the local computer."
         (error "No process is associated with this buffer")
       (set-process-filter proc 'inferior-ess-output-filter)
       (setq ess-current-process-name (process-name proc))
-      (add-to-list 'ess-process-name-list
-                   (list ess-current-process-name)))))
+      (cl-pushnew ess-current-process-name ess-process-name-list))))
 
 (defvar ess-remote nil
   "Indicator, t in remote buffers.")
