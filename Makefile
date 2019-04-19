@@ -9,7 +9,6 @@ ESSDIR := ess-$(ESSVERSION)
 ifneq ($(ESSVERSION), $(PKGVERSION))
   $(shell sed -i 's/Version: .*/Version: $(ESSVERSION)/' VERSION)
   ${shell sed -i 's/;; Version: .*/;; Version: $(ESSVERSION)/' lisp/ess.el}
-  ${shell sed -i 's/(defconst ess-version .*/(defconst ess-version "$(ESSVERSION)"/' lisp/ess.el}
 endif
 
 ESSR-VERSION := $(shell sed -n "s/;; ESSR-Version: *\(.*\) */\1/p" lisp/ess.el)
@@ -64,7 +63,6 @@ essr: VERSION
 	@echo "**********************************************************"
 	@echo "** Making ESSRv$(ESSR-VERSION) **"
 	@sed -i "s/^ *VERSION <- .*/    VERSION <- \"$(ESSR-VERSION)\"/" etc/ESSR/R/.load.R
-	@sed -i "s/(defconst essr-version .*/(defconst essr-version \"$(ESSR-VERSION)\"/" lisp/ess.el
 	cd etc/ESSR/; ./BUILDESSR; cd -
 	@git add etc/ESSR.rds lisp/ess.el etc/ESSR/R/.load.R
 	git commit -m"ESSR Version $(ESSR-VERSION)"

@@ -49,12 +49,14 @@
 
 ;; Versions
 
-;; updated by 'make'!
-(defconst ess-version "18.10.3snapshot"
+(defconst ess-version (eval-when-compile
+                        (require 'lisp-mnt)
+                        (lm-version (or load-file-name buffer-file-name)))
   "Version of ESS currently loaded.")
 
-;; updated by 'make'!
-(defconst essr-version "1.5"
+(defconst essr-version (eval-when-compile
+                         (require 'lisp-mnt)
+                         (save-excursion (lm-header "ESSR-Version")))
   "Version of ESSR package.")
 
 (defvar ess-revision nil
