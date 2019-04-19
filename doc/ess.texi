@@ -2569,16 +2569,6 @@ insertions, even doing some of the typing for you (with Abbrev Mode),
 and by showing Rd keywords, strings, etc.@: in different faces (with
 Font Lock Mode).
 
-Note that R also accepts Rd files with extension @file{rd}; to activate
-@ESS{[Rd]} support for this extension, you may need to add
-
-@example
-(add-to-list 'auto-mode-alist '("\\.rd\\'" . Rd-mode))
-@end example
-
-@noindent
-to one of your Emacs startup files.
-
 In Rd mode, the following special Emacs commands can be used in addition
 to the standard Emacs commands.
 
