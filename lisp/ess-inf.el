@@ -57,6 +57,7 @@
 (declare-function inferior-ess-r-mode "ess-r-mode" ())
 (declare-function inferior-ess-julia-mode "ess-julia" ())
 (declare-function inferior-ess-stata-mode "ess-stata-mode" ())
+(declare-function extract-rectangle-bounds "rect" (start end))
 
 (declare-function ess-mode "ess-mode" ())
 (declare-function ess-complete-object-name "ess-r-completion" ())
@@ -1478,11 +1479,7 @@ the lines of the rectangle separately to the inferior process."
     ;; External applications might call ess-eval-* functions; make it
     ;; easier for them
     (ess-setq-vars-local (symbol-value (ess-get-process-variable 'ess-local-customize-alist))))
-  (if (and (bound-and-true-p rectangle-mark-mode)
-           ;; TODO: Remove this check after dropping support for Emacs
-           ;; 24, replace by putting this at the top of this file:
-           ;; (declare-function extract-rectangle-bounds "rect")
-           (fboundp 'extract-rectangle-bounds))
+  (if (bound-and-true-p rectangle-mark-mode)
       ;; If we're in rectangle-mark-mode, loop over each line of the
       ;; rectangle. Send them separately.
       (let ((reclines (extract-rectangle-bounds (min (mark) (point)) (max (mark) (point)))))
