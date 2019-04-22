@@ -432,20 +432,20 @@ always be passed to julia, put them in the variable
                                  " ? "))
 		              nil))))
       (let ((inf-buf (inferior-ess jl-start-args ess-julia-customize-alist)))
-        (ess--tb-start)
-        ;; Remove ` from julia's logo
-        (goto-char (point-min))
-        (while (re-search-forward "`" nil t)
-          (replace-match "'"))
-        ;; Remove an offending unmatched parenthesis
-        (goto-char (point-min))
-        (forward-line 4)
-        (when (re-search-forward "(" nil t)
-          (replace-match "|"))
-        (goto-char (point-max))
-        ;; --> julia helpers from ../etc/ess-julia.jl :
-        (ess--inject-code-from-file (format "%sess-julia.jl" ess-etc-directory))
         (with-current-buffer inf-buf
+          (ess--tb-start)
+          ;; Remove ` from julia's logo
+          (goto-char (point-min))
+          (while (re-search-forward "`" nil t)
+            (replace-match "'"))
+          ;; Remove an offending unmatched parenthesis
+          (goto-char (point-min))
+          (forward-line 4)
+          (when (re-search-forward "(" nil t)
+            (replace-match "|"))
+          (goto-char (point-max))
+          ;; --> julia helpers from ../etc/ess-julia.jl :
+          (ess--inject-code-from-file (format "%sess-julia.jl" ess-etc-directory))
           (run-mode-hooks 'ess-julia-post-run-hook))
         inf-buf))))
 
