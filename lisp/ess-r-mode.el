@@ -810,13 +810,13 @@ Once the value is found, cache it in the variable `ess-newest-R'
 for future use as finding the newest version of R can be
 potentially time-consuming."
   (or ess-newest-R
-      (message "Finding all versions of R on your system...")
-      (setq ess-newest-R
-            (ess-newest-r
-             (if ess-microsoft-p
-                 (ess-rterm-prefer-higher-bit)
-               (add-to-list 'ess-r-created-runners
-                            inferior-ess-r-program))))))
+      (progn (message "Finding all versions of R on your system...")
+             (setq ess-newest-R
+                   (ess-newest-r
+                    (if ess-microsoft-p
+                        (ess-rterm-prefer-higher-bit)
+                      (add-to-list 'ess-r-created-runners
+                                   inferior-ess-r-program)))))))
 
 (defun R-newest (&optional start-args)
   "Find the newest version of R available, and run it.
