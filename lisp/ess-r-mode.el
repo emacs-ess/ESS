@@ -478,7 +478,7 @@ will be prompted to enter arguments interactively."
               ;; TODO: Once we drop Emacs 26 support, can probably
               ;; just use the REMOTE argument of `executable-find'.
               (executable-find inferior-ess-r-program))
-    (display-warning 'ess (format "%s could not be found on the system. Try running `R-newest' instead, which searches your system for R." inferior-ess-r-program) :error)
+    (display-warning 'ess (format "%s could not be found on the system. Try running `run-ess-r-newest' instead, which searches your system for R." inferior-ess-r-program) :error)
     (user-error "%s program not found" inferior-ess-r-program))
   (let* ((r-always-arg
           (if (or ess-microsoft-p (eq system-type 'cygwin))
@@ -792,8 +792,8 @@ by the code on Windows for finding the newest version of R."
   :type 'boolean)
 
 (defun ess-rterm-prefer-higher-bit ()
-  "Optionally remove 32bit Rterms from being candidate for `R-newest'.
-Return the list of candidates for being `R-newest'. Filtering is
+  "Optionally remove 32bit Rterms from being candidate for `run-ess-r-newest'.
+Return the list of candidates for being `run-ess-r-newest'. Filtering is
 done iff `ess-prefer-higher-bit' is non-nil. This is used only by
 Windows when running `ess-find-newest-R'."
   (if ess-prefer-higher-bit
@@ -808,40 +808,25 @@ Windows when running `ess-find-newest-R'."
           filtered))
     ess-rterm-version-paths))
 
-
-(defun ess-find-newest-R ()
-  "Find the newest version of R on the system.
-Once the value is found, cache it in the variable `ess-newest-R'
-for future use as finding the newest version of R can be
-potentially time-consuming."
-  (or ess-newest-R
-      (progn (message "Finding all versions of R on your system...")
-             (setq ess-newest-R
-                   (ess-newest-r
-                    (if ess-microsoft-p
-                        (ess-rterm-prefer-higher-bit)
-                      (add-to-list 'ess-r-created-runners
-                                   inferior-ess-r-program)))))))
-
-(defun R-newest (&optional start-args)
+(defun run-ess-r-newest (&optional start-args)
   "Find the newest version of R available, and run it.
-Subsequent calls to `R-newest' will run that version, rather than searching
-again for the newest version.  Providing an optional prefix START-ARGS (\\[universal-argument]) will
+Subsequent calls to `run-ess-r-newest' will run that version,
+rather than searching again for the newest version. Providing
+START-ARGS (interactively, with \\[universal-argument]) will
 prompt for command line arguments."
   (interactive "P")
-  (let ((rnewest (ess-find-newest-R)))
-    (if (not rnewest)
-        (error "No version of R could be found")
-      ;; Else: we have a working version of R.
-      ;; Have to be careful to avoid recursion...
-      (message "%s" (concat "Newest version of R is " rnewest))
-      (fset 'R-newest
-            (intern
-             (if ess-microsoft-p
-                 (ess-rterm-arch-version rnewest)
-               rnewest)))
-      ;;(fset 'R-newest (intern rnewest))
-      (R-newest start-args))))
+  (unless ess-newest-R
+    (message "Finding all versions of R on your system...")
+    (setq ess-newest-R
+          (ess-find-newest-date
+           (mapcar #'ess-r-version-date
+                   (if ess-microsoft-p
+                       (ess-rterm-prefer-higher-bit)
+                     (add-to-list 'ess-r-created-runners inferior-ess-r-program))))))
+  (let ((inferior-ess-r-program ess-newest-R))
+    (run-ess-r start-args)))
+
+(defalias 'R-newest 'run-ess-r-newest)
 
 ;; (ess-r-version-date "R-2.5.1") (ess-r-version-date "R-patched")
 ;; (ess-r-version-date "R-1.2.1") (ess-r-version-date "R-1.8.1")
@@ -869,26 +854,6 @@ returned."
            ver-string)
       (setq date (match-string 2 ver-string)))
     (cons date rver)))
-
-(defun ess-current-R-version ()
-  "Get the version of R currently running in the ESS buffer as a string."
-  (ess-make-buffer-current)
-  (car (ess-get-words-from-vector "as.character(.ess.Rversion)\n")))
-
-(defun ess-current-R-at-least (version)
-  "Is the version of R (in the ESS buffer) at least (\">=\") VERSION ?
-Examples: (ess-current-R-at-least '2.7.0)
-      or  (ess-current-R-at-least \"2.5.1\")"
-  (ess-make-buffer-current)
-  (string= "TRUE"
-           (car (ess-get-words-from-vector
-                 (format "as.character(.ess.Rversion >= \"%s\")\n" version)))))
-
-(defun ess-newest-r (rvers)
-  "Check all the versions of RVERS to see which is the newest.
-Return the name of the newest version of R."
-  (let ((rtimes (mapcar 'ess-r-version-date rvers)))
-    (ess-find-newest-date rtimes)))
 
 (defun ess-find-newest-date (rvers)
   "Find the newest version of R given in the a-list RVERS.

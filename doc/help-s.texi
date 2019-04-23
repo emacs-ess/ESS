@@ -61,7 +61,7 @@ type @kbd{M-x rw} and then hit [Tab].  These other versions of
 R can also be started from the "ESS->Start Process->Other" menu.
 
 Once ESS has found these extra versions of R, it will then create a new
-function, called @kbd{M-x R-newest}, which will call the newest version
+function, called @kbd{M-x run-ess-r-newest}, which will call the newest version
 of R that it found.  (ESS examines the date in the first line of
 information from @code{R --version} to determine which is newest.)
 
