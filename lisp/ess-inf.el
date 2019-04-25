@@ -178,6 +178,14 @@ This may be useful for debugging."
       ;; variables they need.
       (ess-setq-vars-local customize-alist)
       (inferior-ess--set-major-mode ess-dialect)
+      ;; Read the history file
+      (when ess-history-file
+        (setq comint-input-ring-file-name
+              (expand-file-name (if (eql t ess-history-file)
+                                    (concat "." ess-dialect "history")
+                                  ess-history-file)
+                                ess-history-directory))
+        (comint-read-input-ring))
       ;; Show the buffer
       ;; TODO: Remove inferior-ess-own-frame after ESS 19.04, then just have:
       ;; (pop-to-buffer inf-buf)
@@ -1844,19 +1852,8 @@ node `(ess)Top'. If you accidentally suspend your process, use
 \\[comint-continue-subjob] to continue it."
   :group 'ess-proc
   (setq-local comint-input-sender 'inferior-ess-input-sender)
-
-  (when ess-history-file
-    (setq comint-input-ring-file-name
-          (expand-file-name (if (eql t ess-history-file)
-                                (concat "." ess-dialect "history")
-                              ess-history-file)
-                            ess-history-directory))
-    (comint-read-input-ring))
-
   (setq-local font-lock-fontify-region-function
               #'inferior-ess-fontify-region)
-
-
   ;; If comint-process-echoes is t  inferior-ess-input-sender
   ;; recopies the input, otherwise not
   (setq-local comint-process-echoes (not (member ess-language '("SAS" "XLS" "OMG" "julia"))))
