@@ -593,6 +593,27 @@ Arguments:
                        ("qt" "p" "df" "ncp" "lower.tail" "log.p")
                        ("rt" "n" "df" "ncp")))))))
 
+(ert-deftest ess-test-r-comint-input-ring-file-name ()
+  (let ((ess-history-file t)
+        ess-history-directory)
+    (with-r-running nil
+      (should (string= (expand-file-name ".Rhistory" default-directory)
+                       (buffer-local-value 'comint-input-ring-file-name (ess-get-process-buffer))))))
+  (let ((ess-history-file "foo")
+        (ess-history-directory temporary-file-directory))
+    (with-r-running nil
+      (should (string= (expand-file-name "foo" temporary-file-directory)
+                       (buffer-local-value 'comint-input-ring-file-name (ess-get-process-buffer))))))
+  (let ((ess-history-file t)
+        (ess-history-directory temporary-file-directory))
+    (with-r-running nil
+      (should (string= (expand-file-name ".Rhistory" temporary-file-directory)
+                       (buffer-local-value 'comint-input-ring-file-name (ess-get-process-buffer))))))
+  (let (ess-history-file
+        ess-history-directory)
+    (with-r-running nil
+      (should-not (buffer-local-value 'comint-input-ring-file-name (ess-get-process-buffer))))))
+
 (provide 'ess-test-r)
 
 ;;; ess-test-r.el ends here
