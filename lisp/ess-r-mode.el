@@ -251,6 +251,7 @@ value by using `ess-r-runners-reset'."
 (defvar ess-r-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-c C-=") #'ess-cycle-assign)
+    (define-key map (kbd "C-c RET") #'ess-r-insert-pipe)
     map))
 
 (defvar ess-r-mode-syntax-table
@@ -940,6 +941,42 @@ use \"bin/Rterm.exe\"."
 (add-to-list 'interpreter-mode-alist '("Rscript" . ess-r-mode))
 ;;;###autoload
 (add-to-list 'interpreter-mode-alist '("r" . ess-r-mode))
+
+(defcustom ess-r-insert-pipe-behavior '(newline)
+  "A list that determines the behavior of `ess-r-insert-pipe'.
+Currently supported options are `eol', which means go to the end
+of the current line before inserting a pipe and `newline', which
+inserts a newline and indents after inserting the pipe."
+  :group 'ess-R
+  :type '(sexp)
+  :package-version '(ess . "19.04"))
+
+(defun ess-r-insert-pipe (&optional literally)
+  "Insert a pipe %>%.
+The exact behavior is governed by `ess-r-insert-pipe-behavior',
+which see. Avoids inserting multiple pipes in a row. To insert a
+pipe LITERALLY (bypassing `ess-r-insert-pipe-behavior' and
+checking for multiple pipes), use \\[universal-argument].
+
+This command sets a transient keymap so that you may easily
+repeat it. Repeated invocations call `delete-indentation'. So,
+for example, if bound to \\<ess-r-mode-map>\\[ess-r-insert-pipe],
+and `ess-r-insert-pipe-behavior' is (newline), you can press the
+last key twice to delete the newline easily."
+  (interactive "P")
+  (cond (literally (insert "%>%"))
+        ((equal this-command last-command) (delete-indentation))
+        (t (when (member 'eol ess-r-insert-pipe-behavior)
+             (end-of-line))
+           (unless (looking-back "%>%" nil)
+             (just-one-space 1)
+             (insert "%>%"))
+           (if (member 'newline ess-r-insert-pipe-behavior)
+               (newline-and-indent)
+             (just-one-space 1))
+           (set-transient-map (let ((map (make-sparse-keymap)))
+                                (define-key map (vector last-command-event)
+                                  #'repeat))))))
 
 (defun ess-r-fix-T-F (&optional from quietly)
   "Change T/F into TRUE and FALSE cautiously.

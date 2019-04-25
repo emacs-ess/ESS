@@ -87,6 +87,9 @@ buffers. To enable it, customize @code{ess-r-mode-hook}.
 
 @item ESS[Rd]: Rd no longer writes abbrevs to user's abbrev file.
 
+@item ESS[R]: New command ess-r-insert-pipe and new option ess-r-insert-pipe-behavior.
+New keybinding C-c RET to easily insert a pipe.
+
 @item ESS removed support for many unused languages.
 This includes old versions of S+, ARC, OMG, VST, and XLS.
 

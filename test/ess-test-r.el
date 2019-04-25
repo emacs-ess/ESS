@@ -614,6 +614,43 @@ Arguments:
     (with-r-running nil
       (should-not (buffer-local-value 'comint-input-ring-file-name (ess-get-process-buffer))))))
 
+(ert-deftest ess-test-r-insert-pipe ()
+  (with-temp-buffer
+    (let ((ess-r-insert-pipe-behavior nil))
+      (ess-r-insert-pipe)
+      (should (string= (buffer-string)
+                       " %>% "))))
+  (with-temp-buffer
+    (let ((ess-r-insert-pipe-behavior '(eol)))
+      (insert "foobar")
+      (backward-char 3)
+      (ess-r-insert-pipe)
+      (should (string= (buffer-string)
+                       "foobar %>% "))))
+  (with-temp-buffer
+    (let ((ess-r-insert-pipe-behavior '(newline)))
+      (insert "foobar")
+      (backward-char 3)
+      (ess-r-insert-pipe)
+      (should (string= (buffer-string)
+                       "foo %>%\nbar"))
+      (let ((last-command 'ess-r-insert-pipe)
+            (this-command 'ess-r-insert-pipe))
+        (ess-r-insert-pipe))
+      (should (string= (buffer-string)
+                       "foo %>% bar"))))
+  (with-temp-buffer
+    (let ((ess-r-insert-pipe-behavior '(eol newline)))
+      (insert "foobar")
+      (backward-char 3)
+      (ess-r-insert-pipe)
+      (should (string= (buffer-string)
+                       "foobar %>%\n"))
+      (universal-argument)
+      (ess-r-insert-pipe t)
+      (should (string= (buffer-string)
+                       "foobar %>%\n%>%")))))
+
 (provide 'ess-test-r)
 
 ;;; ess-test-r.el ends here
