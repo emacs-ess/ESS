@@ -85,6 +85,8 @@ buffers. To enable it, customize @code{ess-r-mode-hook}.
 
 @item ESS[R]: imenu now supports assignment with the equals sign.
 
+@item ESS[Rd]: Rd no longer writes abbrevs to user's abbrev file.
+
 @item ESS removed support for many unused languages.
 This includes old versions of S+, ARC, OMG, VST, and XLS.
 
