@@ -251,7 +251,6 @@ the following to your Emacs configuration file:
   ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=14328
   (setq-local create-lockfiles nil)
 
-  (require 'easymenu)
   (easy-menu-define Rd-mode-menu-map Rd-mode-map
     "Menu keymap for Rd mode." Rd-mode-menu)
 
@@ -416,7 +415,6 @@ If the current buffer is not associated with a file, create a
 temporary one in variable `temporary-file-directory'."
   (declare (advertised-calling-convention () "ESS 19.04"))
   (interactive "P")
-  (require 'ess-help)
   (let ((file buffer-file-name)
         (pbuf (get-buffer-create "R Help Preview"))
         del-p)
