@@ -235,6 +235,7 @@ the following to your Emacs configuration file:
 
   (add-hook 'Rd-mode-hook #'abbrev-mode)"
   (setq ess-language "S" ess-dialect  "R")
+  (require 'ess-r-mode)
   (ess-setq-vars-local ess-r-customize-alist)
 
   (setq-local indent-line-function 'Rd-mode-indent-line)
