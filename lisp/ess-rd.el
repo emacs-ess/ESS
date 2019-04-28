@@ -413,6 +413,7 @@ WHAT determines the font to use, as specified by `Rd-font-list'."
 If optional VIA-SHELL is set, using `Rd-to-help-command'.
 If the current buffer is not associated with a file, create a
 temporary one in `temporary-file-directory'."
+  (declare (advertised-calling-convention () "ESS 19.04"))
   (interactive "P")
   (require 'ess-help)
   (let ((file buffer-file-name)
