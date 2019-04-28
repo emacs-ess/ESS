@@ -36,6 +36,12 @@
 (defvar ess-help-r-sec-keys-alist)
 (defvar ess-r-customize-alist)
 
+(defcustom Rd-mode-hook nil
+  "Hook to be run when Rd mode is entered."
+  :type 'hook
+  :group 'ess-R
+  :group 'ess-hooks)
+
 (defvar Rd-mode-abbrev-table nil
   "Abbrev table for R documentation keywords.
 All Rd mode abbrevs start with a grave accent (`).")
@@ -203,12 +209,8 @@ All Rd mode abbrevs start with a grave accent (`).")
         ["Describe Rd Mode"             Rd-describe-major-mode t])
   "Menu used in Rd mode.")
 
-(defvar Rd-mode-hook nil
-  "Hook to be run when Rd mode is entered.")
-
 (defvar Rd-to-help-command "R CMD Rd2txt"
   "Shell command for converting R documentation source to help text.")
-
 
 (defvar Rd-font-list
   '((?\C-b "\\bold{"    "}")
