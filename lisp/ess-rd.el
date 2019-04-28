@@ -266,6 +266,7 @@ the following to your Emacs configuration file:
   (describe-function major-mode))
 
 (defun Rd-mode-in-verbatim-p ()
+  "Return non-nil if in a usage, examples, or synopsis."
   (let ((pos (point)))
     (save-excursion
       (if (and (re-search-backward
@@ -279,6 +280,7 @@ the following to your Emacs configuration file:
         nil))))
 
 (defun Rd-mode-in-preprocessor-line-p ()
+  "Return non-nil if in a preprocessor line."
   (save-excursion
     (beginning-of-line)
     (looking-at "[ \t]*#\\(ifdef\\|endif\\)")))
@@ -327,12 +329,14 @@ the following to your Emacs configuration file:
               (move-to-column (+ ic rp)))))))
 
 (defun Rd-mode-insert-item ()
+  "Insert \\iten{ on a newline."
   (interactive)
   (reindent-then-newline-and-indent)
   (insert "\\item{")
   )
 
 (defun Rd-mode-insert-section ()
+  "Insert a section from `Rd-section-names'."
   (interactive)
   (let ((s (ess-completing-read
             "Insert section: "
@@ -343,6 +347,7 @@ the following to your Emacs configuration file:
       (insert (format "\\%s{" s)))))
 
 (defun Rd-mode-insert-skeleton ()
+  "Insert several empty Rd fields."
   (interactive)
   ;; Hmm: in theory this should be kept in sync with prompt()
   ;; ---  maybe using prompt() [or promptClass()...] would be better anyway?!
@@ -408,7 +413,7 @@ WHAT determines the font to use, as specified by `Rd-font-list'."
   "Preview the current Rd buffer contents as help.
 If optional VIA-SHELL is set, using `Rd-to-help-command'.
 If the current buffer is not associated with a file, create a
-temporary one in `temporary-file-directory'."
+temporary one in variable `temporary-file-directory'."
   (declare (advertised-calling-convention () "ESS 19.04"))
   (interactive "P")
   (require 'ess-help)
