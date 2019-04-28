@@ -163,26 +163,22 @@ All Rd mode abbrevs start with a grave accent (`).")
 
 (defvar Rd-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "\t" 'indent-according-to-mode)
-    (define-key map "\C-j" 'reindent-then-newline-and-indent)
-    (define-key map "\C-m" 'reindent-then-newline-and-indent)
-    (define-key map "\C-c\C-p" 'Rd-preview-help)
-    (define-key map "\C-c\C-j" 'Rd-mode-insert-item)
-    (define-key map "\C-c\C-e" 'Rd-mode-insert-skeleton)
-    (define-key map "\C-c\C-f" 'Rd-font)
-    ;;  ^C^F ^E : \emph{ . }
-    ;;  ^C^F ^C : \code{ . }
-    ;;  ^C^F ^L : \link{ . }
-    ;;  ^C^F  L : \code{\link{ . }}  etc
-    (define-key map "\C-c\C-s" 'Rd-mode-insert-section)
-    (define-key map "\C-c\C-n" 'ess-eval-line-visibly-and-step)
-    (define-key map "\C-c\C-r" 'ess-eval-region)
-    (define-key map "\C-c\C-c" 'ess-eval-region-or-function-or-paragraph-and-step)
-    (define-key map "\C-\M-x"  'ess-eval-region-or-function-or-paragraph)
-    (define-key map "\C-c\C-v" 'ess-display-help-on-object)
-    (define-key map "\C-c\C-w" 'ess-switch-process); is on C-c C-s in ess-mode..
-    (define-key map "\C-c\C-y" 'ess-switch-to-ESS)
-    (define-key map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
+    (define-key map "\t" #'indent-according-to-mode)
+    (define-key map "\C-j" #'reindent-then-newline-and-indent)
+    (define-key map "\C-m" #'reindent-then-newline-and-indent)
+    (define-key map "\C-c\C-p" #'Rd-preview-help)
+    (define-key map "\C-c\C-j" #'Rd-mode-insert-item)
+    (define-key map "\C-c\C-e" #'Rd-mode-insert-skeleton)
+    (define-key map "\C-c\C-f" #'Rd-font)
+    (define-key map "\C-c\C-s" #'Rd-mode-insert-section)
+    (define-key map "\C-c\C-n" #'ess-eval-line-visibly-and-step)
+    (define-key map "\C-c\C-r" #'ess-eval-region)
+    (define-key map "\C-c\C-c" #'ess-eval-region-or-function-or-paragraph-and-step)
+    (define-key map "\C-\M-x"  #'ess-eval-region-or-function-or-paragraph)
+    (define-key map "\C-c\C-v" #'ess-display-help-on-object)
+    (define-key map "\C-c\C-w" #'ess-switch-process)
+    (define-key map "\C-c\C-y" #'ess-switch-to-ESS)
+    (define-key map "\C-c\C-z" #'ess-switch-to-end-of-ESS)
     map)
   "Keymap used in Rd mode.")
 
