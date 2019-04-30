@@ -291,7 +291,7 @@ to look up any doc strings."
 
 ;;; CORE
 (defvar ess-julia-customize-alist
-  '((inferior-ess-primary-prompt   . "a> ") ;; from julia>
+  '((inferior-ess-primary-prompt   . "\\w*> ")
     (inferior-ess-secondary-prompt . nil)
     (inferior-ess-prompt           . "\\w*> ")
     (ess-local-customize-alist     . 'ess-julia-customize-alist)
@@ -387,6 +387,7 @@ It makes underscores and dots word constituent chars.")
   :group 'ess-Julia
   (ess-setq-vars-local ess-julia-customize-alist)
   (setq-local comint-use-prompt-regexp t)
+  (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
   (setq ess-dialect "julia")
   ;; eldoc
   (add-function :before-until (local 'eldoc-documentation-function)
