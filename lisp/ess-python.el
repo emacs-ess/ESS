@@ -30,6 +30,9 @@
 (require 'ess-inf)
 (require 'python)
 
+(eval-when-compile
+  (require 'subr-x))
+
 (defgroup ess-python nil
   "ESS support for python"
   :group 'languages
@@ -57,6 +60,13 @@
 (cl-defmethod ess-start-process-specific (_language _dialect &context ((string= ess-dialect "python") (eql t)))
   (save-current-buffer
     (run-ess-python)))
+
+(cl-defmethod ess-quit--override (_arg &context ((string= ess-dialect "python") (eql t)))
+  "ARG is ignored for python."
+  (if-let ((sprocess (ess-get-process ess-current-process-name)))
+      (progn (ess-cleanup)
+             (ess-send-string sprocess "exit()\n" t))
+    (error "No ESS process running")))
 
 (defun ess-python-input-sender (proc string)
   "Input sender for `ess-inferior-python-mode' buffers.
