@@ -1203,13 +1203,6 @@ This handles Tramp when working on a remote."
   (let ((command (ess-build-load-command filename nil t)))
     (ess-send-string (ess-get-process) command t)))
 
-;; C-c C-l  *used to* eval code:
-(defun ess-msg-and-comint-dynamic-list-input-ring ()
-  "Display a list of recent inputs entered into the current buffer."
-  (interactive)
-  (message "C-c C-l  no longer loads a source file in [iESS], rather use C-c M-l instead")
-  (comint-dynamic-list-input-ring))
-
 ;; ;;; VS[03-09-2012]: Test Cases:
 ;; (ess-command "a<-0\n" nil nil nil nil (get-process "R"))
 ;; (ess-async-command-delayed "Sys.sleep(5);a<-a+1;cat(1:10)\n" nil
@@ -1764,9 +1757,7 @@ meaning as for `ess-eval-region'."
     ;; disabled this in favour of ess-dirs.  Martin was not sure why this
     ;; key was defined anyway in this mode.
     ;;(define-key map "\M-\r"    #'ess-transcript-send-command-and-move)
-    (define-key map "\C-c\M-l" #'ess-load-file);; no longer overwrites C-c C-l;
-    ;; but for now the user deserves a message:
-    (define-key map "\C-c\C-l" #'ess-msg-and-comint-dynamic-list-input-ring)
+    (define-key map "\C-c\M-l" #'ess-load-file)
     (define-key map "\C-c`"    #'ess-show-traceback)
     (define-key map [(control ?c) ?~] #'ess-show-call-stack)
     (define-key map "\C-c\C-d" #'ess-dump-object-into-edit-buffer)
