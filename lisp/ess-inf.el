@@ -56,6 +56,7 @@
 (declare-function tramp-tramp-file-p "tramp" (name))
 (declare-function inferior-ess-r-mode "ess-r-mode" ())
 (declare-function inferior-ess-julia-mode "ess-julia" ())
+(declare-function inferior-ess-python-mode "ess-python" ())
 (declare-function inferior-ess-stata-mode "ess-stata-mode" ())
 (declare-function extract-rectangle-bounds "rect" (start end))
 
@@ -91,6 +92,9 @@ been initialised."
   (cond ((string= "R" dialect)
          (progn (require 'ess-r-mode)
                 (inferior-ess-r-mode)))
+        ((string= "python" dialect)
+         (progn (require 'ess-python)
+                (inferior-ess-python-mode)))
         ((string= "julia" dialect)
          (progn (require 'ess-julia)
                 (inferior-ess-julia-mode)))
@@ -714,7 +718,7 @@ PROC defaults to process with name `ess-local-process-name'."
 PROC defaults to the process given by `ess-local-process-name'"
   (process-put (or proc (get-process ess-local-process-name)) propname value))
 
-(defun ess-start-process-specific (language dialect)
+(cl-defgeneric ess-start-process-specific (language dialect)
   "Start an ESS process.
 Typically from a language-specific buffer, using LANGUAGE (and DIALECT)."
   (save-current-buffer
@@ -731,12 +735,10 @@ Typically from a language-specific buffer, using LANGUAGE (and DIALECT)."
        ((fboundp dsymb)
         (funcall dsymb))
        (t ;; else: ess-dialect is not a function
-
         ;; Typically triggered from
         ;; ess-force-buffer-current("Process to load into: ")
         ;;  \-->  ess-request-a-process("Process to load into: " no-switch)
-        (error "No ESS processes running; not yet implemented to start (%s,%s)"
-               language dialect))))))
+        (error "No ESS processes running; not yet implemented to start (%s,%s)" language dialect))))))
 
 (defun ess-request-a-process (message &optional noswitch ask-if-1)
   "Ask for a process, and make it the current ESS process.

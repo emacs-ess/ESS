@@ -310,6 +310,7 @@ to `ess-completing-read'."
 (defun ess-derived-mode-p ()
   "Non-nil if the current major mode is an ESS major mode."
   (or (derived-mode-p 'ess-mode)
+      (derived-mode-p 'ess-python-mode)
       (derived-mode-p 'ess-julia-mode)))
 
 (defun ess--generate-eval-visibly-submenu (_menu)
