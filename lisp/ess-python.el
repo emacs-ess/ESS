@@ -113,7 +113,9 @@ modifying the command line arguments."
         inferior-ess-exit-command "exit()\n")
   (setq-local ess-getwd-command "import os; os.getcwd('%s')")
   (setq-local ess-setwd-command "import os; os.chdir('%s')")
-  (setq-local comint-input-sender #'ess-python-input-sender))
+  (setq-local comint-input-sender #'ess-python-input-sender)
+  (setq-local compilation-error-regexp-alist python-shell-compilation-regexp-alist)
+  (compilation-shell-minor-mode))
 
 (provide 'ess-python)
 ;;; ess-python.el ends here
