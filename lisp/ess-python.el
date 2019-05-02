@@ -107,6 +107,8 @@ modifying the command line arguments."
   "Mode for inferior python buffers."
   (setq ess-dialect "python"
         inferior-ess-help-command "help(%s)\n"
+        inferior-ess-primary-prompt python-shell-prompt-regexp
+        inferior-ess-secondary-prompt python-shell-prompt-block-regexp
         inferior-ess-search-list-command "import sys; sys.modules.keys()\n"
         inferior-ess-exit-command "exit()\n")
   (setq-local ess-getwd-command "import os; os.getcwd('%s')")
