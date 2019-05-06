@@ -472,7 +472,12 @@ will be prompted to enter arguments interactively."
    (format
     "\n(R): ess-dialect=%s, buf=%s, start-arg=%s\n current-prefix-arg=%s\n"
     ess-dialect (current-buffer) start-args current-prefix-arg))
-  (unless (executable-find inferior-ess-r-program)
+  (unless (or (file-remote-p default-directory)
+              (and ess-startup-directory
+                   (file-remote-p ess-startup-directory))
+              ;; TODO: Once we drop Emacs 26 support, can probably
+              ;; just use the REMOTE argument of `executable-find'.
+              (executable-find inferior-ess-r-program))
     (display-warning 'ess (format "%s could not be found on the system. Try running `R-newest' instead, which searches your system for R." inferior-ess-r-program) :error)
     (user-error "%s program not found" inferior-ess-r-program))
   (let* ((r-always-arg
