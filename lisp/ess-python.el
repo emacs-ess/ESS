@@ -117,5 +117,7 @@ modifying the command line arguments."
   (setq-local compilation-error-regexp-alist python-shell-compilation-regexp-alist)
   (compilation-shell-minor-mode))
 
+(add-to-list 'auto-mode-alist '("\\.py\\'" . ess-python-mode))
+
 (provide 'ess-python)
 ;;; ess-python.el ends here
