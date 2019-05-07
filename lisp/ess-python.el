@@ -111,7 +111,7 @@ modifying the command line arguments."
         inferior-ess-secondary-prompt python-shell-prompt-block-regexp
         inferior-ess-search-list-command "import sys; sys.modules.keys()\n"
         inferior-ess-exit-command "exit()\n")
-  (setq-local ess-getwd-command "import os; os.getcwd('%s')")
+  (setq-local ess-getwd-command "import os; os.getcwd(os.path.expanduser('%s'))")
   (setq-local ess-setwd-command "import os; os.chdir('%s')")
   (setq-local comint-input-sender #'ess-python-input-sender)
   (setq-local compilation-error-regexp-alist python-shell-compilation-regexp-alist)
