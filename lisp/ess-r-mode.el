@@ -1342,25 +1342,25 @@ Then run `inferior-ess-r-reload-hook'."
 (defun ess-r-indent-line ()
   "Indent current line as ESS R code.
 Return the amount the indentation changed by."
-  (let ((indent (ess-calculate-indent))
-        beg shift-amt
-        (case-fold-search nil)
-        (pos (- (point-max) (point))))
-    (beginning-of-line)
-    (setq beg (point))
-    (skip-chars-forward " \t")
-    (setq shift-amt (- indent (current-column)))
-    (if (zerop shift-amt)
-        (if (> (- (point-max) pos) (point))
-            (goto-char (- (point-max) pos)))
-      (delete-region beg (point))
-      (indent-to indent)
-      ;; If initial point was within line's indentation,
-      ;; position after the indentation.
-      ;; Else stay at same point in text.
-      (when (> (- (point-max) pos) (point))
-        (goto-char (- (point-max) pos))))
-    shift-amt))
+  (when-let ((indent (ess-calculate-indent)))
+    (let ((case-fold-search nil)
+          (pos (- (point-max) (point)))
+          beg shift-amt)
+      (beginning-of-line)
+      (setq beg (point))
+      (skip-chars-forward " \t")
+      (setq shift-amt (- indent (current-column)))
+      (if (zerop shift-amt)
+          (if (> (- (point-max) pos) (point))
+              (goto-char (- (point-max) pos)))
+        (delete-region beg (point))
+        (indent-to indent)
+        ;; If initial point was within line's indentation,
+        ;; position after the indentation.
+        ;; Else stay at same point in text.
+        (when (> (- (point-max) pos) (point))
+          (goto-char (- (point-max) pos))))
+      shift-amt)))
 
 (defun ess-r-indent-exp ()
   (save-excursion
