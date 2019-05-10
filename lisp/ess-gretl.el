@@ -383,7 +383,6 @@ end keywords as associated values.")
 (defun gretl-indent-line ()
   "Indent current line of gretl code."
   (interactive)
-					;  (save-excursion
   (end-of-line)
   (indent-line-to
    (or (and (ess-inside-string-p (point-at-bol)) 0)
@@ -397,16 +396,16 @@ end keywords as associated values.")
                              (if endtok (- gretl-basic-offset) 0)))))
        ;; previous line ends in =
        (save-excursion
-	 (if (and (not (equal (point-min) (line-beginning-position)))
-		  (progn
-		    (forward-line -1)
-		    (end-of-line) (backward-char 1)
-		    (equal (char-after (point)) ?=)))
-	     (+ gretl-basic-offset (current-indentation))
-	   nil))
+	     (if (and (not (equal (point-min) (line-beginning-position)))
+		          (progn
+		            (forward-line -1)
+		            (end-of-line) (backward-char 1)
+		            (equal (char-after (point)) ?=)))
+	         (+ gretl-basic-offset (current-indentation))
+	       nil))
        ;; take same indentation as previous line
        (save-excursion (forward-line -1)
-		       (current-indentation))
+		               (current-indentation))
        0))
   (when (gretl-at-keyword gretl-block-end-keywords)
     (forward-word 1)))
@@ -544,16 +543,16 @@ to gretl, put them in the variable `inferior-gretl-args'."
     "\n(Gretl): ess-dialect=%s, buf=%s"
     ess-dialect (current-buffer)))
   (let* ((r-start-args
-	  (concat inferior-gretl-args " " ; add space just in case
-		  (if start-args
-		      (read-string
-		       (concat "Starting Args [other than `"
-			       inferior-gretl-args
-			       "'] ? "))
-		    nil)))
+	      (concat inferior-gretl-args " " ; add space just in case
+		          (if start-args
+		              (read-string
+		               (concat "Starting Args [other than `"
+			                   inferior-gretl-args
+			                   "'] ? "))
+		            nil)))
          (inf-buf (inferior-ess r-start-args gretl-customize-alist)))
-    (set (make-local-variable 'indent-line-function) 'gretl-indent-line)
-    (set (make-local-variable 'gretl-basic-offset) 4)
+    (setq-local indent-line-function 'gretl-indent-line)
+    (setq-local gretl-basic-offset 4)
     (setq indent-tabs-mode nil)
     (goto-char (point-max))
     ;; (if inferior-ess-language-start

@@ -505,7 +505,7 @@ Return format suitable for `completion-at-point-functions'."
               (ess-process-live-p))
     (let ((args (nth 2 (ess-function-arguments (car ess--fn-name-start-cache)))))
       (if args
-          (set (make-local-variable 'ac-use-comphist) nil)
+          (setq-local ac-use-comphist nil)
         (kill-local-variable 'ac-use-comphist))
       (delete "..." args)
       (mapcar (lambda (a) (concat a ess-R-argument-suffix))

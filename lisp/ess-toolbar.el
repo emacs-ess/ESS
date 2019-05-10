@@ -149,8 +149,8 @@ X should be a list, see `ess-toolbar-items' for the format."
   "Add the ESS toolbar to a particular mode.
 The toolbar is added iff `ess-toolbar-global' is nil, else the toolbar
 is added globally when ess-toolbar.el is loaded."
-  (if (and ess-toolbar (not ess-toolbar-global))
-      (set (make-local-variable 'tool-bar-map) ess-toolbar)))
+  (when (and ess-toolbar (not ess-toolbar-global))
+    (setq-local tool-bar-map ess-toolbar)))
 
 ;; Make the toolbars.  Each toolbar is hopefully made only when this file
 ;; is loaded; we don't need it to be remade every time.
