@@ -1,30 +1,23 @@
-####======= Common Declarations for *all* ESS -*-Makefile-*-s ==========
-
 ## To install ESS for all users on your unix system:
-## 1. Edit Section 1 and 2 below
-## 2. Execute: gmake install
+## 1. Check variables below, edit as necessary
+## 2. make
+## 3. make install
 
 ## Section 1
-## Installation variables for your emacs variant
+## Installation variables for your Emacs variant
 ##
 ## Variable        Description
 ## EMACS           Path to GNU Emacs
-## EMACSBATCH      Emacs command for compiling elisp files
-## SITELISP        Destination of site-lisp; but some variants have no site-lisp
-## LISPDIR         Destination of compiled elisp files
-## INFODIR         Destination of info files
-## ETCDIR          Destination of script and icon files
-## PREFIX(DESTDIR) Directory prepended to SITELISP, INFODIR, DOCDIR & ETCDIR
-##                 Specify either PREFIX or DESTDIR to over-ride /usr
-DESTDIR=/usr
-PREFIX=$(DESTDIR)
-
+## EMACSBATCH      How to run Emacs as batch
+## SITELISP        Destination of site-lisp
+## ESSDIR          Destination of ESS
+DESTDIR ?= /usr
+PREFIX ?= $(DESTDIR)
 ##__ GNU Emacs __
 EMACS ?= emacs
-SITELISP=$(PREFIX)/share/emacs/site-lisp
-LISPDIR=$(SITELISP)/ess
-INFODIR=$(PREFIX)/share/info
-ETCDIR =$(PREFIX)/share/emacs/etc/ess
+SITELISP ?= $(PREFIX)/share/emacs/site-lisp
+ESSDIR ?= $(SITELISP)/ess
+EMACSBATCH ?= $(EMACS) -batch -Q
 
 ##__ GNU Emacs __  for Mac OS X with NeXTstep (Cocoa or GNUstep)
 # PREFIX=/Applications/Emacs.app/Contents/Resources
@@ -42,13 +35,14 @@ ETCDIR =$(PREFIX)/share/emacs/etc/ess
 # INFODIR=/Applications/Aquamacs.app/Contents/Resources/info
 # ETCDIR=$(PREFIX)/ess-mode/etc
 
-EMACSBATCH ?= $(EMACS) -batch -Q
+## COMPILE-FLAGS is set in tests
+COMPILE ?= $(EMACSBATCH) $(COMPILE-FLAGS) --directory . --directory ./obsolete -f batch-byte-compile
+COMPILE-SIMPLE ?= $(EMACSBATCH) --directory . --directory ./obsolete -f batch-byte-compile
 
 ## Section 2
 ## Installation variables for your unix variant
 ##
 ## Variable        Description
-## SHELL           Bourne shell or XPG4 compliant shell
 ## MAKEINFO        program to convert .texi{nfo} to .info
 ## MAKEHTML        program to convert .texi{nfo} to .html
 ## MAKETXT         program to convert .texi{nfo} to .txt
@@ -59,29 +53,15 @@ EMACSBATCH ?= $(EMACS) -batch -Q
 ## DOCDIR          Destination of other doc files
 ## DOWNLOAD        Download internet file to stdout
 
-SHELL = /bin/sh
-
-MAKEINFO = LC_ALL=C LANG=en makeinfo
-# new:  MAKEHTML <output>.html  <input>.texi  {necessary to build 'Index'}
-MAKEHTML = $(MAKEINFO) --html --no-split --css-include=atouchofstyle.css -o
-##                            ^^^^^^^^^^ today's bandwidth is fast
-#MAKETXT  = $(MAKEINFO) --no-validate --no-headers --no-split -o -
-MAKETXT  = $(MAKEINFO) --no-validate --plaintext --no-split -o -
-
-INSTALLDIR = mkdir -p
-#INSTALLDIR = install -d
-
-INSTALL = cp -p
-#INSTALL = install
-
-UNINSTALL = rm -f
-
-DOCDIR=$(PREFIX)/share/doc/ess
-
-# N.B. $(shell) is a GNU-ism: we need a workaround to be UNIX make friendly
-DOWNLOAD=$(shell which wget > /dev/null && echo 'wget -qO -' || which curl)
-##DOWNLOAD = wget -O -
-##DOWNLOAD = curl
+MAKEINFO ?= LC_ALL=C LANG=en makeinfo
+MAKEHTML ?= $(MAKEINFO) --html --no-split --css-include=atouchofstyle.css -o
+MAKETXT  ?= $(MAKEINFO) --no-validate --plaintext --no-split -o -
+INSTALLDIR ?= mkdir -p
+INSTALL ?= cp -p
+UNINSTALL ?= rm -f
+TEXI2PDF ?= LANG=C texi2dvi --pdf
+DOWNLOAD ?= $(shell which wget > /dev/null && echo 'wget -qO -' || which curl)
+INSTALLINFO ?= install-info
 
 ## Section 3
 ## For ESS developers only, not part of installation procedure
@@ -104,3 +84,7 @@ ESS_HOMEPAGE = /u/maechler/emacs/ESS-web
 GPG=$(shell (gpg2 --version > /dev/null 2>&1 && echo gpg2 ) || echo gpg )
 
 .SUFFIXES: .i3 .m3 .nw .tex .dvi .html .c .h .el .elc
+
+# Local Variables:
+# mode: makefile-gmake
+# End:

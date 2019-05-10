@@ -39,5 +39,5 @@ literate-cases:
 
 .PHONY: compile
 compile:
-	@cd ../lisp && make -k all \
+	@cd .. && make -k lisp \
 		"COMPILE-FLAGS = --eval \"(setq byte-compile-error-on-warn t)\""
