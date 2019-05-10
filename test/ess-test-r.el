@@ -519,7 +519,7 @@ my_mean2 <- function(z){
 
 (ert-deftest ess-r-comment-dwim-test ()
   "Test `comment-dwim' and Bug #434."
-  (let ((ess-default-style 'RRR))
+  (let ((ess-style 'RRR))
     (ess-r-test-with-temp-text "#¶ "
       (let ((ess-indent-with-fancy-comments t))
         (comment-dwim nil)
