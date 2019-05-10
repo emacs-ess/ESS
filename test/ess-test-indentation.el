@@ -53,6 +53,8 @@
      ,@(cdr (assq 'RStudio- ess-style-alist)))
     (C++
      ,@(cdr (assq 'C++ ess-style-alist)))
+    (DEFAULT
+      ,@(cdr (assq 'DEFAULT ess-style-alist)))
     (misc1
      (ess-indent-offset . 3)
      (ess-offset-block . open-delim)
@@ -86,7 +88,9 @@ where the edit took place. Return nil if E represents no real change.
   (with-current-buffer buffer
     (setq buffer-undo-list nil)
     (indent-region (point-min) (point-max))
-    (not (buffer-modified-p buffer))))
+    (if (buffer-modified-p buffer)
+        (progn (switch-to-buffer buffer) nil)
+      t)))
 
 (defun ess-test-explain-change-on-indent (buffer)
   "Explainer function for `not-change-on-indent'."
@@ -105,6 +109,18 @@ where the edit took place. Return nil if E represents no real change.
             (diff was writen to ,diff-file)))))))
 
 (put 'not-change-on-indent 'ert-explainer 'ess-test-explain-change-on-indent)
+
+;; Don't overwrite user settings (#911).
+(ert-deftest ess-r-no-user-style-overwrite-test ()
+  (let ((ess-style 'RRR)
+        (ess-r-mode-hook '((lambda () (setq-local ess-indent-offset 1)))))
+    (with-temp-buffer
+      (ess-r-mode)
+      (should (eq ess-indent-offset 1))
+      (ess-set-style 'C++ t 'no-overwrite)
+      (should (eq ess-indent-offset 1))
+      (ess-set-style 'C++ t)
+      (should (eq ess-indent-offset 4)))))
 
 (ert-deftest test-ess-R-indentation-RRR ()
   (ess-test-R-indentation "styles/RRR.R" 'RRR))
