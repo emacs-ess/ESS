@@ -145,8 +145,7 @@ split arbitrary."
             ;; (buffer-substring-no-properties (point-min) (point-max))
             (replace-regexp-in-string
              prompt-regexp "> "
-             (buffer-substring-no-properties (point-min) (point-max))))
-          )
+             (buffer-substring-no-properties (point-min) (point-max)))))
       (kill-process proc)
       ;; fixme: kill in sentinel; this doesn't work in batch mode
       ;; (kill-buffer (process-buffer proc))

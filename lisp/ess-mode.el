@@ -311,17 +311,9 @@ indentation style. See `ess-style-alist' for predefined styles."
   ;; completion
   (add-hook 'comint-dynamic-complete-functions 'ess-complete-filename nil 'local)
   (delq t comint-dynamic-complete-functions)
-  (set (make-local-variable 'comint-completion-addsuffix)
-       (cons "/" ""))
-  (add-hook 'hack-local-variables-hook #'ess--set-style-in-buffer nil t)
+  (setq-local comint-completion-addsuffix (cons "/" ""))
+  (add-hook 'hack-local-variables-hook 'ess-set-style nil t)
   (add-hook 'ess-idle-timer-functions 'ess-synchronize-dirs nil 'local))
-
-(defun ess--set-style-in-buffer ()
-  "Set `ess-style' taking into account file and directory local variables.
-This is added to `hack-local-variables-hook'."
-  (setq-local ess-style (or (alist-get 'ess-style file-local-variables-alist)
-                            ess-style))
-  (ess-set-style ess-style t))
 
 (defun ess--get-mode-line-indicator ()
   "Get `ess--mode-line-process-indicator' from process buffer.
@@ -429,32 +421,41 @@ current function."
 
 
 ;;; Formatting / indentation
+(defvar-local ess--installed-style-vars nil
+  "A cons of the form (STYLE . VARS).
+VARS is a list of all style vars which were not set explicitly to
+buffer local values by the user in mode hooks.")
 
-(defun ess-set-style (&optional style quiet)
+(defun ess-set-style (&optional style _quiet)
   "Set up the `ess-mode' style variables from the `ess-style' variable.
 If STYLE argument is given, use that instead. It makes the ESS
-indentation style variables buffer local. When non-nil, QUIET
-suppresses messaging."
-  (interactive)
-  (let ((ess-styles (mapcar 'symbol-name (mapcar 'car ess-style-alist))))
-    (unless style
-      (setq style
-            (intern (ess-completing-read "Set ESS mode indentation style"
-                                         ess-styles nil t nil nil ess-style))))
-    (setq style (or style ess-style))
-    (make-local-variable 'ess-style)
-    (if (memq (symbol-name style) ess-styles)
-        (setq ess-style style)
-      (error (format "Bad ESS style: %s" style)))
-    (if (not quiet)
-        (message "ESS-style: %s" ess-style))
-    ;; finally, set the indentation style variables making each one local
-    (mapc (lambda (ess-style-pair)
-            (make-local-variable (car ess-style-pair))
-            (set (car ess-style-pair)
-                 (cdr ess-style-pair)))
-          (cdr (assq ess-style ess-style-alist)))
-    ess-style))
+indentation style variables buffer local. QUIET is for backward
+compatibility and is ignored. In programs, when STYLE is nil, the
+`ess-style' is being installed, but settings which are already
+buffer local are not overwritten."
+  (interactive
+   (list (let ((styles (mapcar (lambda (x) (symbol-name (car x)))
+                               ess-style-alist)))
+           (intern (ess-completing-read
+                    "Set ESS mode indentation style"
+                    styles nil t nil nil ess-style)))))
+  (let* ((keep-local (null style))
+         (style (or style ess-style))
+         (style-alist (or (cdr (assq style ess-style-alist))
+                          (error "Bad ESS style: %s" style)))
+         (vars (if keep-local
+                   ;; Install, but Keep user's buffer-local settings.
+                   (cl-loop for (var . _) in (cdr (assq 'DEFAULT ess-style-alist))
+                            unless (local-variable-p var)
+                            collect var)
+                 (mapcar #'car style-alist))))
+    (when (called-interactively-p 'any)
+      (message "Set indentation style to %s" style))
+    (mapc (lambda (var)
+            (make-local-variable var)
+            (set var (cdr (assq var style-alist))))
+          vars)
+    style))
 
 (defun ess-indent-command (&optional whole-exp)
   "Indent current line as ESS code, or in some cases insert a tab character.
