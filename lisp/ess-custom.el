@@ -26,6 +26,11 @@
 ;; A copy of the GNU General Public License is available at
 ;; https://www.r-project.org/Licenses/
 
+
+;;; Commentary:
+;; This file holds defcustoms for ESS. It is required by ess-utils.el,
+;; which in turn is required by almost every other ESS file.
+
 ;;; Code:
 (require 'comint)
 
@@ -637,8 +642,9 @@ When `ess-fill-calls-newlines' is t, the second style becomes:
 Setting `ess-offset-arguments' to `prev-line' or `prev-call'
 activates a third style. It keeps one argument per line except
 for the first N arguments. N is controlled with a prefix. For
-example, calling M-q three times sets N to 1 while calling M-q
-twice then C-U 2 M-q sets N to 2. Here what the default produces:
+example, calling \\[fill-paragraph] three times sets N to 1 while
+calling \\[fill-paragraph] twice then \\[universal-argument] 2
+\\[fill-paragraph] sets N to 2. Here what the default produces:
 
   fun_call(argument1,
       argument2,
@@ -657,7 +663,8 @@ The blinking of the refilled region can be disabled with
   :type 'boolean)
 
 (defcustom ess-fill-continuations t
-  "If non-nil, refilling a paragraph inside a continuation of
+  "Controls filling of continuations.
+If non-nil, refilling a paragraph inside a continuation of
 statements (expressions separated by operators) will arrange all
 its elements, never going past `fill-column'.
 
@@ -682,7 +689,8 @@ The blinking of the refilled region can be disabled with
   :type 'boolean)
 
 (defcustom ess-fill-calls-newlines nil
-  "When non-nil, the second refilling style produces newlines
+  "When non-nil, refilling may place newlines before and after delimiters.
+When non-nil, the second refilling style produces newlines
 after and before the opening and closing delimiters. This is
 intended for example for dplyr-style code:
 
@@ -694,14 +702,13 @@ intended for example for dplyr-style code:
   )
 
 Note that this setting is temporary and likely to be replaced in
-the next ESS version by a more comprehensive and flexible way to
+a future ESS version by a more comprehensive and flexible way to
 set refill styles."
   :group 'ess-edit
   :type 'boolean)
 
 (defcustom ess-blink-refilling t
-  "When non-nil, refilling a call or a continuation will first
-blink the filling region."
+  "When non-nil, refilling blinks the filling region."
   :group 'ess-edit
   :type 'boolean)
 
@@ -890,10 +897,10 @@ to control the size of indentation.
 See `ess-style-alist' for for an overview of ESS indentation.")
 
 (defvar ess-align-nested-calls '("ifelse")
-  "List of strings declaring function calls for which
-`ess-offset-arguments-newline' should be ignored. These calls
-will be vertically aligned instead. The default is `ifelse',
-resulting in the following indentation for nested ifelse calls:
+  "List of strings for which `ess-offset-arguments-newline' is ignored.
+These calls will be vertically aligned instead. For example, if
+`ifelse' is a member of the list, nested ifelse calls are
+indented like this:
 
     object <- ifelse(condition1, out1,
               ifelse(condition2, out2, out3))
@@ -901,10 +908,10 @@ resulting in the following indentation for nested ifelse calls:
 See `ess-style-alist' for for an overview of ESS indentation.")
 
 (defvar ess-align-arguments-in-calls '("function[ \t]*(")
-  "List of regexes specifying the calls where
-`ess-offset-arguments' should have no effect on function
-declarations. The arguments of those calls will be aligned from
-the opening parenthesis.
+  "A list of refexes where `ess-offset-argumens' is ignored.
+List of regexes specifying the calls where `ess-offset-arguments'
+should have no effect on function declarations. The arguments of
+those calls will be aligned from the opening parenthesis.
 
 By default, function declarations are overridden. If for example
 `ess-offset-arguments' is set to `prev-line', then function calls
@@ -926,8 +933,8 @@ vertically aligned:
 See `ess-style-alist' for further details.")
 
 (defvar ess-align-continuations-in-calls t
-  "Whether continuations inside calls should be indented from the
-opening delimiter. This produces the following indentation:
+  "Whether continuations inside calls are indented from the opening delimiter.
+This produces the following indentation:
 
   10 + (1 + 2 +
         3 + 4)
@@ -1272,8 +1279,8 @@ Control variables:
 
 (defun ess-add-style (key entries)
   "Add a new style to `ess-style-list'.
-The new style has the key KEY. Remove any existing entry with the
-same KEY before adding the new one."
+The new style has KEY and ENTRIES. Remove any existing entry with
+the same KEY before adding the new one."
   (setq ess-style-alist (assq-delete-all key ess-style-alist))
   (add-to-list 'ess-style-alist (cons key entries)))
 
@@ -1437,7 +1444,7 @@ syntactically correct roxygen entries)"
                  (const :tag "On" t)))
 
 (defcustom ess-roxy-hide-show-p nil
-  "Non-nil means ess-roxy uses `hs-minor-mode' for block hiding with TAB."
+  "Non-nil means ess-roxy uses function `hs-minor-mode' for block hiding with TAB."
   :group 'ess-roxy
   :type '(choice (const :tag "Off" nil)
                  (const :tag "On" t)))
@@ -1580,11 +1587,12 @@ See also `ess-R-readline'."
 
 (defcustom ess-R-readline nil
   "When non-nil, use readline in R.
-nil indicates that \"--no-readline \" should be used as argument when starting R.
-This has been the default since 1998 and may very slightly speedup interaction.
-On the other hand, readline is necessary for expansion of \"~username/\" in paths.
-Note that readline interprets tabs (tabular characters) in R source files as asking
-for file name completion.  This can mess up ess evaluation completely."
+nil indicates that \"--no-readline \" should be used as argument
+when starting R. This may very slightly speedup interaction. On
+the other hand, readline is necessary for expansion of
+\"~username/\" in paths. Note that readline interprets
+tabs (tabular characters) in R source files as asking for file
+name completion. This can mess up evaluation completely."
   :group 'ess-R
   :type 'boolean)
 
@@ -1648,7 +1656,7 @@ value is used once only when ESS is loaded."
   "Stores the full path file names of Rterm versions computed via \\[ess-find-rterm].
 If you have versions of R in locations other than in
 ../../R-*/bin/Rterm.exe or ../../rw*/bin/Rterm.exe, relative to
-the directory in the `exec-path' variable containing your default
+the directory in the variable `exec-path' containing your default
 location of Rterm, you will need to redefine this variable with a
 `custom-set-variables' statement in your site-start.el or .emacs
 file."
@@ -2083,7 +2091,7 @@ See also function `ess-create-object-name-db'.")
   ess-R-function-name-regexp)
 
 (defvar ess-font-lock-keywords nil
-  "Holds a name of the dialect sepcific font-lock keywords in the current buffer.
+  "A name of the dialect sepcific font-lock keywords in the current buffer.
 See `ess-R-font-lock-keywords' for an example. This is an
 internal variable.")
 
