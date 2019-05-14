@@ -38,13 +38,13 @@
        ,@body)))
 
 (defmacro with-ess-test-r-file (file &rest body)
-  (declare (indent 1) (debug (&rest body)))
+  (declare (indent 1) (debug (sexp body)))
   `(with-ess-test-file ,file
      (R-mode)
      ,@body))
 
 (defmacro with-ess-test-c-file (file &rest body)
-  (declare (indent 1) (debug (&rest body)))
+  (declare (indent 1) (debug (sexp body)))
   `(with-ess-test-file ,file
      (c-mode)
      ,@body))
