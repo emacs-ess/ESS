@@ -896,7 +896,7 @@ With (prefix) EOB-P non-nil, positions cursor at end of buffer."
   (ess-switch-to-ESS t))
 
 (defun ess-switch-to-inferior-or-script-buffer (toggle-eob)
-  "If in script, switch to the iESS. If in iESS switch to most recent script buffer.
+  "Switch between script and process buffer.
 This is a single-key command. Assuming that it is bound to C-c
 C-z, you can navigate back and forth between iESS and script
 buffer with C-c C-z C-z C-z ... If variable
@@ -905,32 +905,28 @@ function switches to the end of process buffer. If TOGGLE-EOB is
 given, the value of `ess-switch-to-end-of-proc-buffer' is
 toggled."
   (interactive "P")
-  (let ((map (make-sparse-keymap))
-        (EOB (if toggle-eob
+  (let ((eob (if toggle-eob
                  (not ess-switch-to-end-of-proc-buffer)
                ess-switch-to-end-of-proc-buffer)))
-    (define-key map (vector last-command-event)
-      (lambda (_ev eob) (interactive)
-        (if (not (derived-mode-p 'inferior-ess-mode))
-            (ess-switch-to-ESS eob)
-          (let ((dialect ess-dialect)
-                (loc-proc-name ess-local-process-name)
-                (blist (cdr (buffer-list))))
-            (while (and blist
-                        (with-current-buffer (car blist)
-                          (not (or (and
-                                    (ess-derived-mode-p)
-                                    (equal dialect ess-dialect)
-                                    (null ess-local-process-name))
-                                   (and
-                                    (ess-derived-mode-p)
-                                    (equal loc-proc-name ess-local-process-name))))))
-              (pop blist))
-            (if blist
-                (pop-to-buffer (car blist))
-              (message "Found no buffers for ess-dialect %s associated with process %s"
-                       dialect loc-proc-name))))))
-    (ess--execute-electric-command map nil nil nil EOB)))
+    (if (derived-mode-p 'inferior-ess-mode)
+        (let ((dialect ess-dialect)
+              (proc-name ess-local-process-name)
+              (blist (buffer-list)))
+          (while (and (pop blist)
+                      (with-current-buffer (car blist)
+                        (not (or (and (ess-derived-mode-p)
+                                      (equal dialect ess-dialect)
+                                      (null ess-local-process-name))
+                                 (and (ess-derived-mode-p)
+                                      (equal proc-name ess-local-process-name)))))))
+          (if blist
+              (pop-to-buffer (car blist))
+            (message "Found no buffers for `ess-dialect' %s associated with process %s"
+                     dialect proc-name)))
+      (ess-switch-to-ESS eob))
+    (set-transient-map (let ((map (make-sparse-keymap))
+                             (key (vector last-command-event)))
+                         (define-key map key #'ess-switch-to-inferior-or-script-buffer) map))))
 
 
 (defun ess-get-process-buffer (&optional name)
