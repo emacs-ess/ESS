@@ -855,6 +855,19 @@ returned."
       (setq date (match-string 2 ver-string)))
     (cons date rver)))
 
+(defun ess-current-R-version ()
+  "Get the version of R currently running in the ESS buffer as a string."
+  (ess-make-buffer-current)
+  (car (ess-get-words-from-vector "as.character(.ess.Rversion)\n")))
+
+(defun ess-current-R-at-least (version)
+  "Is the version of R (in the ESS buffer) at least (\">=\") VERSION ?
+Examples: (ess-current-R-at-least '2.7.0)
+      or  (ess-current-R-at-least \"2.5.1\")"
+  (ess-make-buffer-current)
+  (string= "TRUE"
+           (car (ess-get-words-from-vector
+                 (format "as.character(.ess.Rversion >= \"%s\")\n" version)))))
 (defun ess-find-newest-date (rvers)
   "Find the newest version of R given in the a-list RVERS.
 Each element of RVERS is a dotted pair (date . R-version), where
