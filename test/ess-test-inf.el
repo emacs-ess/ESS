@@ -322,6 +322,12 @@ some. text
               ;; (kill-buffer name)
               name))))
 
+(ert-deftest ess-switch-to-inferior-or-script-buffer-test ()
+  (with-r-running nil
+    (should (derived-mode-p 'ess-mode))
+    (ess-switch-to-inferior-or-script-buffer nil)
+    (should (derived-mode-p 'inferior-ess-mode))))
+
 (provide 'ess-test-inf)
 
 ;;; ess-test-inf.el ends here
