@@ -779,15 +779,14 @@ Copied almost verbatim from gnus-utils.el (but with test for mac added)."
          (Symb (concat Sym-0 "+"))
          (xSymb "[^ \t\n\"']+") ;; (concat "\\[?\\[?" Sym-0 "*")); symbol / [ / [[ / [symbol / [[symbol
          ;; FIXME: allow '%foo%' but only when quoted; don't allow [_0-9] at beg.
-         (regex-or  "\\)\\|\\(")                ; OR
          (space "\\(\\s-\\|\n\\)*")         ; white space
 
          (part-1 (concat
                   "\\(" ;;--------outer Either-------
                   "\\(\\("          ; EITHER
                   Q xSymb Q         ; any function name between quotes
-                  regex-or
-                  "\\(^\\|[ ]\\)" Symb ; (beginning of name) + ess-r-symbol-pattern
+                  "\\)\\|\\("
+                  Symb ; (beginning of name) + ess-r-symbol-pattern
                   "\\)\\)"))        ; END EITHER OR
 
          (set-S4-exp
