@@ -583,13 +583,19 @@ Executed in process buffer."
       (skip-chars-forward " \t\n")
       (goto-char (cadr (ess-continuations-bounds))))))
 
-(defun ess-r-beginning-of-function (&optional arg)
+(defun ess-r-beginning-of-defun (&optional arg)
+  "Move to beginning a top level function.
+ARG is as in `beginning-of-defun'."
+  (ess-r-beginning-of-function arg t))
+
+(defun ess-r-beginning-of-function (&optional arg top-level)
   "Leave (and return) the point at the beginning of the current ESS function.
 When ARG is positive, search for beginning of function backward,
 otherwise forward. Value of ARG is currently ignored. Return the
-new position."
+new position, or nil if no-match. If TOP-LEVEL is non-nil, search
+for top-level functions only."
   (setq arg (or arg 1))
-  (let ((init-point (point))
+  (let ((start-point (point))
         done)
     ;; ;; in case we are at the start of a function, skip past new lines
     (when (> arg 0)
@@ -597,41 +603,63 @@ new position."
     ;; start search from eol to capture current function start
     (end-of-line 1)
     (while (and (not done)
-                (re-search-backward ess-function-pattern nil t arg))
+                (re-search-backward ess-r-function-pattern nil t arg))
       (unless (ess-inside-string-or-comment-p)
-        ;; capture top level forms only
-        (when (= (car (syntax-ppss (match-beginning 0))) 0)
-          (setq done t))))
+        (setq done
+              (if top-level
+                  (= (car (syntax-ppss (match-beginning 0))) 0)
+                t))
+        (if (< arg 0)
+            ;; move to match-end to avoid the infloop in re-search-backward
+            (goto-char (if done (match-beginning 0) (match-end 0)))
+          ;; Backward regexp match stops at the minimal match, so we need a bit
+          ;; more work here.
+          (beginning-of-line)
+          (re-search-forward ess-r-function-pattern)
+          (goto-char (match-beginning 0)))))
     (if done
         (point)
-      (goto-char init-point))))
+      (goto-char start-point)
+      nil)))
 
-(defun ess-r-end-of-function (&optional arg)
+(defun ess-r-end-of-defun (&optional arg)
+  "End of top level function.
+ARG is as in `end-of-defun'."
+  (ess-r-end-of-function arg t))
+
+(defun ess-r-end-of-function (&optional arg top-level)
   "Leave the point at the end of the current function.
 When ARG is positive, search for end of function forward,
-otherwise backward. Value of ARG is currently ignored. Return the
-new position."
+otherwise backward. Move to point and return point if search was
+successful, otherwise nil. If TOP-LEVEL is non-nil, search for
+top level functions only."
   (setq arg (or arg 1))
   (let* ((start-pos (point))
-         (search-fn (lambda ()
+         (search-fn (lambda (lim)
                       (let ((foundp nil))
                         (while (and (not foundp)
                                     (re-search-forward ess-r-function-pattern nil t))
-                          (setq foundp (not (ess-inside-string-or-comment-p))))
+                          (setq foundp
+                                (unless (ess-inside-string-or-comment-p)
+                                  (if top-level
+                                      (= (car (syntax-ppss (match-beginning 0))))
+                                    (>= (point) lim)))))
                         (if foundp
                             (progn (goto-char (match-beginning 0))
                                    (ess-r--skip-function))
                           (goto-char start-pos))))))
-    (ess-r-beginning-of-function)
+    (ess-r-beginning-of-function 1 top-level)
     (if (< (point) start-pos)
         ;; Moved back. We were either inside a function or after a function.
         (progn
           (ess-r--skip-function)
+          ;; For negative ARG we are done.
           (when (and (> arg 0)
                      (<= (point) start-pos))
-            (funcall search-fn)))
-      (funcall search-fn))
-    (point)))
+            (funcall search-fn start-pos)))
+      ;; No function before point; search forward on positive ARG.
+      (when (> arg 0)
+        (funcall search-fn start-pos)))))
 
 ;;;###autoload
 (define-derived-mode ess-r-mode ess-mode "ESS[R]"
@@ -668,8 +696,8 @@ new position."
   (setq imenu-generic-expression ess-imenu-S-generic-expression)
   (when ess-imenu-use-S
     (imenu-add-to-menubar "Imenu-R"))
-  (setq-local beginning-of-defun-function #'ess-r-beginning-of-function)
-  (setq-local end-of-defun-function #'ess-r-end-of-function)
+  (setq-local beginning-of-defun-function #'ess-r-beginning-of-defun)
+  (setq-local end-of-defun-function #'ess-r-end-of-defun)
   (ess-roxy-mode))
 ;;;###autoload
 (defalias 'R-mode 'ess-r-mode)

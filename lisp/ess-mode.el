@@ -356,23 +356,25 @@ With UPDATE, update cached package list."
   "If inside a function go to the beginning of it.
 Otherwise go to the beginning of paragraph."
   (interactive)
-  (let ((pos (point))
+  (let ((start-pos (point))
         beg end)
     (beginning-of-defun)
     (setq beg (point))
     (end-of-defun)
     (setq end (point))
     (goto-char beg)
-    (when (or (< beg pos)
-              (> end pos))
+    (when (or (< beg start-pos)
+              (> end start-pos))
       (let ((par-pos (save-excursion
-                       (goto-char pos)
+                       (goto-char start-pos)
                        (forward-comment most-negative-fixnum)
                        (backward-paragraph)
                        (forward-comment most-positive-fixnum)
                        (point))))
         (when (<= end par-pos)
-          (goto-char par-pos))))))
+          (if (= start-pos par-pos)
+              (goto-char beg)
+            (goto-char par-pos)))))))
 
 (defun ess-goto-end-of-function-or-para ()
   "If inside a function go to end of it.

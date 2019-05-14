@@ -49,4 +49,21 @@ fn4 <- function() {
     
 } ## end of fn4
 
+
+f5 <- function(){}
+
+"after f5"
+
+funcs <-
+    list(f6 = function(){
+        some_code6 <- here
+
+    }, ## end of f6
+
+    f7 = function(){
+
+        some_code7 -> there
+    }) ## end of f7
+
+
 ## navigation.R ends here
