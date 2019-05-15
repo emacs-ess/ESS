@@ -1,6 +1,6 @@
 fn1 <- function(a, b) something(aaa) +
-                           aa / bb %>%
-                           cc ## end of fn1
+                          aa / bb %>%
+                          cc ## end of fn1
 
 
 
@@ -48,7 +48,7 @@ fn4 <- function() {
 } ## end of fn4
 
 
-f5 <- function(){}
+f5 <- function(){} ## end of f5
 
 "after f5"
 
@@ -63,5 +63,16 @@ funcs <-
         some_code7 -> there
     }) ## end of f7
 
+
+f8 <-
+    function(aaa,
+             bb = bbb(),
+             cc = "cccc")
+{
+    Call <- match.call()
+    miss.data <- missing(data) || !is.data.frame(data)
+
+    ...
+} ## end of f8
 
 ## navigation.R ends here

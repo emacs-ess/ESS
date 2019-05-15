@@ -583,10 +583,21 @@ Executed in process buffer."
       (skip-chars-forward " \t\n")
       (goto-char (cadr (ess-continuations-bounds))))))
 
+;; `beginning-of-defun' protocol:
+;;  1) assumes that defuns are at the top level (e.g. always moves to bol)
 (defun ess-r-beginning-of-defun (&optional arg)
   "Move to beginning a top level function.
 ARG is as in `beginning-of-defun'."
   (ess-r-beginning-of-function arg t))
+
+;; `end-of-defun' protocol:
+;;  1) Uses beginning-of-defun-function with negative arg
+;;  2) Assumes that beginning-of-defun-function with -1 arg finds current defun
+;;  when point is just in front of the function
+(defun ess-r-end-of-defun (&optional arg)
+  "End of top level function.
+ARG is as in `end-of-defun'."
+  (ess-r-end-of-function arg t))
 
 (defun ess-r-beginning-of-function (&optional arg top-level)
   "Leave (and return) the point at the beginning of the current ESS function.
@@ -597,11 +608,12 @@ for top-level functions only."
   (setq arg (or arg 1))
   (let ((start-point (point))
         done)
-    ;; ;; in case we are at the start of a function, skip past new lines
+    ;; In case we are at the start of a function, skip past new lines.
     (when (> arg 0)
-      (skip-chars-backward " \t\n"))
-    ;; start search from eol to capture current function start
-    (end-of-line 1)
+      (skip-chars-backward " \t\n")
+      ;; Start search from eol to capture current function start. But not when
+      ;; arg < 0; see end-of-defun protocol above.
+      (end-of-line 1))
     (while (and (not done)
                 (re-search-backward ess-r-function-pattern nil t arg))
       (unless (ess-inside-string-or-comment-p)
@@ -622,11 +634,6 @@ for top-level functions only."
       (goto-char start-point)
       nil)))
 
-(defun ess-r-end-of-defun (&optional arg)
-  "End of top level function.
-ARG is as in `end-of-defun'."
-  (ess-r-end-of-function arg t))
-
 (defun ess-r-end-of-function (&optional arg top-level)
   "Leave the point at the end of the current function.
 When ARG is positive, search for end of function forward,
@@ -639,10 +646,15 @@ top level functions only."
                       (let ((foundp nil))
                         (while (and (not foundp)
                                     (re-search-forward ess-r-function-pattern nil t))
+                          (when (< arg 0)
+                            ;; re-search-backward is a forward search
+                            ;; internally, so we need to bol in order to avoid
+                            ;; the infloop
+                            (beginning-of-line))
                           (setq foundp
                                 (unless (ess-inside-string-or-comment-p)
                                   (if top-level
-                                      (= (car (syntax-ppss (match-beginning 0))))
+                                      (= 0 (car (save-excursion (syntax-ppss (match-beginning 0)))))
                                     (>= (point) lim)))))
                         (if foundp
                             (progn (goto-char (match-beginning 0))
