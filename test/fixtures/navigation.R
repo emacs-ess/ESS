@@ -1,5 +1,3 @@
-
-
 fn1 <- function(a, b) something(aaa) +
                            aa / bb %>%
                            cc ## end of fn1

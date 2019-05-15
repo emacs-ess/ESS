@@ -53,38 +53,37 @@
 (defun ess-next-code-line (&optional arg skip-to-eob)
   "Move ARG lines of code forward (backward if ARG is negative).
 If `ess-eval-empty' is non-nil, skip past all empty and comment
-lines. Default for ARG is 1. Don't skip the last empty and
-comment lines in the buffer unless SKIP-TO-EOB is non-nil. On
-success, return 0. Otherwise, go as far as possible and return
--1."
+lines. ARG is 1 by default. If ARG is 0 only comments are skipped
+forward. Don't skip the last empty and comment lines in the
+buffer unless SKIP-TO-EOB is non-nil. On success, return 0.
+Otherwise go as far as possible and return -1."
   (interactive "p")
-  (or arg (setq arg 1))
-  (unless (or (and (>= arg 1)
-                   (eobp))
-              (and (<= arg 0)
-                   (bobp)))
-    (if (or ess-eval-empty
-            (and (fboundp 'ess-roxy-entry-p)
-                 (ess-roxy-entry-p)))
-        (forward-line arg)
-      (beginning-of-line)
-      (let ((pos (point))
-            (n 0)
-            (inc (if (> arg 0) 1 -1)))
-        (while (and (/= arg 0) (= n 0))
-          (setq n (forward-line inc))     ; n=0 is success
-          (comment-beginning)
-          (beginning-of-line)
-          (forward-comment (* inc (buffer-size))) ;; as suggested in info file
-          (if (or skip-to-eob
-                  (not (looking-at ess-no-skip-regexp))) ;; don't go to eob or whatever
-              (setq arg (- arg inc))
-            (goto-char pos)
-            (setq arg 0)
-            (forward-line 1)) ;; stop at next empty line
-          (setq pos (point)))
-        (goto-char pos)
-        n))))
+  (if (or ess-eval-empty
+          (and (fboundp 'ess-roxy-entry-p)
+               (ess-roxy-entry-p)))
+      (forward-line arg)
+    (setq arg (or arg 1))
+    (beginning-of-line)
+    (let ((pos (point))
+          (inc (if (>= arg 0) 1 -1))
+          (cnt (if (= arg 0) 1 arg))
+          (out 0))
+      ;; when orig-arg == 0, we skip only comments
+      (while (and (/= cnt 0) (= out 0))
+        (unless (= arg 0)
+          (setq out (forward-line inc)))     ; out==0 means success
+        (comment-beginning)
+        (beginning-of-line)
+        (forward-comment (* inc (buffer-size))) ;; as suggested in info file
+        (if (or skip-to-eob
+                (not (looking-at ess-no-skip-regexp))) ;; don't go to eob or whatever
+            (setq cnt (- cnt inc))
+          (goto-char pos)
+          (setq cnt 0)
+          (forward-line inc)) ;; stop at next empty line
+        (setq pos (point)))
+      (goto-char pos)
+      out)))
 
 (defun ess-goto-line (line)
   (save-restriction

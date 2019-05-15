@@ -157,18 +157,31 @@ OUT-STRING is the content of the region captured by
 
     (let ((output "a <- 1\nb <- 2\n"))
       (ess-test-interactive-eval output
-        (insert (format "%s\nmore_code()" output))
+        (insert (format "%s\nmore_code1()" output))
         (goto-char (point-min))
         (ess-eval-region-or-function-or-paragraph-and-step)
-        (should (looking-at-p "more_code"))))
+        (should (looking-at-p "more_code1"))))
 
     (let ((output "a <- 1\nb <- 2\n"))
       (ess-test-interactive-eval output
-        (insert (format "%s\nmore_code()" output))
+        (insert (format "%s\nmore_code2()" output))
         (goto-char (point-min))
         (ess-eval-region-or-function-or-paragraph-and-step)
-        (should (looking-at-p "more_code"))))
+        (should (looking-at-p "more_code2"))))
 
+    (let ((output "library(aaaa)\n"))
+      (ess-test-interactive-eval output
+        (insert (format "%s\nmore_code3\n" output))
+        (goto-char (point-min))
+        (ess-eval-region-or-function-or-paragraph-and-step)
+        (should (looking-at-p "more_code3"))))
+
+    (let ((output "\nlibrary(bbb)\n"))
+      (ess-test-interactive-eval output
+        (insert (format "## a comment\n%s\nmore_code4" output))
+        (goto-char (point-min))
+        (ess-eval-region-or-function-or-paragraph-and-step)
+        (should (looking-at-p "more_code4"))))
     ))
 
 (ert-deftest ess-verbose-setwd-test ()

@@ -355,18 +355,17 @@ Otherwise go to the beginning of paragraph."
     (end-of-defun)
     (setq end (point))
     (goto-char beg)
-    (when (or (< beg start-pos)
-              (> end start-pos))
+    (unless (and (< beg start-pos)
+                 (> end start-pos))
       (let ((par-pos (save-excursion
                        (goto-char start-pos)
                        (forward-comment most-negative-fixnum)
                        (backward-paragraph)
                        (forward-comment most-positive-fixnum)
                        (point))))
-        (when (<= end par-pos)
-          (if (= start-pos par-pos)
-              (goto-char beg)
-            (goto-char par-pos)))))))
+        (if (< end par-pos)
+            (goto-char par-pos)
+          (goto-char beg))))))
 
 (defun ess-goto-end-of-function-or-para ()
   "If inside a function go to end of it.

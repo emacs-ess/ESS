@@ -1549,11 +1549,12 @@ Prefix arg VIS toggles visibility of ess-code as for
   "Send the current paragraph to the inferior ESS process.
 Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
   (interactive "P")
+  (if (= (point-at-bol) (point-min))
+      (ess-next-code-line 0)
+    ;; Evaluation is forward oriented
+    (forward-line -1)
+    (ess-next-code-line 1))
   (save-excursion
-    (ignore-errors
-      ;; Evaluation is forward oriented
-      (forward-line -1)
-      (ess-next-code-line 1))
     (let ((beg (progn (backward-paragraph) (point)))
           (end (progn (forward-paragraph) (point))))
       (ess-eval-region beg end vis))))

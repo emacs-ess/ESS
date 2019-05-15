@@ -248,8 +248,8 @@
                    (goto-char (point-min))
                    (ess-next-code-line)
                    (point)))))
-  (should (eql 4
-               (ess-r-test-with-temp-text "1+1"
+  (should (eql 5
+               (ess-r-test-with-temp-text "1+1\n"
                  (let (ess-eval-empty)
                    (goto-char (point-min))
                    (end-of-line)
