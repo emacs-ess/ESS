@@ -12,7 +12,7 @@ TXTs = ../README ../ANNOUNCE ../NEWS ../ONEWS
 
 # Don't build pdf/html by default
 all  : info text
-info : dir
+info : info/ess.info
 text : $(TXTs)
 html : html/ess.html html/readme.html html/news.html
 pdf  : $(PDFs)
