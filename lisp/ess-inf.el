@@ -1529,12 +1529,11 @@ Prefix arg VIS toggles visibility of ess-code as for
       (end-of-defun)
       (beginning-of-defun)
       ;; While we are the beginning of the function, get the function
-      ;; name
+      ;; name. FIXME: should use our ess-function-pattern.
       (setq msg (format "Eval function: %s"
-                        (propertize (if (looking-at-p add-log-current-defun-header-regexp)
-                                        (add-log-current-defun)
-                                      (buffer-substring-no-properties (point) (point-at-eol)))
-                                    'face 'font-lock-function-name-face)))
+                        (if (looking-at add-log-current-defun-header-regexp)
+                            (match-string 1)
+                          (buffer-substring (point) (point-at-eol)))))
       (setq beg (point))
       (end-of-defun)
       (setq end (point))
