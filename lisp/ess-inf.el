@@ -66,6 +66,7 @@
 (declare-function ess-dump-object-into-edit-buffer "ess-mode" (object))
 
 (defvar add-log-current-defun-header-regexp)
+(defvar-local ess--make-local-vars-permanent nil)
 
 ;; The following declares can be removed once we drop Emacs 25
 (declare-function tramp-file-name-method "tramp")
@@ -176,8 +177,9 @@ This may be useful for debugging."
       (setq-local default-directory cur-dir)
       ;; TODO: Get rid of this, we should rely on modes to set the
       ;; variables they need.
-      (ess-setq-vars-local customize-alist)
-      (inferior-ess--set-major-mode ess-dialect)
+      (let ((ess--make-local-vars-permanent t))
+        (ess-setq-vars-local customize-alist)
+        (inferior-ess--set-major-mode ess-dialect))
       ;; Read the history file
       (when ess-history-file
         (setq comint-input-ring-file-name

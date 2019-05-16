@@ -1114,7 +1114,7 @@ nil and not t, query for each instance."
           (set (car pair) (eval (cdr pair)))
           (when (bound-and-true-p ess--make-local-vars-permanent)
             (put (car pair) 'permanent-local t))) ;; hack for Rnw
-        alist))
+        (if (symbolp alist) (eval alist) alist)))
 
 (defvar ess-error-regexp   "^\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$"
   "Regexp to search for errors.")
