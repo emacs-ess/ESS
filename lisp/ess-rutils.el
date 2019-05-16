@@ -332,14 +332,10 @@ given field. Options should be separated by value of
 (defun ess-rutils-help-search (string)
   "Search for STRING using help.search()."
   (interactive "sString to search for? ")
-  (with-current-buffer (get-buffer-create ess-rutils-buf)
-    (setq buffer-read-only nil))
-  (ess-execute (concat "help.search('" string "')")
-               nil
-               (substring ess-rutils-buf 1 (- (length ess-rutils-buf) 1)))
-  (pop-to-buffer ess-rutils-buf)
-  (ess-r-package-menu-mode))
-
+  (let ((proc ess-local-process-name))
+    (pop-to-buffer "foobar")
+    (ess-command (concat "help.search('" string "')\n")
+                 (current-buffer) nil nil nil (get-process proc))))
 
 (make-obsolete 'ess-rutils-rhtml-fn "overwrite .ess_help_start instead." "ESS 18.10")
 
