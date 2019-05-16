@@ -250,15 +250,14 @@ the 'R_HOME' directory on a remote server (defaults to NULL)."
   (let* ((update (if current-prefix-arg "update=TRUE" "update=FALSE"))
          (remote (if (or (and remote (not (string= "" remote))))
                      (concat "remote=" remote) "remote=NULL"))
-         (rhtml (format ".ess_help_start(%s, %s)\n" update remote))
-         (tmpbuf (get-buffer-create "**ess-rutils-mode**")))
-    (ess-command rhtml tmpbuf)
-    (set-buffer tmpbuf)
-    (let* ((begurl (search-backward "http://"))
-           (endurl (search-forward "index.html"))
-           (url (buffer-substring-no-properties begurl endurl)))
-      (browse-url url))
-    (kill-buffer tmpbuf)))
+         (proc ess-local-process-name)
+         (rhtml (format ".ess_help_start(%s, %s)\n" update remote)))
+    (with-temp-buffer
+      (ess-command rhtml (current-buffer) nil nil nil (get-process proc))
+      (let* ((begurl (search-backward "http://"))
+             (endurl (search-forward "index.html"))
+             (url (buffer-substring-no-properties begurl endurl)))
+        (browse-url url)))))
 
 (defun ess-rutils-rsitesearch (string)
   "Search the R archives for STRING, and show results using `browse-url'.
