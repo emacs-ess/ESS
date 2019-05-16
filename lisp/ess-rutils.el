@@ -29,28 +29,19 @@
 
 ;;; Commentary:
 
-;; This library provides key bindings for performing basic R functions,
-;; such as loading and managing packages, as well as object manipulation
-;; (listing, viewing, and deleting), and an alternative to RSiteSearch()
-;; that uses the browse-url function.  Load the library with the method you
-;; prefer (e.g. M-x load-file), but the easiest is probably to: a) make
-;; sure your load-path variable includes the directory where ess-rutils.el
-;; resides, and b) include (require 'ess-rutils) statement in your
-;; ~/.emacs.
-;;
-;; TODO: This should be more tightly integrated with ess-r-mode and ESSR.
-;; TODO: Should be active in ess-r-mode not only ess-inf
-;; TODO: Both S level Utils and this package's Rutils are in the menu; confusing and inconvenient.
+;; This file implements modes for viewing installed and available R
+;; packages. It also contains some helper functions for managing R
+;; objects.
 
 ;;; Code:
 
-;; Autoloads and requires
-(require 'ess-rdired)
-
 (eval-when-compile
   (require 'subr-x))
+(require 'ess-inf)
 
 (declare-function ess-display-help-apropos "ess-help" (&optional pattern))
+(declare-function ess-rdired "ess-rdired" ())
+(defvar ess-mode-menu)
 
 (define-obsolete-variable-alias 'ess-rutils-buf 'ess-r-package-menu-buf "ESS 19.04")
 (define-obsolete-variable-alias 'ess-rutils-mode-map 'ess-r-package-menu-mode-map "ESS 19.04")
@@ -68,7 +59,7 @@
     map))
 
 (easy-menu-define ess-rutils-mode-menu inferior-ess-mode-menu
-  "Submenu of `inferior-ess-mode' to use with RUtils."
+  "Package management."
   '("Package management"
     ["List local packages" ess-r-package-list-local-packages t]
     ["List available packages" ess-r-package-list-available-packages t]
@@ -244,8 +235,8 @@ needed."
 (defun ess-rutils-rm-all ()
   "Remove all R objects."
   (interactive)
-  (if (y-or-n-p "Delete all objects? ")
-      (ess-execute "rm(list=ls())" 'buffer)))
+  (when (y-or-n-p "Delete all objects? ")
+    (ess-execute "rm(list=ls())" 'buffer)))
 
 (defun ess-rutils-load-wkspc (file)
   "Load workspace FILE into R."
@@ -253,8 +244,7 @@ needed."
   (ess-execute (concat "load('" file "')") 'buffer))
 
 (defun ess-rutils-save-wkspc (file)
-  "Save FILE workspace.
-File extension not required."
+  "Save FILE workspace as file.RData."
   (interactive "FSave workspace to file (no extension): ")
   (ess-execute (concat "save.image('" file ".RData')") 'buffer))
 
