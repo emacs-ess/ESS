@@ -200,24 +200,17 @@ current R session."
                  (ess-execute cmd 'buffer))
         (message "No packages marked for install")))))
 
-(defun ess-rutils-update-pkgs (lib repos)
-  "Update packages in library LIB and repos REPOS.
-Defaults are the first element returned by .libPaths() for LIB,
-and the repository named CRAN returned by getOption(\"repos\")
-for REPOS. This also uses checkBuilt=TRUE to rebuild installed
-packages if needed."
-  (interactive "DPath to library to update: \nsrepos: ")
-  (if (string= "" lib)
-      (setq lib
-            (car (ess-get-words-from-vector
-                  "as.character(.libPaths())\n"))))
-  (if (string= "" repos)
-      (setq repos
-            (car (ess-get-words-from-vector
-                  "as.character(getOption(\"repos\")[\"CRAN\"])\n"))))
-  (ess-execute (concat "update.packages(lib.loc='"
-                       lib "', repos='" repos
-                       "', ask=FALSE, checkBuilt=TRUE)") 'buffer))
+(define-obsolete-function-alias 'ess-rutils-update-pkgs #'ess-r-package-update-packages "ESS 19.04")
+(defun ess-r-package-update-packages (lib repo)
+  "Update packages in library LIB and repo REPO.
+This also uses checkBuilt=TRUE to rebuild installed packages if
+needed."
+  (interactive
+   (list (ess-completing-read "Library to update: " (ess-get-words-from-vector
+                                                     "as.character(.libPaths())\n"))
+         (ess-completing-read "Repo: " (ess-get-words-from-vector
+                                        "as.character(getOption(\"repos\"))\n"))))
+  (ess-execute (format "update.packages(lib.loc='%s', repos='%s', ask=FALSE, checkBuilt=TRUE)" lib repo) 'buffer))
 
 (defun ess-rutils-apropos (string)
   "Search for STRING using apropos."
@@ -347,7 +340,7 @@ given field. Options should be separated by value of
     (define-key inferior-ess-mode-map [(control c) (control \.) (r)]
       #'ess-r-package-list-available-packages)
     (define-key inferior-ess-mode-map [(control c) (control \.) (u)]
-      #'ess-rutils-update-pkgs)
+      #'ess-r-package-update-packages)
     (define-key inferior-ess-mode-map [(control c) (control \.) (a)]
       #'ess-rutils-apropos)
     (define-key inferior-ess-mode-map [(control c) (control \.) (m)]
