@@ -56,6 +56,27 @@
 (define-obsolete-variable-alias 'ess-rutils-mode-map 'ess-r-package-menu-mode-map "ESS 19.04")
 (define-obsolete-function-alias 'ess-rutils-mode #'ess-r-package-menu-mode "ESS 19.04")
 
+;;;###autoload
+(defvar ess-rutils-map
+  (let ((map (define-prefix-command 'ess-rutils-map)))
+    (define-key map "l" #'ess-r-package-list-local-packages)
+    (define-key map "r" #'ess-r-package-list-available-packages)
+    (define-key map "u" #'ess-r-package-update-packages)
+    (define-key map "o" #'ess-rdired)
+    (define-key map "d" #'ess-change-directory)
+    (define-key map "H" #'ess-rutils-html-docs)
+    map))
+
+(easy-menu-define ess-rutils-mode-menu inferior-ess-mode-menu
+  "Submenu of `inferior-ess-mode' to use with RUtils."
+  '("Package management"
+    ["List local packages" ess-r-package-list-local-packages t]
+    ["List available packages" ess-r-package-list-available-packages t]
+    ["Update packages" ess-r-package-update-packages t]))
+
+(easy-menu-add-item inferior-ess-mode-menu nil ess-rutils-mode-menu "Utils")
+(easy-menu-add-item ess-mode-menu nil ess-rutils-mode-menu "Process")
+
 (defvar ess-r-package-menu-buf "*R packages*"
   "Name of buffer to display R packages in.")
 
@@ -81,6 +102,8 @@
   (tabulated-list-init-header))
 
 (define-obsolete-function-alias 'ess-rutils-local-pkgs #'ess-r-package-list-local-packages "ESS 19.04")
+
+;;;###autoload
 (defun ess-r-package-list-local-packages ()
   "List all packages in all libraries."
   (interactive)
@@ -160,6 +183,7 @@
                'buffer))
 
 (define-obsolete-function-alias 'ess-rutils-repos-pkgs #'ess-r-package-list-available-packages "ESS 19.04")
+;;;###autoload
 (defun ess-r-package-list-available-packages ()
   "List available packages.
 Use the repositories as listed by getOptions(\"repos\") in the
@@ -203,6 +227,7 @@ current R session."
         (message "No packages marked for install")))))
 
 (define-obsolete-function-alias 'ess-rutils-update-pkgs #'ess-r-package-update-packages "ESS 19.04")
+;;;###autoload
 (defun ess-r-package-update-packages (lib repo)
   "Update packages in library LIB and repo REPO.
 This also uses checkBuilt=TRUE to rebuild installed packages if
@@ -315,58 +340,6 @@ given field. Options should be separated by value of
   (pop-to-buffer ess-rutils-buf)
   (ess-r-package-menu-mode))
 
-;; Customizable variable to allow ess-rutils-keys to activate default key bindings.
-;; Suggested by Richard M. Heiberger.
-(defcustom ess-rutils-keys t
-  "Non-nil means activate ess-rutils keybindings and menu."
-  :group 'ess-R
-  :type 'boolean)
-
-;; Keybindings
-(defun ess-rutils-keys ()
-  "Provide key bindings."
-  (interactive)
-  (when ess-rutils-keys
-    (define-key inferior-ess-mode-map [(control c) (control \.) (l)]
-      #'ess-r-package-list-local-packages)
-    (define-key inferior-ess-mode-map [(control c) (control \.) (r)]
-      #'ess-r-package-list-available-packages)
-    (define-key inferior-ess-mode-map [(control c) (control \.) (u)]
-      #'ess-r-package-update-packages)
-    (define-key inferior-ess-mode-map [(control c) (control \.) (a)]
-      #'ess-display-help-apropos)
-    (define-key inferior-ess-mode-map [(control c) (control \.) (m)]
-      #'ess-rutils-rm-all)
-    (define-key inferior-ess-mode-map [(control c) (control \.) (o)]
-      #'ess-rdired)
-    (define-key inferior-ess-mode-map [(control c) (control \.) (w)]
-      #'ess-rutils-load-wkspc)
-    (define-key inferior-ess-mode-map [(control c) (control \.) (s)]
-      #'ess-rutils-save-wkspc)
-    (define-key inferior-ess-mode-map [(control c) (control \.) (d)]
-      #'ess-change-directory)
-    (define-key inferior-ess-mode-map [(control c) (control \.) (H)]
-      #'ess-rutils-html-docs)))
-
-(easy-menu-define ess-rutils-mode-menu inferior-ess-mode-menu
-  "Submenu of `inferior-ess-mode' to use with RUtils."
-  '("RUtils"
-    ["Manage objects"          ess-rdired               t]
-    ["Remove objects"          ess-rutils-rm-all        t]
-    "------"
-    ["Local packages"           ess-rutils-local-pkgs   t]
-    ["Packages in repositories" ess-rutils-repos-pkgs   t]
-    ["Update packages"          ess-rutils-update-pkgs  t]
-    "------"
-    ["Load workspace"           ess-rutils-load-wkspc   t]
-    ["Save workspace"           ess-rutils-save-wkspc   t]
-    ["Change directory"        ess-change-directory     t]
-    "------"
-    ["Browse HTML"             ess-rutils-html-docs     t]
-    ["Apropos"                 ess-rutils-apropos       t]))
-
-(easy-menu-add-item inferior-ess-mode-menu nil ess-rutils-mode-menu "Utils")
-(add-hook 'inferior-ess-mode-hook 'ess-rutils-keys)
 
 (make-obsolete 'ess-rutils-rhtml-fn "overwrite .ess_help_start instead." "ESS 18.10")
 

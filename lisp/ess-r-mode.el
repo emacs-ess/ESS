@@ -251,6 +251,7 @@ value by using `ess-r-runners-reset'."
 (defvar ess-r-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-c C-=") #'ess-cycle-assign)
+    (define-key map (kbd "C-c C-.") 'ess-rutils-map)
     map))
 
 (defvar ess-r-mode-syntax-table
@@ -2215,6 +2216,7 @@ state.")
   (let ((map (make-sparse-keymap)))
     (define-key map "\M-\r" #'ess-dirs)
     (define-key map (kbd "C-c C-=") #'ess-cycle-assign)
+    (define-key map (kbd "C-c C-.") 'ess-rutils-map)
     map)
   "Keymap for `inferior-ess-r-mode'.")
 
