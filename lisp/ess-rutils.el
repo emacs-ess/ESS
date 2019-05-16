@@ -1,24 +1,31 @@
-;;; ess-rutils.el --- R functions and keybindings to use in iESS.  -*- lexical-binding: t; -*-
+;;; ess-rutils.el --- Convenience features for package and object control.  -*- lexical-binding: t; -*-
 
-;; Author:       Sebastian Luque <sluque@gmail.com>
-;; Created:      Thu Nov 10 02:20:36 2004 (UTC)
-;; Last-Updated: 2013-09-22T16:08:47+0000
-;;           By: Sebastian P. Luque
-;; Version: $Id$
+;; Author:       J. Alexander Branham
+;; Maintainer:   ESS-Core
+;; Keywords:     processes
 
+;; Copyright (c) 2019 Free Software Foundation
+;; Copyright (c) 2013-2019 ESS Core
 ;; Copyright (c) 2005-2013 Sebastian P. Luque
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation; either version 3, or (at your option)
-;; any later version.
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
 
-;; A copy of the GNU General Public License is available at
-;; https://www.r-project.org/Licenses/
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+;;; History:
+
+;; This file was originally written by Sebastian Luque in 2004. It was
+;; completely rewritten in 2019 as part of contributing ESS to GNU
+;; Emacs.
 
 ;;; Commentary:
 
@@ -31,21 +38,6 @@
 ;; resides, and b) include (require 'ess-rutils) statement in your
 ;; ~/.emacs.
 ;;
-;; Usage:
-;;
-;; Once R is started with M-x R, you should have the key bindings defined
-;; at the end of this file working in your iESS process buffers.  Simply
-;; type the desired key binding.
-;;
-;; Acknowledgements:
-;;
-;; I am grateful to John Fox for having written his init.el file for
-;; XEmacs, which motivated this Emacs alternative.  I wanted to add some
-;; object management comforts and came across Stephen Eglen's
-;; ess-rdired.el, which provides a lot of these.  ess-rutils.el builds upon
-;; on a *lot* of ideas from ess-rdired.el.
-
-;; TODO: Refactor and remove byte-compile-warnings file-local variable.
 ;; TODO: This should be more tightly integrated with ess-r-mode and ESSR.
 ;; TODO: Should be active in ess-r-mode not only ess-inf
 ;; TODO: Both S level Utils and this package's Rutils are in the menu; confusing and inconvenient.
@@ -55,159 +47,158 @@
 ;; Autoloads and requires
 (require 'ess-rdired)
 
-(defvar ess-rutils-buf "*R temp*"
-  "Name of temporary R buffer.")
+(eval-when-compile
+  (require 'subr-x))
 
-(defvar ess-rutils-mode-map
+(define-obsolete-variable-alias 'ess-rutils-buf 'ess-r-package-menu-buf "ESS 19.04")
+(define-obsolete-variable-alias 'ess-rutils-mode-map 'ess-r-package-menu-mode-map "ESS 19.04")
+(define-obsolete-function-alias 'ess-rutils-mode #'ess-r-package-menu-mode "ESS 19.04")
+
+(defvar ess-r-package-menu-buf "*R packages*"
+  "Name of buffer to display R packages in.")
+
+(defvar ess-r-package-menu-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "l" 'ess-rutils-loadpkg)
-    (define-key map "i" 'ess-rutils-mark-install)
-    (define-key map "I" 'ess-rutils-install)
-    (define-key map "u" 'ess-rutils-unmark)
-    (define-key map "q" 'ess-rutils-quit)
+    (define-key map "l" #'ess-r-package-load)
+    (define-key map "i" #'ess-r-package-mark-install)
+    (define-key map "x" #'ess-r-package-execute-marks)
+    (define-key map "u" #'ess-r-package-unmark)
     map)
-  "Keymap for the *R temp* buffer.")
+  "Keymap for `ess-rutils-mode'.")
 
-(define-derived-mode ess-rutils-mode special-mode "R utils"
-  "Major mode for output from `ess-rutils-local-pkgs' and `ess-rutils-repos-pkgs'.
-Useful bindings to handle package loading and installing."
+(define-derived-mode ess-r-package-menu-mode tabulated-list-mode "R utils"
+  "Major mode for `ess-rutils-local-pkgs' and `ess-rutils-repos-pkgs'."
   :group 'ess-R
-  (setq ess-dialect "R"))
+  (setq ess-dialect "R")
+  (setq mode-name (concat "R packages: " ess-local-process-name))
+  (setq tabulated-list-padding 2)
+  (setq tabulated-list-format
+        `[("Name" 10 t)
+          ("Description" 50 nil)
+          ("Version" 5 t)])
+  (tabulated-list-init-header))
 
-(defun ess-rutils-local-pkgs ()
+(define-obsolete-function-alias 'ess-rutils-local-pkgs #'ess-r-package-list-local-packages "ESS 19.04")
+(defun ess-r-package-list-local-packages ()
   "List all packages in all libraries."
   (interactive)
-  (with-current-buffer (get-buffer-create ess-rutils-buf)
-    (setq buffer-read-only nil))
-  (ess-execute
-   "writeLines(paste('  ', sort(.packages(all.available=TRUE)), sep=''))"
-   nil
-   (substring ess-rutils-buf 1 (- (length ess-rutils-buf) 1)))
-  (pop-to-buffer ess-rutils-buf)
-  (save-excursion
-    (beginning-of-line) (open-line 1)
-    (insert "**Available packages in all local R libraries**"))
-  (ess-rutils-mode))
+  (ess-r-package--list-packages (concat ".ess.rutils.ops <- options(width = 10000);"
+                                        "print(installed.packages(fields=c(\"Title\"))[, c(\"Title\", \"Version\")]);"
+                                        "options(.ess.rutils.ops); rm(.ess.rutils.ops);"
+                                        "\n")))
 
-(defun ess-rutils-namepkg ()
-  "Return name of the package on current line."
-  (save-excursion
-    (beginning-of-line)
-    (if (looking-at "\\*")
-        nil
-      (forward-char 2)
-      (let (beg)
-        (setq beg (point))
-        (end-of-line) ;assume package names are separated by newlines.
-        (buffer-substring-no-properties beg (point))))))
+(defun ess-r-package--list-packages (cmd)
+  "Use CMD to list packages."
+  (let ((process ess-local-process-name)
+        des-col-beginning des-col-end entries)
+    (with-current-buffer (ess-command cmd (get-buffer-create " *ess-rutils-pkgs*"))
+      (goto-char (point-min))
+      (delete-region (point) (1+ (point-at-eol)))
+      ;; Now we have a buffer with package name, description, and
+      ;; version. description and version are surrounded by quotes,
+      ;; description is separated by whitespace.
+      (re-search-forward "\\>[[:space:]]+")
+      (setq des-col-beginning (current-column))
+      (goto-char (point-at-eol))
+      ;; Unless someone has a quote character in their package version,
+      ;; two quotes back will be the end of the package description.
+      (dotimes (_ 2) (search-backward "\""))
+      (re-search-backward "[[:space:]]*")
+      (setq des-col-end (current-column))
+      (beginning-of-line)
+      (while (not (eobp))
+        (beginning-of-line)
+        (let* ((name (string-trim (buffer-substring
+                                   (point)
+                                   (progn (forward-char (1- des-col-beginning))
+                                          (point)))))
+               (description (string-trim (buffer-substring
+                                          (progn (forward-char 1)
+                                                 (point))
+                                          (progn (forward-char (- des-col-end des-col-beginning))
+                                                 (point)))))
+               (version (buffer-substring
+                         (progn (end-of-line)
+                                (search-backward "\"")
+                                (search-backward "\"")
+                                (forward-char 1)
+                                (point))
+                         (progn (search-forward "\"")
+                                (backward-char 1)
+                                (point)))))
+          (push
+           (list name
+                 `[(,name
+                    help-echo "mouse-2, RET: help on this package"
+                    action ess-rutils-help-on-package)
+                   ,description
+                   ,version])
+           entries)
+          (forward-line)))
+      (pop-to-buffer ess-rutils-buf)
+      (setq ess-local-process-name process)
+      (setq tabulated-list-entries entries)
+      (ess-r-package-menu-mode)
+      (tabulated-list-print))))
 
-(defun ess-rutils-loadpkg ()
+(define-obsolete-function-alias 'ess-rutils-loadpkg #'ess-r-package-load "ESS 19.04")
+(defun ess-r-package-load ()
   "Load package from a library."
   (interactive)
-  (let ((oklocal nil))
-    (save-excursion
-      (goto-char (point-min))
-      (if (search-forward "libraries**" nil t)
-          (setq oklocal t)))
-    (when oklocal
-      (ess-execute (concat "library('" (ess-rutils-namepkg) "', character.only=TRUE)")
-                   'buffer))))
+  (ess-execute (concat "library('" (tabulated-list-get-id)
+                       "', character.only = TRUE)")
+               'buffer))
 
-(defun ess-rutils-repos-pkgs ()
+(defun ess-rutils-help-on-package (&optional _button)
+  "Display help on the package at point."
+  (interactive)
+  ;; FIXME: Should go to a help buffer
+  (ess-execute (concat "help(" (tabulated-list-get-id) ", package = '"
+                       (tabulated-list-get-id)"')")
+               'buffer))
+
+(define-obsolete-function-alias 'ess-rutils-repos-pkgs #'ess-r-package-list-available-packages "ESS 19.04")
+(defun ess-r-package-list-available-packages ()
   "List available packages.
 Use the repositories as listed by getOptions(\"repos\") in the
 current R session."
   (interactive)
-  (with-current-buffer (get-buffer-create ess-rutils-buf)
-    (setq buffer-read-only nil))
-  (ess-execute (concat "writeLines(paste('  \"', "
-                       "rownames(available.packages()), '\"', sep=''))")
-               nil
-               (substring ess-rutils-buf 1 (- (length ess-rutils-buf) 1)))
-  (pop-to-buffer ess-rutils-buf)
-  (save-excursion
-    (kill-line 5)
-    (insert "**packages available to install**\n"))
-  (ess-rutils-mode))
+  (ess-r-package--list-packages (concat ".ess.rutils.ops <- options(width = 10000);"
+                                        "print(available.packages(fields=c(\"Title\"))[, c(\"Title\", \"Version\")]);"
+                                        "options(.ess.rutils.ops); rm(.ess.rutils.ops);"
+                                        "\n")))
 
-(defun ess-rutils-mark-install (arg)
-  "Mark the current package for installing.
-ARG lines to mark is passed to `ess-rutils-mark'."
-  (interactive "p")
-  ;; if this is not an install package buffer return nil.
-  (let ((okmark nil))
-    (save-excursion
-      (goto-char (point-min))
-      (if (search-forward "install**" nil t)
-          (setq okmark t)))
-    (if okmark
-        (ess-rutils-mark "I" arg)
-      nil)))
-
-(defun ess-rutils-unmark (arg)
-  "Unmark the packages, passing ARG lines to unmark to `ess-rutils-mark'."
-  (interactive "p")
-  (ess-rutils-mark " " arg))
-
-;; The next two functions almost verbatim from ess-rdired.el.
-(defun ess-rutils-mark (mark-char arg)
-  "Use MARK-CHAR to mark package on current line, or next ARG lines."
-  ;; If we are on first line, mark all lines.
-  (let ((buffer-read-only nil)
-        move)
-    (if (eq (point-min)
-            (save-excursion (beginning-of-line) (point)))
-        (progn
-          ;; we are on first line, so make a note of point, and count
-          ;; how many objects we want to delete.  Then at end of defun,
-          ;; restore point.
-          (setq move (point))
-          (forward-line 1)
-          (setq arg (count-lines (point) (point-max)))))
-    (while (and (> arg 0) (not (eobp)))
-      (setq arg (1- arg))
-      (beginning-of-line)
-      (progn
-        (insert mark-char)
-        (delete-char 1)
-        (forward-line 1)))
-    (if move
-        (goto-char move))))
-
-(defun ess-rutils-install ()
-  "Install all packages flagged for installation, and return to the iESS buffer.
-User is asked for confirmation."
+(define-obsolete-function-alias 'ess-rutils-mark-install #'ess-r-package-mark-install "ESS 19.04")
+(defun ess-r-package-mark-install ()
+  "Mark the current package for installing."
   (interactive)
-  (let ((inst "install.packages(c(")
-        (count 0))
-    (save-excursion
+  (tabulated-list-put-tag "i" t))
+
+(define-obsolete-function-alias 'ess-rutils-unmark #'ess-r-package-unmark "ESS 19.04")
+(defun ess-r-package-unmark ()
+  "Unmark the packages."
+  (interactive)
+  (tabulated-list-put-tag " " t))
+
+(define-obsolete-function-alias 'ess-rutils-execute-marks #'ess-r-package-execute-marks "ESS 19.04")
+(defun ess-r-package-execute-marks ()
+  "Perform all marked actions."
+  (interactive)
+  ;; Install
+  (save-excursion
+    (let ((cmd "install.packages(c(")
+          pkgs)
       (goto-char (point-min))
-      (forward-line)
-      ;; as long as number of lines between buffer start and point is smaller
-      ;; than the total number of lines in buffer, go to the beginning of the
-      ;; line, check if line is flagged, and if it is, advance the counter by
-      ;; one, create the root of install function, add the package name,
-      ;; insert a comma, and move forward a line.
-      (while (< (count-lines (point-min) (point))
-                (count-lines (point-min) (point-max)))
-        (beginning-of-line)
-        (if (looking-at "^I ")
-            (setq count (1+ count)
-                  inst (concat inst (ess-rutils-namepkg) ", " )))
-        (forward-line 1)))
-    (if (> count 0)                     ;found packages to install
-        (progn
-          ;; Fix the install function created before and close it.
-          (setq inst (concat
-                      (substring inst 0 (- (length inst) 2)) "))"))
-          ;;
-          (if (yes-or-no-p (format "Install %d %s " count
-                                   (if (> count 1) "packages" "package")))
-              (progn
-                (ess-execute inst 'buffer)
-                (ess-rutils-quit))))
-      ;; else nothing to install
-      (message "no packages flagged to install"))))
+      (while (not (eobp))
+        (when (looking-at-p "i")
+          (setq pkgs (concat "\"" (tabulated-list-get-id) "\", " pkgs))
+          (tabulated-list-put-tag " "))
+        (forward-line))
+      (if pkgs
+          (progn (setq pkgs (substring pkgs 0 (- (length pkgs) 2)))
+                 (setq cmd (concat cmd pkgs "))"))
+                 (ess-execute cmd 'buffer))
+        (message "No packages marked for install")))))
 
 (defun ess-rutils-update-pkgs (lib repos)
   "Update packages in library LIB and repos REPOS.
@@ -237,7 +228,7 @@ packages if needed."
                nil
                (substring ess-rutils-buf 1 (- (length ess-rutils-buf) 1)))
   (pop-to-buffer ess-rutils-buf)
-  (ess-rutils-mode))
+  (ess-r-package-menu-mode))
 
 (defun ess-rutils-rm-all ()
   "Remove all R objects."
@@ -337,7 +328,7 @@ given field. Options should be separated by value of
                nil
                (substring ess-rutils-buf 1 (- (length ess-rutils-buf) 1)))
   (pop-to-buffer ess-rutils-buf)
-  (ess-rutils-mode))
+  (ess-r-package-menu-mode))
 
 ;; Customizable variable to allow ess-rutils-keys to activate default key bindings.
 ;; Suggested by Richard M. Heiberger.
@@ -352,9 +343,9 @@ given field. Options should be separated by value of
   (interactive)
   (when ess-rutils-keys
     (define-key inferior-ess-mode-map [(control c) (control \.) (l)]
-      #'ess-rutils-local-pkgs)
+      #'ess-r-package-list-local-packages)
     (define-key inferior-ess-mode-map [(control c) (control \.) (r)]
-      #'ess-rutils-repos-pkgs)
+      #'ess-r-package-list-available-packages)
     (define-key inferior-ess-mode-map [(control c) (control \.) (u)]
       #'ess-rutils-update-pkgs)
     (define-key inferior-ess-mode-map [(control c) (control \.) (a)]
