@@ -50,6 +50,8 @@
 (eval-when-compile
   (require 'subr-x))
 
+(declare-function ess-display-help-apropos "ess-help" (&optional pattern))
+
 (define-obsolete-variable-alias 'ess-rutils-buf 'ess-r-package-menu-buf "ESS 19.04")
 (define-obsolete-variable-alias 'ess-rutils-mode-map 'ess-r-package-menu-mode-map "ESS 19.04")
 (define-obsolete-function-alias 'ess-rutils-mode #'ess-r-package-menu-mode "ESS 19.04")
@@ -212,16 +214,7 @@ needed."
                                         "as.character(getOption(\"repos\"))\n"))))
   (ess-execute (format "update.packages(lib.loc='%s', repos='%s', ask=FALSE, checkBuilt=TRUE)" lib repo) 'buffer))
 
-(defun ess-rutils-apropos (string)
-  "Search for STRING using apropos."
-  (interactive "sApropos search for? ")
-  (with-current-buffer (get-buffer-create ess-rutils-buf)
-    (setq buffer-read-only nil))
-  (ess-execute (concat "apropos('" string "')")
-               nil
-               (substring ess-rutils-buf 1 (- (length ess-rutils-buf) 1)))
-  (pop-to-buffer ess-rutils-buf)
-  (ess-r-package-menu-mode))
+(define-obsolete-function-alias 'ess-rutils-apropos #'ess-display-help-apropos "ESS 19.04")
 
 (defun ess-rutils-rm-all ()
   "Remove all R objects."
@@ -342,7 +335,7 @@ given field. Options should be separated by value of
     (define-key inferior-ess-mode-map [(control c) (control \.) (u)]
       #'ess-r-package-update-packages)
     (define-key inferior-ess-mode-map [(control c) (control \.) (a)]
-      #'ess-rutils-apropos)
+      #'ess-display-help-apropos)
     (define-key inferior-ess-mode-map [(control c) (control \.) (m)]
       #'ess-rutils-rm-all)
     (define-key inferior-ess-mode-map [(control c) (control \.) (o)]
