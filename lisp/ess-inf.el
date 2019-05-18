@@ -129,10 +129,8 @@ If `ess-plain-first-buffername', then initial process is number-free."
                         (= n 1))) ; if not both first and plain-first add number
               (concat ":" (number-to-string n)))))
 
-(defvar-local inferior-ess--start-name nil
-  "Program name used to start the inferior process.")
-(defvar-local inferior-ess--start-args nil
-  "Arguments used to start the inferior process.")
+(defvar-local inferior-ess--local-data nil
+  "Program name and arguments used to start the inferior process.")
 
 (defun inferior-ess (start-args customize-alist &optional no-wait)
   "Start inferior ESS process.
@@ -185,8 +183,7 @@ This may be useful for debugging."
         ;; Set local variables after changing mode because they might
         ;; not be permanent
         (setq default-directory cur-dir)
-        (setq inferior-ess--start-name inferior-ess-program)
-        (setq inferior-ess--start-args start-args)
+        (setq inferior-ess--local-data (cons inferior-ess-program start-args))
       ;; Read the history file
       (when ess-history-file
         (setq comint-input-ring-file-name
@@ -2255,9 +2252,9 @@ START-ARGS gets passed to the dialect-specific
   (interactive)
   (let* ((inf-buf (inferior-ess-force))
          (inf-proc (get-buffer-process inf-buf))
-         (start-name (buffer-local-value 'inferior-ess--start-name inf-buf))
-         (start-args (or start-args
-                         (buffer-local-value 'inferior-ess--start-args inf-buf))))
+         (inf-start-data (buffer-local-value 'inferior-ess--local-data inf-buf))
+         (start-name (car inf-start-data))
+         (start-args (or start-args (cdr inf-start-data))))
     ;; Interrupt early so we can get working directory
     (ess-interrupt)
     (save-window-excursion
