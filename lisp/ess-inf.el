@@ -129,6 +129,9 @@ If `ess-plain-first-buffername', then initial process is number-free."
                         (= n 1))) ; if not both first and plain-first add number
               (concat ":" (number-to-string n)))))
 
+(defvar-local inferior-ess--local-data nil
+  "Program name and arguments used to start the inferior process.")
+
 (defun inferior-ess (start-args customize-alist &optional no-wait)
   "Start inferior ESS process.
 Without a prefix argument, starts a new ESS process, or switches
@@ -173,11 +176,14 @@ This may be useful for debugging."
          (cur-dir (inferior-ess--maybe-prompt-startup-directory proc-name temp-dialect))
          (default-directory cur-dir))
     (with-current-buffer inf-buf
-      (setq-local default-directory cur-dir)
       ;; TODO: Get rid of this, we should rely on modes to set the
       ;; variables they need.
       (ess-setq-vars-local customize-alist)
       (inferior-ess--set-major-mode ess-dialect)
+        ;; Set local variables after changing mode because they might
+        ;; not be permanent
+        (setq default-directory cur-dir)
+        (setq inferior-ess--local-data (cons inferior-ess-program start-args))
       ;; Read the history file
       (when ess-history-file
         (setq comint-input-ring-file-name
@@ -2244,24 +2250,27 @@ is run automatically by \\[ess-quit]."
 START-ARGS gets passed to the dialect-specific
 `inferior-ess-reload-override'."
   (interactive)
-  (inferior-ess-force)
-  ;; Interrupt early so we can get working directory
-  (ess-interrupt)
-  (save-window-excursion
-    ;; Make sure we don't ask for directory again
-    ;; Use current working directory as default
-    (let ((project-find-functions nil)
-          (ess-directory-function nil)
-          (ess-startup-directory (ess-get-working-directory))
-          (ess-ask-for-ess-directory nil)
-          (proc (ess-get-process)))
-      (ess-quit 'no-save)
-      (inferior-ess--wait-for-exit proc)
-      (with-current-buffer (process-buffer proc)
-        (inferior-ess-reload--override start-args)))))
+  (let* ((inf-buf (inferior-ess-force))
+         (inf-proc (get-buffer-process inf-buf))
+         (inf-start-data (buffer-local-value 'inferior-ess--local-data inf-buf))
+         (start-name (car inf-start-data))
+         (start-args (or start-args (cdr inf-start-data))))
+    ;; Interrupt early so we can get working directory
+    (ess-interrupt)
+    (save-window-excursion
+      ;; Make sure we don't ask for directory again
+      ;; Use current working directory as default
+      (let ((project-find-functions nil)
+            (ess-directory-function nil)
+            (ess-startup-directory (ess-get-working-directory))
+            (ess-ask-for-ess-directory nil))
+        (ess-quit 'no-save)
+        (inferior-ess--wait-for-exit inf-proc)
+        (with-current-buffer inf-buf
+          (inferior-ess-reload--override start-name start-args))))))
 
-(cl-defmethod inferior-ess-reload--override (start-args)
-  (user-error "Reloading not implemented for %s %s" ess-dialect start-args))
+(cl-defmethod inferior-ess-reload--override (_start-name _start-args)
+  (user-error "Reloading not implemented for %s" ess-dialect))
 
 (defun inferior-ess--wait-for-exit (proc)
   "Wait for process exit.

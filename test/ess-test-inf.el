@@ -68,6 +68,25 @@
                            (format-message error-msg))))
       (kill-process proc))))
 
+(ert-deftest ess-test-inferior-local-start-args ()
+  (with-r-running nil
+    (let ((inf-data (buffer-local-value 'inferior-ess--local-data *inf-buf*)))
+      (should (equal (car inf-data) "R"))
+      (should (equal (cdr inf-data) "--no-readline  --vanilla")))))
+
+(ert-deftest ess-test-inferior-reload-start-data ()
+  (let* ((r-path (executable-find "R"))
+         (inferior-ess-r-program r-path)
+         proc)
+    (unwind-protect
+        (progn
+          (setq proc (get-buffer-process (run-ess-test-r-vanilla)))
+          (let* ((inf-buf (process-buffer proc))
+                 (inf-data (buffer-local-value 'inferior-ess--local-data inf-buf)))
+            (should (equal (car inf-data) r-path))
+            (should (equal (cdr inf-data) "--no-readline  --vanilla"))))
+      (kill-process proc))))
+
 
 ;;*;; Evaluation
 

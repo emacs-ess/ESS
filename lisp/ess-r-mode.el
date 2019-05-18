@@ -1374,11 +1374,12 @@ selected (see `ess-r-set-evaluation-env')."
   :type 'hook
   :group 'ess-R)
 
-(cl-defmethod inferior-ess-reload--override (start-args
+(cl-defmethod inferior-ess-reload--override (start-name start-args
                                              &context ((string= ess-dialect "R") (eql t)))
   "Call `run-ess-r' with START-ARGS.
 Then run `inferior-ess-r-reload-hook'."
-  (run-ess-r start-args)
+  (let ((inferior-ess-r-program start-name))
+    (run-ess-r start-args))
   (run-hooks 'inferior-ess-r-reload-hook))
 
 (defun inferior-ess-r-force (&optional prompt force no-autostart ask-if-1)
