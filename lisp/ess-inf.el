@@ -2180,7 +2180,9 @@ to the command if BUFF is not given.)"
 Runs `ess-cleanup'. ARG gets passed to a language specific
 method, see `ess-quit--override'."
   (interactive "P")
-  (ess-force-buffer-current "Process to quit: " nil 'no-autostart)
+  (unless (ess-process-live-p)
+    (user-error "No live ESS process associated with this buffer"))
+  (ess-force-buffer-current "Process to quit: ")
   (ess-interrupt)
   (ess-make-buffer-current)
   (ess-quit--override arg))
