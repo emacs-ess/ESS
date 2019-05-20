@@ -1,0 +1,29 @@
+* Contributing code
+Please make sure your contribution:
+
+- Does not introduce any byte compilation warnings or cause existing
+  tests to fail (=make test=)
+- Satisfies M-x checkdoc
+
+We follow standard Elisp coding conventions with the following
+exceptions:
+
+- =indent-tabs-mode= should be =nil=
+- =sentence-end-double-space= should be =nil=
+
+Both of these are taken care of by the .dir-locals.el file. We do not
+require internal functions to be documented if their name is
+descriptive enough.
+
+If you have contributed to ESS in the past but changed your git
+username or email, please add the proper alias to .mailmap (see
+git-shortlog(1) for the format).
+
+** FSF copyright assignment
+
+Unless your change is less than about 15 lines of code, you must
+assign copyright to the FSF. This is the same process that Emacs
+itself and all packages in GNU ELPA use (the paperwork can cover
+both). Instructions for this process can be found [[https://git.savannah.gnu.org/cgit/gnulib.git/tree/doc/Copyright/request-assign.future][here]]. If you have
+already signed the paperwork for GNU Emacs, nothing else needs to be
+done.
