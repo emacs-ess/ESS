@@ -25,16 +25,15 @@
 
 ;;*;; Startup
 
-(defun ess-r-tests-startup-output ()
-  (let* ((proc (get-buffer-process (run-ess-test-r-vanilla)))
-         (output-buffer (process-buffer proc)))
-    (unwind-protect
-        (with-current-buffer output-buffer
-          (buffer-string))
-      (kill-process proc))))
-
 (ert-deftest ess-startup-verbose-setwd-test ()
-  (should (string-match "to quit R.\n\n> setwd(.*)$" (ess-r-tests-startup-output))))
+  (skip-unless (executable-find inferior-ess-r-program))
+  (should (string-match "to quit R.\n\n> setwd(.*)$"
+                        (let* ((proc (get-buffer-process (run-ess-test-r-vanilla)))
+                               (output-buffer (process-buffer proc)))
+                          (unwind-protect
+                              (with-current-buffer output-buffer
+                                (buffer-string))
+                            (kill-process proc))))))
 
 (ert-deftest ess-startup-default-directory-preserved-test ()
   (let ((default-directory user-emacs-directory)
@@ -46,6 +45,7 @@
     (should (string= default-directory user-emacs-directory))))
 
 (ert-deftest ess-test-inferior-return-value ()
+  (skip-unless (executable-find inferior-ess-r-program))
   (let ((inhibit-message ess-inhibit-message-in-tests)
         (ess-ask-for-ess-directory nil)
         proc)
@@ -56,6 +56,7 @@
       (kill-process proc))))
 
 (ert-deftest ess-test-inferior-live-process-error ()
+  (skip-unless (executable-find inferior-ess-r-program))
   (let ((ess-gen-proc-buffer-name-function
          ;; Generate same inferior name each time
          (lambda (&rest args) "" "foo"))
@@ -75,6 +76,7 @@
       (should (equal (cdr inf-data) "--no-readline  --vanilla")))))
 
 (ert-deftest ess-test-inferior-reload-start-data ()
+  (skip-unless (executable-find inferior-ess-r-program))
   (let* ((r-path (executable-find "R"))
          (inferior-ess-r-program r-path)
          proc)
@@ -212,6 +214,7 @@ OUT-STRING is the content of the region captured by
 ;;*;; Sending input
 
 (ert-deftest ess-inf-send-input-invisible-test ()
+  (skip-unless (executable-find inferior-ess-r-program))
   (let ((ess-eval-visibly nil))
     (should (string= "> "
                      (ess-send-input-to-R "\n\n")))
@@ -221,6 +224,7 @@ OUT-STRING is the content of the region captured by
                      (ess-send-input-to-R "invisible(0)" 'repl)))))
 
 (ert-deftest ess-inf-send-complex-input-test ()
+  (skip-unless (executable-find inferior-ess-r-program))
   (let ((ess-eval-visibly nil)
         (input "identity(
   identity(
@@ -243,6 +247,7 @@ cleaned-prompts >
       (should (string= output (ess-send-input-to-R input))))))
 
 (ert-deftest ess-inf-send-fn-test ()
+  (skip-unless (executable-find inferior-ess-r-program))
   (let ((input "fn <- function() {
 }
 ")
@@ -261,6 +266,7 @@ cleaned-prompts >
       )))
 
 (ert-deftest ess-inf-send-cat-some.text-test ()
+  (skip-unless (executable-find inferior-ess-r-program))
   (let ((input "cat(\"some. text\\n\")
 head(cars, 2)
 ")

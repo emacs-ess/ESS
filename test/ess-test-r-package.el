@@ -71,6 +71,7 @@
     (let ((pkg-dir (file-truename (cdr (ess-r-package-project))))
           ;; Not sure why this is needed:
           ess-ask-for-ess-directory)
+      (skip-unless (executable-find inferior-ess-r-program))
       (ess-set-working-directory (expand-file-name "src" pkg-dir))
       (ess-r-package-use-dir)
       (should (string= pkg-dir (file-truename (directory-file-name default-directory))))

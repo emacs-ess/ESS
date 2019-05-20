@@ -18,6 +18,7 @@
 
 ;;; Code:
 (require 'ert)
+(require 'ess-custom)
 
 (defvar ess-test-fixtures-directory
   (expand-file-name "fixtures"
@@ -95,7 +96,9 @@ inserted text."
   (save-window-excursion
     (let ((inhibit-message ess-inhibit-message-in-tests)
           (ess-ask-for-ess-directory nil))
-      (R "--vanilla"))))
+      (unless (executable-find inferior-ess-r-program)
+        (ert-skip (format "%s program not found" inferior-ess-r-program)))
+      (run-ess-r "--vanilla"))))
 
 (defun ess-send-input-to-R (input &optional type)
   "Eval INPUT and return the entire content of the REPL buffer.
@@ -178,6 +181,8 @@ representative to the common interactive use with tracebug on."
                                 (find-file-noselect buffer-or-file))
                                (t
                                 (generate-new-buffer " *with-r-file-temp*")))))
+     (unless (executable-find inferior-ess-r-program)
+       (ert-skip (format "%s program not found" inferior-ess-r-program)))
      (save-window-excursion
        (switch-to-buffer r-file-buffer)
        (R-mode)
