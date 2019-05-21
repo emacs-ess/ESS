@@ -158,14 +158,18 @@ This function will work even if LIST is unsorted.  See also `delete-dups'."
 
 (define-obsolete-function-alias 'ess-uniq-list 'delete-dups "ESS 19.04")
 
-(defun ess-flatten-list (&rest list)
-  "Take the arguments and flatten them into one long LIST.
+(defalias 'ess-flatten-list
+  ;; `flatten-tree' is a function in Emacs 27
+  (if (fboundp 'flatten-tree)
+      'flatten-tree
+    (lambda (list)
+      "Take the arguments and flatten them into one long LIST.
 Drops 'nil' entries."
-  ;; Taken from lpr.el
-  ;; `lpr-flatten-list' is defined here (copied from "message.el" and
-  ;; enhanced to handle dotted pairs as well) until we can get some
-  ;; sensible autoloads, or `flatten-list' gets put somewhere decent.
-  (ess-flatten-list-1 list))
+      ;; Taken from lpr.el
+      ;; `lpr-flatten-list' is defined here (copied from "message.el" and
+      ;; enhanced to handle dotted pairs as well) until we can get some
+      ;; sensible autoloads, or `flatten-list' gets put somewhere decent.
+      (ess-flatten-list-1 list))))
 
 (defun ess-flatten-list-1 (list)
   (cond
