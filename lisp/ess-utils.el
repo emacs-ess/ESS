@@ -118,20 +118,9 @@ Optionally ignore strings that match exceptions."
 (defun ess-save-and-set-local-variables ()
   "If buffer was modified, save file and set Local Variables if defined.
 Return t if buffer was modified, nil otherwise."
-  (interactive)
-  (let ((ess-temp-point (point))
-        (ess-temp-return-value (buffer-modified-p)))
-    ;; if buffer has changed, save buffer now (before potential revert)
-    (if ess-temp-return-value (save-buffer))
-    ;; If Local Variables are defined, update them now
-    ;; since they may have changed since the last revert
-    ;;  (save-excursion
-    (beginning-of-line -1)
-    (save-match-data
-      (if (search-forward "End:" nil t) (revert-buffer t t)))
-    ;; save-excursion doesn't save point in the presence of a revert
-    ;; so you need to do it yourself
-    (goto-char ess-temp-point)
+  (let ((ess-temp-return-value (buffer-modified-p)))
+    (save-buffer)
+    (hack-local-variables)
     ess-temp-return-value))
 
 (defun ess-get-file-or-buffer (file-or-buffer)
