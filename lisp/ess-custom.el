@@ -2013,10 +2013,6 @@ from `inferior-ess-primary-prompt' and `inferior-ess-secondary-prompt'.")
 
 ;;*;; Miscellaneous system variables
 
-(defvar ess-temp-point nil
-  "Variable used to retain a buffer position past let or let*.")
-
-
 ;; SJE: Wed 29 Dec 2004 - following 3 ess-object* variables can be removed
 ;; soon if no-one needs the completion code.
 (defvar ess-object-name-db-file "ess-namedb"

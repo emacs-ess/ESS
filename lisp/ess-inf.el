@@ -2014,7 +2014,6 @@ If in the output field, goes to the begining of previous input."
                 (setq command (concat command "\n"
                                       (buffer-substring-no-properties (point) (point-at-eol))))))
             (forward-line -1)
-            (setq ess-temp-point (point)) ;; this is ugly, used by transcript
             command)
         (message "No command at this point")
         ""))))
