@@ -557,20 +557,18 @@ the package directory was selected in the first place."
 (defun R-initialize-on-start ()
   "This function is run after the first R prompt.
 Executed in process buffer."
-  (let ((pager-cmd (format
-                    "if(identical(getOption('pager'),
+  (ess-command (format
+                "if(identical(getOption('pager'),
                                   file.path(R.home(), 'bin', 'pager')))
                         options(pager='%s')\n"
-                    inferior-ess-pager)))
-    (ess-command pager-cmd))
+                inferior-ess-pager))
   (inferior-ess-r-load-ESSR)
   (when inferior-ess-language-start
     (ess-command (concat inferior-ess-language-start "\n")))
   ;; tracebug
   (when ess-use-tracebug (ess-tracebug 1))
-  (with-ess-process-buffer nil
-    (add-hook 'ess-presend-filter-functions 'ess-R-scan-for-library-call nil 'local)
-    (run-mode-hooks 'ess-r-post-run-hook)))
+  (add-hook 'ess-presend-filter-functions 'ess-R-scan-for-library-call nil 'local)
+  (run-hooks 'ess-r-post-run-hook))
 
 (defun ess-r--skip-function ()
   ;; Assumes the point is at function start
