@@ -2834,7 +2834,7 @@ ESS has a few extra features, which didn't fit anywhere else.
 * Toolbar::                     Support for toolbar in ESS
 * Xref::                        Xref
 * Rdired::                      Directory editor for R objects
-* Rutils::                      R object/package management and help utilities
+* Package listing::             R object/package management and help utilities
 * Org::                         Interaction with Org mode
 * Sweave and AUCTeX::           Support for Sweave in ESS and AUCTeX
 @end menu
@@ -3132,55 +3132,32 @@ plot the object, `v' will view it, and `d' will mark the object for
 deletion (`x' will actually perform the deletion).
 
 
-@node Rutils
-@section Rutils
+@node Package listing
+@section Package listing
 
-Ess-rutils builds up on ess-rdired, providing key bindings for
-performing basic R functions in the inferior-ESS process buffer, such as
-loading and managing packages, object manipulation (listing, viewing,
-and deleting), and alternatives to @code{help.start()} and
-@code{RSiteSearch()} that use the @command{browse-url} Emacs function.
-The library can be loaded using @kbd{M-x load-file}, but the easiest is
-to include:
+ESS[R] provides several commands to list and manage packages and
+objects under the @code{C-c C-.} keymap:
 
-@lisp
-(require 'ess-rutils)
-@end lisp
-
-in your Emacs configuration file.  Once R is started with @kbd{M-x R}, and if the value of
-the customizable variable @code{ess-rutils-keys} is true, several key
-bindings become available in iESS process buffers:
-
-@deffn Command ess-rutils-local-pkgs
+@deffn Command ess-r-package-list-local-packages
 @kindex C-c C-. l
 @kbd{C-c C-. l} List all packages in all available libraries.
 @end deffn
 
-@deffn Command ess-rutils-repos-pkgs
+@deffn Command ess-r-package-list-available-packages
 @kindex C-c C-. r
 @kbd{C-c C-. r} List available packages from repositories listed by
 @command{getOptions(``repos'')} in the current R session.
 @end deffn
 
-@deffn Command ess-rutils-update-pkgs @var{lib} @var{repos}
+@deffn Command ess-r-package-update-packages @var{lib} @var{repos}
 @kindex C-c C-. u
 @kbd{C-c C-. u} Update packages in a particular library @var{lib} and
 repository @var{repos}.
 @end deffn
 
-@deffn Command ess-rutils-apropos
-@kindex C-c C-. a
-@kbd{C-c C-. a} Search for a string using apropos.
-@end deffn
-
 @deffn Command ess-rutils-rm-all
 @kindex C-c C-. m
 @kbd{C-c C-. m} Remove all R objects.
-@end deffn
-
-@deffn Command ess-rutils-objs
-@kindex C-c C-. o
-@kbd{C-c C-. o} Manipulate R objects; wrapper for @command{ess-rdired}.
 @end deffn
 
 @deffn Command ess-rutils-load-wkspc
@@ -3203,17 +3180,6 @@ repository @var{repos}.
 @kbd{C-c C-. H} Use @command{browse-url} to navigate R html
 documentation.
 @end deffn
-
-See the submenu @samp{Rutils} under the iESS menu for alternative access
-to these functions.  The function @command{ess-rutils-rsitesearch} is
-provided without a particular key binding.  This function is useful in
-any Emacs buffer, so can be bound to a user-defined key:
-
-@lisp
-(eval-after-load "ess-rutils"
-  '(global-set-key [(control c) (f6)] 'ess-rutils-rsitesearch))
-@end lisp
-@findex ess-rutils-rsitesearch
 
 Functions for listing objects and packages
 (@command{ess-rutils-local-pkgs}, @command{ess-rutils-repos-pkgs}, and
