@@ -128,10 +128,11 @@ Return t if buffer was modified, nil otherwise."
 Otherwise return the buffer associated with the file which must
 be qualified by it's path; if the buffer does not exist, return
 nil."
-  (interactive)
-  (if file-or-buffer
-      (if (bufferp file-or-buffer) file-or-buffer
-        (find-buffer-visiting file-or-buffer))))
+  (declare (side-effect-free t)
+           (obsolete nil "ESS 19.04"))
+  (if (bufferp file-or-buffer)
+      file-or-buffer
+    (find-buffer-visiting file-or-buffer)))
 
 (defun ess-uniq (list predicate)
   "Uniquify LIST, stably, deleting elements using PREDICATE.
@@ -966,6 +967,7 @@ Start at from FROM, which defaults to point."
 (defun ess-time-string (&optional clock)
   "Return a string for use as a timestamp, like \"13 Mar 1992\".
 Include hr:min if CLOCK is non-nil. Redefine to taste."
+  (declare (obsolete format-time-string "ESS 19.04"))
   (format-time-string (concat "%e %b %Y" (if clock ", %H:%M"))))
 
 (defun ess-replace-in-string (str regexp newtext &optional literal)

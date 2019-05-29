@@ -461,9 +461,12 @@ return new alist whose car is the new pair and cdr is ALIST.
       (cons (cons item value) alist))))
 
 (defun ess-sas-create-local-variables-alist (&optional file-or-buffer)
-  "Create an alist of local variables from file-or-buffer, use the
-current buffer if nil."
-  (if file-or-buffer (set-buffer (ess-get-file-or-buffer file-or-buffer)))
+  "Create an alist of local variables from file-or-buffer.
+Use the current buffer if nil."
+  (declare (obsolete nil "ESS 19.04"))
+  (if file-or-buffer (set-buffer (if (bufferp file-or-buffer)
+                                     file-or-buffer
+                                   (find-buffer-visiting file-or-buffer))))
   (ess-sas--change-alist 'ess-kermit-remote-directory ess-kermit-remote-directory nil))
 
 (define-obsolete-function-alias
