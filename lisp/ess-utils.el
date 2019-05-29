@@ -86,6 +86,7 @@ Otherwise go as far as possible and return -1."
       out)))
 
 (defun ess-goto-line (line)
+  "Goto LINE in the widened buffer."
   (save-restriction
     (widen)
     (goto-char (point-min))
@@ -101,8 +102,8 @@ THING can be 'function, 'paragraph, or 'line."
 
 (defun ess-search-except (regexp &optional except backward)
   "Search for a REGEXP and store as match 1.
-Optionally ignore strings that match exceptions."
-  (interactive)
+Optionally ignore strings that match EXCEPT. If BACKWARD is
+non-nil, search backward."
   (let ((continue t) (exit nil))
     (while continue
       (if (or (and backward (search-backward-regexp regexp nil t))
@@ -162,6 +163,7 @@ Drops 'nil' entries."
       (ess-flatten-list-1 list))))
 
 (defun ess-flatten-list-1 (list)
+  "Internal helper for `ess-flatten-list', which see for LIST."
   (cond
    ((null list) (list))
    ((consp list)
@@ -230,7 +232,7 @@ Search for the executables in the variable `exec-path'."
 (defmacro ess-when-new-input (time-var &rest body)
   "BODY is evaluate only if the value of procss variable TIME-VAR
 is bigger than the time of the last user input (stored in
-'last-eval' process variable). TIME-VAR is the name of the
+`last-eval' process variable). TIME-VAR is the name of the
 process variable which holds the access time. See the code for
 `ess-synchronize-dirs' and `ess-cache-search-list'.
 
@@ -346,17 +348,15 @@ ess-[dialect]-font-lock-keywords variable."
                     (symbol-value (car c))))
                 (ess--extract-fl-keywords))))
 
-(defun ess-font-lock-toggle-keyword (&optional keyword)
-  (interactive)
+(defun ess-font-lock-toggle-keyword (keyword)
+  "Toggle KEYWORD font-lock."
+  (interactive
+   (list (intern (ess-completing-read
+                  "Keyword to toggle"
+                  (mapcar (lambda (el) (symbol-name (car el)))
+                          (car (ess--fl-keywords-values)))
+                  nil t))))
   (let* ((values (ess--fl-keywords-values))
-         (keyword (or keyword
-                      (if (called-interactively-p 'any)
-                          (intern (ess-completing-read
-                                   "Keyword to toggle"
-                                   (mapcar (lambda (el) (symbol-name (car el)))
-                                           (car values))
-                                   nil t))
-                        (error "Wrong number of arguments"))))
          (kwd (cond
                ;; already in custom values
                ((assoc keyword (cdr values)))
@@ -529,7 +529,7 @@ formats: one for directory and another for the output file."
   "Yank and strip the code, leaving only (R/S/Lsp/..) commands.
 Deletes any lines not beginning with a prompt, and then removes
 the prompt from those lines that remain. Invoke this command with
-C-u C-u C-y."
+\\[universal-argument] \\[universal-argument] \\<ess-mode-map>\\[yank]."
   (setq yank-window-start (window-start))
   (let ((beg (point)))
     (push-mark beg)
@@ -543,7 +543,9 @@ C-u C-u C-y."
         (setq this-command 'yank))))
 
 (defun ess-yank (&optional arg)
-  "With double prefix ARG (C-u C-u) call `ess-yank-cleaned-commands'."
+  "Call `ess-yank-cleaned-commands' if ARG is 16.
+With double prefix ARG (\\[universal-argument]
+\\[universal-argument]) call `ess-yank-cleaned-commands'."
   (interactive "*P")
   (if (equal '(16) arg)
       (ess-yank-cleaned-commands)
@@ -647,6 +649,7 @@ Otherwise try a list of fixed known viewers."
   "The overlay for highlighting currently evaluated region or line.")
 
 (defun ess-blink-region (start end)
+  "Blink from START to END depending on option `ess-blink-region'."
   (when ess-blink-region
     (move-overlay ess-current-region-overlay start end)
     (run-with-timer ess-blink-delay nil
@@ -668,8 +671,8 @@ If `evil-mode' is on, switch to `evil-normal-state'."
 ;; Erik Iverson <iverson@biostat.wisc.edu>
 
 (defun ess-tooltip-show-at-point (text xo yo)
-  "Show a tooltip displaying 'text' at (around) point, xo and yo are x-
-and y-offsets for the toolbar from point."
+  "Show a tooltip displaying TEXT at (around) point.
+XO and YO are x- and y-offsets for the toolbar from point."
   (let (
         (fx (frame-parameter nil 'left))
         (fy (frame-parameter nil 'top))
@@ -739,6 +742,7 @@ Copied almost verbatim from gnus-utils.el (but with test for mac added)."
 ;;; Syntax
 
 (defun ess-containing-sexp-position ()
+  "Return the `cadr' of `syntax-ppss'."
   (cadr (syntax-ppss)))
 
 (defun ess-code-end-position ()
@@ -918,6 +922,7 @@ also return t if inside curly brackets."
 ;;; String manipulation
 
 (defun ess-quote-special-chars (string)
+  "Quote special characters in STRING."
   (replace-regexp-in-string
    "\"" "\\\\\\&"
    (replace-regexp-in-string ;; replace backslashes
