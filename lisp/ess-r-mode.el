@@ -516,11 +516,6 @@ will be prompted to enter arguments interactively."
     (let ((inf-buf (inferior-ess r-start-args ess-r-customize-alist debug)))
       (with-current-buffer inf-buf
         (ess-process-put 'funargs-pre-cache ess-r--funargs-pre-cache)
-        (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
-        (add-hook 'completion-at-point-functions 'ess-r-object-completion nil 'local)
-        (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
-        (add-hook 'xref-backend-functions #'ess-r-xref-backend nil 'local)
-        (setq comint-input-sender 'inferior-ess-r-input-sender)
         (if debug
             (progn
               ;; We need to use callback, because R might start with a gdb process
@@ -2238,6 +2233,11 @@ state.")
   (setq-local ess-font-lock-keywords 'inferior-ess-r-font-lock-keywords)
   (setq-local comint-process-echoes (eql ess-eval-visibly t))
   (setq-local comint-prompt-regexp inferior-S-prompt)
+  (setq comint-input-sender 'inferior-ess-r-input-sender)
+  (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
+  (add-hook 'completion-at-point-functions 'ess-r-object-completion nil 'local)
+  (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
+  (add-hook 'xref-backend-functions #'ess-r-xref-backend nil 'local)
   ;; eldoc
   (add-function :before-until (local 'eldoc-documentation-function)
                 #'ess-r-eldoc-function)
