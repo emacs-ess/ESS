@@ -2237,6 +2237,7 @@ state.")
   (ess-setq-vars-local ess-r-customize-alist)
   (setq-local ess-font-lock-keywords 'inferior-ess-r-font-lock-keywords)
   (setq-local comint-process-echoes (eql ess-eval-visibly t))
+  (setq-local comint-prompt-regexp inferior-S-prompt)
   ;; eldoc
   (add-function :before-until (local 'eldoc-documentation-function)
                 #'ess-r-eldoc-function)
