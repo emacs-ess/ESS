@@ -1328,10 +1328,10 @@ selected (see `ess-r-set-evaluation-env')."
   "Load/INSTALL/Update ESSR."
   (let* ((pkg-dir (expand-file-name "ESSR" ess-etc-directory))
          (src-dir (expand-file-name "R" pkg-dir)))
-    (if (not (or (bound-and-true-p ess-remote)
-                 (file-remote-p (ess-get-process-variable 'default-directory))))
-        (inferior-ess--r-load-ESSR--local src-dir)
-      (inferior-ess-r-load-ESSR--remote src-dir))))
+    (if (or (bound-and-true-p ess-remote)
+            (file-remote-p (ess-get-process-variable 'default-directory)))
+        (inferior-ess-r-load-ESSR--remote src-dir)
+      (inferior-ess--r-load-ESSR--local src-dir))))
 
 (defun inferior-ess--r-load-ESSR--local (src-dir)
   (let ((cmd (format "local({
