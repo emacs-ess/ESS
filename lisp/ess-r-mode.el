@@ -1331,7 +1331,7 @@ selected (see `ess-r-set-evaluation-env')."
     (if (not (or (bound-and-true-p ess-remote)
                  (file-remote-p (ess-get-process-variable 'default-directory))))
         (inferior-ess--r-load-ESSR--local src-dir)
-      (inferior-ess-r-load-ESSR--remote pkg-dir src-dir))))
+      (inferior-ess-r-load-ESSR--remote src-dir))))
 
 (defun inferior-ess--r-load-ESSR--local (src-dir)
   (let ((cmd (format "local({
@@ -1345,22 +1345,10 @@ selected (see `ess-r-set-evaluation-env')."
         (when (> (length msg) 1)
           (message (format "load ESSR: %s" msg)))))))
 
-(defun inferior-ess-r-load-ESSR--remote (pkg-dir src-dir)
-  (let* ((loadremote (expand-file-name "LOADREMOTE" pkg-dir))
-         (r-load-code (if (file-exists-p loadremote)
-                          (with-temp-buffer
-                            (insert-file-contents-literally loadremote)
-                            (buffer-string))
-                        (error "Cannot find ESSR source code"))))
-    (unless (ess-boolean-command (format r-load-code essr-version) nil 0.1)
-      (let ((errmsg (with-current-buffer " *ess-command-output*" (buffer-string)))
-            (files (directory-files src-dir t "\\.R$")))
-        (ess-write-to-dribble-buffer (format "error loading ESSR.rda: \n%s\n" errmsg))
-        ;; should not happen, unless extrem conditions (ancient R or failed download))
-        (message "Failed to download ESSR.rda (see *ESS* buffer). Injecting ESSR code from local machine")
-        ;; For this case we cannot do it at R level
-        (ess-command (format ".ess.ESSRversion <- '%s'\n" essr-version))
-        (mapc #'ess--inject-code-from-file files)))))
+(defun inferior-ess-r-load-ESSR--remote (src-dir)
+  (let ((files (directory-files src-dir t "\\.R$")))
+    (ess-command (format ".ess.ESSRversion <- '%s'\n" essr-version))
+    (mapc #'ess--inject-code-from-file files)))
 
 (cl-defmethod ess-quit--override (arg &context ((string= ess-dialect "R") (eql t)))
   "With ARG, do not offer to save the workspace."
