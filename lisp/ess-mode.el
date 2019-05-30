@@ -628,27 +628,21 @@ generate the source buffer."
 
 (defun ess-find-dump-file-other-window (filename)
   "Find ESS source file FILENAME in another window."
-  (if (file-exists-p filename) nil
+  (unless (file-readable-p filename)
     (ess-write-to-dribble-buffer
      (format "%s does not exist. Bad dump, starting fresh." filename)))
   ;; Generate a buffer with the dumped data
   (find-file-other-window filename)
-  (ess-mode)
   (auto-save-mode 1)            ; Auto save in this buffer
-  (setq ess-local-process-name ess-current-process-name)
-  (if ess-function-template
-      (progn
-        (goto-char (point-max))
-        (if (re-search-backward ess-dumped-missing-re nil t)
-            (progn
-              (replace-match ess-function-template t t)
-              (set-buffer-modified-p nil) ; Don't offer to save if killed now
-              (goto-char (point-min))
-              (condition-case nil
-                  ;; This may fail if there are no opens
-                  (down-list 1)
-                (error nil)))))))
-
+  (when (and ess-function-template
+             (goto-char (point-max))
+             (re-search-backward ess-dumped-missing-re nil t))
+    (replace-match ess-function-template t t)
+    (set-buffer-modified-p nil) ; Don't offer to save if killed now
+    (goto-char (point-min))
+    (ignore-errors
+      ;; This may fail if there are no opens
+      (down-list 1))))
 
 
 ;;; Runners
