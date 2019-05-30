@@ -572,9 +572,8 @@ generate the source buffer."
          (filename (concat dirname (convert-standard-filename (format ess-dump-filename-template object))))
          (old-buff (get-file-buffer filename)))
     ;; If the directory doesn't exist, offer to create it
-    (if (file-exists-p (directory-file-name dirname)) nil
-      (if (y-or-n-p                     ; Approved
-           (format "Directory %s does not exist. Create it? " dirname))
+    (unless (file-exists-p (directory-file-name dirname))
+      (if (y-or-n-p (format "Directory %s does not exist. Create it? " dirname))
           (make-directory (directory-file-name dirname))
         (error "Directory %s does not exist" dirname)))
     ;; Three options:
@@ -582,19 +581,14 @@ generate the source buffer."
     ;;  (2) Find an existing file
     ;;  (3) Create a new file by issuing a dump() command to S
     ;; Force option (3) if there is a prefix arg
-    (if current-prefix-arg
-        (ess-dump-object object filename)
-      (if old-buff
-          (progn
-            (pop-to-buffer old-buff)
-            (message "Popped to edit buffer."))
-        ;; No current buffer containing desired file
-        (if (file-exists-p filename)
-            (progn
-              (ess-find-dump-file-other-window filename)
-              (message "Read %s" filename))
-          ;; No buffer and no file
-          (ess-dump-object object filename))))))
+    (cond (current-prefix-arg
+           (ess-dump-object object filename))
+          (old-buff
+           (pop-to-buffer old-buff))
+          ((file-exists-p filename)
+           (ess-find-dump-file-other-window filename)
+           (message "Read %s" filename))
+          (t (ess-dump-object object filename)))))
 
 (defun ess-dump-object (object filename)
   "Dump the ESS object OBJECT into file FILENAME."
