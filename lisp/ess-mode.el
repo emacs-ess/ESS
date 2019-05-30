@@ -569,7 +569,7 @@ generate the source buffer."
                                                            ess-local-process-name))
                        (ess-setq-vars-local ess-local-customize-alist)
                        (apply ess-source-directory nil)))))
-         (filename (concat dirname (format ess-dump-filename-template object)))
+         (filename (concat dirname (convert-standard-filename (format ess-dump-filename-template object))))
          (old-buff (get-file-buffer filename)))
     ;; If the directory doesn't exist, offer to create it
     (if (file-exists-p (directory-file-name dirname)) nil
