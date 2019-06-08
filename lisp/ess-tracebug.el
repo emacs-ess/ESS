@@ -1215,18 +1215,19 @@ Kill the *ess.dbg.[R_name]* buffer."
 
 (defvar ess-mpi-alist
   '(("message" . message)
-    ("error" . ess-mpi:error)
-    ("eval" . ess-mpi:eval)
-    ("y-or-n" . ess-mpi:y-or-n)))
+    ("read"    . read)
+    ("error"   . ess-mpi:error)
+    ("eval"    . ess-mpi:eval)
+    ("y-or-n"  . ess-mpi:y-or-n)))
 
 (defun ess-mpi:error (msg)
-  (message (format "Error in inferior: %s" msg)))
+  (error "MPI error: %s" msg))
 
-(defun ess-mpi:eval (expr &optional callback)
-  "Evaluate EXP as Emacs expression.
+(defun ess-mpi:eval (str &optional callback)
+  "Read STR and evaluate as Emacs expression.
 If present, the CALLBACK string is passed through `format' with
 returned value from EXPR and then sent to the subprocess."
-  (let ((result (eval (read expr))))
+  (let ((result (eval (read str))))
     (when callback
       (ess-send-string (ess-get-process) (format callback result)))))
 
@@ -1236,7 +1237,8 @@ The CALLBACK string is passed through `format' with returned
 value from EXPR and then sent to the subprocess."
   (let ((result (y-or-n-p prompt)))
     (when callback
-      (ess-send-string (ess-get-process) (format callback result)))))
+      (let ((result (if result "TRUE" "FALSE")))
+        (ess-send-string (ess-get-process) (format callback result))))))
 
 (defun ess-mpi-handle-messages (buf)
   "Handle all mpi messages in BUF and delete them."
@@ -1252,16 +1254,13 @@ value from EXPR and then sent to the subprocess."
                (head (match-string 1))
                (payload (split-string (match-string 2) ""))
                (handler (cdr (assoc head ess-mpi-alist))))
-          (if handler
-              (condition-case-unless-debug err
+          (unwind-protect
+              (if handler
                   (with-current-buffer obuf
                     (apply handler payload))
-                (error (message (format "Error in mpi `%s' handler: %%s" head)
-                                (error-message-string err))))
-            ;; don't throw error here. The buffer must be cleaned first.
-            (message "Now handler defined for MPI message '%s" head))
-          (goto-char mbeg)
-          (delete-region mbeg mend))))))
+                (error "No handler defined for MPI message '%s" head))
+            (goto-char mbeg)
+            (delete-region mbeg mend)))))))
 
 (defun ess--replace-long+-in-prompt (prompt is-final)
   "Replace long + + + in PROMPT based on `inferior-ess-replace-long+' value.

@@ -5,6 +5,10 @@
     cat(sprintf("%s%s", head, payload))
 }
 
+.ess_mpi_read <- function(msg) {
+  .ess_mpi_send("read", msg)
+}
+
 .ess_mpi_message <- function(msg){
     .ess_mpi_send("message", msg)
 }
