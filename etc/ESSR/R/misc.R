@@ -30,7 +30,7 @@
 }
 
 ## Users might find it useful. So don't prefix with .ess.
-htsummary <- function(x, hlength = 4, tlength = 4, digits = 3) {
+.ess_htsummary <- function(x, hlength = 4, tlength = 4, digits = 3) {
     ## fixme: simplify and generalize
     snames <- c("mean", "sd", "min", "max", "nlev", "NAs")
     d <- " "

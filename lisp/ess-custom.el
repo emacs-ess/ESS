@@ -235,7 +235,7 @@ See also `tooltip-hide-delay' and variable `tooltip-delay'."
   'ess-r-describe-object-at-point-commands)
 (defcustom ess-r-describe-object-at-point-commands
   '(("str(%s)")
-    ("htsummary(%s, hlength = 20, tlength = 20)")
+    (".ess_htsummary(%s, hlength = 20, tlength = 20)")
     ("summary(%s, maxsum = 20)"))
   "A list of commands cycled by `ess-describe-object-at-point'.
 %s is substituted with the name at point.

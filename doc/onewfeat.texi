@@ -162,7 +162,7 @@ to source references in original org files (version 8.2.1 or higher of
 org-mode is required for this feature)
 @item @code{ess-execute} is now bound to @kbd{C-c C-e C-e} in @code{ess-extra-map}.
 @item completion works again in @code{ess-execute}
-@item @ESS{[R]}: @code{head} and @code{tail} methods were replaced by @code{htsummary} in
+@item @ESS{[R]}: @code{head} and @code{tail} methods were replaced by @code{.ess_htsummary} in
 @code{ess-R-describe-object-at-point-commands}
 @item @ESS{[roxygen]}: evaluation commands now work in roxygen blocks.
 Leading comments are automatically removed before the evaluation

@@ -1331,7 +1331,7 @@ selected (see `ess-r-set-evaluation-env')."
 (defun inferior-ess--r-load-ESSR--local (src-dir)
   (let ((cmd (format "local({
                           source('%s/.load.R', local=TRUE) #define load.ESSR
-                          load.ESSR('%s')
+                          .ess.load.ESSR('%s')
                       })\n"
                      src-dir src-dir)))
     (ess-write-to-dribble-buffer (format "load-ESSR cmd:\n%s\n" cmd))
