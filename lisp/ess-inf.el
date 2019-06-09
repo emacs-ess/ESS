@@ -2864,15 +2864,31 @@ Uses `temp-buffer-show-function' and respects
       (funcall temp-buffer-show-function buff))
   (display-buffer buff '(display-buffer-reuse-window) ess-display-buffer-reuse-frames))
 
-(defun ess--inject-code-from-file (file)
-  ;; this is different from ess-load-file
-  (let ((content (with-temp-buffer
-                   (insert-file-contents-literally file)
-                   (buffer-string))))
-    (when (string= ess-dialect "R")
-      ;; don't detect intermediate prompts
-      (setq content (concat "{" content "}\n")))
-    (ess-command content)))
+(defun ess--inject-code-from-file (file &optional chunked)
+  "Load code from FILE into process.
+If CHUNKED is non-nil, split the file by  separator (must be at
+bol) and load each chunk separately."
+  ;; This is different from ess-load-file as it works by directly loading the
+  ;; string into the process and thus works on remotes.
+  (let ((proc-name ess-local-process-name)
+        (dialect ess-dialect)
+        (send-1 (lambda (str)
+                  (if (string= ess-dialect "R")
+                      ;; avoid detection of intermediate prompts
+                      (ess-command (concat "{" str "}\n"))
+                    (ess-command str)))))
+    (with-temp-buffer
+      (setq ess-local-process-name proc-name
+            ess-dialect dialect)
+      (insert-file-contents-literally file)
+      (if chunked
+          (let ((beg (point-min)))
+            (goto-char beg)
+            (while (re-search-forward "^" nil t)
+              (funcall send-1 (buffer-substring beg (point)))
+              (setq beg (point)))
+            (funcall send-1 (buffer-substring (point) (point-max))))
+        (funcall send-1 (buffer-string))))))
 
 (defun ess-check-modifications nil
   "Check whether loading this file would overwrite some ESS objects
