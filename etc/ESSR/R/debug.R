@@ -34,6 +34,7 @@
          invert = TRUE, value = TRUE)
 }
 
+
 .ess_dbg_flag_for_debuging <- function(fname){
     all <- utils::getAnywhere(fname)
     if(length(all$obj) == 0){
@@ -93,8 +94,8 @@
     unique(c(debugged_pkg, debugged, all_traced))
 }
 
-.ess_dbg_UntraceOrUndebug <- function(name, env = parent.frame())
-{
+
+.ess_dbg_UntraceOrUndebug <- function(name, env = parent.frame()) {
     tr_state <- tracingState(FALSE)
     on.exit(tracingState(tr_state))
     if( grepl('::', name) ){
@@ -134,6 +135,7 @@
     }))
 }
 
+
 ### WATCH
 .ess_watch_expressions <- list()
 
@@ -170,12 +172,12 @@
     }
 }
 
-.ess_watch_assign_expressions <- function(elist){
+
+.ess_watch_assign_expressions <- function(elist) {
     assign(".ess_watch_expressions", elist, envir = as.environment("ESSR"))
 }
 
-.ess_log_eval <- function(log_name)
-{
+.ess_log_eval <- function(log_name) {
     env <- as.environment("ESSR")
     if(!exists(log_name, envir = env, inherits = FALSE))
         assign(log_name, list(), envir = env)
@@ -199,6 +201,7 @@
     invisible(NULL)
 }
 
+
 .ess_package_attached <- function(pack_name){
     as.logical(match(paste0("package:", pack_name), search()))
 }
