@@ -398,27 +398,23 @@ roxygen entry, error otherwise"
   "Insert an ARGS list to the end of the current roxygen entry.
 If HERE is supplied start inputting `here'. Finish at end of
 line."
-  (let* ((arg-des nil)
-         (roxy-str (ess-roxy-guess-str)))
-    (if (or (not here) (< here 1))
-        (progn
-          (ess-roxy-goto-end-of-entry)
-          (beginning-of-line)
-          (if (not (looking-at "\="))
-              (progn
-                (end-of-line))))
-      (goto-char here))
-    (while (stringp (car (car args)))
+  (let* ((roxy-str (ess-roxy-guess-str))
+         arg-des)
+    (if (and here (< 1 here))
+        (goto-char here)
+      (ess-roxy-goto-end-of-entry)
+      (beginning-of-line)
+      (when (not (looking-at-p "="))
+        (end-of-line)))
+    (while (stringp (caar args))
       (setq arg-des (pop args))
       (unless (string= (car arg-des) "")
-        (progn
-          (insert (concat "\n"
-                          roxy-str " @param " (car arg-des) " "))
-          (insert
-           (ess-replace-in-string (concat (car (cdr arg-des))) "\n"
-                                  (concat "\n" roxy-str)))
-          (if ess-roxy-fill-param-p
-              (fill-paragraph)))))))
+        (insert (concat "\n" roxy-str " @param " (car arg-des) " "))
+        (insert
+         (ess-replace-in-string (concat (car (cdr arg-des))) "\n"
+                                (concat "\n" roxy-str)))
+        (when ess-roxy-fill-param-p
+          (fill-paragraph))))))
 
 (defun ess-roxy-merge-args (fun ent)
   "Take two args lists (alists) and return their union.
@@ -428,13 +424,13 @@ drop entries from ent that are not in fun and are associated with
 the empty string."
   (let ((res-arg nil)
         (arg-des))
-    (while (stringp (car (car fun)))
+    (while (stringp (caar fun))
       (setq arg-des (pop fun))
       (if (assoc (car arg-des) ent)
           (setq res-arg
                 (cons (cons (car arg-des) (cdr (assoc (car arg-des) ent))) res-arg))
         (setq res-arg (cons (cons (car arg-des) '("")) res-arg))))
-    (while (stringp (car (car ent)))
+    (while (stringp (caar ent))
       (setq arg-des (pop ent))
       (if (and (not (assoc (car arg-des) res-arg)) (not (string= (car (cdr arg-des)) "")))
           (setq res-arg (cons (cons (car arg-des) (cdr arg-des)) res-arg))))
@@ -455,22 +451,18 @@ filled if `ess-roxy-fill-param-p' is non-nil."
            (args (ess-roxy-merge-args args-fun args-ent))
            (roxy-str (ess-roxy-guess-str))
            (line-break "")
-           here template tag-def)
+           template tag-def)
       (ess-roxy-goto-func-def)
-      (if (not (= (forward-line -1) 0))
-          (progn
-            (insert "\n")
-            (forward-line -1)))
-      (if (and (not (looking-at "^\n")) (not (ess-roxy-entry-p)))
-          (progn
-            (end-of-line)
-            (insert "\n")))
+      (when (not (= (forward-line -1) 0))
+        (insert "\n")
+        (forward-line -1))
+      (when (and (not (looking-at "^\n")) (not (ess-roxy-entry-p)))
+        (end-of-line)
+        (insert "\n"))
       (if (ess-roxy-entry-p)
-          (progn
-            (setq here (1- (ess-roxy-delete-args)))
-            (ess-roxy-insert-args args here))
+          (ess-roxy-insert-args args (1- (ess-roxy-delete-args)))
         (setq template (copy-sequence ess-roxy-template-alist))
-        (while (stringp (car (car template)))
+        (while (stringp (caar template))
           (setq tag-def (pop template))
           (if (string= (car tag-def) "param")
               (ess-roxy-insert-args args (point))
@@ -480,8 +472,7 @@ filled if `ess-roxy-fill-param-p' is non-nil."
               (if (string= (car tag-def) "details")
                   (insert (concat line-break roxy-str " " (cdr tag-def)))
                 (insert (concat line-break roxy-str " @"
-                                (car tag-def) " " (cdr tag-def))))
-              ))
+                                (car tag-def) " " (cdr tag-def))))))
           (setq line-break "\n"))))))
 
 (defun ess-roxy-goto-end-of-entry ()
