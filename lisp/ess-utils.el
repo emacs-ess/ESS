@@ -135,6 +135,14 @@ nil."
       file-or-buffer
     (find-buffer-visiting file-or-buffer)))
 
+(defun ess-file-content (file)
+  "Return the content of FILE as string."
+  (if (file-exists-p file)
+      (with-temp-buffer
+        (insert-file-contents-literally file)
+        (buffer-string))
+    (error "File '%s' does not exist" file)))
+
 (defun ess-uniq (list predicate)
   "Uniquify LIST, stably, deleting elements using PREDICATE.
 Return the list with subsequent duplicate items removed by side effects.

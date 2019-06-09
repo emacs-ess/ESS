@@ -57,6 +57,22 @@
   :type 'hook
   :group 'ess-R)
 
+
+(defcustom ess-r-fetch-ESSR-on-remotes nil
+  "If non-nil, fetch ESSR from the github repository.
+Otherwise source from local ESS installation. When 'ess-remote,
+fetch only with `ess-remote'. When t, always fetch from remotes.
+Change this variable when loading ESSR code on remotes fails
+systematically.
+
+Fetching happens once per new ESSR version. The archive is stored
+in ~/.config/ESSR/ folder. You can download and place it there
+manually if the remote has restricted network access."
+  :type '(choice (const nil :tag "Never")
+                 (const 'ess-remote :tag "With ess-remote only")
+                 (const t :tag "Always"))
+  :group 'ess-R)
+
 ;; Silence the byte compiler
 (defvar add-log-current-defun-header-regexp)
 
@@ -560,7 +576,7 @@ Executed in process buffer."
                                   file.path(R.home(), 'bin', 'pager')))
                         options(pager='%s')\n"
                 inferior-ess-pager))
-  (inferior-ess-r-load-ESSR)
+  (ess-r-load-ESSR)
   (when inferior-ess-language-start
     (ess-command (concat inferior-ess-language-start "\n")))
   ;; tracebug
@@ -1319,43 +1335,46 @@ selected (see `ess-r-set-evaluation-env')."
     (or (ess-help-r--process-help-input proc string)
         (inferior-ess-input-sender proc string))))
 
-(defun inferior-ess-r-load-ESSR ()
-  "Load/INSTALL/Update ESSR."
-  (let* ((pkg-dir (expand-file-name "ESSR" ess-etc-directory))
-         (src-dir (expand-file-name "R" pkg-dir)))
-    (if (not (or (bound-and-true-p ess-remote)
-                 (file-remote-p (ess-get-process-variable 'default-directory))))
-        (inferior-ess--r-load-ESSR--local src-dir)
-      (inferior-ess-r-load-ESSR--remote pkg-dir src-dir))))
+(defun ess-r-load-ESSR ()
+  "Load ESSR functionality."
+  (cond
+   ((file-remote-p (ess-get-process-variable 'default-directory))
+    (if (eq ess-r-fetch-ESSR-on-remotes t)
+        (ess-r--fetch-ESSR-remote)
+      (ess-r--load-ESSR-remote)))
+   ((and (bound-and-true-p ess-remote))
+    (if ess-r-fetch-ESSR-on-remotes
+        (ess-r--fetch-ESSR-remote)
+      (ess-r--load-ESSR-remote t)))
+   (t (ess-r--load-ESSR-local))))
 
-(defun inferior-ess--r-load-ESSR--local (src-dir)
-  (let ((cmd (format "local({
+(defun ess-r--load-ESSR-local ()
+  (let* ((src-dir (expand-file-name "ESSR/R" ess-etc-directory))
+         (cmd (format "local({
                           source('%s/.load.R', local=TRUE) #define load.ESSR
                           .ess.load.ESSR('%s')
                       })\n"
-                     src-dir src-dir)))
-    (ess-write-to-dribble-buffer (format "load-ESSR cmd:\n%s\n" cmd))
+                      src-dir src-dir)))
     (with-current-buffer (ess-command cmd)
       (let ((msg (buffer-string)))
         (when (> (length msg) 1)
-          (message (format "load ESSR: %s" msg)))))))
+          (message (format "Messages while loading ESSR: %s" msg)))))))
 
-(defun inferior-ess-r-load-ESSR--remote (pkg-dir src-dir)
-  (let* ((loadremote (expand-file-name "LOADREMOTE" pkg-dir))
-         (r-load-code (if (file-exists-p loadremote)
-                          (with-temp-buffer
-                            (insert-file-contents-literally loadremote)
-                            (buffer-string))
-                        (error "Cannot find ESSR source code"))))
-    (unless (ess-boolean-command (format r-load-code essr-version) nil 0.1)
-      (let ((errmsg (with-current-buffer " *ess-command-output*" (buffer-string)))
-            (files (directory-files src-dir t "\\.R$")))
-        (ess-write-to-dribble-buffer (format "error loading ESSR.rda: \n%s\n" errmsg))
-        ;; should not happen, unless extrem conditions (ancient R or failed download))
-        (message "Failed to download ESSR.rda (see *ESS* buffer). Injecting ESSR code from local machine")
-        ;; For this case we cannot do it at R level
-        (ess-command (format ".ess.ESSRversion <- '%s'\n" essr-version))
-        (mapc #'ess--inject-code-from-file files)))))
+(defun ess-r--load-ESSR-remote (&optional chunked)
+  (ess-command (format ".ess.ESSRversion <- '%s'\n" essr-version))
+  (with-temp-message "Loading ESSR into remote ..."
+    (let ((src-dir (expand-file-name "ESSR/R" ess-etc-directory)))
+      (dolist (file (directory-files src-dir t "\\.R$"))
+        (ess--inject-code-from-file file chunked)))))
+
+(defun ess-r--fetch-ESSR-remote ()
+  (let ((loader (ess-file-content (expand-file-name "ESSR/LOADREMOTE" ess-etc-directory))))
+    (unless (ess-boolean-command (format loader essr-version) nil 0.1)
+      (let* ((errmsg (with-current-buffer " *ess-command-output*" (buffer-string)))
+             (src-dir (expand-file-name "ESSR/R" ess-etc-directory))
+             (files (directory-files src-dir t "\\.R$")))
+        (message (format "Couldn't load ESSR.rds. Injecting from local.\n Error: %s\n" errmsg))
+        (ess-r--load-ESSR-remote)))))
 
 (cl-defmethod ess-quit--override (arg &context ((string= ess-dialect "R") (eql t)))
   "With ARG, do not offer to save the workspace."
