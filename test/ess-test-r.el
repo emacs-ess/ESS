@@ -371,6 +371,29 @@ my_mean2 <- function(z){
     (search-forward "param z the param")
     (should (equal (ess-roxy-get-function-args) '("z")))))
 
+(ert-deftest ess-roxy-update-entry-test ()
+  (should (string=
+           "fun1 <- function(x) x
+##' .. content for \\description{} (no empty lines) ..
+##'
+##' .. content for \\details{} ..
+##' @title 
+##' @param x 
+##' @return 
+##' @author Jane Doe
+fun2 <- function(x) x"
+           (ess-r-test-with-temp-text "fun1 <- function(x) x
+
+¶fun2 <- function(x) x"
+             (let ((ess-roxy-template-alist '(("description" . ".. content for \\description{} (no empty lines) ..")
+                                              ("details" . ".. content for \\details{} ..")
+                                              ("title" . "")
+                                              ("param" . "")
+                                              ("return" . "")
+                                              ("author" . "Jane Doe"))))
+               (ess-roxy-update-entry))
+             (buffer-substring-no-properties (point-min) (point-max))))))
+
 (ert-deftest ess-roxy-cpp-test ()
   ;; Test M-q
   (should (string=

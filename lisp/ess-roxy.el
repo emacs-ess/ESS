@@ -384,7 +384,8 @@ roxygen entry, error otherwise"
         (ess-roxy-goto-end-of-entry)
         (forward-line 1)
         (beginning-of-line))
-    (beginning-of-defun)))
+    (unless (looking-at-p ess-function-pattern)
+      (beginning-of-defun))))
 
 (defun ess-roxy-get-args-list-from-def ()
   "Get args list for current function."
