@@ -431,16 +431,22 @@ buffer local values by the user in mode hooks.")
   "Set up the `ess-mode' style variables from the `ess-style' variable.
 If STYLE argument is given, use that instead. It makes the ESS
 indentation style variables buffer local. QUIET is for backward
-compatibility and is ignored. In programs, when STYLE is nil, the
-`ess-style' is being installed, but settings which are already
-buffer local are not overwritten."
+compatibility and is ignored.
+
+In programs, when STYLE is nil, the `ess-style' is installed. In
+this case, if `ess-style' is buffer local, all settings are
+overwritten, otherwise only those settings which are not already
+buffer local. For example, `ess-style' is buffer local when it is
+set in .dir-locals and thus must have priority over the user
+settings in the mode hook."
   (interactive
    (list (let ((styles (mapcar (lambda (x) (symbol-name (car x)))
                                ess-style-alist)))
            (intern (ess-completing-read
                     "Set ESS mode indentation style"
                     styles nil t nil nil ess-style)))))
-  (let* ((keep-local (null style))
+  (let* ((keep-local (and (null style)
+                          (not (local-variable-p 'ess-style))))
          (style (or style ess-style))
          (style-alist (or (cdr (assq style ess-style-alist))
                           (error "Bad ESS style: %s" style)))
