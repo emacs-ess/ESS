@@ -407,8 +407,9 @@ re-installation when called with a prefix ARG."
                   (ess-r-command--build-args 0 '((read-string "Arguments: " "force = TRUE")))
                 "")))
     (inferior-ess-r-force)
-    (display-buffer (ess-get-process-buffer)
-                    '(nil . ((inhibit-same-window . t))))
+    (unless (derived-mode-p 'inferior-ess-mode)
+      (display-buffer (ess-get-process-buffer)
+                      '(nil . ((inhibit-same-window . t)))))
     (message "Installing %s from github" repo)
     (ess-eval-linewise (format command repo args))))
 

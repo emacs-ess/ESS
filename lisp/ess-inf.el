@@ -1195,9 +1195,6 @@ This handles Tramp when working on a remote."
                          (expand-file-name
                           (read-file-name "Load source file: " nil nil t)))))
   (ess-load-file--normalise-buffer filename)
-  ;; Pop up an inferior window
-  (save-selected-window
-    (ess-switch-to-ESS t))
   (setq filename (ess-load-file--normalise-file filename))
   (ess-load-file--override filename))
 
@@ -1371,9 +1368,7 @@ similar to `load-library' Emacs function."
         pack)
     (setq pack (ess-completing-read "Load" packs))
     (ess-load-library--override pack)
-    (ess--mark-search-list-as-changed)
-    (display-buffer (buffer-name (ess-get-process-buffer))
-                    '(nil . ((inhibit-same-window . t))))))
+    (ess--mark-search-list-as-changed)))
 
 (cl-defgeneric ess-installed-packages ()
   "Return a list of installed packages.")
