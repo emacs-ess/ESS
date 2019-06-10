@@ -75,4 +75,7 @@ f8 <-
     ...
 } ## end of f8
 
+f9 <- function (x, ...) some_code
+
+
 ## navigation.R ends here

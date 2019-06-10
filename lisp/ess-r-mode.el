@@ -622,10 +622,9 @@ for top-level functions only."
         done)
     ;; In case we are at the start of a function, skip past new lines.
     (when (> arg 0)
-      (skip-chars-backward " \t\n")
-      ;; Start search from eol to capture current function start. But not when
-      ;; arg < 0; see end-of-defun protocol above.
-      (end-of-line 1))
+      ;; Start search from a forward position in order to capture current
+      ;; function start. But not when arg < 0; see end-of-defun protocol above.
+      (forward-line 2))
     (while (and (not done)
                 (re-search-backward ess-r-function-pattern nil t arg))
       (unless (ess-inside-string-or-comment-p)
@@ -636,11 +635,13 @@ for top-level functions only."
         (if (< arg 0)
             ;; move to match-end to avoid the infloop in re-search-backward
             (goto-char (if done (match-beginning 0) (match-end 0)))
-          ;; Backward regexp match stops at the minimal match, so we need a bit
-          ;; more work here.
+          ;; Backward regexp match stops at the minimal match (e.g. partial
+          ;; function name), so we need a bit more work here.
           (beginning-of-line)
           (re-search-forward ess-r-function-pattern)
-          (goto-char (match-beginning 0)))))
+          (goto-char (match-beginning 0))
+          (when (<= start-point (point))
+            (setq done nil)))))
     (if done
         (point)
       (goto-char start-point)

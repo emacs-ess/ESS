@@ -513,7 +513,18 @@ fun2 <- function(x) x"
     (should (looking-at-p "f6 = function"))
     (re-search-forward "some_code7")
     (ess-r-beginning-of-function)
-    (should (looking-at-p "f7 = function"))))
+    (should (looking-at-p "f7 = function"))
+
+    (goto-char (point-min))
+    (search-forward "f8 <-")
+    (ess-r-beginning-of-function)
+    (should (looking-at-p "f8 <-"))
+
+    (goto-char (point-min))
+    (search-forward "f9 <-")
+    (beginning-of-line 1)
+    (ess-r-beginning-of-function)
+    (should (looking-at-p "f8 <-"))))
 
 (ert-deftest ess-r-goto-beginning/end-of-function-or-para-test ()
   (with-ess-test-r-file (expand-file-name "navigation.R" ess-test-fixtures-directory)
