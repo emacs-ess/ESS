@@ -745,6 +745,9 @@ bracket."
 (defvar ess-indent-offset 2
   "Main indentation offset that is commonly inherited by other offsets.
 See `ess-style-alist' for all available offsets.")
+;;;###autoload
+(put 'ess-indent-offset 'safe-local-variable #'numberp)
+
 
 (defvar ess-offset-arguments 'open-delim
   "Indent for arguments of function calls or indexing brackets.
