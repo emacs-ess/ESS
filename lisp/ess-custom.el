@@ -1299,7 +1299,8 @@ of each variable for its meaning."
          (set symbol value)
          (ess-add-style 'OWN value)))
 
-;;;###autoload (put 'ess-style 'safe-local-variable #'symbolp)
+;;;###autoload
+(put 'ess-style 'safe-local-variable #'symbolp)
 
 (define-obsolete-variable-alias 'ess-default-style 'ess-style "ESS 19.04")
 (defcustom ess-style 'RRR
