@@ -44,6 +44,8 @@
 ;;; Code:
 
 (require 'ess-utils)
+(require 'cl-generic)
+
 (defvar reporter-prompt-for-summary-p)
 
 
@@ -178,6 +180,42 @@ etc.")
   (run-with-idle-timer ess-idle-timer-interval 'repeat 'ess--idle-timer-function)
   "Timer used to run `ess-idle-timer-functions'.")
 
+
+;;; Dispatch on ess-dialect
+;; FIXME: Simplified and generalize by relying on derived-mode specializer (see
+;; cl-generic.el). Our dialects now map perfectly to major modes. We could
+;; either directly rely on major-mode specializer, or keep the ess-dialect
+;; dispatcher. For the latter it seems that only
+;; cl-generic-define-context-rewriter is needed.
+
+;; Two parts:
+;; - first define a specializer (ess-dialect= DIALECT ) to match symbols
+;;   representing major modes, while obeying the major mode hierarchy.
+;; - then define a context-rewriter so you can write
+;;   "&context (major-mode c-mode)" rather than
+;;   "&context (major-mode (derived-mode c-mode))".
+
+(cl-generic-define-generalizer ess--generic-dialect-generalizer
+  95
+  (lambda (name &rest _) `(if (stringp ,name) (intern ,name)
+                            (if (symbolp ,name) ,name)))
+  (lambda (tag &rest _) `((ess-dialect= ,tag))))
+
+(cl-defmethod cl-generic-generalizers ((_specializer (head ess-dialect=)))
+  "Support for (ess-dialect DIALECT) context specializer."
+  (list ess--generic-dialect-generalizer))
+
+(cl-generic-define-context-rewriter ess-dialect (dialect)
+  `(ess-dialect (ess-dialect= ,(if (stringp dialect)
+                                   (intern dialect)
+                                 dialect))))
+
+;; (cl-defgeneric ess-print-dialect ()
+;;   (error "unknown dialect %s" ess-dialect))
+;; (cl-defmethod ess-print-dialect (&context (ess-dialect "R"))
+;;   (message "dialect: R"))
+;; (cl-defmethod ess-print-dialect (&context (ess-dialect "julia"))
+;;   (message "dialect: julia"))
 
 (provide 'ess)
 
