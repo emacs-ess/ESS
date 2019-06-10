@@ -108,7 +108,9 @@ local({
 }
 
 
-.ess_get_completions <- function(string, end){
+.ess_get_completions <- function(string, end, suffix = " = ") {
+    oldopts <- utils::rc.options(funarg.suffix = suffix)
+    on.exit(utils::rc.options(oldopts))
     if(.ess.Rversion > '2.14.1'){
         comp <- compiler::enableJIT(0)
         op <- options(error=NULL)
