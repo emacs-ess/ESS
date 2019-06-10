@@ -182,18 +182,17 @@ etc.")
 
 
 ;;; Dispatch on ess-dialect
-;; FIXME: Simplified and generalize by relying on derived-mode specializer (see
-;; cl-generic.el). Our dialects now map perfectly to major modes. We could
-;; either directly rely on major-mode specializer, or keep the ess-dialect
-;; dispatcher. For the latter it seems that only
-;; cl-generic-define-context-rewriter is needed.
+;; Inspired by major-mode specializer in cl-generic.el
+
+;; FIXME: Implement a notion of derived dialects. major-mode specializer cannot
+;; be used here as we need same dialect in different major-modes.
 
 ;; Two parts:
-;; - first define a specializer (ess-dialect= DIALECT ) to match symbols
-;;   representing major modes, while obeying the major mode hierarchy.
-;; - then define a context-rewriter so you can write
-;;   "&context (major-mode c-mode)" rather than
-;;   "&context (major-mode (derived-mode c-mode))".
+;; 1) first define a specializer (ess-dialect= DIALECT) to match symbols
+;;    representing ess dialects.
+;; 2) then define a context-rewriter so you can write
+;;   `&context (ess-dialect "R")` rather than
+;;   `&context (ess-dialect (ess-dialect= "R"))`.
 
 (cl-generic-define-generalizer ess--generic-dialect-generalizer
   95
