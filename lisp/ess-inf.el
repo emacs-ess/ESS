@@ -1196,7 +1196,8 @@ This handles Tramp when working on a remote."
                           (read-file-name "Load source file: " nil nil t)))))
   (ess-load-file--normalise-buffer filename)
   (setq filename (ess-load-file--normalise-file filename))
-  (ess-load-file--override filename))
+  (ess-load-file--override filename)
+  (message "Loaded %s" filename))
 
 (cl-defgeneric ess-load-file--override (filename)
   (let ((command (ess-build-load-command filename nil t)))
