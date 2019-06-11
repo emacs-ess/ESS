@@ -1213,12 +1213,17 @@ Kill the *ess.dbg.[R_name]* buffer."
 
 (defvar ess-mpi-control-regexp "\\([^]+\\)\\([^]+\\)")
 
-(defvar ess-mpi-alist
+(define-obsolete-variable-alias 'ess-mpi-alist 'ess-mpi-handlers "ESS 19.04")
+(defvar ess-mpi-handlers
   '(("message" . message)
     ("read"    . read)
     ("error"   . ess-mpi:error)
     ("eval"    . ess-mpi:eval)
-    ("y-or-n"  . ess-mpi:y-or-n)))
+    ("y-or-n"  . ess-mpi:y-or-n))
+  "Alist of the MPI handlers.
+Each element is of the form (TYPE . HANDLER), where TYPE is the
+message type and HANDLER is a function (symbol) to be called on
+the payload list of each message.")
 
 (defun ess-mpi:error (msg)
   (error "MPI error: %s" msg))
