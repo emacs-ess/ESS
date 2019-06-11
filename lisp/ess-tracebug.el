@@ -1240,6 +1240,12 @@ value from EXPR and then sent to the subprocess."
       (let ((result (if result "TRUE" "FALSE")))
         (ess-send-string (ess-get-process) (format callback result))))))
 
+(defun ess-mpi-convert (el)
+  (cond
+   ((string= el "nil") nil)
+   ((string= el "t") t)
+   (t el)))
+
 (defun ess-mpi-handle-messages (buf)
   "Handle all mpi messages in BUF and delete them."
   (let ((obuf (current-buffer)))
@@ -1252,7 +1258,7 @@ value from EXPR and then sent to the subprocess."
         (let* ((mbeg (match-beginning 0))
                (mend (match-end 0))
                (head (match-string 1))
-               (payload (split-string (match-string 2) ""))
+               (payload (mapcar #'ess-mpi-convert (split-string (match-string 2) "")))
                (handler (cdr (assoc head ess-mpi-alist))))
           (unwind-protect
               (if handler
