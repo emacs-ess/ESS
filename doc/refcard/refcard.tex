@@ -190,7 +190,7 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
 
 \Sect{General Commands}
 
-\texttt{ess-doc-map} (\texttt{C-c C-d}):
+\texttt{ess-doc-map} (prefix \texttt{C-c C-d}):
 
 \begin{tabI}
   \texttt{C-a, a}   & \textbf{A}propos \\
@@ -202,7 +202,7 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
   \texttt{C-w, w}   & \textbf{W}eb search (dialect dependent) \\
 \end{tabI}
 
-\texttt{ess-extra-map} (\texttt{C-c C-e}):
+\texttt{ess-extra-map} (prefix \texttt{C-c C-e}):
 
 \begin{tabI}
   \texttt{C-d, d} & Dump object into edit buffer \\
@@ -252,7 +252,7 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
 
   \Sect{ESS tracebug}
   %% ~~~~~~~~~~~~~~~~
-  Commands in \texttt{ess-dev-map} (\texttt{C-c C-t}):
+  Commands in \texttt{ess-dev-map} (prefix \texttt{C-c C-t}):
 
   \begin{tabular}{p{20mm}l}
     \texttt{?} & Show key help \\
@@ -279,8 +279,8 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
     \texttt{M-N}&  Next line\\
     \texttt{M-Q}&  Quit\\
     \texttt{M-U}&  Up frame\\
-    \texttt{M-C-C}&  Continue Multiple\\
-    \texttt{M-C-N}&  Next Multiple\\
+    \texttt{C-M-S-c}&  Continue Multiple\\
+    \texttt{C-M-S-n}&  Next Multiple\\
   \end{tabular}
 
   \underline{\textbf{Others}}
@@ -296,7 +296,7 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
 
   \Sect{Package development}
 %% ~~~~~~~~~~~~~~~~
-  Evaluate your code into a given package (in \texttt{ess-dev-map},
+  Evaluate your code into a given package (in \texttt{ess-dev-map}, prefix
   \texttt{C-c C-t}):
   
   \begin{tabI}
@@ -308,7 +308,7 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
   
   \begin{tabI}
     \texttt{C-b, b} & Build package (\texttt{devtools::build()})\\
-    \texttt{C-c C-c} & Check package (\texttt{devtools::check()})\\
+    \texttt{C-c C-c} & Check package (\texttt{devtools::check()})\\   
     \texttt{C-d, d} & Document package (\texttt{devtools::document()})\\
     \texttt{C-i, i} & Install package (\texttt{devtools::install()})\\
     \texttt{C-t, t} & Run all tests (\texttt{devtools::test()})\\
@@ -326,17 +326,18 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
   
   Inside \texttt{*.Rd} files:
   
-  \begin{tabI}
+  \begin{tabular}{p{25mm}l}
     \texttt{C-c C-e} & Insert a template of help file\\
     \texttt{\TAB} & Indent current line\\
-    \texttt{C-c C-f} & Display list of font specifiers\\
+    \texttt{C-c C-f} & Prefix for font specifiers\\
+    \texttt{C-c C-f \TAB} & Display list of font specifiers\\
     \texttt{C-c C-j} & Insert an `\texttt{\textbackslash item}' on next line\\
     \texttt{C-c C-n} & (in example section) \\
                      & send current line to ESS process \\
     \texttt{C-c C-p} & Preview help file in plain text \\
-  \end{tabI}
+  \end{tabular}
 
-  For \texttt{Roxygen} users, inside \texttt{*.R} files (\textbf{C-c C-o}):
+  For \texttt{Roxygen} users, inside \texttt{*.R} files \\ (prefix \texttt{C-c C-o}):
   
   \begin{tabI}
     \texttt{C-o} & Insert an Roxygen template\\
