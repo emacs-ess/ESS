@@ -308,7 +308,11 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
   
   \begin{tabI}
     \texttt{C-b, b} & Build package (\texttt{devtools::build()})\\
-    \texttt{C-c C-c} & Check package (\texttt{devtools::check()})\\   
+    \texttt{C-c c} & Check package (\texttt{devtools::check()})\\   
+    \texttt{C-c w} & Check and build package with winbuilder \\
+                            & (\texttt{devtools::check\_win\_devel()})\\
+    \texttt{C-c h} & Check and build package with R-hub \\
+                           & (\texttt{devtools::check\_rhub()})\\
     \texttt{C-d, d} & Document package (\texttt{devtools::document()})\\
     \texttt{C-i, i} & Install package (\texttt{devtools::install()})\\
     \texttt{C-t, t} & Run all tests (\texttt{devtools::test()})\\
