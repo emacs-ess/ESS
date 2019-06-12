@@ -3,6 +3,7 @@
 \usepackage{parskip}
 \usepackage{verbatim}
 \usepackage{fullpage}% +- ok for paper 'A4' as well
+\usepackage{textcomp}% added from \textasciigrave
 %\usepackage{svn}% and {fullpage} are both in debian/ubuntu pkg 'texlive-latex-extra'
 
 \addtolength{\textheight}{20mm}
@@ -33,8 +34,8 @@
 
   \smallskip
 
-  {\small updated for ESS 12.09-1}% {\footnotesize --- needs \em{more} updating!}}
-  \\[1ex] {\tiny September 2012}
+  {\small updated for ESS 18.10-3}% {\footnotesize --- needs \em{more} updating!}}
+  \\[1ex] {\tiny June 2019}
            % \footnotesize --- as of \today
 \end{center}
 % takes a lot of space
@@ -54,13 +55,13 @@
 \Sect{Interacting with the process}
 %%    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For use in a process buffers ({\small inferior-ess-mode}):
+For use in a process buffer ({\texttt{inferior-ess-mode}}):
 
 \begin{tabI}
   \texttt{\RET   } & Send a command\\
   \texttt{C-c \RET} & Copy old input\\
-  \texttt{\TAB}& Complete object or file name.\\
-  & Also bound to \texttt{M-\TAB}, \texttt{M-C-i}.\\
+  \texttt{\TAB}& Complete object or file name\\
+  %& Also bound to \texttt{M-\TAB}, \texttt{M-C-i}.\\ % seems to be obsolete
   \texttt{C-c C-c }& Break \\
   \texttt{C-g}     & interrupt Emacs' waiting for S\\
   %% SfS-only (others need C-u C-a for comint-bol !
@@ -69,7 +70,9 @@ For use in a process buffers ({\small inferior-ess-mode}):
   \texttt{C-c C-w }& Delete last word \\
   % \texttt{M-C-r }& String search
   \texttt{C-c C-r }& Top of last output \\
-  \texttt{C-c C-o }& Delete last output
+  \texttt{C-c C-o }& Delete last output \\
+  \texttt{C-c C-n}& Next \hspace{1.4em} prompt \\ % moved from Transcript section
+  \texttt{C-c C-p}& Previous            prompt \\ % moved from Transcript section
 \end{tabI}
 
 \begin{tabTit}{Command history (part of Menu `\texttt{In/Out}')}
@@ -113,12 +116,12 @@ For use in a process buffers ({\small inferior-ess-mode}):
 \Sect{Inside ESS Transcripts (I + O)}
 %%    ~~~~~~~~~~~~~~~~
 
-Inside (\texttt{*.Rout} files):
+Inside \texttt{*.Rout} files:
 
 \begin{tabI}
-  \texttt{\RET} & Send and Move \\
-  \texttt{C-c C-n}& Next \hspace{1.4em} prompt \\
-  \texttt{C-c C-p}& Previous            prompt \\
+  \texttt{M-\RET} & Send current line \\  
+  \texttt{\RET} & Send and move to next line \\
+  \texttt{C-\RET} & Copy current line into ESS buffer \\  
   \texttt{C-c C-w}& Clean Region ($\mapsto$ input only)
 \end{tabI}\\[0.5cm]
 
@@ -187,7 +190,7 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
 
 \Sect{General Commands}
 
-\textbf{ess-doc-map} (\textbf{C-c C-d}):
+\texttt{ess-doc-map} (prefix \texttt{C-c C-d}):
 
 \begin{tabI}
   \texttt{C-a, a}   & \textbf{A}propos \\
@@ -199,7 +202,7 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
   \texttt{C-w, w}   & \textbf{W}eb search (dialect dependent) \\
 \end{tabI}
 
-\textbf{\underline{ess-extra-map}} (\textbf{C-c C-e}):
+\texttt{ess-extra-map} (prefix \texttt{C-c C-e}):
 
 \begin{tabI}
   \texttt{C-d, d} & Dump object into edit buffer \\
@@ -228,7 +231,7 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
 
   \begin{tabI}
     \texttt{SPC} & Next page \\
-    \texttt{b, DEL}   & Previous page (`\textbf{b}ack')\\
+    \texttt{DEL}   & Previous page\\
     \texttt{n}   & \textbf{N}ext section \\
     \texttt{p}   & \textbf{P}revious section \\
     \texttt{s}   & \textbf{S}kip (`jump') to a named section \\
@@ -237,35 +240,38 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
     \texttt{r}   & Evaluate current \textbf{r}egion \\
     \texttt{q}   & \textbf{Q}uit window \\
     \texttt{k}   & \textbf{K}ill this buffer\\
-    \texttt{x}   & Kill this buffer and return (`e\textbf{x}it)\\
+    \texttt{x}   & Kill this buffer and return to ESS\\
     \texttt{h}   &\textbf{H}elp on another object \rule{0pt}{3ex}\\
     \texttt{?}   & Help for this mode \\
     \texttt{a}   & Display \textbf{a}propos\\
     \texttt{i}   & Display \textbf{i}ndex\\
     \texttt{v}   & Display \textbf{v}ignettes\\
     \texttt{w}   & Display this help in \textbf{w}eb bro\textbf{w}ser\\
+    \texttt{/}   & Search (also on \texttt{C-s})\\
   \end{tabI}\\[0.5cm]
 
   \Sect{ESS tracebug}
   %% ~~~~~~~~~~~~~~~~
-  Commands in \textbf{\underline{ess-dev-map}} (\textbf{C-c C-t}):
+  Commands in \texttt{ess-dev-map} (prefix \texttt{C-c C-t}):
 
   \begin{tabular}{p{20mm}l}
     \texttt{?} & Show key help \\
-    \texttt{C-b, b}& Set BP (repeat to cycle)\\
+    \texttt{b}& Set BP (repeat to cycle)\\
+    \texttt{C-b, B}& Set conditional BP\\
     \texttt{C-k, k}& Kill BP\\
+    \texttt{C-K, K}& Kill all BPs\\
     \texttt{C-n, n}& Goto next BP\\
     \texttt{C-p, p}& Goto previous BP\\
-    \texttt{`} &Show R Traceback (also on \texttt{C-c `}\\
-    \texttt{\~} &Show R call stack (also on \texttt{C-c ~}\\
+    \texttt{\textasciigrave} & Show R traceback (also on \texttt{C-c \textasciigrave})\\
+    \texttt{\textasciitilde} & Show R call stack (also on \texttt{C-c \textasciitilde})\\
     \texttt{C-e, e}& Toggle error action (cycle)\\
     \texttt{C-d, d}& Flag for debugging\\
     \texttt{C-u, u}& Un-flag debugged objects\\
     \texttt{C-w, w} & Watch window\\
-    \texttt{0..9, q}& Recover commands\\
+    %\texttt{0..9, q}& Recover commands\\ % seems to be obsolete
   \end{tabular}
 
-  Commands in \textbf{\underline{ess-debug-mode-map}}\\
+  Commands in \texttt{ess-debug-mode-map}\\
   (active during debugging):
 
   \begin{tabular}{p{20mm}l}
@@ -273,8 +279,8 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
     \texttt{M-N}&  Next line\\
     \texttt{M-Q}&  Quit\\
     \texttt{M-U}&  Up frame\\
-    \texttt{C-M-S-c }&  Continue Multiple\\
-    \texttt{C-M-S-n }&  Next Multiple\\
+    \texttt{C-M-S-c}&  Continue Multiple\\
+    \texttt{C-M-S-n}&  Next Multiple\\
   \end{tabular}
 
   \underline{\textbf{Others}}
@@ -288,18 +294,62 @@ For use in \texttt{ess-mode} edit buffers, (\texttt{*.R} files):
   \columnbreak
 %% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  \Sect{ESS developer}
+  \Sect{Package development}
 %% ~~~~~~~~~~~~~~~~
-  Evaluate your code into the package (in \textbf{\underline{ess-dev-map}}:
-  \textbf{C-c C-t}):
-
+  Evaluate your code into a given package (in \texttt{ess-dev-map}, prefix
+  \texttt{C-c C-t}):
+  
   \begin{tabI}
-    \texttt{C-t, t} & Toggle developer on/off\\
-    \texttt{C-a, a} & Add package to the dev list\\
-    \texttt{C-r, r} & Remove package from dev list\\
+    \texttt{C-s, s} & Select package for namespaced evaluation\\
+  \end{tabI}
+  
+  Keybindings in \texttt{ess-r-package-mode} (\texttt{C-c C-w})\\
+  (call to \texttt{devtools} functions):
+  
+  \begin{tabI}
+    \texttt{C-b, b} & Build package (\texttt{devtools::build()})\\
+    \texttt{C-c c} & Check package (\texttt{devtools::check()})\\   
+    \texttt{C-c w} & Check and build package with winbuilder \\
+                            & (\texttt{devtools::check\_win\_devel()})\\
+    \texttt{C-c h} & Check and build package with R-hub \\
+                           & (\texttt{devtools::check\_rhub()})\\
+    \texttt{C-d, d} & Document package (\texttt{devtools::document()})\\
+    \texttt{C-i, i} & Install package (\texttt{devtools::install()})\\
+    \texttt{C-t, t} & Run all tests (\texttt{devtools::test()})\\
   \end{tabI}
 
 
+%% All these commands seems to be obsolete:
+%%  \begin{tabI}
+%%    \texttt{C-t, t} & Toggle developer on/off\\
+%%    \texttt{C-a, a} & Add package to the dev list\\
+%%    \texttt{C-r, r} & Remove package from dev list\\
+%%  \end{tabI}
+  
+  \Sect{Editing documentation}
+  
+  Inside \texttt{*.Rd} files:
+  
+  \begin{tabular}{p{25mm}l}
+    \texttt{C-c C-e} & Insert a template of help file\\
+    \texttt{\TAB} & Indent current line\\
+    \texttt{C-c C-f} & Prefix for font specifiers\\
+    \texttt{C-c C-f \TAB} & Display list of font specifiers\\
+    \texttt{C-c C-j} & Insert an `\texttt{\textbackslash item}' on next line\\
+    \texttt{C-c C-n} & (in example section) \\
+                     & send current line to ESS process \\
+    \texttt{C-c C-p} & Preview help file in plain text \\
+  \end{tabular}
+
+  For \texttt{Roxygen} users, inside \texttt{*.R} files \\ (prefix \texttt{C-c C-o}):
+  
+  \begin{tabI}
+    \texttt{C-o} & Insert an Roxygen template\\
+    \texttt{C-c} & Add \texttt{\#\#\rq}  prefix at the beginning \\
+                 & of all selected lines\\
+    \texttt{C-r} & Parse R file and get Rd code\\
+    \texttt{C-t} & Parse R file and preview help file \\
+  \end{tabI}
 
 \end{multicols}
 
