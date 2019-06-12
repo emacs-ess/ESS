@@ -253,7 +253,7 @@ Currently understood commands:
  - index-start-reg - regexp from where to start searching for keywords in index listing"
   (user-error "Not implemented for %s " ess-dialect))
 
-(cl-defmethod ess-help-commands (&context ((string= ess-dialect "R") (eql t)))
+(cl-defmethod ess-help-commands (&context (ess-dialect "R"))
   '((package-for-object . "sub('package:', '', .ess.findFUN('%s'))\n")
     (packages           . ".packages(all.available=TRUE)\n")
     (package-index      . ".ess.help(package='%s', help.type='text')\n")
@@ -657,7 +657,7 @@ nil otherwise."
 
 (cl-defgeneric ess-help-get-topics (proc)
   "Return a list of help topics from PROC."
-  (user-error "Not supported for %s, %s" ess-dialect proc))
+  (user-error "Not supported for %s (process: %s)" ess-dialect proc))
 
 (defun ess-find-help-file (p-string)
   "Find help, prompting for P-STRING."

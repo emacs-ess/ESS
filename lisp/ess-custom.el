@@ -235,7 +235,7 @@ See also `tooltip-hide-delay' and variable `tooltip-delay'."
   'ess-r-describe-object-at-point-commands)
 (defcustom ess-r-describe-object-at-point-commands
   '(("str(%s)")
-    ("htsummary(%s, hlength = 20, tlength = 20)")
+    (".ess_htsummary(%s, hlength = 20, tlength = 20)")
     ("summary(%s, maxsum = 20)"))
   "A list of commands cycled by `ess-describe-object-at-point'.
 %s is substituted with the name at point.
@@ -745,6 +745,9 @@ bracket."
 (defvar ess-indent-offset 2
   "Main indentation offset that is commonly inherited by other offsets.
 See `ess-style-alist' for all available offsets.")
+;;;###autoload
+(put 'ess-indent-offset 'safe-local-variable #'numberp)
+
 
 (defvar ess-offset-arguments 'open-delim
   "Indent for arguments of function calls or indexing brackets.
@@ -1296,7 +1299,8 @@ of each variable for its meaning."
          (set symbol value)
          (ess-add-style 'OWN value)))
 
-;;;###autoload (put 'ess-style 'safe-local-variable #'symbolp)
+;;;###autoload
+(put 'ess-style 'safe-local-variable #'symbolp)
 
 (define-obsolete-variable-alias 'ess-default-style 'ess-style "ESS 19.04")
 (defcustom ess-style 'RRR

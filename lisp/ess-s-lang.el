@@ -491,7 +491,7 @@ ARG is ignored."
      (speedbar-add-supported-extension ".s")
      (speedbar-add-supported-extension ".q")))
 
-(cl-defmethod ess-help-get-topics (proc &context ((string= ess-dialect "R") (eql t)))
+(cl-defmethod ess-help-get-topics (proc &context (ess-dialect "R"))
   "Return a list of current S help topics associated with process PROC.
 If 'sp-for-help-changed?' process variable is non-nil or
 `ess-help-topics-list' is nil, (re)-populate the latter and

@@ -6,5 +6,5 @@
 
 ## exactly as in inferior-ess-r-load-ESSR in ess-r-d.el
 source('./R/.load.R', local=TRUE)
-ESSR <- load.ESSR('./R/')
+ESSR <- .ess.load.ESSR('./R/')
 saveRDS(ESSR, file = "../ESSR.rds")

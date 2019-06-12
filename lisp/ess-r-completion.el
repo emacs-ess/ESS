@@ -44,6 +44,11 @@
 (declare-function company-begin-backend "company")
 (declare-function company-doc-buffer "company")
 
+(defcustom ess-R-argument-suffix " = "
+  "Suffix appended by `ac-source-R' and `ac-source-R-args' to candidates."
+  :group 'ess-R
+  :type 'string)
+
 (defun ess-r-eldoc-function ()
   "Return the doc string, or nil.
 If an ESS process is not associated with the buffer, do not try
@@ -245,9 +250,10 @@ token.  Needs version of R >= 2.7.0."
          (prefix (or prefix (buffer-substring start end)))
          ;; (opts1 (if no-args "op<-rc.options(args=FALSE)" ""))
          ;; (opts2 (if no-args "rc.options(op)" ""))
-         (call1 (format ".ess_get_completions(\"%s\", %d)"
+         (call1 (format ".ess_get_completions(\"%s\", %d, \"%s\")"
                         (ess-quote-special-chars prefix)
-                        (- end start)))
+                        (- end start)
+                        ess-R-argument-suffix))
          (cmd (if allow-3-dots
                   (concat call1 "\n")
                 (concat "local({ r <- " call1 "; r[r != '...='] })\n"))))
@@ -298,12 +304,6 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 
 
 ;;; ARGUMENTS
-
-(define-obsolete-variable-alias 'ess-ac-R-argument-suffix 'ess-R-argument-suffix "15.3")
-(defcustom ess-R-argument-suffix " = "
-  "Suffix appended by `ac-source-R' and `ac-source-R-args' to candidates."
-  :group 'ess-R
-  :type 'string)
 
 (defvar ess-r--funargs-pre-cache
   '(("plot"

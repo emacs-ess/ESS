@@ -57,6 +57,22 @@
   :type 'hook
   :group 'ess-R)
 
+
+(defcustom ess-r-fetch-ESSR-on-remotes nil
+  "If non-nil, fetch ESSR from the github repository.
+Otherwise source from local ESS installation. When 'ess-remote,
+fetch only with `ess-remote'. When t, always fetch from remotes.
+Change this variable when loading ESSR code on remotes fails
+systematically.
+
+Fetching happens once per new ESSR version. The archive is stored
+in ~/.config/ESSR/ folder. You can download and place it there
+manually if the remote has restricted network access."
+  :type '(choice (const nil :tag "Never")
+                 (const 'ess-remote :tag "With ess-remote only")
+                 (const t :tag "Always"))
+  :group 'ess-R)
+
 ;; Silence the byte compiler
 (defvar add-log-current-defun-header-regexp)
 
@@ -395,7 +411,7 @@ To be used as part of `font-lock-defaults' keywords."
    S-common-cust-alist)
   "Variables to customize for R.")
 
-(cl-defmethod ess-build-tags-command (&context ((string= ess-dialect "R") (eql t)))
+(cl-defmethod ess-build-tags-command (&context (ess-dialect "R"))
   "Return tags command for R."
   "rtags('%s', recursive = TRUE, pattern = '\\\\.[RrSs](rw)?$',ofile = '%s')")
 
@@ -560,7 +576,7 @@ Executed in process buffer."
                                   file.path(R.home(), 'bin', 'pager')))
                         options(pager='%s')\n"
                 inferior-ess-pager))
-  (inferior-ess-r-load-ESSR)
+  (ess-r-load-ESSR)
   (when inferior-ess-language-start
     (ess-command (concat inferior-ess-language-start "\n")))
   ;; tracebug
@@ -606,10 +622,9 @@ for top-level functions only."
         done)
     ;; In case we are at the start of a function, skip past new lines.
     (when (> arg 0)
-      (skip-chars-backward " \t\n")
-      ;; Start search from eol to capture current function start. But not when
-      ;; arg < 0; see end-of-defun protocol above.
-      (end-of-line 1))
+      ;; Start search from a forward position in order to capture current
+      ;; function start. But not when arg < 0; see end-of-defun protocol above.
+      (forward-line 2))
     (while (and (not done)
                 (re-search-backward ess-r-function-pattern nil t arg))
       (unless (ess-inside-string-or-comment-p)
@@ -620,11 +635,13 @@ for top-level functions only."
         (if (< arg 0)
             ;; move to match-end to avoid the infloop in re-search-backward
             (goto-char (if done (match-beginning 0) (match-end 0)))
-          ;; Backward regexp match stops at the minimal match, so we need a bit
-          ;; more work here.
+          ;; Backward regexp match stops at the minimal match (e.g. partial
+          ;; function name), so we need a bit more work here.
           (beginning-of-line)
           (re-search-forward ess-r-function-pattern)
-          (goto-char (match-beginning 0)))))
+          (goto-char (match-beginning 0))
+          (when (<= start-point (point))
+            (setq done nil)))))
     (if done
         (point)
       (goto-char start-point)
@@ -1013,8 +1030,7 @@ Used by `ess-r-install-library'.")
 (defvar ess--CRAN-mirror nil
   "CRAN mirror name cache.")
 
-(cl-defmethod ess-install-library--override
-  (update package &context ((string= ess-dialect "R") (eql t)))
+(cl-defmethod ess-install-library--override (update package &context (ess-dialect "R"))
   "Prompt and install R PACKAGE.
 With argument UPDATE, update cached packages list."
   (inferior-ess-r-force)
@@ -1076,11 +1092,11 @@ Placed into `ess-presend-filter-functions' for R dialects."
     (ess--mark-search-list-as-changed))
   string)
 
-(cl-defmethod ess-installed-packages (&context ((string= ess-dialect "R") (eql t)))
+(cl-defmethod ess-installed-packages (&context (ess-dialect "R"))
   ;;; FIXME? .packages() does not cache; installed.packages() does but is slower first time
   (ess-get-words-from-vector "print(.packages(T), max=1e6)\n"))
 
-(cl-defmethod ess-load-library--override (pack &context ((string= ess-dialect "R") (eql t)))
+(cl-defmethod ess-load-library--override (pack &context (ess-dialect "R"))
   "Load an R package."
   (ess-eval-linewise (format "library('%s')\n" pack)))
 
@@ -1110,9 +1126,8 @@ Placed into `ess-presend-filter-functions' for R dialects."
                    (ess-r-arg "verbose" "TRUE"))))
     (concat visibly output pkg verbose)))
 
-(cl-defmethod ess-build-eval-command--override
-  (string &context ((string= ess-dialect "R") (eql t))
-          &optional visibly output file &rest args)
+(cl-defmethod ess-build-eval-command--override (string &context (ess-dialect "R")
+                                                       &optional visibly output file &rest args)
   "R method to build eval command."
   (let* ((namespace (caar args))
          (namespace (unless ess-debug-minor-mode
@@ -1122,7 +1137,7 @@ Placed into `ess-presend-filter-functions' for R dialects."
          (rargs (ess-r-build-args visibly output namespace)))
     (concat cmd "(\"" string "\"" rargs file ")\n")))
 
-(cl-defmethod ess-build-load-command (string &context ((string= ess-dialect "R") (eql t))
+(cl-defmethod ess-build-load-command (string &context (ess-dialect "R")
                                              &optional visibly output file &rest _args)
   (let* ((namespace (or file (ess-r-get-evaluation-env)))
          (cmd (if namespace ".ess.ns_source" ".ess.source"))
@@ -1189,7 +1204,7 @@ attached packages."
 (defvar ess-r-namespaced-load-only-existing t
   "Whether to load only objects already existing in a namespace.")
 
-(cl-defmethod ess-load-file--override (file &context ((string= ess-dialect "R") (eql t)))
+(cl-defmethod ess-load-file--override (file &context (ess-dialect "R"))
   (cond
    ;; Namespaced evaluation
    ((ess-r-get-evaluation-env)
@@ -1210,7 +1225,7 @@ selected (see `ess-r-set-evaluation-env')."
     (ess-send-string (ess-get-process) command)))
 
 (cl-defmethod ess-send-region--override (process start end visibly message type
-                                                 &context ((string= ess-dialect "R") (eql t)))
+                                                 &context (ess-dialect "R"))
   (cond
    ;; Namespaced evaluation
    ((ess-r-get-evaluation-env)
@@ -1319,45 +1334,48 @@ selected (see `ess-r-set-evaluation-env')."
     (or (ess-help-r--process-help-input proc string)
         (inferior-ess-input-sender proc string))))
 
-(defun inferior-ess-r-load-ESSR ()
-  "Load/INSTALL/Update ESSR."
-  (let* ((pkg-dir (expand-file-name "ESSR" ess-etc-directory))
-         (src-dir (expand-file-name "R" pkg-dir)))
-    (if (not (or (bound-and-true-p ess-remote)
-                 (file-remote-p (ess-get-process-variable 'default-directory))))
-        (inferior-ess--r-load-ESSR--local src-dir)
-      (inferior-ess-r-load-ESSR--remote pkg-dir src-dir))))
+(defun ess-r-load-ESSR ()
+  "Load ESSR functionality."
+  (cond
+   ((file-remote-p (ess-get-process-variable 'default-directory))
+    (if (eq ess-r-fetch-ESSR-on-remotes t)
+        (ess-r--fetch-ESSR-remote)
+      (ess-r--load-ESSR-remote)))
+   ((and (bound-and-true-p ess-remote))
+    (if ess-r-fetch-ESSR-on-remotes
+        (ess-r--fetch-ESSR-remote)
+      (ess-r--load-ESSR-remote t)))
+   (t (ess-r--load-ESSR-local))))
 
-(defun inferior-ess--r-load-ESSR--local (src-dir)
-  (let ((cmd (format "local({
+(defun ess-r--load-ESSR-local ()
+  (let* ((src-dir (expand-file-name "ESSR/R" ess-etc-directory))
+         (cmd (format "local({
                           source('%s/.load.R', local=TRUE) #define load.ESSR
-                          load.ESSR('%s')
+                          .ess.load.ESSR('%s')
                       })\n"
-                     src-dir src-dir)))
-    (ess-write-to-dribble-buffer (format "load-ESSR cmd:\n%s\n" cmd))
+                      src-dir src-dir)))
     (with-current-buffer (ess-command cmd)
       (let ((msg (buffer-string)))
         (when (> (length msg) 1)
-          (message (format "load ESSR: %s" msg)))))))
+          (message (format "Messages while loading ESSR: %s" msg)))))))
 
-(defun inferior-ess-r-load-ESSR--remote (pkg-dir src-dir)
-  (let* ((loadremote (expand-file-name "LOADREMOTE" pkg-dir))
-         (r-load-code (if (file-exists-p loadremote)
-                          (with-temp-buffer
-                            (insert-file-contents-literally loadremote)
-                            (buffer-string))
-                        (error "Cannot find ESSR source code"))))
-    (unless (ess-boolean-command (format r-load-code essr-version) nil 0.1)
-      (let ((errmsg (with-current-buffer " *ess-command-output*" (buffer-string)))
-            (files (directory-files src-dir t "\\.R$")))
-        (ess-write-to-dribble-buffer (format "error loading ESSR.rda: \n%s\n" errmsg))
-        ;; should not happen, unless extrem conditions (ancient R or failed download))
-        (message "Failed to download ESSR.rda (see *ESS* buffer). Injecting ESSR code from local machine")
-        ;; For this case we cannot do it at R level
-        (ess-command (format ".ess.ESSRversion <- '%s'\n" essr-version))
-        (mapc #'ess--inject-code-from-file files)))))
+(defun ess-r--load-ESSR-remote (&optional chunked)
+  (ess-command (format ".ess.ESSRversion <- '%s'\n" essr-version))
+  (with-temp-message "Loading ESSR into remote ..."
+    (let ((src-dir (expand-file-name "ESSR/R" ess-etc-directory)))
+      (dolist (file (directory-files src-dir t "\\.R$"))
+        (ess--inject-code-from-file file chunked)))))
 
-(cl-defmethod ess-quit--override (arg &context ((string= ess-dialect "R") (eql t)))
+(defun ess-r--fetch-ESSR-remote ()
+  (let ((loader (ess-file-content (expand-file-name "ESSR/LOADREMOTE" ess-etc-directory))))
+    (unless (ess-boolean-command (format loader essr-version) nil 0.1)
+      (let* ((errmsg (with-current-buffer " *ess-command-output*" (buffer-string)))
+             (src-dir (expand-file-name "ESSR/R" ess-etc-directory))
+             (files (directory-files src-dir t "\\.R$")))
+        (message (format "Couldn't load ESSR.rds. Injecting from local.\n Error: %s\n" errmsg))
+        (ess-r--load-ESSR-remote)))))
+
+(cl-defmethod ess-quit--override (arg &context (ess-dialect "R"))
   "With ARG, do not offer to save the workspace."
   (let ((cmd (format "base::q('%s')\n" (if arg "no" "default")))
         (sprocess (ess-get-process ess-current-process-name)))
@@ -1370,8 +1388,7 @@ selected (see `ess-r-set-evaluation-env')."
   :type 'hook
   :group 'ess-R)
 
-(cl-defmethod inferior-ess-reload--override (start-name start-args
-                                             &context ((string= ess-dialect "R") (eql t)))
+(cl-defmethod inferior-ess-reload--override (start-name start-args &context (ess-dialect "R"))
   "Call `run-ess-r' with START-ARGS.
 Then run `inferior-ess-r-reload-hook'."
   (let ((inferior-ess-r-program start-name))
@@ -2272,7 +2289,7 @@ state.")
     map)
   "Keymap for `ess-r-help-mode'.")
 
-(cl-defmethod ess--help-major-mode (&context ((string= ess-dialect "R") (eql t)))
+(cl-defmethod ess--help-major-mode (&context (ess-dialect "R"))
   (ess-r-help-mode))
 
 (define-derived-mode ess-r-help-mode ess-help-mode "R Help"
@@ -2355,8 +2372,7 @@ If the current buffer does not have a usage section, return nil."
                                 'type 'ess-r-help-link
                                 'help-echo (format "mouse-2, RET: Help on %s" text))))))))
 
-(cl-defmethod ess--display-vignettes-override (all
-                                               &context ((string= ess-dialect "R") (eql t)))
+(cl-defmethod ess--display-vignettes-override (all &context (ess-dialect "R"))
   "Display R vignettes in ess-help-like buffer..
 With (prefix) ALL non-nil, use `vignette(*, all=TRUE)`, i.e.,
 from all installed packages, which can be very slow."

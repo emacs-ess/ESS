@@ -89,63 +89,52 @@ manual focuses on.
 @node Example ESS usage
 @section Example ESS usage
 
-We present some basic examples for using ESS to interact with R
-These are just a subset of approaches, many better approaches are
-possible.  Contributions of examples of how you work with ESS are
-appreciated (especially since it helps us determine priorities on
-future enhancements)! Comments as to what should be happening are
-prefixed by "##".
+Comments as to what should be happening are prefixed by "##".
+
 @display
-1:  ## Data Analysis Example
-    ## Load the file you want to work with
+    ### Data Analysis Example
+
+    ## Open the file you want with
     C-x C-f myfile.R
 
-    ## Edit as appropriate, then start and switch to an R buffer
+    ## Edit as appropriate, then start and switch to an *R*
+    process buffer with
     C-c C-z
 
     ## A new buffer *R* will appear. R will have been started
-    ## in this buffer.  The buffer is in iESS [R] mode.
+    ## in this buffer. The buffer is in iESS [R] mode.
 
-    ## Return to the script (prefix with C-c if you have pressed other keys)
-    C-z
+    ## Return to the script
+    C-z (or C-c C-z if you have pressed other keys in between)
 
-    ## Send regions, lines, or the entire file contents to R.  For regions,
-    ## highlight a region with keystrokes or mouse and then send with:
-    C-c C-r
+    ## Send current region (if active), or function, or paragraph at
+    point with
+    C-M-x
 
-    ## Re-edit myfile.R as necessary to correct any difficulties.  Add
-    ## new commands here.  Send them to R by region with C-c C-r, or
-    ## one line at a time with C-c C-n.
+    ## Send current region or function or paragraph and step with
+    C-c C-c
 
-    ## Save the revised myfile.R with C-x C-s.
+    ## Send current line with 
+    C-RET
 
-    ## Save the entire *R* interaction buffer with C-c C-s.  You
-    ## will be prompted for a file name.  The recommended name is
-    ## myfile.Rout.  With this suffix, the file will come up in ESS
-    ## Transcript mode the next time it is accessed from Emacs.
-
-
-
-2:  ## Program revision example (source code is real)
-
-    ## Start R in a process buffer (this will be *R*)
-    M-x R
-
-    ## Load the file you want to work with
-    C-x C-f myfile.R
-
-    ## edit program, functions, and code in myfile.R, and send revised
-    ## functions to R when ready with
-    C-c C-f
-    ## or highlighted regions with
-    C-c C-r
-    ## or individual lines with
-    C-c C-n
     ## or load the entire buffer with
-    C-c M-l
+    C-c C-l
 
-    ## save the revised myfile.R when you have finished
-    C-c C-s
+    ## Save the revised myfile.R with
+    C-x C-s.
+
+    ## Save the entire *R* interaction buffer with
+    C-x C-s.  
+    
+    ## Search for documentation with
+    C-c C-d
+    
+    ## Investigate available ESS commands with 
+    C-c C-h
+
+    ## You will be prompted for a file name. The recommended name is
+    ## myfile.Rout. With this suffix, the file will be opened in
+    ## ess-transcript.
 
 @end display
 

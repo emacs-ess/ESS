@@ -18,6 +18,7 @@
                    fallback_env = fallback_env, local_env = local_env)
 }
 
+
 ##' Source FILE into an environment. After having a look at each new object in
 ##' the environment, decide what to do with it. Handles plain objects,
 ##' functions, existing S3 methods, S4 classes and methods.
@@ -269,6 +270,7 @@
     invisible(env)
 }
 
+
 .ess.ns_insertMethods <- function(tableEnv,  tablePkg, envns) {
     inserted <- character()
     for(m in ls(envir = tableEnv, all.names = T)){
@@ -311,6 +313,7 @@
     env
 }
 
+
 .ess.assign <- function(x, value, envir) {
     ## Cannot add bindings to locked environments
     exists <- exists(x, envir = envir, inherits = FALSE)
@@ -349,6 +352,7 @@
         !identical(f1, f2)
 }
 
+
 .ess.is_package <- function(envName) {
   isPkg <- identical(substring(envName, 0, 8), "package:")
   isPkg && (envName != "package:base")
@@ -364,6 +368,7 @@
 
   containsObj
 }
+
 
 .ess.ns_format_deps <- function(dependentPkgs) {
     pkgs <- unique(unlist(dependentPkgs, use.names = FALSE))
@@ -384,6 +389,7 @@
     name
 }
 
+
 .ess.ns_insert_essenv <- function(nsenv) {
     if (is.character(nsenv))
         nsenv <- base::asNamespace(nsenv)

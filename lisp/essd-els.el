@@ -159,7 +159,7 @@ DIALECT is the desired ess-dialect. If nil, ask for dialect"
       (ess-eval-linewise (format "options(pager='%s')\n"
                                  (or inferior-ess-remote-pager inferior-ess-pager))
                          nil nil nil 'wait)
-      (inferior-ess-r-load-ESSR))
+      (ess-r-load-ESSR))
 
     (when (equal ess-dialect "S+")
       (ess-command ess-S+--injected-code))

@@ -21,6 +21,7 @@
     eval(bquote(knit(.(file), output = .(output))), envir = frame)
 }
 
+
 .ess_sweave <- function(file, output = NULL){
     od <- getwd()
     frame <- parent.frame()
@@ -30,7 +31,7 @@
 }
 
 ## Users might find it useful. So don't prefix with .ess.
-htsummary <- function(x, hlength = 4, tlength = 4, digits = 3) {
+.ess_htsummary <- function(x, hlength = 4, tlength = 4, digits = 3) {
     ## fixme: simplify and generalize
     snames <- c("mean", "sd", "min", "max", "nlev", "NAs")
     d <- " "
@@ -95,6 +96,7 @@ htsummary <- function(x, hlength = 4, tlength = 4, digits = 3) {
     invisible(NULL)
 }
 
+
 .ess_vignettes <- function(all=FALSE) {
     vs <- unclass(browseVignettes(all = all))
     vs <- vs[sapply(vs, length) > 0]

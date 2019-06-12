@@ -18,7 +18,7 @@ local({
     }
 })
 
-
+
 .ess_eval <- function(str, env = globalenv()) {
     ## don't remove; really need eval(parse(  here!!
     tryCatch(base::eval(base::parse(text=str), envir = env),
@@ -49,6 +49,7 @@ local({
     cat(out)
 }
 
+
 .ess_fn_pkg <- function(fn_name) {
     fn <- .ess_eval(fn_name)
     env_name <- base::environmentName(base::environment(fn))
@@ -106,7 +107,10 @@ local({
     }
 }
 
-.ess_get_completions <- function(string, end){
+
+.ess_get_completions <- function(string, end, suffix = " = ") {
+    oldopts <- utils::rc.options(funarg.suffix = suffix)
+    on.exit(utils::rc.options(oldopts))
     if(.ess.Rversion > '2.14.1'){
         comp <- compiler::enableJIT(0)
         op <- options(error=NULL)
@@ -160,4 +164,4 @@ local({
                                         ))
         i <- i + 1
     cat('\n\n', as.character(out), '\n')
-};
+}

@@ -1211,22 +1211,29 @@ Kill the *ess.dbg.[R_name]* buffer."
 
 ;;; MPI
 
-(defvar ess-mpi-control-regexp "\\([^]+\\)\\([^]+\\)")
+(defvar ess-mpi-message-start-delimiter "")
+(defvar ess-mpi-message-field-separator "")
+(defvar ess-mpi-message-end-delimiter "")
 
-(defvar ess-mpi-alist
+(define-obsolete-variable-alias 'ess-mpi-alist 'ess-mpi-handlers "ESS 19.04")
+(defvar ess-mpi-handlers
   '(("message" . message)
-    ("error" . ess-mpi:error)
-    ("eval" . ess-mpi:eval)
-    ("y-or-n" . ess-mpi:y-or-n)))
+    ("error"   . ess-mpi:error)
+    ("eval"    . ess-mpi:eval)
+    ("y-or-n"  . ess-mpi:y-or-n))
+  "Alist of the MPI handlers.
+Each element is of the form (TYPE . HANDLER), where TYPE is the
+message type and HANDLER is a function (symbol) to be called on
+the payload list of each message.")
 
 (defun ess-mpi:error (msg)
-  (message (format "Error in inferior: %s" msg)))
+  (error "MPI error: %s" msg))
 
-(defun ess-mpi:eval (expr &optional callback)
-  "Evaluate EXP as Emacs expression.
+(defun ess-mpi:eval (str &optional callback)
+  "Read STR and evaluate as Emacs expression.
 If present, the CALLBACK string is passed through `format' with
 returned value from EXPR and then sent to the subprocess."
-  (let ((result (eval (read expr))))
+  (let ((result (eval (read str))))
     (when callback
       (ess-send-string (ess-get-process) (format callback result)))))
 
@@ -1236,32 +1243,48 @@ The CALLBACK string is passed through `format' with returned
 value from EXPR and then sent to the subprocess."
   (let ((result (y-or-n-p prompt)))
     (when callback
-      (ess-send-string (ess-get-process) (format callback result)))))
+      (let ((result (if result "TRUE" "FALSE")))
+        (ess-send-string (ess-get-process) (format callback result))))))
+
+(defun ess-mpi-convert (el)
+  (cond
+   ((string= el "nil") nil)
+   ((string= el "t") t)
+   (t el)))
 
 (defun ess-mpi-handle-messages (buf)
-  "Handle all mpi messages in BUF and delete them."
-  (let ((obuf (current-buffer)))
+  "Handle all mpi messages in BUF and delete them.
+The MPI message has the form TYPEFIELD... where TYPE is the
+type of the messages on which handlers in `ess-mpi-handlers' are
+dispatched. And FIELDs are strings. Return :incomplete if BUF
+ends with an incomplete message."
+  (let ((obuf (current-buffer))
+        (out nil))
     (with-current-buffer buf
       (goto-char (point-min))
       ;; This should be smarter because emacs might cut it in the middle of the
       ;; message. In practice this almost never happen because we are
       ;; accumulating output into the cache buffer.
-      (while (re-search-forward  ess-mpi-control-regexp nil t)
-        (let* ((mbeg (match-beginning 0))
-               (mend (match-end 0))
-               (head (match-string 1))
-               (payload (split-string (match-string 2) ""))
-               (handler (cdr (assoc head ess-mpi-alist))))
-          (if handler
-              (condition-case-unless-debug err
-                  (with-current-buffer obuf
-                    (apply handler payload))
-                (error (message (format "Error in mpi `%s' handler: %%s" head)
-                                (error-message-string err))))
-            ;; don't throw error here. The buffer must be cleaned first.
-            (message "Now handler defined for MPI message '%s" head))
-          (goto-char mbeg)
-          (delete-region mbeg mend))))))
+      (while (search-forward ess-mpi-message-start-delimiter nil t)
+        (let ((mbeg0 (match-beginning 0))
+              (mbeg (match-end 0)))
+          (if (search-forward ess-mpi-message-end-delimiter nil t)
+              (let* ((mend (match-beginning 0))
+                     (mend0 (match-end 0))
+                     (msg (buffer-substring mbeg mend))
+                     (payload (mapcar #'ess-mpi-convert
+                                      (split-string msg ess-mpi-message-field-separator)))
+                     (head (pop payload))
+                     (handler (cdr (assoc head ess-mpi-handlers))))
+                (unwind-protect
+                    (if handler
+                        (with-current-buffer obuf
+                          (apply handler payload))
+                      (error "No handler defined for MPI message '%s" head))
+                  (goto-char mbeg0)
+                  (delete-region mbeg0 mend0)))
+            (setq out :incomplete))))
+      out)))
 
 (defun ess--replace-long+-in-prompt (prompt is-final)
   "Replace long + + + in PROMPT based on `inferior-ess-replace-long+' value.
@@ -1319,70 +1342,73 @@ prompts."
           ;; Just in case if we are in *ess-command* buffer; restart the timer.
           (process-put proc 'flush-timer
                        (run-at-time .02 nil #'ess--flush-accumulated-output proc))
-        (ess-mpi-handle-messages abuf)
-        (with-current-buffer abuf
-          (goto-char (point-min))
-          (let ((case-fold-search nil))
-            (when (re-search-forward "Error\\(:\\| +in\\)" nil t)
-              (unless (get-buffer-window pbuf 'visible)
-                (display-buffer (process-buffer proc) nil t))))
-          (goto-char (point-min))
-          ;; First long + + in the output mirrors the sent input by the user and
-          ;; is unnecessary in nowait case. A single + can be a continuation in
-          ;; the REPL, thus we check if there is an extra output after the + .
-          (when nowait
-            (when (looking-at "\\([+>] \\)\\{2,\\}\n?")
-              (goto-char (match-end 0))
-              (when (eq (point) (point-max))
-                ;; if this is the last prompt in the output back-up one prompt
-                ;; (cannot happen after \n)
-                (backward-char 2))))
-          (let ((do-clean (not (eq visibly t)))
-                (pos2 (point))
-                (pos1 (point))
-                (tpos nil)
-                (prompt nil)
-                (regexp (if nowait
-                            ;; we cannot disambiguate printed input fields and
-                            ;; prompts in output in this case; match 2+ pluses or
-                            ;; > and 2+ spaces
-                            "\\(^\\([+>] \\)\\{2,\\}\\)\\|\\(> \\) +"
-                          "^\\([+>] \\)+"))
-                (prev-prompt (process-get proc 'prev-prompt)))
-            (while (re-search-forward regexp nil t)
-              (setq pos1 (match-beginning 0)
-                    tpos (if nowait
-                             (or (match-end 1) (match-end 3))
-                           (match-end 0)))
-              ;; for debugging in R:accum window in order to see the pointer moving
-              ;; (set-window-point (get-buffer-window) tpos)
-              (when (> pos1 pos2)
-                (let ((str (buffer-substring pos2 pos1)))
-                  (comint-output-filter proc (ess--offset-output prev-prompt str))))
-              (setq pos2 tpos)
-              (setq prompt (let ((prompt (buffer-substring pos1 pos2)))
-                             (if do-clean
-                                 (ess--replace-long+-in-prompt prompt (eq pos2 (point-max)))
-                               prompt)))
-              ;; Cannot bypass this trivial call to comint-output-filter because
-              ;; external tools could rely on prompts (org-babel [#598] for
-              ;; example). Setting dummy regexp in order to avoid comint erasing
-              ;; this prompt which contrasts to how we output prompts in all
-              ;; other cases.
-              (with-current-buffer pbuf
-                (let ((comint-prompt-regexp "^$"))
-                  (comint-output-filter proc prompt)))
-              (setq prev-prompt (and do-clean prompt)
-                    pos1 pos2))
-            ;; insert last chunk if any
-            (unless (eq pos1 (point-max))
-              (let ((str (buffer-substring-no-properties pos1 (point-max))))
-                (comint-output-filter proc (ess--offset-output prev-prompt str))
-                (setq prev-prompt nil)))
-            (process-put proc 'prev-prompt prev-prompt)
-            (process-put proc 'flush-time (and (process-get proc 'busy)
-                                               (float-time)))
-            (erase-buffer)))))))
+        ;; Incomplete mpi should hardly happen. Only on those rare occasions
+        ;; when an mpi is issued after a long task and split by the emacs input
+        ;; handler, or mpi printing itself takes very long.
+        (unless (eq :incomplete (ess-mpi-handle-messages abuf))
+          (with-current-buffer abuf
+            (goto-char (point-min))
+            (let ((case-fold-search nil))
+              (when (re-search-forward "Error\\(:\\| +in\\)" nil t)
+                (unless (get-buffer-window pbuf 'visible)
+                  (display-buffer (process-buffer proc) nil t))))
+            (goto-char (point-min))
+            ;; First long + + in the output mirrors the sent input by the user and
+            ;; is unnecessary in nowait case. A single + can be a continuation in
+            ;; the REPL, thus we check if there is an extra output after the + .
+            (when nowait
+              (when (looking-at "\\([+>] \\)\\{2,\\}\n?")
+                (goto-char (match-end 0))
+                (when (eq (point) (point-max))
+                  ;; if this is the last prompt in the output back-up one prompt
+                  ;; (cannot happen after \n)
+                  (backward-char 2))))
+            (let ((do-clean (not (eq visibly t)))
+                  (pos2 (point))
+                  (pos1 (point))
+                  (tpos nil)
+                  (prompt nil)
+                  (regexp (if nowait
+                              ;; we cannot disambiguate printed input fields and
+                              ;; prompts in output in this case; match 2+ pluses or
+                              ;; > and 2+ spaces
+                              "\\(^\\([+>] \\)\\{2,\\}\\)\\|\\(> \\) +"
+                            "^\\([+>] \\)+"))
+                  (prev-prompt (process-get proc 'prev-prompt)))
+              (while (re-search-forward regexp nil t)
+                (setq pos1 (match-beginning 0)
+                      tpos (if nowait
+                               (or (match-end 1) (match-end 3))
+                             (match-end 0)))
+                ;; for debugging in R:accum window in order to see the pointer moving
+                ;; (set-window-point (get-buffer-window) tpos)
+                (when (> pos1 pos2)
+                  (let ((str (buffer-substring pos2 pos1)))
+                    (comint-output-filter proc (ess--offset-output prev-prompt str))))
+                (setq pos2 tpos)
+                (setq prompt (let ((prompt (buffer-substring pos1 pos2)))
+                               (if do-clean
+                                   (ess--replace-long+-in-prompt prompt (eq pos2 (point-max)))
+                                 prompt)))
+                ;; Cannot bypass this trivial call to comint-output-filter because
+                ;; external tools could rely on prompts (org-babel [#598] for
+                ;; example). Setting dummy regexp in order to avoid comint erasing
+                ;; this prompt which contrasts to how we output prompts in all
+                ;; other cases.
+                (with-current-buffer pbuf
+                  (let ((comint-prompt-regexp "^$"))
+                    (comint-output-filter proc prompt)))
+                (setq prev-prompt (and do-clean prompt)
+                      pos1 pos2))
+              ;; insert last chunk if any
+              (unless (eq pos1 (point-max))
+                (let ((str (buffer-substring-no-properties pos1 (point-max))))
+                  (comint-output-filter proc (ess--offset-output prev-prompt str))
+                  (setq prev-prompt nil)))
+              (process-put proc 'prev-prompt prev-prompt)
+              (process-put proc 'flush-time (and (process-get proc 'busy)
+                                                 (float-time)))
+              (erase-buffer))))))))
 
 (defun inferior-ess-tracebug-output-filter (proc string)
   "Standard output filter for the inferior ESS process.
@@ -1453,8 +1479,8 @@ the output into *ess.dbg* buffer."
              ;; accept-process-output in a loop (e.g. org-babel-execute-src-block)
              (bound-and-true-p org-babel-current-src-block-location))
             (ess--flush-accumulated-output proc)
-          ;; setup new flush timer; ideally also for fast-flush cased in order
-          ;; to avoid detecting intermediate prompts as end-of-output prompts
+          ;; Setup new flush timer. Ideally also for fast-flush case in order to
+          ;; avoid detecting intermediate prompts as end-of-output prompts.
           (let ((timeout (if fast-flush .01 .2)))
             (process-put proc 'flush-timer
                          (run-at-time timeout nil #'ess--flush-accumulated-output proc))))))

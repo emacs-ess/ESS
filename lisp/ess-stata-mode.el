@@ -206,7 +206,7 @@ This function is placed in `ess-presend-filter-functions'.
       (nreverse (delete-dups topics))
       )))
 
-(cl-defmethod ess-help-get-topics (proc &context ((string= ess-dialect "stata") (eql t)))
+(cl-defmethod ess-help-get-topics (proc &context (ess-dialect "stata"))
   "Return a list of current STA help topics associated with process PROC."
   (or (ess-process-get 'help-topics)
       (progn

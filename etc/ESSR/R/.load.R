@@ -3,7 +3,7 @@
 ## Do not use _ in names, nor :: as they cannot be parsed in old R versions
 
 ## load .base.R and all other files into ESSR environment; then attach ESSR
-load.ESSR <- function(dir){
+.ess.load.ESSR <- function(dir) {
     .source <-
         if(any("keep.source" == names(formals(sys.source))))
             sys.source

@@ -1195,11 +1195,9 @@ This handles Tramp when working on a remote."
                          (expand-file-name
                           (read-file-name "Load source file: " nil nil t)))))
   (ess-load-file--normalise-buffer filename)
-  ;; Pop up an inferior window
-  (save-selected-window
-    (ess-switch-to-ESS t))
   (setq filename (ess-load-file--normalise-file filename))
-  (ess-load-file--override filename))
+  (ess-load-file--override filename)
+  (message "Loaded %s" filename))
 
 (cl-defgeneric ess-load-file--override (filename)
   (let ((command (ess-build-load-command filename nil t)))
@@ -1275,7 +1273,11 @@ wrapping the code into:
                 (if no-prompt-check
                     (sleep-for 0.02)   ; 0.1 is noticeable!
                   (ess-wait-for-process proc nil wait force-redisplay)
-                  (ess-mpi-handle-messages (current-buffer))
+                  ;; Should (almost) never be incomplete unless the message
+                  ;; contains "> " and was accidentally split by the process
+                  ;; right there.
+                  (while (eq :incomplete (ess-mpi-handle-messages (current-buffer)))
+                    (ess-wait-for-process proc nil wait force-redisplay))
                   ;; Remove prompt
                   ;; If output is cat(..)ed this deletes the output
                   (goto-char (point-max))
@@ -1371,9 +1373,7 @@ similar to `load-library' Emacs function."
         pack)
     (setq pack (ess-completing-read "Load" packs))
     (ess-load-library--override pack)
-    (ess--mark-search-list-as-changed)
-    (display-buffer (buffer-name (ess-get-process-buffer))
-                    '(nil . ((inhibit-same-window . t))))))
+    (ess--mark-search-list-as-changed)))
 
 (cl-defgeneric ess-installed-packages ()
   "Return a list of installed packages.")
@@ -2270,7 +2270,7 @@ START-ARGS gets passed to the dialect-specific
         (with-current-buffer inf-buf
           (inferior-ess-reload--override start-name start-args))))))
 
-(cl-defmethod inferior-ess-reload--override (_start-name _start-args)
+(cl-defgeneric inferior-ess-reload--override (_start-name _start-args)
   (user-error "Reloading not implemented for %s" ess-dialect))
 
 (defun inferior-ess--wait-for-exit (proc)
@@ -2864,15 +2864,31 @@ Uses `temp-buffer-show-function' and respects
       (funcall temp-buffer-show-function buff))
   (display-buffer buff '(display-buffer-reuse-window) ess-display-buffer-reuse-frames))
 
-(defun ess--inject-code-from-file (file)
-  ;; this is different from ess-load-file
-  (let ((content (with-temp-buffer
-                   (insert-file-contents-literally file)
-                   (buffer-string))))
-    (when (string= ess-dialect "R")
-      ;; don't detect intermediate prompts
-      (setq content (concat "{" content "}\n")))
-    (ess-command content)))
+(defun ess--inject-code-from-file (file &optional chunked)
+  "Load code from FILE into process.
+If CHUNKED is non-nil, split the file by  separator (must be at
+bol) and load each chunk separately."
+  ;; This is different from ess-load-file as it works by directly loading the
+  ;; string into the process and thus works on remotes.
+  (let ((proc-name ess-local-process-name)
+        (dialect ess-dialect)
+        (send-1 (lambda (str)
+                  (if (string= ess-dialect "R")
+                      ;; avoid detection of intermediate prompts
+                      (ess-command (concat "{" str "}\n"))
+                    (ess-command str)))))
+    (with-temp-buffer
+      (setq ess-local-process-name proc-name
+            ess-dialect dialect)
+      (insert-file-contents-literally file)
+      (if chunked
+          (let ((beg (point-min)))
+            (goto-char beg)
+            (while (re-search-forward "^" nil t)
+              (funcall send-1 (buffer-substring beg (point)))
+              (setq beg (point)))
+            (funcall send-1 (buffer-substring (point) (point-max))))
+        (funcall send-1 (buffer-string))))))
 
 (defun ess-check-modifications nil
   "Check whether loading this file would overwrite some ESS objects
