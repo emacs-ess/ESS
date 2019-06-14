@@ -308,10 +308,6 @@ indentation style. See `ess-style-alist' for predefined styles."
           (:eval (ess--get-mode-line-indicator))
           ess--local-mode-line-process-indicator
           "]"))
-  ;; completion
-  (add-hook 'comint-dynamic-complete-functions 'ess-complete-filename nil 'local)
-  (delq t comint-dynamic-complete-functions)
-  (setq-local comint-completion-addsuffix (cons "/" ""))
   (add-hook 'hack-local-variables-hook 'ess-set-style nil t)
   (add-hook 'ess-idle-timer-functions 'ess-synchronize-dirs nil 'local))
 
