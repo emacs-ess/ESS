@@ -2773,30 +2773,30 @@ for signature and trace it with browser tracer."
 
 ;;;_ * Kludges and Fixes
 ;;; delete-char and delete-backward-car do not delete whole intangible text
-(defadvice delete-char (around ess-delete-backward-char-intangible activate)
+(defun ess--tracebug-delete-char (n &rest _)
   "When deleting an intangible char, delete the whole intangible region.
-Only do this when #chars is 1"
-  (if (and (ess-derived-mode-p)
-           (= (ad-get-arg 0) 1)
-           (get-text-property (point) 'intangible))
-      (progn
-        (kill-region (point) (or (next-single-property-change (point) 'intangible)
-                                 (point-max)))
-        (indent-for-tab-command))
-    ad-do-it))
+Only do this when N is 1"
+  (when (and (ess-derived-mode-p)
+             (= n 1)
+             (get-text-property (point) 'intangible))
+    (kill-region (point) (or (next-single-property-change (point) 'intangible)
+                             (point-max)))
+    (indent-according-to-mode)))
 
-(defadvice delete-backward-char (around ess-delete-backward-char-intangible activate)
+(advice-add 'delete-char :before-until #'ess--tracebug-delete-char)
+
+(defun ess--tracebug-delete-backward-char (n &rest _)
   "When deleting an intangible char, delete the whole intangible region.
-Only do this when called interactively and #chars is 1"
-  (if (and (ess-derived-mode-p)
-           (= (ad-get-arg 0) 1)
-           (> (point) (point-min))
-           (get-text-property (1- (point)) 'intangible))
-      (progn
-        (let ((beg (or (previous-single-property-change (point) 'intangible)
-                       (point-min))))
-          (kill-region beg (point))))
-    ad-do-it))
+Only do this when called interactively and N is 1"
+  (when (and (ess-derived-mode-p)
+             (= n 1)
+             (> (point) (point-min))
+             (get-text-property (1- (point)) 'intangible))
+    (kill-region (or (previous-single-property-change (point) 'intangible)
+                     (point-min))
+                 (point))))
+
+(advice-add 'delete-backward-char :before-until #'ess--tracebug-delete-backward-char)
 
 (provide 'ess-tracebug)
 
