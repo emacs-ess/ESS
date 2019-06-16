@@ -7,11 +7,7 @@
         else as.character(el)
     })
     payload <- paste(dots, collapse = "")
-    cat(sprintf("%s%s", head, payload))
-}
-
-.ess_mpi_read <- function(msg) {
-  .ess_mpi_send("read", msg)
+    cat(sprintf("_%s%s\\", head, payload))
 }
 
 .ess_mpi_message <- function(msg){

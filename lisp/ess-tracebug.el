@@ -1211,9 +1211,11 @@ Kill the *ess.dbg.[R_name]* buffer."
 
 ;;; MPI
 
-(defvar ess-mpi-message-start-delimiter "")
+;; http://jkorpela.fi/chars/c0.html
+;; https://en.wikipedia.org/wiki/ANSI_escape_code#Escape_sequences
+(defvar ess-mpi-message-start-delimiter "_")
 (defvar ess-mpi-message-field-separator "")
-(defvar ess-mpi-message-end-delimiter "")
+(defvar ess-mpi-message-end-delimiter "\\")
 
 (define-obsolete-variable-alias 'ess-mpi-alist 'ess-mpi-handlers "ESS 19.04")
 (defvar ess-mpi-handlers
