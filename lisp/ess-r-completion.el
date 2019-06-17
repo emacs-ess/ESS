@@ -53,7 +53,6 @@
   "Return the doc string, or nil.
 If an ESS process is not associated with the buffer, do not try
 to look up any doc strings."
-  (interactive)
   (when (and eldoc-mode ess-can-eval-in-background)
     (let* ((proc (ess-get-next-available-process))
            (funname (and proc (or (and ess-eldoc-show-on-symbol ;; Aggressive completion
@@ -192,7 +191,6 @@ This is done automatically (and transparently) if a directory is
 modified (S only!), so the most up-to-date list of object names is always
 available.  However attached dataframes are *not* updated, so this
 command may be necessary if you modify an attached dataframe."
-  (interactive)
   (ess-make-buffer-current)
   (if (memq (char-syntax (preceding-char)) '(?w ?_))
       (let* ((comint-completion-addsuffix nil)
@@ -262,7 +260,6 @@ token.  Needs version of R >= 2.7.0."
 (defun ess-r-complete-object-name ()
   "Completion in R via R's completion utilities (formerly 'rcompgen').
 To be used instead of ESS' completion engine for R versions >= 2.7.0."
-  (interactive)
   (let ((possible-completions (ess-r-get-rcompletions))
         token-string)
     (when possible-completions
