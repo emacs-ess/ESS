@@ -1930,7 +1930,7 @@ field.
 Note: `inferior-ess-secondary-prompt' should match exactly."
   (goto-char (field-beginning))
   ;; move to the begining of non-output field
-  (while (and (not (= (point) (point-min)))
+  (while (and (not (bobp))
               (eq (field-at-pos (point)) 'output))
     (goto-char (field-beginning nil t)))
   ;; skip all secondary prompts

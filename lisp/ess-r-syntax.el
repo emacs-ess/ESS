@@ -63,7 +63,7 @@
     t))
 
 (defun ess-backward-char (&optional N)
-  (unless (= (point) (point-min))
+  (unless (bobp)
     (forward-char (- (or N 1)))
     t))
 
@@ -172,7 +172,7 @@ Cons cell containing the token type and string representation."
 
 (defun ess-climb-token--back ()
   (let* ((token-end (point))
-         (token-type (if (= (point) (point-min))
+         (token-type (if (bobp)
                          "buffer-start"
                        (ess-climb-token--operator)))
          (token-value (buffer-substring-no-properties (point) token-end)))
@@ -792,14 +792,14 @@ nil, return the prefix."
   "Skip blanks and newlines backward, taking end-of-line comments into account."
   (ess-any ((ess-skip-blanks-backward-1))
            ((when newlines
-              (ess-while (and (/= (point) (point-min))
+              (ess-while (and (not (bobp))
                               (= (point) (line-beginning-position)))
                 (forward-line -1)
                 (goto-char (ess-code-end-position))
                 (ess-skip-blanks-backward-1))))))
 
 (defun ess-skip-blanks-backward-1 ()
-  (and (/= (point) (point-min))
+  (and (not (bobp))
        (/= 0 (skip-syntax-backward " "))))
 
 (defun ess-skip-blanks-forward (&optional newlines)
