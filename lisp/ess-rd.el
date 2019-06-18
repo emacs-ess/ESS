@@ -29,6 +29,9 @@
 ;;
 
 ;;; Code:
+(eval-when-compile
+  (require 'subr-x))
+
 (require 'ess-help)
 (require 'ess-inf)
 ;; Silence the byte compiler, see TODO below; can we remove these?
@@ -202,9 +205,9 @@ All Rd mode abbrevs start with a grave accent (`)."
         ["Toggle Abbrev Mode"           abbrev-mode t]
         ["Toggle Auto-Fill Mode"        auto-fill-mode t]
         "-"
-        ["Submit Bug Report"            Rd-submit-bug-report t]
+        ["Submit Bug Report"            ess-submit-bug-report t]
         "-"
-        ["Describe Rd Mode"             Rd-describe-major-mode t])
+        ["Describe Rd Mode"             describe-mode t])
   "Menu used in Rd mode.")
 
 (defvar Rd-to-help-command "R CMD Rd2txt"
@@ -264,7 +267,7 @@ the following to your Emacs configuration file:
 
 (defun Rd-describe-major-mode ()
   "Describe the current major mode."
-  (interactive)
+  (declare (obsolete describe-mode "ESS 19.04"))
   (describe-function major-mode))
 
 (defun Rd-mode-in-verbatim-p ()
@@ -289,7 +292,6 @@ the following to your Emacs configuration file:
 
 (defun Rd-mode-calculate-indent ()
   "Return appropriate indentation for current line in Rd mode."
-  (interactive)
   (save-excursion
     (beginning-of-line)
     (cond
@@ -320,18 +322,16 @@ the following to your Emacs configuration file:
 
 (defun Rd-mode-indent-line ()
   "Indent current line as Rd source."
-  (interactive)
-  (let ((ic (Rd-mode-calculate-indent))
-        (rp (- (current-column) (current-indentation))))
-    (if ic                              ; Not inside a verbatim
-        (if (< ic 0)
-            (error "Unmatched parenthesis")
-          (indent-line-to ic)
-          (if (> rp 0)
-              (move-to-column (+ ic rp)))))))
+  (when-let ((ic (Rd-mode-calculate-indent))
+             (rp (- (current-column) (current-indentation))))
+    (when (< ic 0)
+      (error "Unmatched parenthesis"))
+    (indent-line-to ic)
+    (when (> rp 0)
+      (move-to-column (+ ic rp)))))
 
 (defun Rd-mode-insert-item ()
-  "Insert \\iten{ on a newline."
+  "Insert \\item{ on a newline."
   (interactive)
   (reindent-then-newline-and-indent)
   (insert "\\item{")
@@ -413,11 +413,10 @@ WHAT determines the font to use, as specified by `Rd-font-list'."
 
 (defun Rd-preview-help (&optional via-shell)
   "Preview the current Rd buffer contents as help.
-If optional VIA-SHELL is set, using `Rd-to-help-command'.
 If the current buffer is not associated with a file, create a
 temporary one in variable `temporary-file-directory'."
   (declare (advertised-calling-convention () "ESS 19.04"))
-  (interactive "P")
+  (interactive "P")                     ; If optional VIA-SHELL is set, using `Rd-to-help-command'.
   (let ((file buffer-file-name)
         (pbuf (get-buffer-create "R Help Preview"))
         del-p)
