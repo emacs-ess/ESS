@@ -269,6 +269,7 @@ value by using `ess-r-runners-reset'."
 (defvar ess-r-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "C-c C-=") #'ess-cycle-assign)
+    (define-key map "\M-?" #'ess-complete-object-name)
     (define-key map (kbd "C-c C-.") 'ess-rutils-map)
     map))
 

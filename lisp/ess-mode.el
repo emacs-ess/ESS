@@ -80,7 +80,6 @@
     (define-key map "\C-c\M-l"   #'ess-load-file)
     (define-key map "\C-c\C-v"   #'ess-display-help-on-object)
     (define-key map "\C-c\C-s"   #'ess-switch-process)
-    (define-key map "\M-?"       #'ess-complete-object-name)
     (define-key map "\C-c\C-k"   #'ess-force-buffer-current)
     (define-key map "\C-c`"      #'ess-show-traceback)
     (define-key map [(control ?c) ?~] #'ess-show-call-stack)

@@ -79,8 +79,10 @@
 (declare-function ess-process-live-p "ess-inf")
 (declare-function ess-process-put "ess-inf")
 (declare-function ess-send-string "ess-inf")
+(declare-function ess-switch-process "ess-inf" ())
 (declare-function ess-switch-to-ESS "ess-inf")
 (declare-function ess-wait-for-process "ess-inf")
+(declare-function ess-switch-to-end-of-ESS "ess-inf" ())
 (declare-function ess-eval-region--normalise-region "ess-inf" )
 (declare-function inferior-ess-run-callback "ess-inf")
 (declare-function inferior-ess--set-status "ess-inf")
@@ -115,23 +117,23 @@ Indicates that ess-tracebug-mode is turned on.")
 
 (defvar ess-watch-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "k" 'ess-watch-kill)
-    ;; (define-key ess-watch-mode-map "u" 'ess-watch-undelete)
+    (define-key map "k" #'ess-watch-kill)
+    ;; (define-key ess-watch-mode-map "u" #'ess-watch-undelete)
     ;; editing requires a little more work.
-    (define-key map "a" 'ess-watch-add)
-    (define-key map "i" 'ess-watch-insert)
-    (define-key map "e" 'ess-watch-edit-expression)
-    (define-key map "r" 'ess-watch-rename)
-    (define-key map "q" 'ess-watch-quit)
-    (define-key map "u" 'ess-watch-move-up)
-    (define-key map "U" 'ess-watch-move-down)
-    (define-key map "d" 'ess-watch-move-down)
-    (define-key map "n" 'ess-watch-next-block)
-    (define-key map "p" 'ess-watch-previous-block)
+    (define-key map "a" #'ess-watch-add)
+    (define-key map "i" #'ess-watch-insert)
+    (define-key map "e" #'ess-watch-edit-expression)
+    (define-key map "r" #'ess-watch-rename)
+    (define-key map "q" #'ess-watch-quit)
+    (define-key map "u" #'ess-watch-move-up)
+    (define-key map "U" #'ess-watch-move-down)
+    (define-key map "d" #'ess-watch-move-down)
+    (define-key map "n" #'ess-watch-next-block)
+    (define-key map "p" #'ess-watch-previous-block)
     ;; R mode keybindings.
-    (define-key map "\C-c\C-s" 'ess-watch-switch-process)
-    (define-key map "\C-c\C-y" 'ess-switch-to-ESS)
-    (define-key map "\C-c\C-z" 'ess-switch-to-end-of-ESS)
+    (define-key map "\C-c\C-s" #'ess-switch-process)
+    (define-key map "\C-c\C-y" #'ess-switch-to-ESS)
+    (define-key map "\C-c\C-z" #'ess-switch-to-end-of-ESS)
     map)
   "Keymap for `ess-watch-mode'.")
 
@@ -668,12 +670,12 @@ See the also `ess--dbg-goto-debug-point'")
 (defun ess-show-traceback ()
   "Display R traceback and last error message.
 Pop up a compilation/grep/occur like buffer. Usual global key
-bindings are available \(\\[next-error] and \\[previous-error]\)
+bindings are available (\\[next-error] and \\[previous-error])
 for `next-error' and `previous-error' respectively.
 
 You can bind 'no-select' versions of this commands:
-\(define-key compilation-minor-mode-map [(?n)] 'next-error-no-select\)
-\(define-key compilation-minor-mode-map [(?p)] 'previous-error-no-select\)"
+\(define-key compilation-minor-mode-map [(?n)] #'next-error-no-select)
+\(define-key compilation-minor-mode-map [(?p)] #'previous-error-no-select)"
   (interactive)
   (if (null ess-traceback-command)
       (error "Not implemented for dialect %s" ess-dialect)
@@ -704,7 +706,7 @@ You can bind 'no-select' versions of this commands:
           (setq next-error-function 'ess-tracebug-next-error-function)
                                         ;(use-local-map ess-traceback-minor-mode-map)
           ;; ess keys
-          (local-set-key "\C-c\C-s" 'ess-watch-switch-process)
+          (local-set-key "\C-c\C-s" 'ess-switch-process)
           (local-set-key "\C-c\C-y" 'ess-switch-to-ESS)
           (local-set-key "\C-c\C-z" 'ess-switch-to-end-of-ESS)
 
