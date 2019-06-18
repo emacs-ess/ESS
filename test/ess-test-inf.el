@@ -150,6 +150,18 @@ OUT-STRING is the content of the region captured by
        (R-mode)
        ,@body)))
 
+(ert-deftest ess-eval-paragraph-test ()
+  (let ((inhibit-message ess-inhibit-message-in-tests))
+    (let ((output "\nlibrary(bbb)\n"))
+      (ess-test-interactive-eval output
+        (insert (format "## a comment\n%s\nmore_code4" output))
+        (goto-char (point-min))
+        (search-forward "lib")
+        (ess-eval-paragraph)
+        (should (looking-at-p "rary"))
+        (ess-eval-region-or-function-or-paragraph)
+        (should (looking-at-p "rary"))))))
+
 (ert-deftest ess-eval-and-step-test ()
   (let ((inhibit-message ess-inhibit-message-in-tests))
 
