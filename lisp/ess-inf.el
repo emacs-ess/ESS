@@ -1779,7 +1779,7 @@ meaning as for `ess-eval-region'."
     (define-key map "\C-c\C-z" #'ess-switch-to-inferior-or-script-buffer) ; mask comint map
     (define-key map "\C-d"     #'delete-char)   ; EOF no good in S
     (define-key map "\t"       #'completion-at-point)
-    (define-key map "\M-?"     #'ess-list-object-completions)
+    (define-key map "\M-?"     #'ess-complete-object-name)
     (define-key map "\C-c\C-k" #'ess-request-a-process)
     (define-key map ","        #'ess-smart-comma)
     (define-key map "\C-c\C-d"  'ess-doc-map)
@@ -2290,11 +2290,6 @@ after issuing a quit command as the latter assumes a live process."
       (accept-process-output proc 0.002)
       (when (> (- (float-time) start-time) 1)
         (error "Timeout while quitting process")))))
-
-(defun ess-list-object-completions nil
-  "List all possible completions of the object name at point."
-  (interactive)
-  (ess-complete-object-name))
 
 
 ;;;*;;; Support functions

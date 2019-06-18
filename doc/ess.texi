@@ -2274,7 +2274,7 @@ pressing @kbd{TAB} yet again will complete the object name up to
 uniqueness, etc.  If you just wish to see what completions exist without
 adding any extra characters, type @kbd{M-?}.
 
-@deffn Command ess-list-object-completions
+@deffn Command ess-complete-object-name
 @kindex M-?
 @kbd{M-?} List all possible completions of the object name at point.
 @end deffn

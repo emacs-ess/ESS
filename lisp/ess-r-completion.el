@@ -174,7 +174,7 @@ and `ess-internal-complete-object-name' otherwise."
       (message "No ESS process associated with current buffer")
       nil)))
 
-(defalias 'ess-list-object-completions #'ess-complete-object-name)
+(define-obsolete-function-alias 'ess-list-object-completions #'ess-complete-object-name "ESS 19.04")
 
 ;; This one is needed for R <= 2.6.x -- hence *not* obsoleting it
 (defun ess-internal-complete-object-name ()
