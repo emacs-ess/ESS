@@ -136,26 +136,25 @@ Users whose default is not 'sh, but are accessing a remote machine with
 (defvar ess-bugs-stats-vars " "
   "ESS[BUGS]: List of BUGS variables to be summarized with statistics.")
 
-(defvar ess-bugs-mode-map nil
+(defvar ess-bugs-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (quote [f2])  #'ess-revert-wisely)
+    (define-key map "\C-c\C-c" #'ess-bugs-next-action)
+    (define-key map "=" #'ess-bugs-hot-arrow)
+    (define-key map "_" #'ess-bugs-hot-arrow)
+    map)
   "ESS[BUGS]: Keymap for mode.")
 
-(if ess-bugs-mode-map nil (setq ess-bugs-mode-map (make-keymap)))
-(define-key ess-bugs-mode-map (quote [f2])  'ess-revert-wisely)
-                                        ;(define-key ess-bugs-mode-map (quote [f12]) 'ess-bugs-next-action)
-(define-key ess-bugs-mode-map "\C-c\C-c" 'ess-bugs-next-action)
-(define-key ess-bugs-mode-map "=" 'ess-bugs-hot-arrow)
-(define-key ess-bugs-mode-map "_" 'ess-bugs-hot-arrow)
-
-(defvar ess-bugs-syntax-table nil
+(defvar ess-bugs-syntax-table
+  (let ((table (make-syntax-table)))
+    (modify-syntax-entry ?\\ "." table)
+    (modify-syntax-entry ?# "<" table)
+    (modify-syntax-entry ?\n ">" table)
+    (modify-syntax-entry ?\( "()" table)
+    (modify-syntax-entry ?\)  ")(" table)
+    (modify-syntax-entry ?. "w" table)
+    table)
   "ESS[BUGS]: Syntax table for mode.")
-
-(if ess-bugs-syntax-table nil (setq ess-bugs-syntax-table (make-syntax-table)))
-(modify-syntax-entry ?\\ "."  ess-bugs-syntax-table)
-(modify-syntax-entry ?#  "<"  ess-bugs-syntax-table)
-(modify-syntax-entry ?\n ">"  ess-bugs-syntax-table)
-(modify-syntax-entry ?\(  "()" ess-bugs-syntax-table)
-                     (modify-syntax-entry ?\)  ")(" ess-bugs-syntax-table)
-(modify-syntax-entry ?.  "w"  ess-bugs-syntax-table)
 
 (defun ess-bugs-file ()
   "ESS[BUGS]: Set internal variables dealing with BUGS files.
