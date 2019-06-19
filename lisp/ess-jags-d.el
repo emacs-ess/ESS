@@ -23,7 +23,6 @@
 
 ;;; Code:
 
-(require 'ess-bugs-l)
 (require 'ess-bugs-d)
 (require 'ess-utils)
 (require 'ess-inf)
@@ -250,8 +249,6 @@
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.[Jj][Aa][Gg]\\'" . ess-jags-mode))
 
-;; FIXME: What is this doing here!?
-(setq features (delete 'ess-bugs-d features))
 (provide 'ess-jags-d)
 
 ;;; ess-jags-d.el ends here
