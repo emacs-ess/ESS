@@ -1419,7 +1419,7 @@ Used to decide highlighting and tag completion."
                                  "importFrom" "importClassesFrom"
                                  "importMethodsFrom" "useDynLib"
                                  "rdname" "section" "slot" "description"
-                                 "md")
+                                 "md" "eval")
   "The tags used in roxygen fields that require a parameter.
 Used to decide highlighting and tag completion."
   :group 'ess-roxy
