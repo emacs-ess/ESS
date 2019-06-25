@@ -94,7 +94,7 @@ local({
                           sep = '', collapse = ' '))
         allargs <-
             if (special) fmls_names
-            else tryCatch(gsub('=', '', utils:::functionArgs(funname, ''), fixed = TRUE),
+            else tryCatch(gsub(' ?= ?', '', utils:::functionArgs(funname, ''), fixed = FALSE),
                           error=function(e) NULL)
         allargs <- sprintf("'(\"%s\")",
                            paste(allargs, collapse = '\" "'))
@@ -114,7 +114,7 @@ local({
     if(.ess.Rversion > '2.14.1'){
         comp <- compiler::enableJIT(0)
         op <- options(error=NULL)
-        on.exit({ options(op); compiler::enableJIT(comp) })
+        on.exit({ options(op); compiler::enableJIT(comp)}, add = TRUE)
     }
     utils:::.assignLinebuffer(string)
     utils:::.assignEnd(end)
