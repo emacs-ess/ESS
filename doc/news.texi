@@ -1,3 +1,130 @@
+Changes and New Features in 19.04 (unreleased). See @xref{Old NEWS,,,
+ess} for older ESS news:
+@itemize @bullet
 
-@include ess-defs.texi
-@include newfeat.texi
+@item ESS[R]: There is a new menu entry for reloading the R process.
+It is otherwise bound to @code{C-c C-e C-r}. Reloading now reuses the
+same process name and start arguments that were used to start the
+process.
+
+@item iESS: Process runners now return the inferior buffer.
+Note that callers of inferior runners should not assume that the current
+buffer has been set to the inferior buffer. Instead, use
+@code{with-current-buffer} with the return value of the inferior.
+
+@item iESS[SAS]: The SAS keymap was only set in iESS buffers
+called `*SAS*`. This is now fixed.
+
+@item ESS[R]: Fixed longstanding indentation issues involving
+@code{::} and @code{:::} operators.
+
+@item Implement a more reliable check for the process busy state.
+Background actions such as completion and directory synchronization
+should not block the process and should not cause printing of the
+extraneous output to the interpreter.
+
+@item Activate @code{goto-address-mode} for url and email highlighting in inferior buffers.
+
+@item @code{smart-underscore} and @code{ess-smart-S-assign-key} have been removed.
+Users who liked the previous behavior (i.e. underscore inserting ``<-'')
+should bind @code{ess-insert-assign} to the underscore in their Emacs
+initialization file. For example, @code{(define-key ess-r-mode-map "_"
+#'ess-insert-assign)} and @code{(define-key inferior-ess-r-mode-map "_"
+#'ess-insert-assign)} will activate it in all ESS R buffers.
+
+@item ESS major modes are now defined using 'define-derived-mode'.
+This makes ESS major modes respect modern conventions such as having
+<language>-mode-hook and <language>-mode-map. Users are encouraged to
+place customizations under the appropriate mode.
+
+@item New option ess-auto-width controls setting the width option on window changes.
+Users can change it to 'frame, 'window, or an integer. See the
+docstring for details. @code{ess-auto-width-visible} controls
+visibility.
+
+@item ESS now respects @code{display-buffer-alist}.
+Users can now use @code{display-buffer-alist} to manage how and where
+windows appear. See @xref{Controlling buffer display,,, ess} for more
+information and examples.
+
+@item @code{ess-roxy-mode} can now be enabled in non-R buffers.
+This is primarily intended to support roxygen documentation for cpp
+buffers. Preview functionality is not supported outside R buffers.
+
+@item ESS[R]: DESCRIPTION files now open in @code{conf-colon-mode}.
+
+@item @code{ess-style} now has effects when set as a file or directory local variable.
+
+@item @code{ess-default-style} is now obsolete, use @code{ess-style} instead.
+
+@item Options for 'ess-gen-proc-buffer-name-function' have been renamed.
+ess-gen-proc-buffer-name:projectile-or-simple was renamed to
+ess-gen-proc-buffer-name:project-or-simple and
+ess-gen-proc-buffer-name:projectile-or-directory was renamed to
+ess-gen-proc-buffer-name:project-or-directory. As the name suggests,
+these now rely on project.el (included with Emacs) rather than
+projectile.el, which is a third-party package.
+
+@item ESS[R]: devtools commands ask about saving modified buffers before running.
+Users can disable the questioning with @code{ess-save-silently}.
+
+@item ESS[R] help pages now provide links to other help topics.
+This is similar with what you would see with, for example
+@code{options(help_type = ``html'')} but works with the plain-text
+version as well. This only works with @code{options(useFancyQuotes =
+TRUE)} (the default).
+
+@item @code{ess-rdired} buffers now derive from tabulated-list-mode.
+They should look better and be a bit faster overall. The size column
+now displays object sizes in bytes.
+
+@item @code{ess-rdired} buffers now auto-update.
+The frequency is governed by the new option
+@code{ess-rdired-auto-update-interval}.
+
+@item ESS[R]: @code{electric-layout-mode} is now supported.
+This automatically inserts a newline after an opening curly brace in R
+buffers. To enable it, customize @code{ess-r-mode-hook}.
+
+@item ESS[R]: imenu now supports assignment with the equals sign.
+
+@item ESS[Rd]: Rd no longer writes abbrevs to user's abbrev file.
+
+@item ESS removed support for many unused languages.
+This includes old versions of S+, ARC, OMG, VST, and XLS.
+
+@end itemize
+
+The following have been made obsolete or removed, see their
+documentation for more detail:
+
+@itemize @bullet
+
+@item Libraries for literate data analysis are obsolete and not loaded by default.
+This includes @code{ess-noweb}, @code{ess-swv}, and related
+functionality like @code{Rnw-mode}. Users are encouraged to switch to
+one of several other packages that deal with these modes. For example,
+polymode @url{https://github.com/polymode/poly-R/},
+@url{https://polymode.github.io/}, or markdown-mode with edit-indirect
+@url{https://jblevins.org/projects/markdown-mode}.
+
+@item Support for @code{auto-complete} is obsolete.
+The @code{auto-complete} package is unmaintained and so ESS support is
+now obsolete. Users are encouraged to switch to @code{company-mode}
+instead.
+
+@item User options for controlling display of buffers.
+This includes @code{ess-show-buffer-action},
+@code{inferior-ess-same-window}, @code{inferior-ess-own-frame}, and
+@code{inferior-ess-frame-alist}. See above about ESS respecting
+@code{display-buffer-alist}.
+
+@item Variables @code{ess-tab-always-indent} and @code{ess-tab-complete-in-script}.
+Use the Emacs-wide setting of @code{tab-always-indent} instead.
+
+@item @code{inferior-ess-*-start-file} variables.
+All modes except Stata did not respect customization of this variable.
+In order to load a file on startup, you should put a function on
+@code{ess-*-post-run-hook}.
+
+@end itemize

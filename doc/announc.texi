@@ -4,7 +4,6 @@
 @settitle ESS - Emacs Speaks Statistics
 @comment %**end of header
 
-@include ess-defs.texi
 @node Announce
 @chapter ANNOUNCING ESS
 @cindex ANNOUNCE
@@ -73,7 +72,7 @@ please read the README files that come with ESS.
 
 @node New Features,  , License, Announce
 @section New Features
-@include newfeat.texi
+@include news.texi
 
 @bye
 @c Remember to delete these lines before creating the info file.

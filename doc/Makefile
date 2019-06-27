@@ -3,12 +3,12 @@ include ../Makeconf
 TEXISRC = announc.texi authors.texi bugrept.texi bugs.texi \
 	credits.texi currfeat.texi ess.texi ess-defs.texi \
 	help-s.texi help-sas.texi installation.texi \
-	license.texi mailing.texi onewfeat.texi news.texi onews.texi \
-	newfeat.texi requires.texi help-bugs.texi \
-        help-jags.texi allnews.texi Makefile ../Makeconf ../VERSION
+	license.texi mailing.texi news.texi \
+	requires.texi help-bugs.texi \
+        help-jags.texi Makefile ../Makeconf ../VERSION
 
 PDFs = ess.pdf readme.pdf refcard/refcard.pdf
-TXTs = ../README ../ANNOUNCE ../NEWS ../ONEWS
+TXTs = ../README ../ANNOUNCE ../NEWS
 
 # Don't build pdf/html by default
 all  : info text
@@ -36,11 +36,8 @@ distclean clean:
 	-$(MAKETXT) announc.texi \
 	| perl -pe 'last if /^Concept Index/;' > $@
 
-../NEWS: Makefile ess-defs.texi newfeat.texi news.texi
+../NEWS: Makefile ess-defs.texi news.texi
 	-$(MAKETXT) news.texi > $@
-
-../ONEWS: Makefile ess-defs.texi onewfeat.texi onews.texi
-	-$(MAKETXT) onews.texi > $@
 
 ### File Dependencies
 
@@ -82,7 +79,7 @@ html/readme.html: $(TEXISRC)
 
 html/news.html: $(TEXISRC)
 	mkdir -p html
-	-$(MAKEHTML) html/news.html allnews.texi
+	-$(MAKEHTML) html/news.html news.texi
 
 refcard/refcard.pdf: refcard/refcard.tex
 	(cd refcard ; pdflatex refcard)

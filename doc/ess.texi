@@ -1,9 +1,6 @@
 \input texinfo   @c -*-texinfo-*-
-@comment %**start of header
 @setfilename ess.info
 @settitle ESS -- Emacs Speaks Statistics
-@comment %**end of header
-
 @synindex pg fn
 
 @include ess-defs.texi
@@ -276,8 +273,7 @@ unnecessary prompts.
 @node New features
 @section New features in ESS
 
-@include newfeat.texi
-@comment @include onewfeat.texi
+@include news.texi
 
 @node Credits
 @section Authors of and contributors to ESS
@@ -3311,6 +3307,7 @@ LaTeXSweave RET}.  In both cases, the process can be monitored with
 * Reporting Bugs::
 * Mailing Lists::
 * Help with Emacs::
+* Old NEWS::
 @end menu
 
 @node Bugs
@@ -3339,6 +3336,10 @@ Emacs FAQs (try @kbd{M-x view-emacs-faq})
 and EmacsWiki (@uref{https://www.emacswiki.org}).  Please consult them
 before asking on the mailing list about issues that are not specific to
 ESS.
+
+@node Old NEWS
+@section Old NEWS
+@include old-news.texi
 
 @node Customization
 @appendix Customizing ESS

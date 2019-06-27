@@ -1,5 +1,310 @@
-@comment @itemize @w{}
-@comment @item
+Bug Fixes in 18.10.3:
+@itemize @bullet
+@item More @file{Makefile} fixes, notably installing @file{*.el}s.
+@end itemize
+
+Bug Fixes in 18.10.2:
+@itemize @bullet
+@item @ESS{[R]} Fix namespace evaluation in non-installed packages.
+Evaluation is directed into GlobalEnv as originally intended.
+@item @file{Makefile} fixes, notably for @code{make install} and including
+full docs in the tarballs.
+@end itemize
+
+Bug Fixes in 18.10-1:
+@itemize @bullet
+@item New functions @code{ess-eval-line-visibly-and-step} (@kbd{C-c C-n} and @code{ess-eval-region-or-line-visibly-and-step} (@kbd{C-RET})
+which behave as the old versions of @code{ess-eval-line-and-step} and @code{ess-eval-region-or-line-and-step}.
+
+@end itemize
+
+Changes and New Features in 18.10:
+@itemize @bullet
+
+@item This is the last release to support Emacs older than 25.1.
+Going forward, only GNU Emacs 25.1 and newer will be supported. Soon
+after this release, support for older Emacs versions will be dropped
+from the git master branch. Note that MELPA uses the git master branch
+to produce ESS snapshots, so if you are using Emacs < 25.1 from MELPA
+and are unable to upgrade, you should switch to MELPA-stable.
+
+@item ESS now displays the language dialect in the mode-line.
+So, for example, R buffers will now show ESS[R] rather than ESS[S].
+
+@item The ESS manual has been updated and revised.
+
+@item The ESS initialization process has been further streamlined.
+If you update the autoloads (which installation from
+@code{package-install} does), you should not need to @code{(require
+'ess-site)} at all, as autoloads should automatically load ESS when it
+is needed (e.g. the first time an R buffer is opened). In order to
+defer loading your ESS config, you may want to do something like
+@code{(with-require-after-load "ess" <ess-config-here>)} in your Emacs
+init file. Users of the popular @code{use-package} Emacs package can
+now do @code{(use-package ess :defer t)} to take advantage of this
+behavior. @xref{Activating and Loading ESS,,, ess,} for more
+information on this feature.
+
+@item ESS now respects Emacs conventions for keybindings.
+This means that The @code{C-c [letter]} bindings have been
+removed. This affects @code{C-c h}, which was bound to
+@code{ess-eval-line-and-step-invisibly} in @code{sas-mode-local-map};
+@code{C-c f}, which was bound to @code{ess-insert-function-outline} in
+@code{ess-add-MM-keys}; and @code{C-c h}, which was bound to
+@code{ess-handy-commands} in @code{Rd-mode-map},
+@code{ess-noweb-minor-mode-map}, and @code{ess-help-mode-map}
+
+@item Functions @code{ess-eval-line-and-step} and @code{ess-eval-region-or-line-and-step}
+now behave consistently with other evaluation function inside a package.
+
+@item @ESS{[R]}: @code{ess-r-package-use-dir} now works with any mode.
+This sets the working directory to the root of the current package
+including for example C or C++ files within @code{/src}).
+
+@item @ESS{[R]}: Long + + prompts in the inferior no longer offset output.
+
+@item @ESS{[R]}: New option @code{strip} for @code{inferior-ess-replace-long+}.
+This strips the entire + + sequence.
+
+@item ESS modes now inherit from @code{prog-mode}.
+In the next release, ESS modes will use @code{define-derived-mode} so
+that each mode will have (for example) its own hooks and keymaps.
+
+@item @ESS{[R]}: Supports flymake in R buffers for Emacs 26 and newer.
+Users need to install the @code{lintr} package to use it. Customizable
+options include @code{ess-use-flymake}, @code{ess-r-flymake-linters},
+and @code{ess-r-flymake-lintr-cache}.
+
+@item @ESS{[R]}: Gained support for xref in Emacs 25+.
+@xref{Xref,,, emacs, The Gnu Emacs Reference Manual}
+
+@item @ESS{[R]}: The startup screen is cleaner.
+It also displays the startup directory with an explicit @code{setwd()}.
+
+@item @ESS{[R]}: Changing the working directory is now always reflected in the process buffer.
+
+@item @ESS{[R]}: @code{Makevars} files open with @code{makefile-mode}.
+
+@item New variable @code{ess-write-to-dribble}.
+This allows users to disable the dribble (@code{*ESS*}) buffer if they wish.
+
+@item All of the @code{*-program-name} variables have been renamed to @code{*-program}.
+Users who previously customized e.g. @code{inferior-ess-R-program-name}
+will need to update their customization to
+@code{inferior-ess-R-program}. These variables are treated as risky
+variables.
+
+@item @code{ess-smart-S-assign} was renamed to @code{ess-insert-assign}.
+It provides similar functionality but for any keybinding, not just `_`.
+For instance if you bind it to `;`, repeated invokations cycle through
+between assignment and inserting `;`.
+
+@item @code{C-c C-=} is now bound to @code{ess-cycle-assign} by default.
+See the documentation for details. New user customization option
+@code{ess-assign-list} controls which assignment operators are cycled.
+
+@item @ESS{[R]} In remote sessions, the ESSR package is now fetched from GitHub.
+
+@item Commands that send the region to the inferior process now deal with rectangular regions.
+See the documentation of @code{ess-eval-region} for details. This only
+works on Emacs 25.1 and newer.
+
+@item @ESS{[R]}: Improvements to interacting with iESS in non-R files.
+Interaction with inferior process in non-R files within packages (for
+instance C or C++ files) has been improved. This is a work in
+progress.
+
+@item @ESS{[R]}: Changing the working directory is now always reflected in the process buffer.
+
+@item @ESS{[JAGS]}: *.jog and *.jmd files no longer automatically open in JAGS mode.
+
+@end itemize
+Many improvements to fontification:
+
+@itemize @bullet
+
+@item Improved customization for faces.
+ESS now provides custom faces for (nearly) all faces used and places
+face customization options into their own group. Users can customize
+these options using @kbd{M-x customize-group RET ess-faces}.
+
+@item Many new keywords were added to @code{ess-R-keywords} and @code{ess-R-modifiers}.
+See the documentation for details.
+
+@item @ESS{[R]}: @code{in} is now only fontified when inside a @code{for} construct.
+This avoids spurious fontification, especially in the output buffer
+where `in` is a commond English word.
+
+@item @ESS: Font-lock keywords are now generated lazily.
+That means you can now add or remove keywords from variables like
+@code{ess-R-keywords} in your Emacs configuration file after loading
+ESS (i.e. in the @code{:config} section for @code{use-package} users).
+
+@item @ESS{[R]}: Fontification of roxygen @code{@@param} keywords now supports comma-separated parameters.
+
+@item @ESS{[R]}: Certain keywords are only fontified if followed by a parenthesis.
+Function-like keywords such as @code{if ()} or
+@code{stop()} are no longer fontified as keyword if not followed by an
+opening parenthesis. The same holds for search path modifiers like
+@code{library()} or @code{require()}.
+
+@item @ESS{[R]}: Fixed fontification toggling.
+Especially certain syntactic elements such as @code{%op%} operators
+and backquoted function definitions.
+
+@item @ESS{[R]}: @code{ess-font-lock-toggle-keyword} can be called interactively.
+This command asks with completion for a font-lock group to toggle.
+This functionality is equivalent to the font-lock menu.
+
+@end itemize
+
+Notable bug fixes:
+
+@itemize @bullet
+
+@item @code{prettify-symbols-mode} no longer breaks indentation.
+This is accomplished by having the pretty symbols occupy the same
+number of characters as their non-pretty cousins.  You may customize
+the new variable @code{ess-r-prettify-symbols} to control this
+behavior.
+
+@item @ESS{}: Inferior process buffers are now always displayed on startup.
+Additionally, they don't hang Emacs on failures.
+@end itemize
+
+Obsolete libraries, functions, and variables:
+
+@itemize @bullet
+
+@item The @code{ess-r-args.el} library has been obsoleted and will be removed in the next release.
+Use @code{eldoc-mode} instead, which is on by default.
+
+@item Functions and options dealing with the smart assign key are obsolete.
+The following functions have been made obsolete and will be removed in
+the next release of ESS: @code{ess-smart-S-assign},
+@code{ess-toggle-S-assign}, @code{ess-toggle-S-assign-key},
+@code{ess-disable-smart-S-assign}.
+
+The variable @code{ess-smart-S-assign-key} is now deprecated and will
+be removed in the next release. If you would like to continue using
+`_` for insterting assign in future releases, please bind
+@code{ess-insert-assign} in @code{ess-mode-map} the normal way.
+
+@item @ESS{[S]}: Variable @code{ess-s-versions-list} is obsolete and ignored.
+Use @code{ess-s-versions} instead. You may pass arguments by starting
+the inferior process with the universal argument.
+
+@end itemize
+
+Changes and New Features in 17.11:
+@itemize @bullet
+
+@item The ESS initialisation process has been streamlined. You can now
+load the R and Stata modes independently from the rest of ESS. Just put
+@code{(require 'ess-r-mode)} or @code{(require 'ess-stata-mode)} in your
+init file. This is for experienced Emacs users as this requires setting
+up autoloads for @code{.R} files manually. We will keep maintaining
+@code{ess-site} for easy loading of all ESS features.
+
+@item Reloading and quitting the process is now more robust. If no
+process is attached, ESS now switches automatically to one (prompting
+you for selection if there are several running). Reloading and quitting
+will now work during a debug session or when R is prompting for input
+(for instance after a crash). Finally, the window configuration is saved
+and restored after reloading to prevent the buffer of the new process
+from capturing the cursor.
+
+@item @ESS{[R]}: New command @code{ess-r-package-use-dir}. It sets the
+working directory of the current process to the current package directory.
+
+@item @ESS{[R]} Lookup for references in inferior buffers has been
+improved. New variable @code{ess-r-package-source-roots} contains
+package sub-directories which are searched recursively during the file
+lookup point. Directories in @code{ess-tracebug-search-path} are now
+also searched recursively.
+
+@item @ESS{[R]} Namespaced evaluation is now automatically enabled only
+in the @code{R/} directory. This way ESS will not attempt to update
+function definitions from a package if you are working from e.g. a test
+file.
+
+@end itemize
+
+Changes and New Features in 16.10:
+@itemize @bullet
+
+@item @ESS{[R]}: Syntax highlighting is now more consistent. Backquoted
+names are not fontified as strings (since they really are identifiers).
+Furthermore they are now correctly recognised when they are function
+definitions or function calls.
+@item @ESS{[R]}: Backquoted names and @code{%op%} operators are
+recognised as sexp. This is useful for code navigation, e.g. with
+@kbd{C-M-f} and @kbd{C-M-b}.
+@item @ESS{[R]}: Integration of outline mode with roxygen examples fields.
+You can use outline mode's code folding commands to fold the examples
+field. This is especially nice to use with well documented packages with
+long examples set. Set @code{ess-roxy-fold-examples} to non-nil to
+automatically fold the examples field when you open a buffer.
+@item @ESS{[R]}: New experimental feature: syntax highlighting in
+roxygen examples fields. This is turned off by default. Set
+@code{ess-roxy-fontify-examples} to non-nil to try it out.
+@item @ESS{[R]}: New package development command @code{ess-r-devtools-ask}
+bound to @kbd{C-c C-w C-a}. It asks with completion for any devtools
+command that takes @code{pkg} as argument.
+@item @ESS{[R]}: New command @kbd{C-c C-e C-r} to reload the inferior process.
+Currently only implemented for R. The R method runs @code{inferior-ess-r-reload-hook}
+on reloading.
+@item @ESS{[R]}: @code{ess-r-package-mode} is now activated in non-file buffers as well.
+@end itemize
+
+Bug fixes in 16.10:
+@itemize @bullet
+@item @ESS{[R]}: Fix broken (un)flagging for debugging inside packages
+@item @ESS{[R]}: Fixes (and improvements) in Package development
+@item @ESS{[R]}: Completion no longer produces @code{...=} inside @code{list(  )}.
+@item @ESS{[R]}: Better debugging and tracing in packages.
+@item @ESS{[R]}: Better detection of symbols at point.
+@item @ESS{[R]}: No more spurious warnings on deletion of temporary files.
+@item @ESS{[julia]}: help and completion work (better)
+@item @ESS{[julia]}: available via @code{ess-remote}
+@end itemize
+
+Changes and New Features in 16.04:
+@itemize @bullet
+
+@item @ESS{[R]}: @code{developer} functionality has been refactored.
+The new user interface consists of a single command
+@code{ess-r-set-evaluation-env} bound by default to @kbd{C-c C-t
+C-s}. Once an evaluation environment has been set with, all subsequent
+ESS evaluation will source the code into that environment. By default,
+for file within R packages the evaluation environment is set to the
+package environment. Set @code{ess-r-package-auto-set-evaluation-env} to
+@code{nil} to disable this.
+@item @ESS{[R]}: New @code{ess-r-package-mode}
+This development mode provides features to make package development
+easier. Currently, most of the commands are based on the @code{devtools}
+packages and are accessible with @kbd{C-c C-w} prefix. See the
+documentation of @code{ess-r-package-mode} function for all available
+commands. With @kbd{C-u} prefix each command asks for extra arguments to
+the underlying devtools function. This mode is automatically enabled in
+all files within R packages and is indicated with @code{[pkg:NAME]} in
+the mode-line.
+@item @ESS{[R]}: Help lookup has been improved.
+It is now possible to get help for namespaced objects such as
+pkg::foobar. Furthermore, ESS recognizes more reliably when you change
+@code{options('html_type')}.
+@item @ESS{[R]}: New specialized breakpoints for debugging magrittr pipes
+@item @ESS{}: ESS now implements a simple message passing interface
+to communicate between ESS and inferior process.
+@end itemize
+
+Bug fixes in 16.04:
+@itemize @bullet
+@item @ESS{[R]}: Roxygen blocks with backtics are now correctly filled
+@item @ESS{[R]}: Don't skip breakpoints in magrittr's @code{debug_pipe}
+@item @ESS{[R]}: Error highlighting now understands `testthat` type errors
+@item @ESS{[Julia]}: Added getwd and setwd generic commands
+@end itemize
 
 Changes and New Features in 15.09:
 @itemize @bullet

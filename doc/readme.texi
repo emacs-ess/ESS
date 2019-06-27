@@ -4,7 +4,6 @@
 @settitle ESS - Emacs Speaks Statistics
 @comment %**end of header
 
-@include ess-defs.texi
 @node General Information
 @chapter General Information: README
 @cindex README
@@ -79,10 +78,10 @@ Table of Contents
 
 @node Starting up, Current Features, Installation, General Information
 @section Starting an ESS process
-To start an @Sl{} session on Unix or on Windows when you
+To start an S session on Unix or on Windows when you
 use the Cygwin bash shell, simply type @kbd{M-x S RET}.
 
-To start an @Sl{} session on Windows when you
+To start an S session on Windows when you
 use the MSDOS prompt shell, simply type @kbd{M-x S+6-msdos RET}.
 
 @node Current Features, New Features, Starting up, General Information
@@ -93,7 +92,7 @@ use the MSDOS prompt shell, simply type @kbd{M-x S+6-msdos RET}.
 @node New Features, Reporting Bugs, Current Features, General Information
 @section New Features
 
-@include newfeat.texi
+@include news.texi
 
 @node Reporting Bugs, Mailing Lists, New Features, General Information
 @section Reporting Bugs
