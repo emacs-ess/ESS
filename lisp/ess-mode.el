@@ -301,7 +301,6 @@ indentation style. See `ess-style-alist' for predefined styles."
   ;; Keep <tabs> out of the code.
   (setq-local indent-tabs-mode nil)
 
-  (put 'ess-local-process-name 'permanent-local t) ; protect from RCS
   (setq mode-line-process
         '(" ["
           (:eval (ess--get-mode-line-indicator))
