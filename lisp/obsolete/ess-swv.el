@@ -100,6 +100,18 @@
   :group 'ess-S
   :prefix "ess-")
 
+(defcustom ess-pdf-viewer-pref nil
+  "External pdf viewer you like to use from ESS.
+Can be a string giving a name of the program or a list with car
+giving heprogram and the tail giving the arguments. For example
+'(\"okular\" \"--unique\")."
+  :type '(choice (const nil) (repeat :tag "Command with arguments" string) (string :tag "Command")))
+
+(defcustom ess-ps-viewer-pref nil
+  "External PostScript viewer you like to use from ESS.
+If nil, ESS will try finding one from a list."
+  :type '(choice (const nil) string))
+
 (defcustom ess-swv-pdflatex-commands '("texi2pdf" "pdflatex" "make")
   "Commands to run a version of pdflatex in  \\[ess-swv-PDF];
 the first entry is the default command."
@@ -220,6 +232,40 @@ If CHOOSE is non-nil, offer a menu of available weavers.
   "Run purl on the current .Rnw file."
   (interactive)
   (ess-swv-run-in-R "purl"))
+
+;; trying different viewers; thanks to an original patch for
+;; ess-swv.el from Leo <sdl@web.de> :
+(defun ess-get-ps-viewer ()
+  "Get external PostScript viewer to be used from ESS.
+Use `ess-ps-viewer-pref' when that is executably found by \\[executable-find].
+Otherwise try a list of fixed known viewers."
+  (file-name-nondirectory
+   (or (and ess-ps-viewer-pref          ; -> ./ess-custom.el
+            (executable-find ess-ps-viewer-pref))
+       (executable-find "gv")
+       (executable-find "evince")
+       (executable-find "kghostview"))))
+
+(defun ess-get-pdf-viewer ()
+  "Get external PDF viewer to be used from ESS.
+Use `ess-pdf-viewer-pref' when that is executably found by \\[executable-find].
+Otherwise try a list of fixed known viewers."
+  (let ((viewer (or ess-pdf-viewer-pref
+                    ;; (and (stringp ess-pdf-viewer-pref)         ; -> ./ess-custom.el
+                    ;;      (executable-find ess-pdf-viewer-pref))
+                    (executable-find "evince")
+                    (executable-find "kpdf")
+                    (executable-find "okular")
+                    (executable-find "xpdf")
+                    (executable-find "acroread")
+                    (executable-find "xdg-open")
+                    ;; this one is wrong, (ok for time being as it is used only in swv)
+                    (when (fboundp 'ess-get-words-from-vector)
+                      (car (ess-get-words-from-vector
+                            "getOption(\"pdfviewer\")\n"))))))
+    (when (stringp viewer)
+      (setq viewer (file-name-nondirectory viewer)))
+    viewer))
 
 (defun ess-swv-weave-PDF (&optional choose)
   "Sweave/knit, compile TeX, and display PDF.

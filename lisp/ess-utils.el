@@ -611,43 +611,6 @@ GTags file (default TAGS): ")
         (message "Building tags .. ok!")))))
 
 
-;;; System
-
-;; trying different viewers; thanks to an original patch for
-;; ess-swv.el from Leo <sdl@web.de> :
-(defun ess-get-ps-viewer ()
-  "Get external PostScript viewer to be used from ESS.
-Use `ess-ps-viewer-pref' when that is executably found by \\[executable-find].
-Otherwise try a list of fixed known viewers."
-  (file-name-nondirectory
-   (or (and ess-ps-viewer-pref          ; -> ./ess-custom.el
-            (executable-find ess-ps-viewer-pref))
-       (executable-find "gv")
-       (executable-find "evince")
-       (executable-find "kghostview"))))
-
-(defun ess-get-pdf-viewer ()
-  "Get external PDF viewer to be used from ESS.
-Use `ess-pdf-viewer-pref' when that is executably found by \\[executable-find].
-Otherwise try a list of fixed known viewers."
-  (let ((viewer (or ess-pdf-viewer-pref
-                    ;; (and (stringp ess-pdf-viewer-pref)         ; -> ./ess-custom.el
-                    ;;      (executable-find ess-pdf-viewer-pref))
-                    (executable-find "evince")
-                    (executable-find "kpdf")
-                    (executable-find "okular")
-                    (executable-find "xpdf")
-                    (executable-find "acroread")
-                    (executable-find "xdg-open")
-                    ;; this one is wrong, (ok for time being as it is used only in swv)
-                    (when (fboundp 'ess-get-words-from-vector)
-                      (car (ess-get-words-from-vector
-                            "getOption(\"pdfviewer\")\n"))))))
-    (when (stringp viewer)
-      (setq viewer (file-name-nondirectory viewer)))
-    viewer))
-
-
 ;;; UI
 
 (defvar ess-current-region-overlay

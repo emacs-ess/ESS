@@ -1380,20 +1380,6 @@ Good for evaluating ESS code."
   :group 'ess-hooks
   :type 'hook)
 
-(defcustom ess-pdf-viewer-pref nil
-  "External pdf viewer you like to use from ESS.
-Can be a string giving a name of the program or a list with car
-giving heprogram and the tail giving the arguments. For example
-'(\"okular\" \"--unique\")."
-  :type '(choice (const nil) (repeat :tag "Command with arguments" string) (string :tag "Command"))
-  :group 'ess)
-
-(defcustom ess-ps-viewer-pref nil
-  "External PostScript viewer you like to use from ESS.
-If nil, ESS will try finding one from a list."
-  :type '(choice (const nil) string)
-  :group 'ess)
-
 ;; ---- ./ess-roxy.el : ------------
 
 (defcustom ess-roxy-package "roxygen2"
