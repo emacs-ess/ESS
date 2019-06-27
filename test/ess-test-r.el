@@ -169,16 +169,16 @@
                        "[1] \"foo\"")))))
 
 (ert-deftest ess-r-namespaced-eval-no-srcref-in-errors-test ()
+  :expected-result :failed
   ;; Fails since https://github.com/emacs-ess/ESS/commit/3a7d913
-  (when nil
-    (with-r-running nil
-      (let ((ess-r-evaluation-env "base")
-            (error-msg "Error: unexpected symbol")
-            ess-eval-visibly)
-        (insert "(foo bar)\n")
-        (let ((output (output (ess-eval-region (point-min) (point-max) nil))))
-          (should (string= (substring output 0 (length error-msg))
-                           error-msg)))))))
+  (with-r-running nil
+    (let ((ess-r-evaluation-env "base")
+          (error-msg "Error: unexpected symbol")
+          ess-eval-visibly)
+      (insert "(foo bar)\n")
+      (let ((output (output (ess-eval-region (point-min) (point-max) nil))))
+        (should (string= (substring output 0 (length error-msg))
+                         error-msg))))))
 
 
 ;;; Misc
@@ -223,17 +223,18 @@
                (ess-r-test-with-temp-text "x <- function(x){\n mean(x)\n }\n \n \n x(3)\n "
                  (goto-char (point-min))
                  (ess-skip-thing 'paragraph)
-                 (point))))
+                 (point)))))
 
-  ;; The following fails because end-of-defun assume that beggining-of-defun
-  ;; always moves the pointer. We currently don't in ess-r-beginning-of-function
-  ;; when there is no function. This might change when we have aproper
-  ;; ess-r-beggining-of-defun.
-  ;; (should (eql 1 (ess-r-test-with-temp-text "mean(1:10)"
-  ;;                  (goto-char (point-min))
-  ;;                  (ess-skip-thing 'function)
-  ;;                  (point))))
-  )
+(ert-deftest ess-skip-thing-test-function ()
+  :expected-result :failed
+  ;; The following fails because end-of-defun assume that
+  ;; beggining-of-defun always moves the pointer. We currently don't
+  ;; in ess-r-beginning-of-function when there is no function. This
+  ;; might change when we have a proper ess-r-beggining-of-defun.
+  (should (eql 1 (ess-r-test-with-temp-text "mean(1:10)"
+                   (goto-char (point-min))
+                   (ess-skip-thing 'function)
+                   (point)))))
 
 (ert-deftest ess-next-code-line-test ()
   (should (eql 5
