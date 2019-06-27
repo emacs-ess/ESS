@@ -559,7 +559,7 @@ ESS-specific variables `ess-help-own-frame',
 
 ;;*;; User commands defined in ESS help mode
 
-(defun ess-skip-to-help-section nil
+(defun ess-skip-to-help-section ()
   "Jump to a section heading of a help buffer.
 The section selected is determined by the command letter used to
 invoke the command, as indicated by `ess-help-sec-keys-alist'.
@@ -567,29 +567,32 @@ Use \\[ess-describe-sec-map] to see which keystrokes find which
 sections."
   (interactive)
   (let ((old-point (point))
-        (case-fold-search nil))
+        (case-fold-search nil)
+        (the-sec (cdr (assoc last-command-event ess-help-sec-keys-alist))))
+    (cl-assert the-sec nil (format "Invalid section key: %c" last-command-event))
     (goto-char (point-min))
-    (let ((the-sec (cdr (assoc last-command-event ess-help-sec-keys-alist))))
-      (if (not the-sec) (error "Invalid section key: %c"
-                               last-command-event)
-        (if (re-search-forward (concat "^" the-sec) nil t)
-            (progn (recenter)
-                   (beginning-of-line))
-          (message "No %s section in this help. Sorry." the-sec)
-          (goto-char old-point))))))
+    (if (re-search-forward (concat "^" the-sec) nil t)
+        (progn (recenter)
+               (beginning-of-line))
+      (message "No %s section in this help. Sorry." the-sec)
+      (goto-char old-point))))
 
-(defun ess-skip-to-next-section nil
+(defun ess-skip-to-next-section ()
   "Jump to next section in ESS help buffer."
   (interactive)
   (let ((case-fold-search nil))
-    (if (re-search-forward ess-help-sec-regex nil 'no-error) nil
+    (when (looking-at-p ess-help-sec-regex)
+      (forward-line))
+    (if (re-search-forward ess-help-sec-regex nil 'no-error)
+        (beginning-of-line)
       (message "No more sections."))))
 
-(defun ess-skip-to-previous-section nil
+(defun ess-skip-to-previous-section ()
   "Jump to previous section in ESS help buffer."
   (interactive)
   (let ((case-fold-search nil))
-    (if (re-search-backward ess-help-sec-regex nil 'no-error) nil
+    (if (re-search-backward ess-help-sec-regex nil 'no-error)
+        (beginning-of-line)
       (message "No previous section."))))
 
 (defun ess-kill-buffer-and-go nil
