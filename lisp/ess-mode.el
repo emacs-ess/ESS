@@ -306,7 +306,6 @@ indentation style. See `ess-style-alist' for predefined styles."
           (:eval (ess--get-mode-line-indicator))
           ess--local-mode-line-process-indicator
           "]"))
-  (add-hook 'hack-local-variables-hook 'ess-set-style nil t)
   (add-hook 'ess-idle-timer-functions 'ess-synchronize-dirs nil 'local))
 
 (defun ess--get-mode-line-indicator ()

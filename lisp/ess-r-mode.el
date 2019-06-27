@@ -701,6 +701,8 @@ top level functions only."
   (setq-local add-log-current-defun-header-regexp "^\\(.+\\)\\s-+<-[ \t\n]*function")
   (setq-local font-lock-syntactic-face-function #'ess-r-font-lock-syntactic-face-function)
   (setq-local electric-layout-rules '((?{ . after)))
+  ;; indentation
+  (add-hook 'hack-local-variables-hook #'ess-set-style nil t)
   ;; eldoc
   (add-function :before-until (local 'eldoc-documentation-function)
                 #'ess-r-eldoc-function)
