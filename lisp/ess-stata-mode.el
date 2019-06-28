@@ -75,10 +75,10 @@
     (ess-eval-linewise-function    . #'stata-eval-linewise)
     (inferior-ess-program          . inferior-STA-program)
     (inferior-ess-objects-command  . "describe\n")
-    (inferior-ess-help-command     . "help %s\n") ;; assumes set more off 
+    (inferior-ess-help-command     . "help %s\n") ;; assumes set more off
     (inferior-ess-exit-command     . "exit\n")
     ;; --more-- is necessary here (hangs otherwise if startup stata.msg is big)
-    (inferior-ess-primary-prompt   . "[.:] \\|--more--") 
+    (inferior-ess-primary-prompt   . "[.:] \\|--more--")
     (inferior-ess-secondary-prompt . "--more--")
     (comint-use-prompt-regexp      . t)
     (inferior-ess-search-list-command   . "set more off\n search()\n")
@@ -120,8 +120,7 @@
 (defun ess-sta-remove-comments (string)
   "Remove one-line comments before sending the STRING to process.
 
-This function is placed in `ess-presend-filter-functions'.
-"
+This function is placed in `ess-presend-filter-functions'."
   (replace-regexp-in-string "/\\*.*\\*/\\|^//.*$" "" string))
 
 ;; (ess-sta-remove-comments "aaa /* sdfdsf */ bbb
@@ -134,11 +133,10 @@ This function is placed in `ess-presend-filter-functions'.
 
 
 (defvar ess-stata-post-run-hook nil
-  "Functions run in process buffer after the initialization of
-  stata process.")
+  "Functions run in process buffer after the initialization of stata process.")
 
 (defun stata (&optional start-args)
-  "Call Stata."
+  "Call Stata with START-ARGS."
   (interactive "P")
   (ess-write-to-dribble-buffer
    (format "(STA): ess-dialect=%s , buf=%s \n"
@@ -174,9 +172,9 @@ This function is placed in `ess-presend-filter-functions'.
 
 
 (define-derived-mode ess-stata-transcript-mode ess-transcript-mode "ESS Transcript"
+  "Stata transcript mode."
   :group 'ess-Stata
   :syntax-table ess-stata-mode-syntax-table
-  "Stata transcript mode."
   (ess-setq-vars-local STA-customize-alist)
   (setq-local comint-use-prompt-regexp t)
   (setq-local comment-column 40)
