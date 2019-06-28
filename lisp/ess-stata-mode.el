@@ -1,4 +1,4 @@
-;;; ess-stata-mode.el --- Stata customization
+;;; ess-stata-mode.el --- Stata customization  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 1997--1999 A. J. Rossini, Thomas Lumley
 ;; Copyright (C) 1997--2004 A.J. Rossini, Richard M. Heiberger, Martin
@@ -72,7 +72,6 @@
     (ess-loop-timeout              . 500000 )
     (ess-object-name-db-file       . "ess-sta-namedb.el" )
     (ess-help-web-search-command   . "https://www.stata.com/search/?q=%s&restrict=&btnG=Search&client=stata&num=&output=xml_no_dtd&site=stata&ie=&oe=UTF-8&sort=&proxystylesheet=stata")
-    (ess-eval-linewise-function    . #'stata-eval-linewise)
     (inferior-ess-program          . inferior-STA-program)
     (inferior-ess-objects-command  . "describe\n")
     (inferior-ess-help-command     . "help %s\n") ;; assumes set more off
@@ -202,19 +201,10 @@ This function is placed in `ess-presend-filter-functions'."
 
 (cl-defmethod ess-help-get-topics (proc &context (ess-dialect "stata"))
   "Return a list of current STA help topics associated with process PROC."
-  (or (ess-process-get 'help-topics)
+  (or (ess-process-get 'help-topics proc)
       (progn
         (ess-process-put 'help-topics (ess--STA-retrive-topics-from-search))
         (ess-process-get 'help-topics))))
-
-(defun stata-eval-linewise (text &optional invisibly &rest args)
-  ;; The following is required to make sure things work!
-  (let ((ess-eval-linewise-function nil)
-        ;; RAS: mindless replacement of semi-colons
-        (text (if ess-sta-delimiter-friendly
-                  (ess-replace-in-string text ";" "\n")
-                text)))
-    (apply #'ess-eval-linewise text t args)))
 
 (provide 'ess-stata-mode)
 

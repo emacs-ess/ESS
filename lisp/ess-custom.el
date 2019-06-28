@@ -1731,11 +1731,6 @@ order for it to work right.  And Emacs is too smart for it."
   :group 'ess-Stata
   :type '(choice (string) (file)))
 
-(defcustom ess-sta-delimiter-friendly nil
-  "Non-nil means convert embedded semi-colons to newlines for Stata processing."
-  :group 'ess-Stata
-  :type 'boolean)
-
 (defvaralias 'R-editor 'ess-r-editor)
 (defcustom ess-r-editor "emacsclient"
   "Editor called by R process with 'edit()' command."

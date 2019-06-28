@@ -1,4 +1,4 @@
-;;; ess-stata-lang.el --- Stata customization
+;;; ess-stata-lang.el --- Stata customization  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 1999--2000, Thomas Lumley, A. J. Rossini, Brendan Halpin.
 ;; Copyright (C) 1997--2004 A.J. Rossini, Richard M. Heiberger, Martin
