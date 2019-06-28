@@ -1174,32 +1174,6 @@ ado-mode of Bill Rising <brising@jhsph.edu>, and uses make-regexp."
     (display-buffer "*stata variables*")
     (goto-char (point-max))))
 
-;;;; <IGNORE>
-;;; This doesn't do anything at the moment.  I have vague plans of
-;;; implementing a menu interface using emacs
-;;;
-(defun stata-watch-for-menu-filter (proc string)
-  (if (string-match "^!!!window!!!" string)
-      (stata-handle-menu-code proc string)
-    (comint-output-filter proc string)))
-
-(defun stata-handle-menu-code (proc string)
-  (let ((old-buffer (current-buffer)))
-    (unwind-protect
-        (let (moving)
-          (set-buffer (process-buffer proc))
-          (setq moving (= (point)
-                          (process-mark proc)))
-          (save-excursion
-            ;; Insert the text, moving the process-marker.
-            (goto-char (process-mark proc))
-            (insert "Handling menu code\n")
-            (set-marker (process-mark proc) (point)))
-          (if moving (goto-char (process-mark proc))))
-      (set-buffer old-buffer))))
-
-;;;; </IGNORE>
-
 (defun stata-prompt-wait (proc &optional start-of-output)
   "Wait for a prompt to appear at BOL of current buffer.
 PROC is the stata process. Does not change point."
