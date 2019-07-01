@@ -44,13 +44,11 @@
     (modify-syntax-entry ?\$ "." tbl)
     (modify-syntax-entry ?` "(\'" tbl)
     (modify-syntax-entry ?\' ")`" tbl)
-    ;;--------- begin cut-and-paste from  lisp/progmodes/c-langs.el
     (modify-syntax-entry ?/  ". 124b" tbl)
-    (modify-syntax-entry ?*  ". 23"   tbl)
-    (modify-syntax-entry ?\n "> b"  tbl)
-    ;; Give CR the same syntax as newline, for selective-display
-    (modify-syntax-entry ?\^m "> b" tbl)
-    ;;--------- end cut-and-paste ------------------
+    ;; asterisk at bol comments taken care of by
+    ;; `syntax-propertize-function'.
+    (modify-syntax-entry ?*  ". 23b"   tbl)
+    (modify-syntax-entry ?\n ">"  tbl)
     (modify-syntax-entry ?+ "." tbl)
     (modify-syntax-entry ?- "." tbl)
     (modify-syntax-entry ?= "." tbl)
@@ -84,10 +82,6 @@
     (inferior-ess-secondary-prompt . "--more--")
     (comint-use-prompt-regexp      . t)
     (inferior-ess-search-list-command   . "set more off\n search()\n")
-    (comment-start                . "/\* ")
-    (comment-end                  . " \*/")
-    (comment-start-skip           . "/\\*+ *")
-    (comment-use-syntax           . t) ;; needed for multiline
     (ess-execute-screen-options-command . "set linesize %s\n")
     (ess-getwd-command             . "pwd\n")
     (ess-setwd-command             . "cd \"%s\"\n")
@@ -102,10 +96,12 @@
   (ess-setq-vars-local STA-customize-alist)
   (setq-local comint-use-prompt-regexp t)
   (setq-local comment-column 40)
-  (setq-local comment-end " \*/")
-  (setq-local comment-start "/\* ")
+  (setq-local comment-end " */")
+  (setq-local comment-start "/* ")
   (setq-local comment-start-skip "/\\*+ *")
   (setq-local comment-use-syntax t)
+  (setq-local syntax-propertize-function
+              (syntax-propertize-rules ("^\\*" (0 "<"))))
   (setq-local paragraph-ignore-fill-prefix t)
   (setq-local paragraph-separate (concat  "[ \t\f]*$\\|" page-delimiter))
   (setq-local paragraph-start (concat "[ \t\f]*$\\|" page-delimiter))
@@ -184,8 +180,8 @@ This function is placed in `ess-presend-filter-functions'.
   (ess-setq-vars-local STA-customize-alist)
   (setq-local comint-use-prompt-regexp t)
   (setq-local comment-column 40)
-  (setq-local comment-end " \*/")
-  (setq-local comment-start "/\* ")
+  (setq-local comment-end " */")
+  (setq-local comment-start "/* ")
   (setq-local comment-start-skip "/\\*+ *")
   (setq-local comment-use-syntax t)
   (setq-local paragraph-ignore-fill-prefix t)
