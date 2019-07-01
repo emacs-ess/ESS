@@ -166,6 +166,7 @@ This function is placed in `ess-presend-filter-functions'."
   "Inferior `stata' mode."
   :group 'ess-proc
   (ess-setq-vars-local STA-customize-alist)
+  (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
   (setq-local comint-use-prompt-regexp t)
   (setq font-lock-defaults '(ess-STA-mode-font-lock-defaults nil nil ((?\. . "w")))))
 
@@ -175,6 +176,7 @@ This function is placed in `ess-presend-filter-functions'."
   :group 'ess-Stata
   :syntax-table ess-stata-mode-syntax-table
   (ess-setq-vars-local STA-customize-alist)
+  (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
   (setq-local comint-use-prompt-regexp t)
   (setq-local comment-column 40)
   (setq-local comment-end " */")
