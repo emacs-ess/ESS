@@ -655,8 +655,9 @@ happens interactively (when possible)."
               (ess-get-process other-name))
           ;; else
           (ding)
-          (if (y-or-n-p
-               (format "Process %s is not running, but others are. Switch? " name))
+          (if (and (not noninteractive)
+                   (y-or-n-p
+                    (format "Process %s is not running, but others are. Switch? " name)))
               (progn
                 (ess-force-buffer-current
                  (concat ess-dialect " process to use: ") 'force)
