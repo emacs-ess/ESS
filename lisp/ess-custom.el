@@ -343,7 +343,9 @@ for all projects."
                  file))
 
 (defcustom ess-plain-first-buffername t
-  "No fancy process buffname for the first process of each type (novice mode)."
+  "When non-nil, the first process buffer created does not have a number.
+In other words, it is R:foo rather than R:1:foo. Subsequent
+processes buffers are always numbered (e.g. R:2:foo."
   :group 'ess
   :type 'boolean)
 
