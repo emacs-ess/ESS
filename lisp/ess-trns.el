@@ -187,7 +187,6 @@ is not already."
       (insert input)))
   (ess-switch-to-end-of-ESS))
 
-;;;###autoload
 (defun ess-transcript-clean-region (beg end even-if-read-only)
   "Strip the transcript in the region, leaving only (R/S/Lsp/..) commands.
 Deletes any lines not beginning with a prompt, and then removes the
