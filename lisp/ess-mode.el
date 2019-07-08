@@ -398,8 +398,10 @@ current function."
   (interactive)
   (save-excursion
     (widen)
-    (let* ((beg (ess-goto-beginning-of-function-or-para))
-           (end (ess-goto-end-of-function-or-para)))
+    (let* ((beg (progn (ess-goto-beginning-of-function-or-para)
+                       (point)))
+           (end (progn (ess-goto-end-of-function-or-para)
+                       (point))))
       (narrow-to-region beg end))))
 
 (define-obsolete-function-alias 'ess-narrow-to-defun 'ess-narrow-to-defun-or-para "15.09")

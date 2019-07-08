@@ -596,6 +596,20 @@ the_dat <- read.csv(\"foo.csv\")"
       (should (equal (caadr (nth 2 result)) "x"))
       (should (equal (caaddr (nth 2 result)) "y")))))
 
+(ert-deftest ess-narrow-to-defun-or-para-test ()
+  (ess-r-test-with-temp-text
+      "mean(1:10)
+
+x <- function(x){
+    mean(x)
+})
+"
+    (goto-char (point-min))
+    (search-forward "mean(x)")
+    (ess-narrow-to-defun-or-para)
+    (goto-char (point-min))
+    (should (looking-at-p "x <- function(x){$"))))
+
 (ert-deftest ess-test-r-help-mode ()
   (skip-unless (not noninteractive))
   (with-r-running nil
