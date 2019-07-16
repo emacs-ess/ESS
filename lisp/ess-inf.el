@@ -286,9 +286,6 @@ Default depends on the ESS language/dialect and hence made buffer local")
   "The command to retrieve the last value.  See S section for more details.
 Default depends on the ESS language/dialect and hence made buffer local")
 
-(defvar compilation--parsed)
-(defvar ess--tb-last-input)
-(defvar compilation--parsed)
 (defun inferior-ess-fontify-region (beg end &optional verbose)
   "Fontify output by output to avoid fontification spilling over prompts."
   (let* ((buffer-undo-list t)
