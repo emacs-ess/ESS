@@ -627,42 +627,29 @@ running (anymore), try to connect to another if there is one. By
 default (USE-ANOTHER is nil), the connection to another process
 happens interactively (when possible)."
   (setq name (or name ess-local-process-name))
-  (if (null name)
-      (error "No ESS process is associated with this buffer now")
-    (update-ess-process-name-list)
-    (if (assoc name ess-process-name-list)
-        (get-process name)
-      ;; else :
-      ;; was (error "Process %s is not running" name)
-      (ess-write-to-dribble-buffer
-       (format "ess-get-process: process '%s' not running" name))
-      (if (= 0 (length ess-process-name-list))
-          (save-current-buffer
-            (ess-write-to-dribble-buffer
-             (format " .. restart proc %s for language %s (buf %s)\n"
-                     name ess-language (current-buffer)))
-            (message "trying to (re)start process %s for language %s ..."
-                     name ess-language)
-            (ess-start-process-specific ess-language ess-dialect)
-            ;; and return the process: "call me again"
-            (ess-get-process name))
-
+  (cl-assert name nil "No ESS process is associated with this buffer now")
+  (update-ess-process-name-list)
+  (cond ((assoc name ess-process-name-list)
+         (get-process name))
+        ((= 0 (length ess-process-name-list))
+         (save-current-buffer
+           (message "trying to (re)start process %s for language %s ..."
+                    name ess-language)
+           (ess-start-process-specific ess-language ess-dialect)
+           ;; and return the process: "call me again"
+           (ess-get-process name)))
         ;; else: there are other running processes
-        (if use-another ; connect to another running process : the first one
-            (let ((other-name (car (elt ess-process-name-list 0))))
-              ;; "FIXME": try to find the process name that matches *closest*
-              (message "associating with *other* process '%s'" other-name)
-              (ess-get-process other-name))
-          ;; else
-          (ding)
-          (if (and (not noninteractive)
-                   (y-or-n-p
-                    (format "Process %s is not running, but others are. Switch? " name)))
-              (progn
-                (ess-force-buffer-current
-                 (concat ess-dialect " process to use: ") 'force)
-                (ess-get-process ess-current-process-name))
-            (error "Process %s is not running" name)))))))
+        (use-another ; connect to another running process : the first one
+         (let ((other-name (car (elt ess-process-name-list 0))))
+           ;; "FIXME": try to find the process name that matches *closest*
+           (message "associating with *other* process '%s'" other-name)
+           (ess-get-process other-name)))
+        ((and (not noninteractive)
+              (y-or-n-p
+               (format "Process %s is not running, but others are. Switch? " name)))
+         (ess-force-buffer-current (concat ess-dialect " process to use: ") 'force)
+         (ess-get-process ess-current-process-name))
+        (t (error "Process %s is not running" name))))
 
 (defun inferior-ess-default-directory ()
   (ess-get-process-variable 'default-directory))
