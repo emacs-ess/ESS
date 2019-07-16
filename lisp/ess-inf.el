@@ -1326,7 +1326,7 @@ up in user's main buffer."
   (process-put proc 'running-async? t)
   (ess-command com buf nil 'no-prompt-check .01 proc))
 
-(defun ess-async-command-delayed (com &optional buf proc callback delay)
+(defun ess-async-command-delayed (com buf proc &optional callback delay)
   "Delayed asynchronous ess-command.
 COM and BUF are as in `ess-command'. DELAY is a number of idle
 seconds to wait before starting the execution of the COM. On
@@ -1337,8 +1337,6 @@ until the command manages to run completely. DELAY defaults to
 PROC for delayed evaluation, as the current process might change,
 leading to unpredictable consequences. This function is a wrapper
 of `ess-async-command' with an explicit interrupt-callback."
-  (unless proc
-    (error "You must provide PROC argument to ess-async-command-delayed"))
   (let* ((delay (or delay
                     (+ ess-idle-timer-interval 3)))
          (int-cb  `(lambda (proc)
