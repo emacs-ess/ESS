@@ -391,9 +391,8 @@ defined. If no project directory has been found, use
             (not (process-get proc 'busy)))))))
 
 (defun inferior-ess--set-status (proc string)
-  "Internal function to set the satus of the PROC.
-Return non-nil if the process is in a ready (aka not busy)
-state."
+  "Internal function to set the status of process PROC.
+Return non-nil if the process is in a ready (not busy) state."
   ;; todo: do it in one search, use starting position, use prog1
   (let ((ready (string-match-p (concat "\\(" inferior-ess-primary-prompt "\\)\\'") string)))
     (process-put proc 'busy-end? (and ready (process-get proc 'busy)))
@@ -1985,7 +1984,7 @@ If in the output field, goes to the begining of previous input."
     (while (and (> (forward-line -1) -1)
                 (looking-at inferior-ess-secondary-prompt))))
   (unless (looking-at inferior-ess-prompt)
-    (error "Beggining of input not found"))
+    (error "Beginning of input not found"))
   (comint-skip-prompt))
 
 (defun inferior-ess--get-old-input:regexp ()
