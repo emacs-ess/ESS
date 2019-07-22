@@ -33,13 +33,17 @@
 (require 'ess-inf)
 
 (eval-when-compile
-  (require 'subr-x))
+  (require 'subr-x)
+  (require 'tramp))
 ;; Silence the byte compiler, OK because this file is only loaded by
 ;; ess-r-mode and has no autoloads.
 (defvar ess-r-customize-alist)
 (declare-function inferior-ess-r-force "ess-r-mode")
 (declare-function ess-r-get-evaluation-env "ess-r-mode")
 (declare-function ess-r-set-evaluation-env "ess-r-mode")
+(declare-function tramp-dissect-file-name "tramp" (name &optional nodefault))
+;; This can be drop after dropping support for Emacs 25:
+(declare-function tramp-file-name-localname "tramp" (cl-x))
 
 (defvar ess-r-prompt-for-attached-pkgs-only nil
   "If nil provide completion for all installed R packages.
@@ -163,32 +167,36 @@ return all physically present directories."
     (ess-completing-read "Package" pkgs nil nil nil nil current-pkg)))
 
 (defun ess-r-package--find-package-path (&optional dir)
-  "Get the root of R package that contains current directory.
-Root is determined by locating `ess-r-package-root-file'."
-  (let* ((path (cond
-                (dir)
-                ((buffer-file-name)
-                 (file-name-directory (buffer-file-name)))
-                (t
-                 default-directory)))
-         (pkg-path
-          (when path
-            (or
-             ;; First check current directory
-             (and (file-exists-p (expand-file-name ess-r-package-root-file path))
-                  path)
-             ;; Check for known directories in current path
-             (let ((current-dir (file-name-nondirectory (directory-file-name path)))
-                   known-pkg-dir known-path presumptive-path)
-               (while (and path (not presumptive-path))
-                 (setq current-dir (file-name-nondirectory (directory-file-name path)))
-                 (if (and (setq known-pkg-dir (assoc current-dir ess-r-package-dirs))
-                          (setq known-path (ess--parent-dir path (cdr known-pkg-dir)))
-                          (file-exists-p (expand-file-name ess-r-package-root-file known-path)))
-                     (setq presumptive-path known-path)
-                   (setq path (ess--parent-dir path 1))))
-               presumptive-path)))))
-    (when pkg-path
+  "Get the root of R package in directory DIR.
+DIR defaults to the current buffer's file name (if non-nil) or
+`default-directory'. Root is determined by locating
+`ess-r-package-root-file'. If the path looks like a tramp file,
+remove the remote information."
+  (when-let ((path (cond
+                    (dir)
+                    ((buffer-file-name)
+                     (file-name-directory (buffer-file-name)))
+                    (t
+                     default-directory)))
+             (pkg-path
+              (when path
+                (or
+                 ;; First check current directory
+                 (and (file-exists-p (expand-file-name ess-r-package-root-file path))
+                      path)
+                 ;; Check for known directories in current path
+                 (let ((current-dir (file-name-nondirectory (directory-file-name path)))
+                       known-pkg-dir known-path presumptive-path)
+                   (while (and path (not presumptive-path))
+                     (setq current-dir (file-name-nondirectory (directory-file-name path)))
+                     (if (and (setq known-pkg-dir (assoc current-dir ess-r-package-dirs))
+                              (setq known-path (ess--parent-dir path (cdr known-pkg-dir)))
+                              (file-exists-p (expand-file-name ess-r-package-root-file known-path)))
+                         (setq presumptive-path known-path)
+                       (setq path (ess--parent-dir path 1))))
+                   presumptive-path)))))
+    (if (file-remote-p pkg-path)
+        (tramp-file-name-localname (tramp-dissect-file-name pkg-path))
       (directory-file-name pkg-path))))
 
 (defun ess-r-package--find-package-name (path)
