@@ -128,7 +128,7 @@ other Emacsen, current versions only support GNU Emacs.
 
 There are two main ways of interacting with ESS: through ``regular''
 modes or ``inferior'' modes.  Regular modes act like normal Emacs major
-modes.  ESS major mods are displayed in the mode-line in the format
+modes.  ESS major modes are displayed in the mode-line in the format
 @code{ESS[dialect]}, where @code{dialect} can take values such as
 @code{R}, @code{SAS}, or @code{S}.
 
