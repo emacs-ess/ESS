@@ -20,7 +20,7 @@ To start up iESS mode for R, use:
 @end example
 
 @noindent
-(for R, S-PLUS 3.x, S4, S+5, S+6 or or S+7, respectively.  This assumes that
+(for R, S-PLUS 3.x, S4, S+5, S+6 or S+7, respectively.  This assumes that
 you have access to each).
 
 @cindex command line arguments
@@ -38,7 +38,7 @@ is also able to start those versions.  How this exactly works depend on
 which OS you are using (details below).  The
 general principle, regardless of OS, is that ESS searches the paths
 listed in the variable @code{exec-path} for R binaries.  If ESS cannot
-find your R binaries, on Unix you can change the unix environment
+find your R binaries, on Unix you can change the Unix environment
 variable @code{PATH}, as this variable is used to set @code{exec-path}.
 
 R on GNU/Linux systems and other Unix-like systems (macOS): If you have

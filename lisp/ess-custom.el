@@ -48,7 +48,7 @@
   :link '(url-link "https://ess.r-project.org/"))
 
 (defgroup ess-edit nil
-  "ESS: editing behavior, including coments/indentation."
+  "ESS: editing behavior, including comments/indentation."
   :group 'ess
   :prefix "ess-")
 
@@ -137,7 +137,7 @@
   :package-version '(ess . "19.04"))
 
 (defcustom ess-etc-directory
-  ;; Try to detect the `etc' folder only if not alread set up by distribution
+  ;; Try to detect the `etc' folder only if not already set up by distribution
   (let (dir)
     (dolist (d '("./etc/" "../../etc/ess/" "../etc/" "../etc/ess/"))
       (setq d (expand-file-name d ess-lisp-directory))
@@ -145,7 +145,7 @@
         (setq dir d)))
     dir)
   "Location of the ESS etc/ directory.
-The ESS etc directory stores various auxillary files that are useful
+The ESS etc directory stores various auxiliary files that are useful
 for ESS, such as icons."
   :group 'ess
   :type 'directory
@@ -509,10 +509,10 @@ settings, such as `ess-r-smart-operators'.")
 (defvaralias 'ess-R-smart-operators 'ess-r-smart-operators)
 (defvar ess-r-smart-operators nil
   "If nil, don't use any of smart operators.
-If t, use all. If an axplicit list of operators, use only those
+If t, use all. If an explicit list of operators, use only those
 operators.
 
-In current verion of ESS, it controls the behavior of
+In current version of ESS, it controls the behavior of
 `ess-smart-comma' only, but will be enriched in the near future.")
 
 
@@ -558,7 +558,7 @@ if you want to disable R specific prettification."
   :type '(alist :key-type string :value-type symbol)
   :package-version '(ess . "18.10"))
 
-;;*;; Variables concerning editing behaviour
+;;*;; Variables concerning editing behavior
 
 (defcustom ess-filenames-map t
   "If non-nil, filenames and objects are the same in an attached directory.
@@ -572,7 +572,7 @@ probably still happen, however."
   "Variable controlling whether to delete dump files after a successful load.
 If nil: always delete.  If `ask', confirm to delete.  If `check', confirm
 to delete, except for files created with `ess-dump-object-into-edit-buffer'.
-Anything else, never delete.  This variable only affects the behaviour
+Anything else, never delete.  This variable only affects the behavior
 of `ess-load-file'.  Dump files are never deleted if an error occurs
 during the load."
   :group 'ess-edit
@@ -794,7 +794,7 @@ relative to the opening parenthesis of the closest function call:
                                       ))
 
 
-Wnen set to `prev-call', arguments on a new line are indented relative to
+When set to `prev-call', arguments on a new line are indented relative to
 the closest function call:
 
   object <- call(argument, other_call(
@@ -911,7 +911,7 @@ indented like this:
 See `ess-style-alist' for for an overview of ESS indentation.")
 
 (defvar ess-align-arguments-in-calls '("function[ \t]*(")
-  "A list of refexes where `ess-offset-argumens' is ignored.
+  "A list of refexes where `ess-offset-arguments' is ignored.
 List of regexes specifying the calls where `ess-offset-arguments'
 should have no effect on function declarations. The arguments of
 those calls will be aligned from the opening parenthesis.
@@ -1062,7 +1062,7 @@ See `ess-style-alist' for for an overview of ESS indentation.")
 ;;added rmh 2Nov97 at request of Terry Therneau
 (define-obsolete-variable-alias 'ess-fancy-comments 'ess-indent-with-fancy-comments "15.09")
 (defcustom ess-indent-with-fancy-comments t
-  "Non-nil means distiguish between #, ##, and ### for indentation.
+  "Non-nil means distinguish between #, ##, and ### for indentation.
 See `ess-style-alist' for for an overview of ESS indentation."
   :type 'boolean
   :group 'ess-edit)
@@ -1313,7 +1313,7 @@ global) values from ESS indentation variables.
 
 This variable only has an effect if set before a buffer is
 visited (e.g. in your Emacs initialization file) or as a file or
-directory local variable (see Info node `(emacs) File Variables'."
+directory local variable (see Info node `(Emacs) File Variables'."
   :type '(choice (const OWN)
                  (const GNU)
                  (const BSD)
@@ -1328,7 +1328,7 @@ directory local variable (see Info node `(emacs) File Variables'."
   :group 'ess-edit
   :safe #'symbolp)
 
-;;*;; Variables controlling behaviour of dump files
+;;*;; Variables controlling behavior of dump files
 
 (defcustom ess-source-directory
   (or (getenv "TMPDIR") (getenv "TMP") (getenv "TEMP") temporary-file-directory)
@@ -1587,7 +1587,7 @@ name completion. This can mess up evaluation completely."
   :type 'boolean)
 
 (defcustom inferior-STA-start-args ""
-  "String of switches used when starting stata.
+  "String of switches used when starting Stata.
 Also see `inferior-STA-program'."
   :group 'ess-Stata
   :type 'string)
@@ -1600,11 +1600,11 @@ Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
   :type 'string)
 
 (defvar ess-getwd-command nil
-  "Command string retriving the working directory from the process.")
+  "Command string retrieving the working directory from the process.")
 
 (defvar ess-setwd-command nil
   "Command string to set working directory.
-Should contain a formating %s to be replaced by a
+Should contain a formatting %s to be replaced by a
 path (as in 'setwd(%s)\\n'.")
 
 (defcustom ess-program-files ;; 32 bit version
@@ -1627,13 +1627,13 @@ path (as in 'setwd(%s)\\n'.")
 
 (defcustom ess-directory-containing-R nil
   "When non-nil, a directory containing R.
-nil means the search for all occurences of R on the machine will
+nil means the search for all occurrences of R on the machine will
 use the default location of the R directory
  (inside \"c:/Program Files\" in English locale Windows systems).
 Non-nil values mean use the specified location as the
 directory in which \"R/\" is located.  For example, setting
 `ess-directory-containing-R' to \"c:\" will tell ESS to search
-for R versions with pathnames of the form \"c:/R/R-x.y.z\".
+for R versions with path names of the form \"c:/R/R-x.y.z\".
 
 Currently only used when `ess-microsoft-p'.  If you change the
 value of this variable, you need to restart Emacs for it to take
@@ -1686,7 +1686,7 @@ On Unix/Linux, use the Splus executable.  On Windows, the default
 value is correct for a default installation of S-Plus 8.1 and
 with bash as the shell.  For any other version or location,
 change this value in ess-site.el or site-start.el.  Use the 8.3
-version of the pathname.  Use double backslashes if you use the
+version of the path name.  Use double backslashes if you use the
 msdos shell."
   :group 'ess-SPLUS
   :type '(choice (string) (file)))
@@ -1726,7 +1726,7 @@ ask - ask the user whether the S buffers should be killed."
   'inferior-STA-program "ESS 18.10")
 (defcustom inferior-STA-program "stata"
   "Program name for invoking an inferior ESS with stata().
-This is NOT Stata, because we need to call stata with TERM=emacs in
+This is NOT Stata, because we need to call Stata with TERM=emacs in
 order for it to work right.  And Emacs is too smart for it."
   :group 'ess-Stata
   :type '(choice (string) (file)))
@@ -1859,8 +1859,8 @@ Local in process buffers and must start with a string. Changes of
 this variable are automatically reflected in mode-lines of the
 process and all associated with it buffers.
 
-Each symbol must evaluate ot one of the standard mode line
-objecst. See info node `(elisp)Mode Line Data').  Add a symbol
+Each symbol must evaluate to one of the standard mode line
+objects. See info node `(elisp)Mode Line Data').  Add a symbol
 with `add-to-list' and remove with `delq'. Note that the symbols
 which are part of this list should better have
 'risky-local-variable property set to t, otherwise the text
@@ -1876,7 +1876,7 @@ status.
   "List of local process indicators.
 See `ess--mode-line-process-indicator' for how to set it.
 
-This is an internal varialbe used by tools like `ess-developer'
+This is an internal variable used by tools like `ess-developer'
 and `ess-tracebug'.")
 (put 'ess--local-mode-line-process-indicator 'risky-local-variable t)
 
@@ -1960,7 +1960,7 @@ frame, but in R also e.g., 'package:stats'."
 It is always used in transcript mode.  In inferior ess mode it is
 used only if `comint-use-prompt-regexp' is t.
 
-If not set in language's customise-alist it is constructed at run time
+If not set in language's customize-alist it is constructed at run time
 from `inferior-ess-primary-prompt' and `inferior-ess-secondary-prompt'.")
 
 
@@ -2072,7 +2072,7 @@ See also function `ess-create-object-name-db'.")
   ess-R-function-name-regexp)
 
 (defvar ess-font-lock-keywords nil
-  "A name of the dialect sepcific font-lock keywords in the current buffer.
+  "A name of the dialect specific font-lock keywords in the current buffer.
 See `ess-R-font-lock-keywords' for an example. This is an
 internal variable.")
 

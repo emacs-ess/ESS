@@ -86,7 +86,7 @@ Otherwise go as far as possible and return -1."
       out)))
 
 (defun ess-goto-line (line)
-  "Goto LINE in the widened buffer."
+  "Go to LINE in the widened buffer."
   (save-restriction
     (widen)
     (goto-char (point-min))
@@ -238,7 +238,7 @@ Search for the executables in the variable `exec-path'."
 ;;*;; Interaction with inferiors
 
 (defmacro ess-when-new-input (time-var &rest body)
-  "BODY is evaluate only if the value of procss variable TIME-VAR
+  "BODY is evaluate only if the value of process variable TIME-VAR
 is bigger than the time of the last user input (stored in
 `last-eval' process variable). TIME-VAR is the name of the
 process variable which holds the access time. See the code for
@@ -487,7 +487,7 @@ specifies inferior buffers."
     (delq 'company-capf company-backends)))
 
 (defmacro ess--execute-electric-command (map &optional prompt wait exit-form &rest args)
-  "Execute single-key comands defined in MAP till a key is pressed which is not part of map.
+  "Execute single-key commands defined in MAP till a key is pressed which is not part of map.
 Single-key input commands are those that once executed do not
 require the prefix command for subsequent invocation. Return the
 value of the lastly executed command. PROMPT is passed to
@@ -583,7 +583,7 @@ GTags file (default TAGS): ")
   (when (or (eq (length (file-name-nondirectory tagfile)) 0)
             (file-directory-p tagfile))
     (setq tagfile (concat (file-name-as-directory tagfile) "TAGS")))
-  ;; emacs find-tags doesn't play well with remote TAG files :(
+  ;; Emacs find-tags doesn't play well with remote TAG files :(
   (when (file-remote-p tagfile)
     (require 'tramp)
     (setq tagfile (with-parsed-tramp-file-name tagfile foo foo-localname)))
@@ -652,7 +652,7 @@ XO and YO are x- and y-offsets for the toolbar from point."
         frame-left frame-top my-x-offset my-y-offset)
     ;; The following comment was found before code looking much like that
     ;; of frame-left and frame-top below in the file
-    ;; tooltip-help.el. I include it here for acknowledgement, and I did observe
+    ;; tooltip-help.el. I include it here for acknowledgment, and I did observe
     ;; the same behavior with the Emacs window maximized under Windows XP.
 
     ;; -----original comment--------
@@ -807,7 +807,7 @@ is the position where FN-NAME starts. Store this cons in variable
              (ess-noweb-narrow-to-chunk))
         (unless (ess-inside-string-p)
           (setq ess--fn-name-start-cache
-                (condition-case nil ;; check if it is inside a functon
+                (condition-case nil ;; check if it is inside a function
                     (progn
                       ;; for the sake of big buffers, look only 1000 chars back
                       (narrow-to-region (max (point-min) (- (point) 1000)) (point))
@@ -929,7 +929,7 @@ If DONT-QUERY is non-nil, call `ess-rep-regexp' else call
       (query-replace-regexp regexp to-string nil))))
 
 (defun ess-space-around (word &optional from verbose)
-  "Replace-regexp .. ensuring space around all occurences of WORD.
+  "Replace-regexp .. ensuring space around all occurrences of WORD.
 Start at from FROM, which defaults to point."
   (interactive "d\nP"); Defaults: point and prefix (C-u)
   (save-excursion

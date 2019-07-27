@@ -26,7 +26,7 @@
 
 ;;; Commentary:
 
-;; see apropriate documentation section of ESS user manual
+;; see appropriate documentation section of ESS user manual
 
 ;;; Code:
 (require 'cl-lib)
@@ -390,7 +390,7 @@ With prefix ARG ask for extra arguments."
 
 (defun ess-r-devtools-install-package (&optional arg)
   "Interface to `devtools::install()'.
-By default the instalation is \"quick\" with arguments quick =
+By default the installation is \"quick\" with arguments quick =
 TRUE, upgrade = FALSE, build = FALSE. On prefix ARG
 \\[universal-argument] install with the default
 `devtools::install()' arguments."
@@ -403,7 +403,7 @@ TRUE, upgrade = FALSE, build = FALSE. On prefix ARG
 (defvar ess-r-devtools--install-github-history nil)
 (defun ess-r-devtools-install-github (&optional arg)
   "Interface to `devtools::install_github()'.
-Asks for github repository in the form of user/repo. Force
+Asks for GitHub repository in the form of user/repo. Force
 re-installation when called with a prefix ARG."
   (interactive "P")
   (let ((command "devtools::install_github(%s%s)")

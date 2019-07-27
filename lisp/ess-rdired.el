@@ -52,7 +52,7 @@
 
 ;; How it works.
 
-;; Most of the hardwork is done by the R routine .rdired.objects(),
+;; Most of the hard work is done by the R routine .rdired.objects(),
 ;; which, when called, produces the list of objects in a tidy format.
 ;; This function is stored within the Lisp variable `ess-rdired-objects'.
 

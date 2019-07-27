@@ -44,7 +44,7 @@ gpg --verify ess-18.10.tgz.sig
 @end example
 
 Alternatively, you may download the git repository. ESS is currently
-hosted on Github: @uref{https://github.com/emacs-ess/ESS}. @code{git
+hosted on GitHub: @uref{https://github.com/emacs-ess/ESS}. @code{git
 clone https://github.com/emacs-ess/ESS.git} will download it to a new
 directory @code{ESS} in the current working directory.
 

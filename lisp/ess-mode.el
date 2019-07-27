@@ -310,7 +310,7 @@ indentation style. See `ess-style-alist' for predefined styles."
 
 (defun ess--get-mode-line-indicator ()
   "Get `ess--mode-line-process-indicator' from process buffer.
-Internal function to be used for dynamic mode-line dysplay in
+Internal function to be used for dynamic mode-line display in
 `ess-mode'."
   (if ess-local-process-name
       (let* ((proc (get-process ess-local-process-name))

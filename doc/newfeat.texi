@@ -41,7 +41,7 @@ place customizations under the appropriate mode.
 
 @item New option ess-auto-width controls setting the width option on window changes.
 Users can change it to 'frame, 'window, or an integer. See the
-docstring for details. @code{ess-auto-width-visible} controls
+documentation for details. @code{ess-auto-width-visible} controls
 visibility.
 
 @item ESS now respects @code{display-buffer-alist}.
@@ -229,7 +229,7 @@ variables.
 
 @item @code{ess-smart-S-assign} was renamed to @code{ess-insert-assign}.
 It provides similar functionality but for any keybinding, not just `_`.
-For instance if you bind it to `;`, repeated invokations cycle through
+For instance if you bind it to `;`, repeated invocations cycle through
 between assignment and inserting `;`.
 
 @item @code{C-c C-=} is now bound to @code{ess-cycle-assign} by default.
@@ -266,7 +266,7 @@ See the documentation for details.
 
 @item @ESS{[R]}: @code{in} is now only fontified when inside a @code{for} construct.
 This avoids spurious fontification, especially in the output buffer
-where `in` is a commond English word.
+where `in` is a common English word.
 
 @item @ESS: Font-lock keywords are now generated lazily.
 That means you can now add or remove keywords from variables like
@@ -320,7 +320,7 @@ the next release of ESS: @code{ess-smart-S-assign},
 
 The variable @code{ess-smart-S-assign-key} is now deprecated and will
 be removed in the next release. If you would like to continue using
-`_` for insterting assign in future releases, please bind
+`_` for inserting assign in future releases, please bind
 @code{ess-insert-assign} in @code{ess-mode-map} the normal way.
 
 @item @ESS{[S]}: Variable @code{ess-s-versions-list} is obsolete and ignored.
@@ -332,7 +332,7 @@ the inferior process with the universal argument.
 Changes and New Features in 17.11:
 @itemize @bullet
 
-@item The ESS initialisation process has been streamlined. You can now
+@item The ESS initialization process has been streamlined. You can now
 load the R and Stata modes independently from the rest of ESS. Just put
 @code{(require 'ess-r-mode)} or @code{(require 'ess-stata-mode)} in your
 init file. This is for experienced Emacs users as this requires setting
@@ -369,10 +369,10 @@ Changes and New Features in 16.10:
 
 @item @ESS{[R]}: Syntax highlighting is now more consistent. Backquoted
 names are not fontified as strings (since they really are identifiers).
-Furthermore they are now correctly recognised when they are function
+Furthermore they are now correctly recognized when they are function
 definitions or function calls.
 @item @ESS{[R]}: Backquoted names and @code{%op%} operators are
-recognised as sexp. This is useful for code navigation, e.g. with
+recognized as sexp. This is useful for code navigation, e.g. with
 @kbd{C-M-f} and @kbd{C-M-b}.
 @item @ESS{[R]}: Integration of outline mode with roxygen examples fields.
 You can use outline mode's code folding commands to fold the examples

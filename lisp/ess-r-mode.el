@@ -59,7 +59,7 @@
 
 
 (defcustom ess-r-fetch-ESSR-on-remotes nil
-  "If non-nil, fetch ESSR from the github repository.
+  "If non-nil, fetch ESSR from the GitHub repository.
 Otherwise source from local ESS installation. When 'ess-remote,
 fetch only with `ess-remote'. When t, always fetch from remotes.
 Change this variable when loading ESSR code on remotes fails
@@ -453,7 +453,7 @@ fill=TRUE); try(traceback(), silent=TRUE)})\n")
 (defvar ess-r-error-regexp-alist '(R R1 R2 R3 R4 R-recover)
   "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
 
-(dolist (l '(;; Takes precidence over R1 below in english locales, and allows spaces in file path
+(dolist (l '(;; Takes precedence over R1 below in English locales, and allows spaces in file path
              (R "\\(\\(?: at \\|(@\\)\\([^#()\n]+\\)[#:]\\([0-9]+\\)\\)"  2 3 nil 2 1)
              ;; valgrind style (stl_numeric.h:183)
              (R1 "(\\([^ ):\n]+\\):\\([0-9]+\\)?)" 1 2 nil 2)
@@ -503,7 +503,7 @@ will be prompted to enter arguments interactively."
   (let* ((r-always-arg
           (if (or ess-microsoft-p (eq system-type 'cygwin))
               "--ess "
-            ;; else: "unix alike"
+            ;; else: "Unix alike"
             (if (not ess-R-readline) "--no-readline ")))
          (start-args
           (cond ((stringp start-args)
@@ -943,10 +943,10 @@ If the value returned is nil, no valid newest version of R could be found."
     new-r))
 
 (defun ess-find-rterm (&optional ess-R-root-dir bin-Rterm-exe)
-  "Find the full path of all occurences of Rterm.exe under the ESS-R-ROOT-DIR.
+  "Find the full path of all occurrences of Rterm.exe under the ESS-R-ROOT-DIR.
 If ESS-R-ROOT-DIR is nil, construct it by looking for an
-occurence of Rterm.exe in the `exec-path'. If there are no
-occurences of Rterm.exe in the `exec-path', then use
+occurrence of Rterm.exe in the `exec-path'. If there are no
+occurrences of Rterm.exe in the `exec-path', then use
 `ess-program-files' (which evaluates to something like
 \"c:/progra~1/R/\" in English locales) which is the default
 location for the R distribution. If BIN-RTERM-EXE is nil, then
@@ -1325,7 +1325,7 @@ selected (see `ess-r-set-evaluation-env')."
 
 (defun ess-help-r--sanitize-topic (string)
   "Enclose help topic STRING into `` to avoid ?while ?if etc hangs."
-  (if (string-match "\\([^:]*:+\\)\\(.*\\)$" string) ; treat foo::bar corectly
+  (if (string-match "\\([^:]*:+\\)\\(.*\\)$" string) ; treat foo::bar correctly
       (format "%s`%s`" (match-string 1 string) (match-string 2 string))
     (format "`%s`" string)))
 
@@ -1548,7 +1548,7 @@ Returns nil if line starts inside a string, t if in a comment."
     (let ((indent (save-excursion
                     (ess-calculate-indent--args)))
           (unindent (progn (skip-chars-forward " \t")
-                           ;; return number of skiped chars
+                           ;; return number of skipped chars
                            (skip-chars-forward ", \t"))))
       (- indent unindent))))
 

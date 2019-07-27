@@ -77,7 +77,7 @@
 (defcustom inferior-ess-mode-hook nil
   "Hook for customizing inferior ESS mode.
 Called after `inferior-ess-mode' is entered and variables have
-been initialised."
+been initialized."
   :group 'ess-hooks
   :type 'hook)
 
@@ -166,7 +166,7 @@ This may be useful for debugging."
   (let* ((dialect (eval (cdr (assoc 'ess-dialect customize-alist))))
          (process-environment process-environment)
          ;; Use dialect if not R, R program name otherwise
-         (temp-dialect (if ess-use-inferior-program-in-buffer-name ;VS[23-02-2013]: fixme: this should not be here
+         (temp-dialect (if ess-use-inferior-program-in-buffer-name ;VS[23-02-2013]: FIXME: this should not be here
                            (if (string-equal dialect "R")
                                (file-name-nondirectory inferior-ess-r-program)
                              dialect)
@@ -236,7 +236,7 @@ generated the latter from NAME."
                 ((and (not (comint-check-proc (current-buffer)))
                       (derived-mode-p 'inferior-ess-mode))
                  ;; Don't change existing buffer name in this case. It
-                 ;; is very commong to restart the process in the same
+                 ;; is very common to restart the process in the same
                  ;; buffer.
                  (setq proc-name ess-local-process-name)
                  (current-buffer))
@@ -390,7 +390,7 @@ defined. If no project directory has been found, use
 (defun inferior-ess--set-status (proc string)
   "Internal function to set the status of process PROC.
 Return non-nil if the process is in a ready (not busy) state."
-  ;; todo: do it in one search, use starting position, use prog1
+  ;; TODO: do it in one search, use starting position, use prog1
   (let ((ready (string-match-p (concat "\\(" inferior-ess-primary-prompt "\\)\\'") string)))
     (process-put proc 'busy-end? (and ready (process-get proc 'busy)))
     ;; When "\n" inserted from inferior-ess-available-p, delete the prompt.
@@ -413,7 +413,7 @@ Return non-nil if the process is in a ready (not busy) state."
 
 (defun inferior-ess-run-callback (proc string)
   ;; callback is stored in 'callbacks proc property. Callbacks is a list that
-  ;; can contain either functions to be called with two artuments PROC and
+  ;; can contain either functions to be called with two arguments PROC and
   ;; STRING, or cons cells of the form (func . suppress). If SUPPRESS is non-nil
   ;; next process output will be suppressed.
   (unless (process-get proc 'busy)
@@ -464,7 +464,7 @@ Taken from octave-mod.el."
   (ess--if-verbose-write-process-state proc string)
   (inferior-ess-run-callback proc string)
   (if (process-get proc 'suppress-next-output?)
-      ;; works only for surpressing short output, for time being is enough (for callbacks)
+      ;; works only for suppressing short output, for time being is enough (for callbacks)
       (process-put proc 'suppress-next-output? nil)
     (comint-output-filter proc (inferior-ess-strip-ctrl-g string))))
 
@@ -543,7 +543,7 @@ process-less buffer because it was created with
 ;;*;; Requester functions called at startup
 
 ;; FIXME EMACS 25.1:
-;; Deprecate `ess-directory-function' in favour of `project-find-functions'?
+;; Deprecate `ess-directory-function' in favor of `project-find-functions'?
 (defun inferior-ess--get-startup-directory ()
   (let ((dir (or (and ess--enable-experimental-projects
                       (fboundp 'project-current)
@@ -747,7 +747,7 @@ Returns the name of the selected process."
                                             "stata" (or (bound-and-true-p STA-dialect-name) "stata")
                                             "julia" "SAS" "XLS"  "ViSta")))))
 
-  (let* ((pname-list (delq nil ;; keep only those mathing dialect
+  (let* ((pname-list (delq nil ;; keep only those matching dialect
                            (append
                             (mapcar (lambda (lproc)
                                       (and (equal ess-dialect
@@ -969,7 +969,7 @@ regardless of whether primary prompt was detected or not. If WAIT
 is non-nil wait for WAIT seconds for process output before the
 prompt check, default 0.002s. When FORCE-REDISPLAY is non-nil
 force redisplay. You better use WAIT >= 0.1 if you need
-FORCE-REDISPLAY to avoid excesive redisplay. If TIMEOUT is
+FORCE-REDISPLAY to avoid excessive redisplay. If TIMEOUT is
 non-nil stop waiting for output after TIMEOUT seconds."
   (setq proc (or proc (get-process ess-local-process-name)))
   (setq wait (or wait 0.005))
@@ -1350,7 +1350,7 @@ of `ess-async-command' with an explicit interrupt-callback."
 
 (defun ess-load-library ()
   "Prompt and load dialect specific library/package/module.
-Note that add-ons in R are called 'packages' and the name of this
+Note that in R these are called 'packages' and the name of this
 function has nothing to do with R package mechanism, but it
 rather serves a generic, dialect independent purpose. It is also
 similar to `load-library' Emacs function."
@@ -1431,7 +1431,7 @@ TEXT."
       (when win
         (with-selected-window win
           (goto-char (point))
-          ;; this is crucial to avoid reseting window-point
+          ;; this is crucial to avoid resetting window-point
           (recenter (- -1 scroll-margin))))))
   (if (numberp sleep-sec)
       (sleep-for sleep-sec)))
@@ -1746,7 +1746,7 @@ meaning as for `ess-eval-region'."
     (define-key map "\r"       #'inferior-ess-send-input)
     (define-key map "\C-a"     #'comint-bol)
     ;; 2010-06-03 SJE
-    ;; disabled this in favour of ess-dirs.  Martin was not sure why this
+    ;; disabled this in favor of ess-dirs.  Martin was not sure why this
     ;; key was defined anyway in this mode.
     ;;(define-key map "\M-\r"    #'ess-transcript-send-command-and-move)
     (define-key map "\C-c\M-l" #'ess-load-file)
@@ -1887,7 +1887,7 @@ node `(ess)Top'. If you accidentally suspend your process, use
 
 (defun inferior-ess-input-sender (proc string)
   (inferior-ess--interrupt-subjob-maybe proc)
-  (let ((comint-input-filter-functions nil)) ; comint runs them, don't run twise.
+  (let ((comint-input-filter-functions nil)) ; comint runs them, don't run twice.
     (if comint-process-echoes
         (ess-eval-linewise string nil nil ess-eval-empty)
       (ess-send-string proc string))))
@@ -1906,12 +1906,12 @@ node `(ess)Top'. If you accidentally suspend your process, use
   (setq ess-object-list nil))
 
 (defun inferior-ess--goto-input-start:field ()
-  "Move point to the begining of input skiping all continuation lines.
-If in the output field, goes to the begining of previous input
+  "Move point to the beginning of input skipping all continuation lines.
+If in the output field, goes to the beginning of previous input
 field.
 Note: `inferior-ess-secondary-prompt' should match exactly."
   (goto-char (field-beginning))
-  ;; move to the begining of non-output field
+  ;; move to the beginning of non-output field
   (while (and (not (bobp))
               (eq (field-at-pos (point)) 'output))
     (goto-char (field-beginning nil t)))
@@ -1926,8 +1926,8 @@ Note: `inferior-ess-secondary-prompt' should match exactly."
       (setq pos (previous-single-property-change pos 'field)))))
 
 (defun inferior-ess--goto-input-end:field ()
-  "Move point to the end of input skiping all continuation lines.
-If in the output field, goes to the begining of previous input
+  "Move point to the end of input skipping all continuation lines.
+If in the output field, goes to the beginning of previous input
 field. NOTE: to be used only with fields, see
 `comint-use-prompt-regexp'."
   ;; this func is not used but might be useful some day
@@ -1963,13 +1963,13 @@ field. NOTE: to be used only with fields, see
           (setq pos (next-single-property-change pos 'field)))
         command))))
 
-;; todo: error when entering a multiline function
+;; TODO: error when entering a multiline function
 ;; check.integer <- function(N){
 ;;      is.integer(N) | !length(grep("[^[:digit:]]", as.character(N)))
 ;; }
 (defun inferior-ess--goto-input-start:regexp ()
-  "Move point to the begining of input skiping all continuation lines.
-If in the output field, goes to the begining of previous input."
+  "Move point to the beginning of input skipping all continuation lines.
+If in the output field, goes to the beginning of previous input."
   (beginning-of-line)
   (unless (looking-at inferior-ess-prompt)
     (re-search-backward (concat "^" inferior-ess-prompt) nil t))
@@ -2131,7 +2131,7 @@ to the command if BUFF is not given.)"
                 (let ((enable-recursive-minibuffers t)
                       (proc-name (progn (ess-force-buffer-current)
                                         ess-local-process-name)))
-                  (with-current-buffer (get-buffer " *Minibuf-1*") ;; fixme: hardcoded name
+                  (with-current-buffer (get-buffer " *Minibuf-1*") ;; FIXME: hardcoded name
                     (setq ess-local-process-name proc-name))
                   (read-from-minibuffer "Execute> " nil
                                         ess-mode-minibuffer-map))
@@ -2541,7 +2541,7 @@ directory in the `load-path'."
 
 (defun ess-filename-completion ()
   "Return completion only within string or comment."
-  (save-restriction ;; explicitely handle inferior-ess
+  (save-restriction ;; explicitly handle inferior-ess
     (ignore-errors
       (when (and (derived-mode-p 'inferior-ess-mode)
                  (> (point) (process-mark (get-buffer-process (current-buffer)))))
@@ -2553,7 +2553,7 @@ directory in the `load-path'."
 
 (defun ess-complete-filename ()
   "Do file completion only within strings."
-  (save-restriction ;; explicitely handle inferior-ess
+  (save-restriction ;; explicitly handle inferior-ess
     (ignore-errors
       (when (and (derived-mode-p 'inferior-ess-mode)
                  (> (point) (process-mark (get-buffer-process (current-buffer)))))
@@ -2633,7 +2633,7 @@ dirnames. Don't try to use cache if FORCE-UPDATE is non-nil. Is
 (defun ess-get-modtime-list (&optional cache-var-name exclude-first)
   "Record directories in the search list, and the objects in those directories.
 The result is stored in CACHE-VAR-NAME. If nil, CACHE-VAR-NAME
-defaultst to `ess-sl-modtime-alist'. If EXCLUDE-FIRST is non-nil
+defaults to `ess-sl-modtime-alist'. If EXCLUDE-FIRST is non-nil
 don't recompile first object in the search list."
   ;; Operation applies to process of current buffer
   (let* ((searchlist (if exclude-first
@@ -2646,13 +2646,13 @@ don't recompile first object in the search list."
       (setq
        pack  (car searchlist)
        newalist (append newalist
-               (list (or (assoc pack (symbol-value cache-name))
-                         (append
-                          (list pack (ess-dir-modtime pack))
-                          (prog2
-                              (message "Forming completions for %s..." pack)
-                              (ess-object-names pack index)
-                            (message "Forming completions for %s...done" pack))))))
+                        (list (or (assoc pack (symbol-value cache-name))
+                                  (append
+                                   (list pack (ess-dir-modtime pack))
+                                   (prog2
+                                       (message "Forming completions for %s..." pack)
+                                       (ess-object-names pack index)
+                                     (message "Forming completions for %s...done" pack))))))
        index  (1+ index)
        searchlist  (cdr searchlist)))
     ;;DBG:
@@ -2792,7 +2792,7 @@ NO-ERROR prevents errors when this has not been implemented for
     (ess-set-working-directory (abbreviate-file-name dir))))
 
 (defun ess-get-working-directory (&optional no-error)
-  "Retrive the current working directory from the current ess process."
+  "Retrieve the current working directory from the current ess process."
   (if ess-getwd-command
       (abbreviate-file-name (car (ess-get-words-from-vector ess-getwd-command)))
     (unless no-error

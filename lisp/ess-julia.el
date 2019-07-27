@@ -30,7 +30,7 @@
 ;;
 ;;; Commentary:
 ;;
-;;  Customise inferior-julia-program to point to your julia binary
+;;  Customize inferior-julia-program to point to your julia binary
 ;;  and start the inferior with M-x julia.
 ;;
 ;;  As of Sept 2015, this file depends heavily on julia-mode.el from the Julia

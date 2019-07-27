@@ -238,7 +238,7 @@ Activate flymake only if `ess-use-flymake' is non-nil."
   (if (eval-when-compile (<= 26 emacs-major-version))
       (add-hook 'ess-r-mode-hook #'ess-r-setup-flymake)
     (when ess-use-flymake
-      (display-warning 'ess "ESS was compiled with older version of emacs;\n    `ess-r-flymake' won't be available"))))
+      (display-warning 'ess "ESS was compiled with older version of Emacs;\n    `ess-r-flymake' won't be available"))))
 
 (provide 'ess-r-flymake)
 

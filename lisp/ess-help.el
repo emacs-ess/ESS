@@ -31,7 +31,7 @@
 ;;; Commentary:
 
 ;; Code for dealing with ESS help files.  See README.<LANGUAGE> where
-;; <LANGUAGE> is one of `S', `SAS', `Stata'or `XLispStat'.
+;; <LANGUAGE> is one of `S', `SAS', `Stata' or `XLispStat'.
 
 ;;; Code:
 
@@ -113,7 +113,7 @@ the first 150 characters of the buffer are searched."
    (buffer-list)))
 
 (defvar-local ess-help-type nil
-  "Type of help file, help, index, vingettes etc.
+  "Type of help file, help, index, vignettes etc.
 Local in `ess-help' buffers.")
 
 (defvar-local ess-help-object nil
@@ -125,14 +125,14 @@ Local in `ess-help' buffers.")
 ;;;###autoload
 (defun ess-display-help-on-object (object &optional command)
   "Display documentation for OBJECT.
-If prefix arg is given, force an update of the cached help topics
+If prefix ARG is given, force an update of the cached help topics
 and query the ESS process for the help file instead of reusing an
 existing buffer if it exists. Uses the variable
 `inferior-ess-help-command' for the actual help command. Prompts
 for the object name based on the cursor location for all cases
 except the S-Plus GUI. With S-Plus on Windows (both GUI and in an
 inferior Emacs buffer) the GUI help window is used. If COMMAND is
-suplied, it is used instead of `inferior-ess-help-command'."
+supplied, it is used instead of `inferior-ess-help-command'."
   (interactive
    (progn
      (ess-force-buffer-current)
@@ -200,9 +200,9 @@ ignored."
         (kill-buffer buffer)))))
 
 (defun ess-display-help-in-browser ()
-  "Displaying html help where available, using \\[browse-url]."
+  "Displaying HTML help where available, using \\[browse-url]."
   (interactive)
-  ;; Three ways to find html help, 1) ask sub-process 2) get url/file from subproces
+  ;; Three ways to find HTML help, 1) ask sub-process 2) get URL/file from subprocess
   ;; 3) call elisp function to get the file path
   ;; For 2 and 3 call browse-url on the output
   (let (com-html-help                   ;1) command for sub-process to trigger
@@ -691,7 +691,7 @@ nil otherwise."
 (defun ess-nuke-help-bs ()
   "Remove ASCII underlining and overstriking performed by ^H codes."
   ;; This function is a modification of nuke-nroff-bs in man.el from the
-  ;; standard emacs 18 lisp library.
+  ;; standard Emacs 18 lisp library.
   ;; Nuke underlining and overstriking (only by the same letter)
   (goto-char (point-min))
   (while (search-forward "\b" nil t)
@@ -785,7 +785,7 @@ other dialects)."
                    (bufferp buf)
                    (or (not (symbolp command)) ;; kill on lambdas
                        (not (string-match "window" (symbol-name command)))))
-          (kill-buffer buf)) ;; bury does not work here :( (emacs bug?)
+          (kill-buffer buf)) ;; bury does not work here :( (Emacs bug?)
         (setq unread-command-events
               (append keys unread-command-events))))))
 

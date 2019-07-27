@@ -40,7 +40,7 @@
 ;;    (require 'ess-site)
 ;;
 ;; For most users the variable ess-lisp-directory will automatically be set
-;; correctly. If you are working with an old emacs, one in which file-truename
+;; correctly. If you are working with an old Emacs, one in which file-truename
 ;; is not defined, then you might need to change the value of ess-lisp-directory
 ;; to the directory which is to contain the file ess-site.elc. This is probably
 ;; the current directory, or the value of LISPDIR if it was set in the Makefile.

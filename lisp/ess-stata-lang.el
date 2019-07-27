@@ -33,7 +33,7 @@
 ;; Stata modes.  Emacs modes for using the Stata statistical package
 ;; Modified from S-mode, comint-mode
 ;;
-;; (c) thomas lumley 1997
+;; (c) Thomas Lumley 1997
 ;;
 ;;  version 0.4  20/7/97
 ;;

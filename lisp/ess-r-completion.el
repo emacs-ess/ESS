@@ -438,7 +438,7 @@ Return format suitable for `completion-at-point-functions'."
   '((prefix     . ess-ac-start)
     ;; (requires   . 0) ::)
     (candidates . ess-ac-candidates)
-    ;; (action  . ess-ac-action-args) ;; interfere with ac-fallback mechanism on RET (which is extremely annoing in inferior buffers)
+    ;; (action  . ess-ac-action-args) ;; interfere with ac-fallback mechanism on RET (which is extremely annoying in inferior buffers)
     (document   . ess-ac-help))
   "Combined ad-completion source for R function arguments and R objects.")
 (make-obsolete-variable 'ac-source-R "Use company-mode instead" "ESS 19.04")

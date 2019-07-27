@@ -310,7 +310,7 @@ nil (as by default) !"
 (defun ess-MM-fix-src (&optional dont-query verbose)
   "Clean up ess-source code which has been produced by dump(..), and other
 code typically produced by other tools.  Produces more readable code,
-and one that is well formatted in emacs ess-mode."
+and one that is well formatted in Emacs ess-mode."
   (interactive "P")
   ;; each of the following does a save-excursion:
   (ess-dump-to-src dont-query)
@@ -448,7 +448,7 @@ Currently, this needs to:
    1. set the buffer to the right mode, with the right settings
    2. format the statement,
    3. c/function/Sfunc/
-and I need to relearn emacs lisp (but I had to, anyway."
+and I need to relearn Emacs lisp (but I had to, anyway."
   (interactive "sFunction ? ")
   (declare (obsolete 'ess-execute "ESS 19.04"))
   (let* ((buffname "ess-complete.R"))

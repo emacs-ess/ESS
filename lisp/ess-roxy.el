@@ -40,7 +40,7 @@
 ;;   - C-c C-o n,p :: next, previous roxygen entry
 ;;   - C-c C-o C-c :: Unroxygen region. Convenient for editing examples.
 ;; - folding visibility using hs-minor-mode
-;;   - TAB :: advised ess-ident-command, hide entry if in roxygen doc.
+;;   - TAB :: advised ess-indent-command, hide entry if in roxygen doc.
 ;; - preview
 ;;   - C-c C-o C-r :: create a preview of the Rd file as generated
 ;;     using roxygen
@@ -312,7 +312,7 @@ Use you regular key for `outline-show-entry' to reveal it.")
 
 (defun ess-roxy-entry-p (&optional field)
   "Non-nil if point is in a roxy entry.
-FIELD allows checkinf for a specific field with
+FIELD allows checking for a specific field with
 `ess-roxy-current-field'."
   (and ess-roxy-mode
        (save-excursion
@@ -820,7 +820,7 @@ Useful for sending code from example section. This function is
 placed in `ess-presend-filter-functions'."
   ;; Only strip the prefix in the @examples field, and only when
   ;; STRING is entirely contained inside it. This allows better
-  ;; behaviour for evaluation of regions.
+  ;; behavior for evaluation of regions.
   (let ((roxy-re ess-roxy-re))
     (if (and (ess-roxy-entry-p "examples")
              ;; don't send just @examples if we're looking at a line
@@ -867,7 +867,7 @@ EXAMPLES should be non-nil if filling an example block."
        ;; starter
        (modify-syntax-entry ?# "w" temp-table)
        (modify-syntax-entry ?' "w" temp-table))
-     ;; Neutralise (comment-normalize-vars) because it modifies the
+     ;; Neutralize (comment-normalize-vars) because it modifies the
      ;; comment-start regexp in such a way that paragraph filling of
      ;; comments in @examples fields does not work
      (cl-letf (((symbol-function 'comment-normalize-vars) #'ignore))

@@ -169,7 +169,7 @@ is added globally when ess-toolbar.el is loaded."
        (and (fboundp 'display-images-p) (display-images-p))
        ;; if above tests failed, give a warning.
        (progn
-         (message "Toolbar support for ESS not available in this emacs.")
+         (message "Toolbar support for ESS not available in this Emacs.")
          ;; Not sure if we want to delay startup of ESS.
          ;;(sit-for 2)
          ))
