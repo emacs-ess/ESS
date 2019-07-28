@@ -284,7 +284,6 @@ Better logic needed!  (see 2 uses, in this file).")
                                                     (self-insert-command (prefix-numeric-value arg)))
                                                 (self-insert-command (prefix-numeric-value arg))))))
 
-;;;###autoload
 (defun SAS-menu ()
   "Start SAS from the menu."
   (interactive)

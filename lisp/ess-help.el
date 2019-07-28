@@ -122,7 +122,6 @@ Is name of the package for package index.
 Local in `ess-help' buffers.")
 (put 'ess-help-object 'permanent-local t)
 
-;;;###autoload
 (defun ess-display-help-on-object (object &optional command)
   "Display documentation for OBJECT.
 If prefix ARG is given, force an update of the cached help topics
@@ -162,7 +161,6 @@ ignored."
   (ess-process-put 'sp-for-help-changed? t)
   (ess-display-help-on-object ess-help-object))
 
-;;;###autoload
 (defalias 'ess-help 'ess-display-help-on-object)
 
 (defun ess-build-help-command (object)
@@ -729,12 +727,10 @@ nil otherwise."
       (put-text-property (point) (1+ (point)) 'face 'underline))))
 
 ;;*;; Link to Info
-;;;###autoload
 (defun ess-goto-info (node)
   "Display node NODE from `ess-mode' info."
   (require 'info)
   (split-window)
-  ;;(other-window 1)
   (Info-goto-node (concat "(ess)" node)))
 
 

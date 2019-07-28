@@ -552,7 +552,6 @@ Return the amount the indentation changed by."
 
 ;;; Dump Objects
 
-;;;###autoload
 (defun ess-dump-object-into-edit-buffer (object)
   "Edit an ESS OBJECT in its own buffer.
 Without a prefix argument, this simply finds the file pointed to by

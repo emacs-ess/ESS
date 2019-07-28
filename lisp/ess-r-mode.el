@@ -121,7 +121,6 @@ value by using `ess-r-runners-reset'."
 ;;*;; Mode definition
 
 ;;;*;;; UI (Keymaps / Menus)
-;;;###autoload
 (defvar ess-dev-map
   (let (ess-dev-map)
     (define-prefix-command 'ess-dev-map)
@@ -2455,7 +2454,6 @@ from all installed packages, which can be very slow."
 (define-obsolete-variable-alias 'ess-rutils-mode-map 'ess-r-package-menu-mode-map "ESS 19.04")
 (define-obsolete-function-alias 'ess-rutils-mode #'ess-r-package-menu-mode "ESS 19.04")
 
-;;;###autoload
 (defvar ess-rutils-map
   (let ((map (define-prefix-command 'ess-rutils-map)))
     (define-key map "l" #'ess-r-package-list-local-packages)
@@ -2502,7 +2500,6 @@ from all installed packages, which can be very slow."
 
 (define-obsolete-function-alias 'ess-rutils-local-pkgs #'ess-r-package-list-local-packages "ESS 19.04")
 
-;;;###autoload
 (defun ess-r-package-list-local-packages ()
   "List all packages in all libraries."
   (interactive)
@@ -2582,7 +2579,6 @@ from all installed packages, which can be very slow."
                'buffer))
 
 (define-obsolete-function-alias 'ess-rutils-repos-pkgs #'ess-r-package-list-available-packages "ESS 19.04")
-;;;###autoload
 (defun ess-r-package-list-available-packages ()
   "List available packages.
 Use the repositories as listed by getOptions(\"repos\") in the
@@ -2626,7 +2622,6 @@ current R session."
         (message "No packages marked for install")))))
 
 (define-obsolete-function-alias 'ess-rutils-update-pkgs #'ess-r-package-update-packages "ESS 19.04")
-;;;###autoload
 (defun ess-r-package-update-packages (lib repo)
   "Update packages in library LIB and repo REPO.
 This also uses checkBuilt=TRUE to rebuild installed packages if
