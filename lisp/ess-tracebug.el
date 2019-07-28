@@ -932,8 +932,6 @@ This commands are triggered by `ess-electric-selection' .
 
 \\{ess-electric-selection-map}")
 
-(ess-if-verbose-write "\n<- debug-vars done")
-
 ;;;_ + debug functions
 (defun ess-debug-set-error-action (spec)
   "Set the on-error action.
