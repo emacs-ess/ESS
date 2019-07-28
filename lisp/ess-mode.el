@@ -129,7 +129,6 @@
   ess-mode-menu ess-mode-map
   "Menu for use in `ess-mode'."
   '("ESS" ; ESS-mode
-    ["What is this? (beta)"    ess-mouse-me                     t]
     ["Load file"                ess-load-file t]
     ["Eval region | func | para" ess-eval-region-or-function-or-paragraph t]
     ["Eval region | func | para & step" ess-eval-region-or-function-or-paragraph-and-step t]

@@ -91,7 +91,6 @@
   ess-transcript-mode-menu ess-transcript-mode-map
   "Menu for use in S transcript mode."
   '("ESS-trans"
-    ["What is this? (beta)" ess-mouse-me                        t]
     ["Describe"         describe-mode                   t]
     ["About"           (ess-goto-info "Transcript Mode") t]
     ["Send bug report"  ess-submit-bug-report           t]

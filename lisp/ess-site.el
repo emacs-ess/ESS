@@ -59,17 +59,11 @@
 
 (require 'ess-r-mode)
 (require 'ess-julia)
-;; ess-remote
-(require 'essd-els)
+(require 'essd-els) ;; ess-remote
 (require 'ess-stata-mode)
 (require 'ess-sas-d)
 (require 'ess-bugs-d)
 (require 'ess-jags-d)
-
-;;; Speedbar and mouse
-(require 'ess-mouse)
-
-;;; Toolbar support
 (require 'ess-toolbar)
 
 (provide 'ess-site)

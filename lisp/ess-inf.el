@@ -1776,7 +1776,6 @@ meaning as for `ess-eval-region'."
   '("iESS"
     ["Quit"			ess-quit			t]
     ["Reload process"		inferior-ess-reload             t]
-    ["What is this? (beta)"     ess-mouse-me			t]
     ;; ["Send and move"  ess-transcript-send-command-and-move  t]
     ["Copy command"		comint-copy-old-input		t]
     ["Send command"		inferior-ess-send-input		t]
