@@ -296,7 +296,6 @@ to look up any doc strings."
     (inferior-ess-prompt           . "\\w*> ")
     (ess-local-customize-alist     . 'ess-julia-customize-alist)
     (inferior-ess-program          . inferior-julia-program)
-    (ess-help-web-search-command   . "https://docs.julialang.org/en/latest/search/?q=%s")
     (ess-manual-lookup-command     . 'ess-julia-manual-lookup-function)
     ;; (ess-reference-lookup-command       . 'ess-julia-reference-lookup-function)
     (ess-load-command              . "include(expanduser(\"%s\"))\n")
@@ -331,6 +330,10 @@ to look up any doc strings."
     (ess-getwd-command             . "pwd()\n")
     (ess-setwd-command             . "cd(expanduser(\"%s\"))\n"))
   "Variables to customize for Julia.")
+
+(cl-defmethod ess--help-web-search-override (cmd &context (ess-dialect "julia"))
+  "Offer to search the web for a Julia command."
+  (browse-url (format "https://docs.julialang.org/en/latest/search/?q=%s" cmd)))
 
 (defvar ess-julia-completion-syntax-table
   (let ((table (copy-syntax-table ess-r-mode-syntax-table)))

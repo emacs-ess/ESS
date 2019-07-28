@@ -71,7 +71,6 @@
     (ess-help-sec-keys-alist       . ess-help-STA-sec-keys-alist)
     (ess-loop-timeout              . 500000 )
     (ess-object-name-db-file       . "ess-sta-namedb.el" )
-    (ess-help-web-search-command   . "https://www.stata.com/search/?q=%s&restrict=&btnG=Search&client=stata&num=&output=xml_no_dtd&site=stata&ie=&oe=UTF-8&sort=&proxystylesheet=stata")
     (inferior-ess-program          . inferior-STA-program)
     (inferior-ess-objects-command  . "describe\n")
     (inferior-ess-help-command     . "help %s\n") ;; assumes set more off
@@ -88,6 +87,12 @@
     (ess-load-command              . "run \"%s\"\n"))
   "Variables to customize for Stata.")
 
+(cl-defmethod ess--help-web-search-override (cmd &context (ess-dialect "stata"))
+  "Browse the web for documentation about CMD in Stata."
+  (browse-url
+   (format
+    "https://www.stata.com/search/?q=%s&restrict=&btnG=Search&client=stata&num=&output=xml_no_dtd&site=stata&ie=&oe=UTF-8&sort=&proxystylesheet=stata"
+    cmd)))
 
 ;;;###autoload
 (define-derived-mode ess-stata-mode ess-mode "ESS[STA]"

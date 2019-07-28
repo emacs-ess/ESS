@@ -389,7 +389,6 @@ To be used as part of `font-lock-defaults' keywords."
      (ess-call-stack-command                . ess-r-call-stack-command)
      (ess-mode-completion-syntax-table      . ess-r-completion-syntax-table)
      (ess-build-eval-message-function       . #'ess-r-build-eval-message)
-     (ess-help-web-search-command           . #'ess-r-sos)
      (ess-build-help-command-function       . #'ess-r-build-help-command)
      (ess-dump-filename-template            . ess-r-dump-filename-template)
      (ess-change-sp-regexp                  . ess-r-change-sp-regexp)
@@ -1081,11 +1080,12 @@ With argument UPDATE, update cached packages list."
         (ess-eval-linewise (format "install.packages('%s')\n" pkg))
       (signal 'quit nil))))
 
-(defun ess-r-sos (cmd)
-  "Interface to findFn in the library sos."
-  (interactive  "sfindFn: ")
+(define-obsolete-function-alias 'ess-r-sos #'ess-help-web-search "ESS 19.04")
+
+(cl-defmethod ess--help-web-search-override (cmd &context (ess-dialect "R"))
   (ess-r-check-install-package "sos")
   (ess-eval-linewise (format "sos::findFn(\"%s\", maxPages=10)" cmd)))
+
 
 (defun ess-R-scan-for-library-call (string)
   "Detect `library/require' call in STRING and update tracking vars.
@@ -2298,7 +2298,6 @@ state.")
   "Major mode for help buffers."
   :group 'ess-help
   (setq ess-dialect "R"
-        ess-help-web-search-command #'ess-r-sos
         ess-build-help-command-function #'ess-r-build-help-command
         ess-help-sec-regex ess-help-r-sec-regex
         ess-help-sec-keys-alist ess-help-r-sec-keys-alist ; TODO: Still necessary?

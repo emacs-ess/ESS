@@ -2392,10 +2392,6 @@ highlighted with the same face as `ess-R-keywords'"
 (defvar ess-execute-screen-options-command nil
   "Dialect specific command run by `ess-execute-screen-options'.")
 
-(defvar-local ess-help-web-search-command nil
-  "Dialect specific command web help search.
-Passed to `ess-execute-dialect-specific' which see.")
-
 (defvar-local ess-manual-lookup-command nil
   "Dialect specific command manual lookup.
 Passed to `ess-execute-dialect-specific' which see.")

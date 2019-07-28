@@ -432,10 +432,14 @@ ESS-specific variables `ess-help-own-frame',
         (pop-to-buffer buff display-alist)
       (display-buffer buff display-alist))))
 
-(defun ess-help-web-search ()
-  "Search the web for documentation."
-  (interactive)
-  (ess-execute-dialect-specific ess-help-web-search-command "Search for: "))
+(defun ess-help-web-search (cmd)
+  "Search the web for documentation on CMD."
+  (interactive "sSearch for: ")
+  (ess--help-web-search-override cmd))
+
+(cl-defgeneric ess--help-web-search-override (_cmd)
+  "Dialect-specific override for `ess-help-web-search', which see for CMD."
+  (error "Not implemented for %s" ess-dialect))
 
 (defun ess-manual-lookup ()
   "Search manual for topic."
