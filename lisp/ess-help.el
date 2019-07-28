@@ -450,11 +450,6 @@ ESS-specific variables `ess-help-own-frame',
   "Dialect-specific override for `ess-manual-lookup'."
   (error "Not implemented for %s" ess-dialect))
 
-(defun ess-reference-lookup ()
-  "Search manual for topic."
-  (interactive)
-  (ess-execute-dialect-specific ess-reference-lookup-command))
-
 (defvar ess-doc-map
   (let (ess-doc-map)
     (define-prefix-command 'ess-doc-map)
@@ -474,8 +469,6 @@ ESS-specific variables `ess-help-own-frame',
     (define-key ess-doc-map "w" #'ess-help-web-search)
     (define-key ess-doc-map "\C-m" #'ess-manual-lookup)
     (define-key ess-doc-map "m" #'ess-manual-lookup)
-    (define-key ess-doc-map "\C-r" #'ess-reference-lookup)
-    (define-key ess-doc-map "r" #'ess-reference-lookup)
     ess-doc-map)
   "ESS documentation map.")
 

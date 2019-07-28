@@ -294,7 +294,6 @@ to look up any doc strings."
     (inferior-ess-prompt           . "\\w*> ")
     (ess-local-customize-alist     . 'ess-julia-customize-alist)
     (inferior-ess-program          . inferior-julia-program)
-    ;; (ess-reference-lookup-command       . 'ess-julia-reference-lookup-function)
     (ess-load-command              . "include(expanduser(\"%s\"))\n")
     (ess-funargs-command           . "ESS.fun_args(\"%s\")\n")
     (ess-dump-error-re             . "in \\w* at \\(.*\\):[0-9]+")
