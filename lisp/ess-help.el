@@ -442,9 +442,13 @@ ESS-specific variables `ess-help-own-frame',
   (error "Not implemented for %s" ess-dialect))
 
 (defun ess-manual-lookup ()
-  "Search manual for topic."
+  "Search manual for documentation."
   (interactive)
-  (ess-execute-dialect-specific ess-manual-lookup-command ))
+  (ess--manual-lookup-override))
+
+(cl-defgeneric ess--manual-lookup-override ()
+  "Dialect-specific override for `ess-manual-lookup'."
+  (error "Not implemented for %s" ess-dialect))
 
 (defun ess-reference-lookup ()
   "Search manual for topic."

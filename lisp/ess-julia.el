@@ -88,10 +88,8 @@ VISIBLY is not currently used."
       (nreverse out))))
 
 (defvar ess-julia--manual-topics nil)
-(defun ess-julia-manual-lookup-function (&rest _args)
+(cl-defmethod ess--manual-lookup-override (&context (ess-dialect "julia"))
   "Look up topics at https://docs.julialang.org/en/latest/manual/."
-  (interactive)
-  ;; <li class="toctree-l1"><a class="reference internal" href="introduction/">Introduction</a></li>
   (let* ((pages (or ess-julia--manual-topics
                     (setq ess-julia--manual-topics
                           (ess-julia--retrive-topics
@@ -296,7 +294,6 @@ to look up any doc strings."
     (inferior-ess-prompt           . "\\w*> ")
     (ess-local-customize-alist     . 'ess-julia-customize-alist)
     (inferior-ess-program          . inferior-julia-program)
-    (ess-manual-lookup-command     . 'ess-julia-manual-lookup-function)
     ;; (ess-reference-lookup-command       . 'ess-julia-reference-lookup-function)
     (ess-load-command              . "include(expanduser(\"%s\"))\n")
     (ess-funargs-command           . "ESS.fun_args(\"%s\")\n")
