@@ -451,14 +451,20 @@ Return format suitable for `completion-at-point-functions'."
 
 (defun ess-ac-candidates ()
   "OBJECTS + ARGS."
-  (let ((args (ess-ac-args)))
+  (let ((args (with-no-warnings
+                ;; suppress obsolete warnings
+                (ess-ac-args))))
     ;; sort of intrusive but right
     (if (and ac-auto-start
              (< (length ac-prefix) ac-auto-start))
         args
       (if args
-          (append args (ess-ac-objects t))
-        (ess-ac-objects)))))
+          (append args (with-no-warnings
+                         ;; suppress obsolete warnings
+                         (ess-ac-objects t)))
+        (with-no-warnings
+          ;; suppress obsolete warnings
+          (ess-ac-objects))))))
 (make-obsolete-variable 'ess-ac-candidates "Use company-mode instead" "ESS 19.04")
 
 (defun ess-ac-help (sym)
@@ -479,11 +485,11 @@ Return format suitable for `completion-at-point-functions'."
 (defun ess-ac-objects (&optional no-kill)
   "Get all cached objects."
   (declare (obsolete "Use company-mode instead" "ESS 19.04"))
- (let ((aprf ac-prefix))
-   (when (and aprf (ess-process-live-p))
-     (unless no-kill ;; workaround
-       (kill-local-variable 'ac-use-comphist))
-     (ess--get-cached-completions aprf ac-point))))
+  (let ((aprf ac-prefix))
+    (when (and aprf (ess-process-live-p))
+      (unless no-kill ;; workaround
+        (kill-local-variable 'ac-use-comphist))
+      (ess--get-cached-completions aprf ac-point))))
 
 ;; ARGS
 (defvar  ac-source-R-args
