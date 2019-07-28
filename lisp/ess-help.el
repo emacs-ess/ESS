@@ -806,8 +806,7 @@ other dialects)."
       (forward-line -1)
       (setq pos (point))
       ;; set the keys that we are used to in help mode
-      (special-mode)
-      (local-set-key "k" 'kill-this-buffer))
+      (special-mode))
     (if (eq ess-describe-at-point-method 'tooltip)
         (ess-tooltip-show-at-point
          (with-current-buffer buf (buffer-string))  0 30)
