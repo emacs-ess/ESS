@@ -266,47 +266,6 @@ process to avoid excessive requests."
            (process-put *proc* ',time-var (current-time))
            out)))))
 
-(defmacro ess-execute-dialect-specific (command &optional prompt &rest args)
-  "Execute dialect specific COMMAND.
-
--- If command is nil issue warning 'Not available for dialect X'
--- If command is a elisp function, execute it with ARGS
--- If a string starting with 'http' or 'www', browse with `browse-url',
-   otherwise execute the command in inferior process.
--- If a string, interpret as a command to subprocess, and
-   substitute ARGS with `(format ,command ,@args).
-
-When PROMPT is non-nil ask the user for a string value and
-prepend the response to ARGS.
-
-If prompt is a string just pass it to `read-string'. If a list, pass it
-to `ess-completing-read'."
-  `(if (null ,command)
-       (message "Not implemented for dialect %s" ess-dialect)
-     (let* ((com  (if (symbolp ,command)
-                      (symbol-function ,command)
-                    ,command))
-            (prompt ',prompt)
-            (resp (and prompt
-                       (if (stringp  prompt)
-                           (read-string  prompt)
-                         (apply 'ess-completing-read prompt))))
-            (args (append (list resp) ',args)))
-       (cond ((functionp com)
-              (apply com args))
-             ((and (stringp com)
-                   (string-match "^\\(http\\|www\\)" com))
-              (setq com (apply 'format com args))
-              (require 'browse-url)
-              (browse-url com))
-             ((stringp com)
-              (unless (string-match "\n$" com)
-                (setq com (concat com "\n")))
-              (setq com (apply 'format com args))
-              (ess-eval-linewise com))
-             (t
-              (error "Argument COMMAND must be either a function or a string"))))))
-
 
 ;;; Emacs Integration
 
