@@ -2329,7 +2329,9 @@ If the current buffer does not have a usage section, return nil."
           (narrow-to-region usage-beg (point))
           (goto-char (point-min))
           ;; Match objects until a parens
-          (while (re-search-forward (rx bol (0+ whitespace) (group (1+ (not (any "("))))) usage-end t)
+          (while (re-search-forward (rx bol (0+ whitespace) (not (syntax comment-delimiter))
+                                        (group (1+ (not (any "(")))))
+                                    usage-end t)
             (push (match-string-no-properties 1) usage-objects)
             ;; Skip past function arguments
             (forward-list)))
