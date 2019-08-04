@@ -875,11 +875,6 @@ With (prefix) EOB-P non-nil, positions cursor at end of buffer."
                  '(nil . ((inhibit-same-window . t))))
   (when eob-p (goto-char (point-max))))
 
-(defun ess-switch-to-ESS-deprecated (eob-p)
-  (interactive "P")
-  (ess-switch-to-ESS eob-p)
-  (message "C-c C-y is deprecated, use C-c C-z instead (ess-switch-to-inferior-or-script-buffer)"))
-
 (defun ess-switch-to-end-of-ESS ()
   "Switch to the end of the inferior ESS process buffer."
   (interactive)

@@ -73,7 +73,6 @@
     (define-key map "\C-\M-e"    #'ess-goto-end-of-function-or-para)
     (define-key map "\C-xnd"     #'ess-narrow-to-defun-or-para)
     (define-key map "\C-xnf"     #'ess-narrow-to-defun-or-para)
-    (define-key map "\C-c\C-y"   #'ess-switch-to-ESS-deprecated)
     (define-key map "\C-c\C-z"   #'ess-switch-to-inferior-or-script-buffer)
     (define-key map "\C-c\C-l"   #'ess-load-file)
     ;;; Make an alias because C-c C-l is taken up by comint in inferiors
