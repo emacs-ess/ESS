@@ -346,7 +346,7 @@ With prefix argument ARG, run tests on current file only."
                        (file-name-nondirectory buffer-file-name))
                   (error "Buffer not visiting a file"))))
     (format "filter = \"%s\""
-            (if (string-match "test-\\([[:alnum:]-_]+\\)\\.[rR]" file)
+            (if (string-match "test-\\([[:alnum:]_-]+\\)\\.[rR]" file)
                 (match-string-no-properties 1 file)
               (file-name-base buffer-file-name)))))
 

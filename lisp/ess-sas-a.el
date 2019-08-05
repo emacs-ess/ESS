@@ -329,8 +329,7 @@ in SAS-mode and related modes.")
 
 (defun ess-exit-notify-sh (string)
   "Detect completion or failure of submitted job and notify the user."
-                                        ;(let* ((exit-done "\\[[0-9]+\\]\\ *\\+*\\ *\\(Exit\\|Done\\).*$")
-  (let* ((exit-done "\\[[0-9]+\\]\\ *\\+*\\ *\\(Exit\\|Done\\)[^\r\n]*") ; GNU Emacs needs this
+  (let* ((exit-done "\\[[0-9]+\\] *\\+* *\\(Exit\\|Done\\)[^\r\n]*")
          (beg (string-match exit-done string)))
     (if beg
         (message "%s" (substring string beg (match-end 0))))))

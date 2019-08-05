@@ -2364,7 +2364,7 @@ print(out, max=1e6) })\n\"."
                    " *ess-get-words*")); initial space: disable-undo
          (word-RE
           (concat "\\("
-                  "\\\\\\\"" "\\|" "[^\"]" ;  \" or non-"-char
+                  "\\\\\"" "\\|" "[^\"]" ;  \" or non-"-char
                   "\\)*"))
          (full-word-regexp
           (concat "\"" "\\(" word-RE "\\)"

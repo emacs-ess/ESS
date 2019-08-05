@@ -181,7 +181,7 @@ and `ess-bugs-file-dir'."
 
 (defun ess-bugs-exit-notify-sh (string)
   "ESS[BUGS]: Detect completion or failure of submitted job and notify the user."
-  (let* ((exit-done "\\[[0-9]+\\]\\ *\\+*\\ *\\(Exit\\|Done\\)[^\r\n]*")
+  (let* ((exit-done "\\[[0-9]+\\] *\\+* *\\(Exit\\|Done\\)[^\r\n]*")
          (beg (string-match exit-done string)))
     (if beg (message "%s" (substring string beg (match-end 0))))))
 
