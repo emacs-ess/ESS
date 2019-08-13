@@ -2006,15 +2006,15 @@ Returns the beginning position of the hidden text."
                                    'ess-bp t
                                    'bp-id bp-id
                                    'bp-active t
-                                   'intangible 'ess-bp
-                                   'rear-nonsticky '(intangible ess-bp bp-type)
+                                   'cursor-intangible 'ess-bp
+                                   'rear-nonsticky '(cursor-intangible ess-bp bp-type)
                                    'bp-type type
                                    'bp-substring 'command
                                    'display displ-string))
       (setq dummy-string (propertize
                           (ess-tracebug--propertize dummy-string fringe-bitmap fringe-face "*")
                           'ess-bp t
-                          'intangible 'ess-bp
+                          'cursor-intangible 'ess-bp
                           'bp-type type
                           'bp-substring 'dummy))
       (ess-tracebug--set-left-margin)
@@ -2030,6 +2030,7 @@ Returns the beginning position of the hidden text."
   (save-excursion
     (save-restriction
       (with-silent-modifications
+        (cursor-intangible-mode)
         (widen)
         (goto-char (point-min))
         (while (re-search-forward
@@ -2060,8 +2061,8 @@ Returns the beginning position of the hidden text."
                 (add-text-properties comm-beg comm-end
                                      (list 'ess-bp t
                                            'bp-id bp-id
-                                           'intangible 'ess-bp
-                                           'rear-nonsticky '(intangible ess-bp bp-type)
+                                           'cursor-intangible 'ess-bp
+                                           'rear-nonsticky '(cursor-intangible ess-bp bp-type)
                                            'bp-type type
                                            'bp-substring 'command
                                            'display displ-string))
@@ -2075,14 +2076,14 @@ Returns the beginning position of the hidden text."
                 (add-text-properties dum-beg dum-end
                                      (append dum-props
                                              (list 'ess-bp t
-                                                   'intangible 'ess-bp
+                                                   'cursor-intangible 'ess-bp
                                                    'bp-type type
                                                    'bp-substring 'dummy)))
                 ;; (when comment-beg
                 ;;   (add-text-properties comment-beg comment-end
                 ;;                        (list 'ess-bp t
                 ;;                              'bp-id bp-id
-                ;;                              'intangible 'ess-bp
+                ;;                              'cursor-intangible 'ess-bp
                 ;;                              'display (propertize (nth 1 ess-bp-inactive-spec) 'face fringe-face)
                 ;;                              'bp-type type
                 ;;                              'bp-substring 'comment)))
@@ -2235,7 +2236,7 @@ If there is no active R session, this command triggers an error."
   (save-excursion
     (let ((pos (ess-bp-get-bp-position-nearby))
           (fringe-face (nth 3 ess-bp-inactive-spec))
-          (inhibit-point-motion-hooks t) ;; deactivates intangible property
+          (cursor-sensor-inhibit 'ess-bp-toggle-state)
           bp-id bp-specs beg-pos-command)
       (if (null pos)
           (message "No breakpoints in the visible region")
@@ -2259,7 +2260,7 @@ If there is no active R session, this command triggers an error."
           (ess-command (format ".ESSBP.[[%s]] <- NULL\n" bp-id))
           ;; (insert (propertize "##"
           ;;                     'ess-bp t
-          ;;                     'intangible 'ess-bp
+          ;;                     'cursor-intangible 'ess-bp
           ;;                     'display (propertize (nth 1 ess-bp-inactive-spec) 'face fringe-face)
           ;;                     'bp-type (get-char-property (point) 'bp-type)
           ;;                     'bp-substring 'comment))
@@ -2772,8 +2773,8 @@ for signature and trace it with browser tracer."
 Only do this when N is 1"
   (when (and (ess-derived-mode-p)
              (= n 1)
-             (get-text-property (point) 'intangible))
-    (kill-region (point) (or (next-single-property-change (point) 'intangible)
+             (get-text-property (point) 'cursor-intangible))
+    (kill-region (point) (or (next-single-property-change (point) 'cursor-intangible)
                              (point-max)))
     (indent-according-to-mode)))
 
@@ -2785,8 +2786,8 @@ Only do this when called interactively and N is 1"
   (when (and (ess-derived-mode-p)
              (= n 1)
              (> (point) (point-min))
-             (get-text-property (1- (point)) 'intangible))
-    (kill-region (or (previous-single-property-change (point) 'intangible)
+             (get-text-property (1- (point)) 'cursor-intangible))
+    (kill-region (or (previous-single-property-change (point) 'cursor-intangible)
                      (point-min))
                  (point))))
 
