@@ -163,11 +163,9 @@ ignored."
 
 (defalias 'ess-help 'ess-display-help-on-object)
 
-(defun ess-build-help-command (object)
-  (if (fboundp ess-build-help-command-function)
-      (funcall ess-build-help-command-function object)
-    ;; TODO-CLEANUP: Remove the inferior- prefix for consistency
-    (format inferior-ess-help-command object)))
+(cl-defgeneric ess-build-help-command (object)
+  "Build a string command for retrieving help on OBJECT."
+  (format inferior-ess-help-command object))
 
 (defun ess--flush-help-into-current-buffer (object &optional command)
   (let ((inhibit-modification-hooks t)
@@ -236,8 +234,7 @@ ignored."
 It's intended to be used in R-index help pages. Load the package
 if necessary.  It is bound to RET and C-m in R-index pages."
   (let* ((string (button-label button))
-         (command (when (fboundp ess-build-help-command-function)
-                    (funcall ess-build-help-command-function string))))
+         (command (ess-build-help-command string)))
     (ess-display-help-on-object string command)))
 
 (cl-defgeneric ess-help-commands ()

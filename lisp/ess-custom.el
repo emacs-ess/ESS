@@ -1912,31 +1912,24 @@ transitory output.  See also `ess-eval-visibly-command' and
 
 (defcustom inferior-ess-dump-command "dump(\"%s\",file=\"%s\")\n"
   "Format-string for building the ess command to dump an object into a file.
-
-Use first %s to substitute an object name
+Use first %s to substitute an object name.
 Use second %s to substitute the dump file name."
   :group 'ess-command
   :type 'string)
 
 (defvar-local inferior-ess-help-command "help(\"%s\")\n"
   "Format-string for building the ESS command to ask for help on an object.
-
 This format string should use %s to substitute an object name.")
 
 (defcustom inferior-ess-r-help-command ".ess.help('%s')\n"
   "Format-string for building the R command to ask for help on an object.
-
 This format string should use %s to substitute an object name.
 If set, changes will take effect when next R session is started."
   :group 'ess-command
   :type 'string)
 
-(defvar-local ess-build-help-command-function nil
-  "Dialect specific function for building an help command.")
-
 (defvar-local inferior-ess-exit-command "q()\n"
   "Format-string for building the ess command to exit.
-
 This format string should use %s to substitute an object name.")
 
 (defvar-local inferior-ess-search-list-command nil

@@ -389,7 +389,6 @@ To be used as part of `font-lock-defaults' keywords."
      (ess-call-stack-command                . ess-r-call-stack-command)
      (ess-mode-completion-syntax-table      . ess-r-completion-syntax-table)
      (ess-build-eval-message-function       . #'ess-r-build-eval-message)
-     (ess-build-help-command-function       . #'ess-r-build-help-command)
      (ess-dump-filename-template            . ess-r-dump-filename-template)
      (ess-change-sp-regexp                  . ess-r-change-sp-regexp)
      (ess-help-sec-regex                    . ess-help-r-sec-regex)
@@ -1256,29 +1255,27 @@ selected (see `ess-r-set-evaluation-env')."
            (pkg (ess-r-arg "package" pkg-name t)))
       (concat ".ess.help(" object pkg ")\n"))))
 
-(defun ess-r-build-help-command--get-package-dir (object dont-ask)
+(defun ess-r-build-help-command--get-package-dir (object)
   ;; Ugly hack to avoid tcl/tk dialogues
   (let ((pkgs (ess-get-words-from-vector
                (format "as.character(utils::help('%s'))\n" object))))
     (when (> (length pkgs) 1)
-      (if dont-ask
-          (car pkgs)
-        (ess-completing-read "Choose location" pkgs nil t)))))
+      (ess-completing-read "Choose location" pkgs nil t))))
 
-(defun ess-r-build-help-command--unqualified (object dont-ask)
+(defun ess-r-build-help-command--unqualified (object)
   (if (eq ess-help-type 'index)
       ;; we are in index page, qualify with namespace
       (ess-r-build-help-command--qualified (format "%s::%s" ess-help-object object))
-    (let ((pkg-dir (ess-r-build-help-command--get-package-dir object dont-ask))
+    (let ((pkg-dir (ess-r-build-help-command--get-package-dir object))
           (command (format inferior-ess-r-help-command object)))
       (if pkg-dir
           ;; Invoking `print.help_files_with_topic'
           (format "do.call(structure, c('%s', attributes(%s)))\n" pkg-dir command)
         command))))
 
-(defun ess-r-build-help-command (object &optional dont-ask)
+(cl-defmethod ess-build-help-command (object &context (ess-dialect "R"))
   (or (ess-r-build-help-command--qualified object)
-      (ess-r-build-help-command--unqualified object dont-ask)))
+      (ess-r-build-help-command--unqualified object)))
 
 (defconst inferior-ess-r--input-help (format "^ *help *(%s)" ess-help-arg-regexp))
 (defconst inferior-ess-r--input-?-help-regexp "^ *\\(?:\\(?1:[a-zA-Z ]*?\\?\\{1,2\\}\\) *\\(?2:.+\\)\\)")
@@ -2298,7 +2295,6 @@ state.")
   "Major mode for help buffers."
   :group 'ess-help
   (setq ess-dialect "R"
-        ess-build-help-command-function #'ess-r-build-help-command
         ess-help-sec-regex ess-help-r-sec-regex
         ess-help-sec-keys-alist ess-help-r-sec-keys-alist ; TODO: Still necessary?
         inferior-ess-help-command inferior-ess-r-help-command)
