@@ -34,10 +34,10 @@
       (should ess-r-package-mode))))
 
 (ert-deftest ess-r-package-auto-activation-in-shell-test ()
-  (skip-unless (executable-find "/bin/bash"))
+  (skip-unless (executable-find "bash"))
   (let ((inhibit-message ess-inhibit-message-in-tests)
         (kill-buffer-query-functions nil)
-        (explicit-shell-file-name "/bin/bash")
+        (explicit-shell-file-name "bash")
         (explicit-bash-args '("--noediting" "-i" "--norc" "--noprofile")))
     (with-ess-test-r-file "dummy-pkg/R/test.R"
       (shell)
@@ -53,9 +53,9 @@
   ;; FIXME: This test fails in batch in Emacs 27.
   (skip-unless (and (>= 27 emacs-major-version)
                     (not noninteractive)
-                    (executable-find "/bin/bash")))
+                    (executable-find "bash")))
   (let ((kill-buffer-query-functions nil)
-        (explicit-shell-file-name "/bin/bash")
+        (explicit-shell-file-name "bash")
         (explicit-bash-args '("--noediting" "-i" "--norc" "--noprofile")))
     (with-ess-test-r-file "dummy-pkg/R/test.R"
       (let ((ess-r-package-exclude-modes '(shell-mode)))
