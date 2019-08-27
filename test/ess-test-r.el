@@ -610,7 +610,6 @@ x <- function(x){
     (should (looking-at-p "x <- function(x){$"))))
 
 (ert-deftest ess-test-r-help-mode ()
-  (skip-unless (not noninteractive))
   (with-r-running nil
     (let ((ess-pop-to-buffer t))
       (ess-display-help-on-object "plot")
