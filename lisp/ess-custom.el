@@ -194,8 +194,8 @@ the width to the window width. If an integer, set the width to
 that integer. Anything else is treated as 'window."
   :group 'ess
   :type '(choice (const :tag "Do nothing" :value nil)
-                 (const :tag "Frame width" :value 'frame)
-                 (const :tag "Window width" :value 'window)
+                 (const :tag "Frame width" :value frame)
+                 (const :tag "Window width" :value window)
                  (integer :tag "Integer value"))
   :package-version '(ess . "19.04"))
 
