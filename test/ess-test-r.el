@@ -622,6 +622,20 @@ x <- function(x){
       (should (equal ess-help-object "plot.default"))
       (should (derived-mode-p 'ess-r-help-mode)))))
 
+(ert-deftest ess-test-r-index-mode ()
+  (skip-unless (not noninteractive))
+  (with-r-running nil
+    (let ((ess-pop-to-buffer t))
+      (ess-display-package-index "stats")
+      (should (equal ess-help-object "stats"))
+      (should (derived-mode-p 'ess-r-help-mode))
+      ;; Ensure help buffers after button presses are also in
+      ;; `ess-r-help-mode', Bug#836
+      (forward-button 2)
+      (push-button)
+      (should (equal ess-help-object "plot.default"))
+      (should (derived-mode-p 'ess-r-help-mode)))))
+
 (ert-deftest ess-transcript-comint-prompt-test ()
   ;; Bug#853
   (insert "> set.seed(1); (i <- rnorm(7))

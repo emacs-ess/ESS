@@ -289,7 +289,7 @@ REG-START gives the start location from where to search linkifying, and HELP-OBJ
         (alist          ess-local-customize-alist)
         (pname ess-local-process-name)
         (buff (get-buffer-create title)))
-    (with-current-buffer buff
+    (ess-with-current-buffer buff
       (setq buffer-read-only nil)
       (delete-region (point-min) (point-max))
       (setq ess-local-process-name pname)
@@ -301,7 +301,7 @@ REG-START gives the start location from where to search linkifying, and HELP-OBJ
       (ess-help-underline)
       (set-buffer-modified-p 'nil)
       (goto-char (point-min))
-      (when reg-start  ;; go to the beginning of listing
+      (when reg-start ;; go to the beginning of listing
         (re-search-forward  reg-start  nil t))
       (when item-regexp
         ;;linkify the buffer
