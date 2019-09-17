@@ -255,24 +255,25 @@ Currently understood commands:
     (index-keyword-reg  . "^\\([^ \t\n:]+\\)")
     (index-start-reg    . "^Index:")))
 
-(defun ess-display-package-index ()
+(defun ess-display-package-index (&optional package)
   "Prompt for package name and display its index."
-  (interactive)
-  (let* ((coms (ess-help-commands))
-         (all-packs (ess-get-words-from-vector (cdr (assoc 'packages coms))))
-         (pack (or (when (and ess-help-object
-                              (cdr (assoc 'package-for-object coms))
-                              (eq ess-help-type 'help))
-                     (car (ess-get-words-from-vector
-                           (format (cdr (assoc 'package-for-object coms))
-                                   ess-help-object))))
-                   (car (member (ess-read-object-name-default) all-packs)))))
-    (setq pack (ess-completing-read "Index of" all-packs nil nil nil nil pack))
+  (interactive
+   (list (let* ((coms (ess-help-commands))
+                (all-packs (ess-get-words-from-vector (cdr (assoc 'packages coms))))
+                (pack (or (when (and ess-help-object
+                                     (cdr (assoc 'package-for-object coms))
+                                     (eq ess-help-type 'help))
+                            (car (ess-get-words-from-vector
+                                  (format (cdr (assoc 'package-for-object coms))
+                                          ess-help-object))))
+                          (car (member (ess-read-object-name-default) all-packs)))))
+           (ess-completing-read "Index of" all-packs nil nil nil nil pack))))
+  (let ((coms (ess-help-commands)))
     (ess--display-indexed-help-page
-     (format (cdr (assoc 'package-index coms)) pack)
+     (format (cdr (assoc 'package-index coms)) package)
      (cdr (assoc 'index-keyword-reg coms))
-     (format "*help[%s](index:%s)*"  ess-dialect pack)
-     'index nil nil (cdr (assoc 'index-start-reg coms)) pack)))
+     (format "*help[%s](index:%s)*"  ess-dialect package)
+     'index nil nil (cdr (assoc 'index-start-reg coms)) package)))
 
 (defun ess--display-indexed-help-page (command item-regexp title help-type
                                                &optional action help-echo reg-start help-object)
