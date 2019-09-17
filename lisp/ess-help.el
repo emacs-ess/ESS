@@ -43,6 +43,7 @@
 (require 'ess-mode)
 (require 'ess-inf)
 (require 'ess-utils)
+(require 'ansi-color)
 
 (declare-function ess-r-help-mode "ess-r-mode")
 (declare-function ess-stata-help-mode "ess-stata-lang")
@@ -801,7 +802,9 @@ other dialects)."
       (forward-line -1)
       (setq pos (point))
       ;; set the keys that we are used to in help mode
-      (special-mode))
+      (special-mode)
+      (let ((inhibit-read-only t))
+        (ansi-color-apply-on-region (point-min) (point-max))))
     (if (eq ess-describe-at-point-method 'tooltip)
         (ess-tooltip-show-at-point
          (with-current-buffer buf (buffer-string))  0 30)
