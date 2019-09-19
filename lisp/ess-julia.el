@@ -373,6 +373,7 @@ It makes underscores and dots word constituent chars.")
   (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
   (add-hook 'completion-at-point-functions 'ess-julia-object-completion nil 'local)
   (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
+  (add-hook 'completion-at-point-functions 'ess-julia-latexsub-completion nil 'local)
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar)))
 
 ;; Inferior mode
