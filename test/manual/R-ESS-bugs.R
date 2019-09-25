@@ -943,72 +943,11 @@ rm(old,new)
 old <- 10    # line 1, use ess-eval-line,          i.e., C-c C-j
 new <- old+1 # line 2, use ess-eval-line-and-step, i.e., C-c C-n
 
-### --- 40 --issue ..: new in 18.10(-1) - but ok in git(2018-10-29)
-Fedora.ver <- "F28"; biocLibrary <- "/usr/local.nfs/app/R/Bioconductor/library_F28"
-cat(sprintf("Fedora version: %s\nBioc. library - where packages are installed now:\n  %s\n",
-            Fedora.ver, biocLibrary))
-## After sending (C-c C-n) the first line,  the  `*Messages*` buffer shows
-Loading line: Fedora.ver <- "F28"; biocLibrary <- "/usr/local.nfs/app/R/Bioconductor/library_F28"
-Starting evaluation...
-ess-send-string: Not enough arguments for format string
-## and the user indeed gets the "Not enough arguments ..."
-## message in the minibuffer/message area *and* the R process hangs (with a '+ ')
-## expecting the continuation, but inside this buffer, further C-c C-n do nothing!
-
-### --- 40 --  C-M-e  only goes one parapgraph down   even though it's been documented always as
-## (ess-goto-end-of-function-or-para)
+### --- 40 --  C-M-e / C-M-a problems :
+## (ess-goto-end-of-function-or-para) / (ess-goto-beginning-of-function-or-para)
 
 ## If inside a function go to end of it.
 ## Otherwise go to the end of paragraph.
 ## ----------------------------------------------------------
-tt <- function(x, y, ...)
-{
-    ## HERE _1_
-    ##
-    ## ----------------------------------------------------------------------
-    ## Arguments: x, nu, expon.scaled:  as besselK()
-    ## ----------------------------------------------------------------------
-    ## Author: Martin Maechler, Date: 15. Dec 2018
 
-    ## HERE _2_: bla bla bla
-
-    ## HERE _3_: blu blu blu
-    stopifnot(x == round(x))
-
-    r <- x^2
-
-    x + sin(y) # etc
-}
-
-## and there is more,
-foobar <- function(x, n = 4)
-{
-    ## this is just an intro paragraph, then a test.  C-M-e from above HERE _1_ jumps to next line!
-
-    stopifnot(n == round(n))## testing .. but then, from HERE _6_, it jumps to end of file!
-
-    ## and the result:
-    x^n
-}
-
-
-## There's more
-1+2
-
-## From 'HERE _6_' inside foobar , C-M-e jumps to the line above [still does]
-
-numTailIndexLower <- function(copula, u) {
-  ## u is a vector approaching 0
-  pCopula(cbind(u, u, deparse.level = 0), copula) / u
-}
-
-numTailIndexUpper <- function(copula, u) { ## at begin of this line, C-c C-c does *NOT* move!!
-  # u is a vector approaching 1
-  (1 - 2 * u + pCopula(cbind(u, u, deparse.level = 0), copula)) / (1 - u)
-}
-
-
-
-### Local Variables:
-### page-delimiter: "^### --- [1-9]"
-### End:
+## MM: have other examples  which are still buggy (but not "here")
