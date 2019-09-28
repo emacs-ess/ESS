@@ -1215,7 +1215,7 @@ See `ess-style-alist' for for an overview of ESS indentation."
       (ess-indent-with-fancy-comments   . ,(default-value 'ess-indent-with-fancy-comments))))
 
   "Predefined formatting styles for ESS code.
-Use `ess-style' to apply a style in all R buffers. The values of
+Use `ess-set-style' to apply a style in all R buffers. The values of
 all styles except OWN are fixed. To change the value of variables
 in the OWN group, customize the variable `ess-own-style-list'.
 DEFAULT style picks default (aka global) values from ESS
@@ -1313,9 +1313,10 @@ variables. OWN style is defined in `ess-own-style-list' and you
 can customize it to your needs. DEFAULT style picks default (aka
 global) values from ESS indentation variables.
 
-This variable only has an effect if set before a buffer is
-visited (e.g. in your Emacs initialization file) or as a file or
-directory local variable (see Info node `(Emacs) File Variables'."
+Prefer `ess-set-style' to set the current style. This variable
+has an effect if set before a buffer is visited (e.g. in your
+Emacs initialization file) or as a file or directory local
+variable (see Info node `(Emacs) File Variables'."
   :type '(choice (const OWN)
                  (const GNU)
                  (const BSD)
