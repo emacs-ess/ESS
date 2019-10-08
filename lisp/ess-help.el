@@ -314,10 +314,12 @@ REG-START gives the start location from where to search linkifying, and HELP-OBJ
                               'help-object (buffer-substring-no-properties (match-beginning 1) (match-end 1))
                               'follow-link t
                               'help-echo (or help-echo "help on object")))))
-      ;; (save-excursion ;; why R places all these spaces?
-      ;;   (goto-char (point-min))
-      ;;   (while (re-search-forward " \\{10,\\} *" nil t)
-      ;;     (replace-match "\t\t\t")))
+      (save-excursion ;; why R help adds all these spaces?
+        (goto-char (point-min))
+        (when (re-search-forward "Index:\n\n" nil t)
+          (let ((beg (point)))
+            (forward-paragraph 1)
+            (align-regexp beg (point) "\\(\\s-+\\)"))))
       (setq buffer-read-only t)
       (setq ess-help-type help-type)
       (setq truncate-lines nil))
