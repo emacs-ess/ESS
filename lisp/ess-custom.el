@@ -723,7 +723,7 @@ is non-nil. Affects `ess-save-file'."
   :group 'ess-edit
   :type '(choice (const :tag "Do not save without asking." :value nil)
                  (const :tag "Use compilation-ask-about-save and auto-save-visited-mode."
-                        :value 'auto)
+                        :value auto)
                  (const :tag "Save without asking." :value t))
   :package-version '(ess . "19.04"))
 
