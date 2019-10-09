@@ -99,18 +99,27 @@ each element is passed as argument to 'lintr::with_defaults'."
   "Return the absolute path to the .lintr file.
 Check first the current directory, then the project root, then
 the user's home directory.  Return nil if we couldn't find a .lintr file."
-  (cond (;; current directory
-         (file-readable-p (expand-file-name ".lintr" default-directory))
-         (expand-file-name ".lintr" default-directory))
-        ;; Project root
-        ((and (fboundp 'ess-r-package-project)
-              (ess-r-package-project)) (expand-file-name ".lintr" (cdr (ess-r-package-project))))
-        ((and (project-current)
-              (project-roots (project-current)))
-         (expand-file-name ".lintr" (car (project-roots (project-current)))))
-        ;; Home directory
-        ((file-readable-p (expand-file-name ".lintr" (getenv "HOME")))
-         (expand-file-name ".lintr" (getenv "HOME")))))
+  (let ((cur-dir-file (expand-file-name ".lintr" default-directory))
+        (ess-proj-file (and (fboundp 'ess-r-package-project)
+                            (ess-r-package-project)
+                            (expand-file-name ".lintr" (cdr (ess-r-package-project)))))
+        (proj-file (and (project-current)
+                        (project-roots (project-current))
+                        (expand-file-name ".lintr" (car (project-roots (project-current))))))
+        (home-file (expand-file-name ".lintr" (getenv "HOME"))))
+    (cond (;; current directory
+           (file-readable-p cur-dir-file)
+           cur-dir-file)
+          ;; Project root according to `ess-r-package-project'
+          ((and ess-proj-file
+                (file-readable-p ess-proj-file))
+           ess-proj-file)
+          ;; Project root according to `project-roots'
+          ((and proj-file
+                (file-readable-p proj-file)))
+          ;; Home directory
+          ((file-readable-p home-file)
+           home-file))))
 
 (defun ess-r--flymake-linters ()
   "If `ess-r-flymake-linters' is a string, use that.
