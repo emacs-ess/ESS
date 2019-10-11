@@ -663,8 +663,8 @@ nil otherwise."
   "Find help, prompting for P-STRING."
   (ess-make-buffer-current)
   (let* ((help-files-list (ess-help-get-topics ess-current-process-name))
-         (hlpobjs (ess-helpobjs-at-point help-files-list)))
-    (ess-completing-read p-string (append (delq nil hlpobjs) help-files-list)
+         (hlpobjs (delq nil (ess-helpobjs-at-point help-files-list))))
+    (ess-completing-read p-string (append hlpobjs help-files-list)
                          nil nil nil nil (car hlpobjs))))
 
 
