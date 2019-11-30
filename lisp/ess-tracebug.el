@@ -1211,7 +1211,7 @@ Kill the *ess.dbg.[R_name]* buffer."
 
 (define-obsolete-variable-alias 'ess-mpi-alist 'ess-mpi-handlers "ESS 19.04")
 (defvar ess-mpi-handlers
-  '(("message" . message)
+  '(("message" . ess-mpi:message)
     ("error"   . ess-mpi:error)
     ("eval"    . ess-mpi:eval)
     ("y-or-n"  . ess-mpi:y-or-n))
@@ -1219,6 +1219,9 @@ Kill the *ess.dbg.[R_name]* buffer."
 Each element is of the form (TYPE . HANDLER), where TYPE is the
 message type and HANDLER is a function (symbol) to be called on
 the payload list of each message.")
+
+(defun ess-mpi:message (msg)
+  (message "%s" msg))
 
 (defun ess-mpi:error (msg)
   (error "MPI error: %s" msg))
