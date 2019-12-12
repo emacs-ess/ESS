@@ -1824,8 +1824,7 @@ Equivalent to 'n' at the R prompt."
   (ess-debug-command-continue))
 
 (defun ess-debug-command-up ()
-  "Step up one call frame.
-Equivalent to 'n' at the R prompt."
+  "Step up one call frame.."
   (interactive)
   (ess-force-buffer-current)
   (unless (ess--dbg-is-active-p)
