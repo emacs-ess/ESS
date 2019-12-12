@@ -2415,7 +2415,7 @@ from all installed packages, which can be very slow."
                                 (with-parsed-tramp-file-name default-directory nil
                                   (tramp-make-tramp-file-name method user host (nth 1 el2)))))
                           (nth 1 el2))))
-              (insert-text-button "Pdf"
+              (insert-text-button "doc"
                                   'mouse-face 'highlight
                                   'action (if remote
                                               #'ess--action-open-in-emacs
@@ -2425,7 +2425,7 @@ from all installed packages, which can be very slow."
                                   'package pack
                                   'help-echo (concat path "/doc/" (nth 2 el2)))
               (insert " ")
-              (insert-text-button "Rnw"
+              (insert-text-button "source"
                                   'mouse-face 'highlight
                                   'action #'ess--action-open-in-emacs
                                   'follow-link t
