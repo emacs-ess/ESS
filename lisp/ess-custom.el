@@ -1407,6 +1407,7 @@ Used to decide highlighting and tag completion."
                                  "inheritParams"
                                  "importFrom" "importClassesFrom"
                                  "importMethodsFrom" "useDynLib"
+                                 "rawNamespace"
                                  "rdname" "section" "slot" "description"
                                  "md" "eval")
   "The tags used in roxygen fields that require a parameter.
