@@ -8,7 +8,7 @@ include ../Makeconf
 
 .PHONY: all dist install uninstall distclean clean compile
 
-JULIAS := julia-mode.el julia-latexsubs.el
+JULIAS := julia-mode.el julia-mode-latexsubs.el
 ELS = $(filter-out ess-autoloads.el, $(wildcard *.el obsolete/*.el)) $(JULIAS)
 ELC = $(ELS:.el=.elc)
 
@@ -52,7 +52,7 @@ JULIA-REPO=https://raw.githubusercontent.com/JuliaEditorSupport/julia-emacs/mast
 ## Should happen before building ESS; definitely *NOT* after unpacking tarball :
 $(JULIAS):
 	test -f ../etc/.IS.RELEASE || $(DOWNLOAD) $(JULIA-REPO)/julia-mode.el > julia-mode.el
-	test -f ../etc/.IS.RELEASE || $(DOWNLOAD) $(JULIA-REPO)/julia-latexsubs.el > julia-latexsubs.el
+	test -f ../etc/.IS.RELEASE || $(DOWNLOAD) $(JULIA-REPO)/julia-mode-latexsubs.el > julia-mode-latexsubs.el
 julia-%.elc: julia-%.el
 	$(COMPILE-SIMPLE) $<
 
