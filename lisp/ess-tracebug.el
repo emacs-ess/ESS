@@ -453,7 +453,7 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
                 (prefix-numeric-value arg)
               (if (ess-process-get 'tracebug) -1 1)))
       (if (> arg 0)
-          (unless (ess-process-get 'tracebug) ;; only if already not active
+          (unless (ess-process-get 'tracebug) ;; only if not already active
             (ess--tb-start)
             (ess-debug-start)
             ;; (dolist (bf (buffer-list))
