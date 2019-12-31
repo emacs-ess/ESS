@@ -509,7 +509,7 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
   '((((background light) (min-colors 88)) (:foreground "medium blue" :overline "medium blue"))
     (((background dark) (min-colors 88))  (:foreground "deep sky blue" :overline "deep sky blue"))
     (((background light) (min-colors 8))  (:foreground "blue"))
-    (((background dark) (min-colors 8))  (:foreground "syan")))
+    (((background dark) (min-colors 8))  (:foreground "cyan")))
   "Face for fringe bitmap for last-input position."
   :group 'ess-tracebug)
 
