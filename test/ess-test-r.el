@@ -21,6 +21,9 @@
 (require 'ess-test-r-utils)
 (require 'cc-mode)
 (require 'imenu)
+(with-no-warnings
+  (when (< emacs-major-version 26)
+    (require 'cl)))
 
 ;;; R
 
