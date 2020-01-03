@@ -408,7 +408,7 @@ current function."
 
 ;; FIXME: Support soft breaks with `insert-and-inherit'. See
 ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Hard-and-Soft-Newlines.html
-(defun ess-newline-and-indent (_soft)
+(defun ess-newline-and-indent (&optional _soft)
   (ess-indent-new-comment-line))
 
 (defun ess-indent-new-comment-line ()
