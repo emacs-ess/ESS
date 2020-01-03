@@ -96,7 +96,10 @@
     map)
   "Keymap for `ess-mode'.")
 
-;; Redefine substituted commands
+;; Redefine `indent-new-comment-line' commands for Emacs < 26. Emacs
+;; 27 binds M-j to `default-indent-new-line' which calls
+;; `comment-line-break-function' if point is in a comment. We set this
+;; function in the mode init.
 (substitute-key-definition 'indent-new-comment-line
                            'ess-indent-new-comment-line
                            ess-mode-map global-map)
@@ -295,10 +298,9 @@ indentation style. See `ess-style-alist' for predefined styles."
     (ess-setq-vars-local alist))
   (when-let ((alist ess-mode-editing-alist))
     (ess-setq-vars-local alist))
-
   ;; Keep <tabs> out of the code.
   (setq-local indent-tabs-mode nil)
-
+  (setq-local comment-line-break-function #'ess-newline-and-indent)
   (setq mode-line-process
         '(" ["
           (:eval (ess--get-mode-line-indicator))
@@ -403,6 +405,11 @@ current function."
       (narrow-to-region beg end))))
 
 (define-obsolete-function-alias 'ess-narrow-to-defun 'ess-narrow-to-defun-or-para "15.09")
+
+;; FIXME: Support soft breaks with `insert-and-inherit'. See
+;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Hard-and-Soft-Newlines.html
+(defun ess-newline-and-indent (&optional _soft)
+  (ess-indent-new-comment-line))
 
 (defun ess-indent-new-comment-line ()
   "Like `indent-new-comment-line' but accounts for roxygen comments."
