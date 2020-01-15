@@ -191,7 +191,9 @@ lot."
   "When non-nil, set the width option when the window configuration changes.
 When 'frame, set the width to the frame width. When 'window, set
 the width to the window width. If an integer, set the width to
-that integer. Anything else is treated as 'window."
+that integer. If it's a negative integer, set the width to the
+window's width minus that number. Anything else is treated as
+'window."
   :group 'ess
   :type '(choice (const :tag "Do nothing" :value nil)
                  (const :tag "Frame width" :value frame)

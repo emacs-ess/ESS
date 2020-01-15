@@ -2075,9 +2075,12 @@ suitable to send to the inferior process (e.g. \"options(width=80, length=999999
   (when (null ess-execute-screen-options-command)
     (error "Not implemented for %s" ess-dialect))
   (let (command)
-    (cond ((integerp opt)
+    (cond ((and (integerp opt)
+                (>= opt 0))
            (setq command (format ess-execute-screen-options-command opt)))
-          ((eql 'window opt)
+          ((or (eql 'window opt)
+               (and (integerp opt)
+                    (> 0 opt)))
            ;; We cannot use (window-width) here because it returns sizes
            ;; in default (frame) characters which leads to incorrect
            ;; sizes with scaled fonts.To solve this we approximate font
@@ -2086,6 +2089,9 @@ suitable to send to the inferior process (e.g. \"options(width=80, length=999999
            (let* ((wedges (window-inside-pixel-edges))
                   (wwidth (- (nth 2 wedges) (nth 0 wedges)))
                   (nchars (floor (/ wwidth (default-font-width)))))
+             (when (and (integerp opt)
+                        (> 0 opt))
+               (setq nchars (- nchars (- opt))))
              (setq command (format ess-execute-screen-options-command
                                    nchars))))
           ((eql 'frame opt)
