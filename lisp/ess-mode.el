@@ -337,7 +337,7 @@ With UPDATE, update cached package list."
   (error "Cannot install %s, not available for %s" package ess-dialect))
 
 (defun ess-compile-r-html ()
-  "Export the current R buffer as a buffer as an HTML template."
+  "Export the current R buffer as an HTML template."
   (interactive)
   (compile
    (concat "R --slave -e \"rmarkdown::render('" (buffer-file-name (current-buffer)) "')\"")))
