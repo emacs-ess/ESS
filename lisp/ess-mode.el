@@ -339,8 +339,8 @@ With UPDATE, update cached package list."
 (defun ess-compile-r-html ()
   "Export the current R buffer as a buffer as an HTML template."
   (interactive)
-  (print
-   (shell-command-to-string (concat "R --slave -e \"rmarkdown::render('" (buffer-file-name (current-buffer)) "')\""))))
+  (compile
+   (concat "R --slave -e \"rmarkdown::render('" (buffer-file-name (current-buffer)) "')\"")))
 
 ;; Motion / manipulation commands
 
