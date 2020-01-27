@@ -162,6 +162,8 @@
       :filter ess--generate-eval-visibly-submenu)
      ["Quit process" ess-quit t]
      ["Reload process" inferior-ess-reload t])
+    ("Compile"
+     ["HTML" ess-compile-r-html t])
     "------"
     ("ESS Eval"
      ["Eval region | func | para" ess-eval-region-or-function-or-paragraph t]
@@ -334,6 +336,11 @@ With UPDATE, update cached package list."
   (when update (message "Don't know how to update for %s" ess-dialect))
   (error "Cannot install %s, not available for %s" package ess-dialect))
 
+(defun ess-compile-r-html ()
+  "Export the current R buffer as a buffer as an HTML template."
+  (interactive)
+  (print
+   (shell-command-to-string (concat "R --slave -e \"rmarkdown::render('" (buffer-file-name (current-buffer)) "')\""))))
 
 ;; Motion / manipulation commands
 
