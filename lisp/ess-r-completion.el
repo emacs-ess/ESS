@@ -71,16 +71,19 @@ to look up any doc strings."
                doc1)
           (when doc
             (setq doc (ess-eldoc-docstring-format funname doc))
-            (when (and margs (< (length doc1) W))
+            (when (and margs (or (eq t eldoc-echo-area-use-multiline-p)
+                                 (< (length doc1) W)))
               (setq doc1 (concat doc (propertize "  || " 'face font-lock-function-name-face)))
-              (while (and margs (< (length doc1) W))
+              (while (and margs (or (eq t eldoc-echo-area-use-multiline-p)
+                                    (< (length doc1) W)))
                 (let ((head (pop margs)))
                   (unless (assoc head bargs)
                     (setq doc doc1
                           doc1 (concat doc1 head  "=, ")))))
               (when (equal (substring doc -2) ", ")
                 (setq doc (substring doc 0 -2)))
-              (when (and margs (< (length doc) W))
+              (when (and margs (or (eq t eldoc-echo-area-use-multiline-p)
+                                   (< (length doc) W)))
                 (setq doc (concat doc " {--}"))))
             doc))))))
 
