@@ -278,10 +278,12 @@ to look up any doc strings."
             (setq args (sort args (lambda (s1 s2)
                                     (< (length s1) (length s2)))))
             (setq doc (concat doc (pop args)))
-            (while (and args (< (+ (length doc) (length (car args))) W))
+            (while (and args (or (eq t eldoc-echo-area-use-multiline-p)
+                              (< (+ (length doc) (length (car args))) W)))
               (setq doc (concat doc "  "
                                 (pop args))))
-            (when (and args (< (length doc) W))
+            (when (and args (or (eq t eldoc-echo-area-use-multiline-p)
+                                (< (length doc) W)))
               (setq doc (concat doc " {--}")))
             doc))))))
 
