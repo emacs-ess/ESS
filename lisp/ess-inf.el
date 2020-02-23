@@ -706,27 +706,14 @@ PROC defaults to the process given by `ess-local-process-name'"
 
 (defun ess-start-process-specific (language dialect)
   "Start an ESS process.
-Typically from a language-specific buffer, using LANGUAGE (and DIALECT)."
+Typically from a language-specific buffer, using DIALECT.
+LANGUAGE is ignored."
   (save-current-buffer
     (let ((dsymb (intern dialect)))
-      (ess-write-to-dribble-buffer
-       (format " ..start-process-specific: lang:dialect= %s:%s, current-buf=%s\n"
-               language dialect (current-buffer)))
-      (cond ;; ((string= dialect "R") (R))
-       ;; ((string= language "S") ;
-       ;;  (message "ESS process not running, trying to start R, since language = 'S")
-       ;;  (R))
-       ;; ((string= dialect STA-dialect-name) (stata))
-       ;;general case
-       ((fboundp dsymb)
-        (funcall dsymb))
-       (t ;; else: ess-dialect is not a function
-
-        ;; Typically triggered from
-        ;; ess-force-buffer-current("Process to load into: ")
-        ;;  \-->  ess-request-a-process("Process to load into: " no-switch)
+      (if (fboundp dsymb)
+          (funcall dsymb)
         (error "No ESS processes running; not yet implemented to start (%s,%s)"
-               language dialect))))))
+               language dialect)))))
 
 (defun ess-request-a-process (message &optional noswitch ask-if-1)
   "Ask for a process, and make it the current ESS process.
