@@ -718,18 +718,22 @@ LANGUAGE is ignored."
 (defun ess-request-a-process (message &optional noswitch ask-if-1)
   "Ask for a process, and make it the current ESS process.
 If there is exactly one process, only ask if ASK-IF-1 is non-nil.
-Also switches to the process buffer unless NOSWITCH is non-nil.
-Interactively, NOSWITCH can be set by giving a prefix argument.
-Returns the name of the selected process. MESSAGE may be passed
-to `ess-completing-read'."
-  (interactive (list "Switch to which ESS process? " current-prefix-arg))
+Also switches to the process buffer unless NOSWITCH is non-nil.  Interactively,
+NOSWITCH can be set by giving a prefix argument.
+Returns the name of the selected process."
+  (interactive
+   (list "Switch to which ESS process? " current-prefix-arg))
+                                        ; prefix sets 'noswitch
+  (ess-write-to-dribble-buffer "ess-request-a-process: {beginning}\n")
   (update-ess-process-name-list)
+
   (setq ess-dialect (or ess-dialect
                         (ess-completing-read
                          "Set `ess-dialect'"
                          (delete-dups (list "R" "S+" (or (bound-and-true-p S+-dialect-name) "S+")
                                             "stata" (or (bound-and-true-p STA-dialect-name) "stata")
-                                            "julia" "SAS")))))
+                                            "julia" "SAS" "XLS"  "ViSta")))))
+
   (let* ((pname-list (delq nil ;; keep only those matching dialect
                            (append
                             (mapcar (lambda (lproc)
@@ -745,38 +749,54 @@ to `ess-completing-read'."
                               (list ess-local-process-name)))))
          (num-processes (length pname-list))
          (auto-started?))
-    (when (or (= 0 num-processes)
-              (and (= 1 num-processes)
-                   (not (equal ess-dialect ;; don't auto connect if from different dialect
-                               (buffer-local-value
-                                'ess-dialect
-                                (process-buffer (get-process
-                                                 (car pname-list))))))))
-      ;; try to start "the appropriate" process
-      (ess-start-process-specific ess-language ess-dialect)
-      (setq num-processes 1
-            pname-list (car ess-process-name-list)
-            auto-started? t))
+    (if (or (= 0 num-processes)
+            (and (= 1 num-processes)
+                 (not (equal ess-dialect ;; don't auto connect if from different dialect
+                             (buffer-local-value
+                              'ess-dialect
+                              (process-buffer (get-process
+                                               (car pname-list))))))))
+        ;; try to start "the appropriate" process
+        (progn
+          (ess-write-to-dribble-buffer
+           (concat " ... request-a-process:\n  "
+                   (format
+                    "major mode %s; current buff: %s; ess-language: %s, ess-dialect: %s\n"
+                    major-mode (current-buffer) ess-language ess-dialect)))
+          (ess-start-process-specific ess-language ess-dialect)
+          (ess-write-to-dribble-buffer
+           (format "  ... request-a-process: buf=%s\n" (current-buffer)))
+          (setq num-processes 1
+                pname-list (car ess-process-name-list)
+                auto-started? t)))
     ;; now num-processes >= 1 :
     (let* ((proc-buffers (mapcar (lambda (lproc)
                                    (buffer-name (process-buffer (get-process lproc))))
                                  pname-list))
-           (proc (if (or auto-started?
-                         (and (not ask-if-1) (= 1 num-processes)))
-                     (progn
-                       (message "Using process `%s'" (car proc-buffers))
-                       (car pname-list))
-                   ;; else
-                   (unless (and ess-current-process-name
-                                (get-process ess-current-process-name))
-                     (setq ess-current-process-name nil))
-                   ;; ask for buffer name not the *real* process name:
-                   (let ((buf (ess-completing-read message (append proc-buffers (list "*new*")) nil t nil nil)))
-                     (when (equal buf "*new*")
-                       (ess-start-process-specific ess-language ess-dialect) ;; switches to proc-buff
-                       (caar ess-process-name-list))))))
-      (unless noswitch
-        (pop-to-buffer (ess-get-process-buffer proc)))
+           (proc
+            (if (or auto-started?
+                    (and (not ask-if-1) (= 1 num-processes)))
+                (progn
+                  (message "using process '%s'" (car proc-buffers))
+                  (car pname-list))
+              ;; else
+              (unless (and ess-current-process-name
+                           (get-process ess-current-process-name))
+                (setq ess-current-process-name nil))
+              (when message
+                (setq message (replace-regexp-in-string ": +\\'" "" message))) ;; <- why is this here??
+              ;; ask for buffer name not the *real* process name:
+              (let ((buf (ess-completing-read message (append proc-buffers (list "*new*")) nil t nil nil)))
+                (if (equal buf "*new*")
+                    (progn
+                      (ess-start-process-specific ess-language ess-dialect) ;; switches to proc-buff
+                      (caar ess-process-name-list))
+                  (process-name (get-buffer-process buf))
+                  ))
+              )))
+      (if noswitch
+          (pop-to-buffer (current-buffer)) ;; VS: this is weird, but is necessary
+        (pop-to-buffer (buffer-name (process-buffer (get-process proc)))))
       proc)))
 
 (defun ess-force-buffer-current (&optional prompt force no-autostart ask-if-1)
