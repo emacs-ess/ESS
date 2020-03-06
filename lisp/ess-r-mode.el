@@ -703,7 +703,7 @@ top level functions only."
   ;; eldoc
   (add-function :before-until (local 'eldoc-documentation-function)
                 #'ess-r-eldoc-function)
-  (if (>= emacs-major-version 28)
+  (if (not eldoc-documentation-functions)
       (add-hook 'eldoc-documentation-functions
                 #'elisp-eldoc-documentation-function nil t))
   (when ess-use-eldoc (eldoc-mode))
