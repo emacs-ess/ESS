@@ -363,7 +363,7 @@ It makes underscores and dots word constituent chars.")
   (ess-setq-vars-local ess-julia-customize-alist)
   ;; eldoc
   (if (boundp 'eldoc-documentation-functions)
-      (add-hook 'eldoc-documentation-functions #'ess-julia-eldoc-functionp nil t)
+      (add-hook 'eldoc-documentation-functions #'ess-julia-eldoc-function nil t)
     (add-function :before-until (local 'eldoc-documentation-function)
                   #'ess-julia-eldoc-function))
   (when ess-use-eldoc (eldoc-mode))
