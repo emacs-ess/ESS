@@ -19,7 +19,7 @@
 ;; Version: 18.10.3snapshot
 ;; URL: https://ess.r-project.org/
 ;; Package-Requires: ((emacs "25.1") (julia-mode "0.3"))
-;; ESSR-Version: 1.5
+;; ESSR-Version: 1.6
 ;;
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by

@@ -27,7 +27,7 @@
     assign(".ess.Rversion", Rver, envir = ESSR)
 
     ## updated by make !!
-    VERSION <- "1.5"
+    VERSION <- "1.6"
     assign(".ess.ESSRversion", VERSION, envir = ESSR)
 
 
