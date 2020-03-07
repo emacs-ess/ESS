@@ -29,12 +29,11 @@
                            fake.source = FALSE,
                            fallback_env = NULL,
                            local_env = NULL) {
-    oldopts <- options(warn = 2)
-    on.exit(options(oldopts))
     pname <- paste("package:", package, sep = "")
     envpkg <- tryCatch(as.environment(pname), error = function(cond) NULL)
-    if (is.null(envpkg))
-        if (require(package, quietly = TRUE, character.only = TRUE)) {
+
+    if (is.null(envpkg)) {
+        if (suppressWarnings(require(package, quietly = TRUE, character.only = TRUE))) {
             envpkg <- tryCatch(as.environment(pname), error = function(cond) NULL)
         } else {
             ## no such package; source in current (local) user environment
@@ -42,6 +41,7 @@
                                output = output, local = local_env,
                                fake.source = fake.source))
         }
+    }
 
     envns <- tryCatch(asNamespace(package), error = function(cond) NULL)
     if (is.null(envns))
