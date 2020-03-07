@@ -62,11 +62,11 @@ essr: VERSION
 	git tag "ESSRv"$(ESSR-VERSION)
 
 install: all
-	mkdir $(ESSDIR)
-	$(INSTALL) -R ./* $(ESSDIR)/
+	mkdir -p $(ESSDESTDIR)
+	$(INSTALL) -R ./* $(ESSDESTDIR)/
 
 uninstall:
-	rm -rf $(ESSDIR)
+	rm -rf $(ESSDESTDIR)
 
 
 ## the rest of the targets are for ESS developer's use only :

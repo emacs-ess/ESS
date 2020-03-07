@@ -6,17 +6,17 @@
 ## Section 1
 ## Installation variables for your Emacs variant
 ##
-## Variable        Description
-## EMACS           Path to GNU Emacs
-## EMACSBATCH      How to run Emacs as batch
-## SITELISP        Destination of site-lisp
-## ESSDIR          Destination of ESS
+## Variable    Description
+## EMACS       Path to GNU Emacs
+## EMACSBATCH  How to run Emacs as batch
+## SITELISP    Destination of site-lisp
+## ESSDESTDIR  Destination of ESS
 DESTDIR ?= /usr
 PREFIX ?= $(DESTDIR)
 ##__ GNU Emacs __
 EMACS ?= emacs
 SITELISP ?= $(PREFIX)/share/emacs/site-lisp
-ESSDIR ?= $(SITELISP)/ess
+ESSDESTDIR ?= $(SITELISP)/ess
 EMACSBATCH ?= $(EMACS) -batch -Q
 
 ##__ GNU Emacs __  for Mac OS X with NeXTstep (Cocoa or GNUstep)
@@ -67,9 +67,6 @@ INSTALLINFO ?= install-info
 ## For ESS developers only, not part of installation procedure
 ##
 ## Variable        Description
-## ESSVERSION      set to the contents of VERSION
-## ESSDIR          ess- prepended to ESSVERSION
-## ESSVERSIONTAG   repository tags cannot contain .'s (no longer used)
 ## GNUTAR          the name of GNU tar to support the z option
 ## SVN_URL         SVN repository URL (repo retired)
 ## UPLOAD_DIR      Martin's upload directory
