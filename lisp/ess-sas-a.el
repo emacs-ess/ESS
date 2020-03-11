@@ -1216,16 +1216,11 @@ Else
     C-TAB is `ess-sas-backward-delete-tab' and
     RET is `newline'."
   (interactive)
-
-  (if arg
-      (progn
-        (define-key sas-mode-local-map [(control tab)]
-          'ess-sas-backward-delete-tab)
-        (define-key sas-mode-local-map [return] 'newline)
-        (define-key sas-mode-local-map "\t" 'ess-sas-tab-to-tab-stop))
-    ;;else
-    (define-key sas-mode-local-map [return] 'newline-and-indent)
-    (define-key sas-mode-local-map "\t" 'sas-indent-line)))
+  (when arg
+    ;; TODO: Why is this set up this way?
+    (define-key sas-mode-local-map [(control tab)] #'ess-sas-backward-delete-tab)
+    (define-key sas-mode-local-map [return] #'newline)
+    (define-key sas-mode-local-map "\t" #'ess-sas-tab-to-tab-stop)))
 
 (defvar ess-sas-edit-keys-toggle nil
   "Toggle TAB/RET key in `SAS-mode'.
