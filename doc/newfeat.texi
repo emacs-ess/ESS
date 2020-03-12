@@ -129,6 +129,8 @@ All modes except Stata did not respect customization of this variable.
 In order to load a file on startup, you should put a function on
 @code{ess-*-post-run-hook}.
 
+@item Eldoc fully honors @code{eldoc-echo-area-use-multiline-p}
+
 @end itemize
 
 Bug Fixes in 18.10.3:

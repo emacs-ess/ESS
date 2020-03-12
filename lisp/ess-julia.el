@@ -263,13 +263,14 @@ objects from that MODULE."
 (defun ess-julia-eldoc-function ()
   "Return the doc string, or nil.
 If an ESS process is not associated with the buffer, do not try
-to look up any doc strings."
+to look up any doc strings. Honors `eldoc-echo-area-use-multiline-p'."
   (when (and ess-can-eval-in-background
              (ess-process-live-p)
              (not (ess-process-get 'busy)))
     (let ((funname (or (and ess-eldoc-show-on-symbol ;; aggressive completion
                             (symbol-name (ess-symbol-at-point)))
-                       (car (ess--fn-name-start)))))
+                       (car (ess--fn-name-start))))
+          (multiline (eq t eldoc-echo-area-use-multiline-p)))
       (when funname
         (let* ((args (copy-sequence (nth 2 (ess-function-arguments funname))))
                (W (- (window-width (minibuffer-window)) (+ 4 (length funname))))
@@ -278,9 +279,8 @@ to look up any doc strings."
             (setq args (sort args (lambda (s1 s2)
                                     (< (length s1) (length s2)))))
             (setq doc (concat doc (pop args)))
-            (while (and args (< (+ (length doc) (length (car args))) W))
-              (setq doc (concat doc "  "
-                                (pop args))))
+            (while (and args (or multiline (< (+ (length doc) (length (car args))) W)))
+              (setq doc (concat doc "  " (pop args))))
             (when (and args (< (length doc) W))
               (setq doc (concat doc " {--}")))
             doc))))))

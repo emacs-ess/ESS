@@ -68,10 +68,11 @@ to look up any doc strings."
                                bargs ", "))
                (margs (nth 2 args))
                (W (- (window-width (minibuffer-window)) (+ 4 (length funname))))
+               (multiline (eq t eldoc-echo-area-use-multiline-p))
                doc1)
           (when doc
-            (setq doc (ess-eldoc-docstring-format funname doc))
-            (when (and margs (< (length doc1) W))
+            (setq doc (ess-eldoc-docstring-format funname doc (not multiline)))
+            (when (or multiline (and margs (< (length doc1) W)))
               (setq doc1 (concat doc (propertize "  || " 'face font-lock-function-name-face)))
               (while (and margs (< (length doc1) W))
                 (let ((head (pop margs)))
@@ -84,12 +85,9 @@ to look up any doc strings."
                 (setq doc (concat doc " {--}"))))
             doc))))))
 
-(defun ess-eldoc-docstring-format (funname doc)
+(defun ess-eldoc-docstring-format (funname doc &optional truncate)
   (save-match-data
-    (let* (;; (name (symbol-name sym))
-           (truncate (or  (not (eq t eldoc-echo-area-use-multiline-p))
-                          (eq ess-eldoc-abbreviation-style 'aggressive)))
-           ;; Subtract 1 from window width since will cause a wraparound and
+    (let* (;; Subtract 1 from window width since will cause a wraparound and
            ;; resize of the echo area.
            (W (1- (- (window-width (minibuffer-window))
                      (+ 2 (length funname))))))
@@ -139,8 +137,7 @@ to look up any doc strings."
                             doc
                           ;;AGGRESSIVE filter (truncate what is left)
                           (concat (substring doc 0 (- W 4)) "{--}")))))))))
-      (when (and truncate
-                 (> (length doc) W))
+      (when (and truncate (> (length doc) W))
         (setq doc (concat (substring doc 0 (- W 4)) "{--}")))
       (format "%s: %s" (propertize funname 'face 'font-lock-function-name-face) doc))))
 
