@@ -316,16 +316,24 @@ With prefix argument, as for arguments to `devtools::check_win_XYZ()' function."
 (declare-function ess-r-check-install-package "ess-r-mode.el")
 (defun ess-r-rhub-check-package (&optional arg)
   "Interface for `rhub::check()'.
-With prefix ARG run with `valgrind = TRUE'."
+With prefix ARG allow for editing of the `rhub::check_for_cran()' arguments."
   (interactive "P")
   (inferior-ess-r-force)
   (ess-r-check-install-package "rhub")
-  (let* ((platforms (ess-get-words-from-vector "rhub::platforms()$name\n"))
+  (let* ((platforms (cons "RECOMMENDED" (ess-get-words-from-vector "rhub::platforms()$name\n")))
          (platform (completing-read "Platform: " platforms nil t  nil
                                     ess-r-rhub--history (car ess-r-rhub--history)))
-         (cmd (format "rhub::check_for_cran(%%s, platform = '%s')\n" platform))
-         (msg (format "Checking %%s on RHUB (%s)" platform)))
-    (ess-r-package-eval-linewise cmd msg arg '("" "valgrind = TRUE"))))
+         (cmd (if (string= "RECOMMENDED" platform)
+                  "rhub::check_for_cran(%s)\n"
+                (format "rhub::check_for_cran(%%s, platforms = '%s')\n" platform)))
+         (msg (format "Checking %%s on RHUB (%s)" platform))
+         ;; Solaris check is flaky and it seems that solaris check is not run on
+         ;; CRAN itself with --as-cran options https://github.com/r-hub/rhub/issues/339
+         (args (cond ((string-match-p "solaris" platform)
+                      "check_args = c('--no-stop-on-test-error', '--no-vignettes')")
+                     (t "check_args = c('--as-cran', '--no-stop-on-test-error')"))))
+    (ess-r-package-eval-linewise cmd msg arg
+                                 `(,args (read-string "Arguments: " ,(concat args ", valgrind = FALSE"))))))
 
 (defun ess-r-devtools-build (&optional arg)
   "Interface for `devtools::build()'.

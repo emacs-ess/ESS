@@ -67,6 +67,10 @@ ess-gen-proc-buffer-name:project-or-directory. As the name suggests,
 these now rely on project.el (included with Emacs) rather than
 projectile.el, which is a third-party package.
 
+@item Eldoc fully honors @code{eldoc-echo-area-use-multiline-p}
+
+@item ESS[R]: @code{ess-r-rhub-check-package} gained new @code{RECOMMENDED}.
+
 @item ESS[R]: devtools commands ask about saving modified buffers before running.
 Users can disable the questioning with @code{ess-save-silently}.
 
@@ -128,8 +132,6 @@ Use the Emacs-wide setting of @code{tab-always-indent} instead.
 All modes except Stata did not respect customization of this variable.
 In order to load a file on startup, you should put a function on
 @code{ess-*-post-run-hook}.
-
-@item Eldoc fully honors @code{eldoc-echo-area-use-multiline-p}
 
 @end itemize
 
