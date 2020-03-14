@@ -303,12 +303,14 @@ With prefix ARG ask for extra args."
    '("" (read-string "Arguments: " "vignettes = FALSE"))))
 
 (defun ess-r-devtools-check-with-winbuilder (&optional arg)
-  "Interface for `devtools::buildwin()'.
-With prefix ARG build with R-devel instead of R-patched."
+  "Interface for `devtools::check_win_XYZ()'.
+With prefix argument, as for arguments to `devtools::check_win_XYZ()' function."
   (interactive "P")
-  (ess-r-package-eval-linewise
-   "devtools::build_win(%s)\n" "Checking %s on CRAN's Windows server" arg
-   '("" "version = 'R-devel'")))
+  (let ((type (completing-read "Release: " '("release" "devel" "oldrelease") nil t)))
+    (ess-r-package-eval-linewise
+     (format "devtools:::check_win_%s(%%s)\n" type)
+     "Checking %s on CRAN's Windows server" arg
+     '("" (read-string "Arguments: ")))))
 
 (defvar ess-r-rhub--history nil)
 (declare-function ess-r-check-install-package "ess-r-mode.el")
