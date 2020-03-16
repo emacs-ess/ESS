@@ -334,9 +334,8 @@ some. text
   (should (fboundp 'R-3.2.1)))
 
 (ert-deftest runner-R-3.2.1-buffer-name-test ()
-  (skip-unless (and (or (executable-find "R-3.2.1")
-                        (getenv "CONTINUOUS_INTEGRATION"))
-                    (> emacs-major-version 25)))
+  (skip-unless (or (executable-find "R-3.2.1")
+                   (getenv "CONTINUOUS_INTEGRATION")))
   (let ((ess-use-inferior-program-in-buffer-name t)
         (ess-plain-first-buffername nil)
         (ess-gen-proc-buffer-name-function #'ess-gen-proc-buffer-name:simple)

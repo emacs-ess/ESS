@@ -4,6 +4,8 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item ESS now requires Emacs 26.1 or newer.
+
 @item ESS[R]: Automatic offsetting of R process output is now disabled by default
 because it produces undesirable output in some situations. To re-enable,
 set @code{inferior-ess-fix-misaligned-output} to t.

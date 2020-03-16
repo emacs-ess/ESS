@@ -3097,8 +3097,8 @@ to change the toolbar.
 @cindex finding function definitions
 Xref is an Emacs interface that supports finding ``identifiers,''
 usually function definitions in ESS's view. ESS ships with support for
-Xref in Emacs versions 25.1 and higher. For how to use this feature, see
-@xref{Xref,,, emacs, The Gnu Emacs Reference Manual}.
+Xref. @xref{Xref,,, emacs, The Gnu Emacs Reference Manual} for how to
+use this feature.
 
 @node Rdired
 @section Rdired

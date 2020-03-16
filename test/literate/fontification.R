@@ -6,8 +6,7 @@
 ¶while ¶for ¶if ¶switch ¶function ¶return ¶on.exit ¶stop
 ¶tryCatch ¶withRestarts ¶invokeRestart ¶recover ¶browser
 
-##! (when (>= emacs-major-version 25)
-##>   (should (not (face-at-point))))
+##> (should (not (face-at-point)))
 
 ¶while ¶for ¶if ¶switch ¶function ¶return ¶on.exit ¶stop
 ¶tryCatch ¶withRestarts ¶invokeRestart ¶recover ¶browser
@@ -92,8 +91,7 @@ for foo ¶in bar {}
 
 ¶library ¶attach ¶detach ¶source ¶require
 
-##! (when (>= emacs-major-version 25)
-##>   (should (not (face-at-point))))
+##> (should (not (face-at-point)))
 
 ¶library ¶attach ¶detach ¶source ¶require
 

@@ -64,13 +64,6 @@
 
 (defvar add-log-current-defun-header-regexp)
 
-;; The following declares can be removed once we drop Emacs 25
-(declare-function tramp-file-name-method "tramp")
-(declare-function tramp-file-name-user "tramp")
-(declare-function tramp-file-name-host "tramp")
-(declare-function tramp-file-name-localname "tramp")
-(declare-function tramp-file-name-hop "tramp")
-
 (defcustom inferior-ess-mode-hook nil
   "Hook for customizing inferior ESS mode.
 Called after `inferior-ess-mode' is entered and variables have

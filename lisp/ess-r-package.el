@@ -40,8 +40,6 @@
 (declare-function ess-r-get-evaluation-env "ess-r-mode")
 (declare-function ess-r-set-evaluation-env "ess-r-mode")
 (declare-function tramp-dissect-file-name "tramp" (name &optional nodefault))
-;; This can be drop after dropping support for Emacs 25:
-(declare-function tramp-file-name-localname "tramp" (cl-x))
 
 (defvar ess-r-prompt-for-attached-pkgs-only nil
   "If nil provide completion for all installed R packages.
@@ -483,10 +481,8 @@ The check is done with `derived-mode-p'."
   :type 'hook)
 
 (defcustom ess-r-package-mode-line
-  ;; FIXME Emacs 25.1: Use `when-let'
-  '(:eval (let ((pkg-name (ess-r-package-name)))
-            (when pkg-name
-              (format " [pkg:%s]" pkg-name))))
+  '(:eval (when-let ((pkg-name (ess-r-package-name)))
+            (format " [pkg:%s]" pkg-name)))
   "Mode line for ESS developer.
 Set this variable to nil to disable the mode line entirely."
   :group 'ess-r-package

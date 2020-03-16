@@ -405,7 +405,7 @@ ESS-specific variables `ess-help-own-frame',
                           display-buffer-pop-up-frame))
                        (ess-help-reuse-window
                         '(display-buffer-reuse-window
-                          ess-display-buffer-reuse-mode-window
+                          display-buffer-reuse-mode-window
                           display-buffer-pop-up-window
                           display-buffer-use-some-window))
                        (t '(display-buffer-pop-up-window
@@ -809,62 +809,6 @@ other dialects)."
       (display-buffer buf)
       (set-window-point (get-buffer-window buf) pos) ;; don't move window point
       buf)))
-
-(with-no-warnings
-  ;; We're just backporting here, don't care about compiler warnings
-  (defalias 'ess-display-buffer-reuse-mode-window
-    ;; TODO: Remove once we drop support for Emacs 25
-    (if (fboundp 'display-buffer-reuse-mode-window)
-        'display-buffer-reuse-mode-window
-      (lambda (buffer alist)
-        (let* ((alist-entry (assq 'reusable-frames alist))
-               (alist-mode-entry (assq 'mode alist))
-	       (frames (cond (alist-entry (cdr alist-entry))
-		             ((if (eq pop-up-frames 'graphic-only)
-			          (display-graphic-p)
-			        pop-up-frames)
-			      0)
-		             (display-buffer-reuse-frames 0)
-		             (t (last-nonminibuffer-frame))))
-               (inhibit-same-window-p (cdr (assq 'inhibit-same-window alist)))
-	       (windows (window-list-1 nil 'nomini frames))
-               (buffer-mode (with-current-buffer buffer major-mode))
-               (allowed-modes (if alist-mode-entry
-                                  (cdr alist-mode-entry)
-                                buffer-mode))
-               (curwin (selected-window))
-               (curframe (selected-frame)))
-          (unless (listp allowed-modes)
-            (setq allowed-modes (list allowed-modes)))
-          (let (same-mode-same-frame
-                same-mode-other-frame
-                derived-mode-same-frame
-                derived-mode-other-frame)
-            (dolist (window windows)
-              (let ((mode?
-                     (with-current-buffer (window-buffer window)
-                       (cond ((memq major-mode allowed-modes)
-                              'same)
-                             ((derived-mode-p allowed-modes)
-                              'derived)))))
-                (when (and mode?
-                           (not (and inhibit-same-window-p
-                                     (eq window curwin))))
-                  (push window (if (eq curframe (window-frame window))
-                                   (if (eq mode? 'same)
-                                       same-mode-same-frame
-                                     derived-mode-same-frame)
-                                 (if (eq mode? 'same)
-                                     same-mode-other-frame
-                                   derived-mode-other-frame))))))
-            (let ((window (car (nconc same-mode-same-frame
-                                      same-mode-other-frame
-                                      derived-mode-same-frame
-                                      derived-mode-other-frame))))
-              (when (window-live-p window)
-                (prog1 (window--display-buffer buffer window 'reuse alist)
-                  (unless (cdr (assq 'inhibit-switch-frame alist))
-                    (window--maybe-raise-frame (window-frame window))))))))))))
 
 (provide 'ess-help)
 ;;; ess-help.el ends here

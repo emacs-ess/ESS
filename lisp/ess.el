@@ -19,7 +19,7 @@
 ;; Created: 7 Jan 1994
 ;; Version: 18.10.3snapshot
 ;; URL: https://ess.r-project.org/
-;; Package-Requires: ((emacs "25.1"))
+;; Package-Requires: ((emacs "26.1"))
 ;; ESSR-Version: 1.6
 
 ;; This file is part of GNU Emacs.

@@ -6,9 +6,8 @@
 ¶NULL
 
 ##! (should t)
-##> (when (>= emacs-major-version 25)
-##>   (ert-skip "Reason")
-##>   (should nil))
+##> (ert-skip "Reason")
+##> (should nil)
 
 ¶NULL
 
