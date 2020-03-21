@@ -4,6 +4,8 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item The default of ess-eval-visibly is now nil.
+
 @item ESS[R]: There is a new menu entry for reloading the R process.
 It is otherwise bound to @code{C-c C-e C-r}. Reloading now reuses the
 same process name and start arguments that were used to start the

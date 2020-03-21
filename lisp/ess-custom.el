@@ -1821,7 +1821,7 @@ Otherwise, they get their own temporary buffer."
 
 (defvaralias 'ess-eval-visibly-p 'ess-eval-visibly)
 
-(defcustom ess-eval-visibly t
+(defcustom ess-eval-visibly nil
   "Non-nil means ess-eval- commands display commands in the process buffer.
 If t, ESS waits after each line of the command for the process
 output. This results in a nice sequence of input and output but
@@ -1837,6 +1837,7 @@ This variable also affect the evaluation of input code in
 iESS. The effect is similar to the above. If t then ess waits for
 the process output, otherwise not."
   :group 'ess-proc
+  :package-version '(ess . "19.04")
   :type '(choice (const t) (const nowait) (const nil)))
 
 (defcustom ess-eval-deactivate-mark (fboundp 'deactivate-mark); was nil till 2010-03-22

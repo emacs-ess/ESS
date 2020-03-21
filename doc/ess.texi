@@ -1356,7 +1356,9 @@ echoed.  The behavior is controlled by the variable:
 
 @defvr {User Option} ess-eval-visibly
 Non-@code{nil} means @code{ess-eval-*} commands display commands and
-output in the process buffer.  Default is @code{t}.
+output in the process buffer.  A value of @code{t} blocks Emacs while R
+is busy.  A value of @code{nowait} does not block Emacs but printing
+may be slightly off.
 @end defvr
 
 @pindex source()
