@@ -53,7 +53,7 @@
   ;; Modify this if ess-site.el is not in the ./lisp/ directory
   (defvar ess-lisp-directory (file-name-directory load-file-name)
     "Directory containing ess-site.el(c) and other ESS Lisp files.")
-  (add-to-list 'load-path ess-lisp-directory))
+  (add-to-list 'load-path (directory-file-name ess-lisp-directory)))
 
 ;;; Loading popular dialects (they should become optional in the future)
 

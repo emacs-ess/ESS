@@ -155,11 +155,11 @@ for ESS, such as icons."
 ;; the `lisp' directory. For this reason we need to add it before we
 ;; start requiring ESS files
 ;;;###autoload
-(add-to-list 'load-path ess-lisp-directory)
+(add-to-list 'load-path (directory-file-name ess-lisp-directory))
 ;; Add ess-lisp-directory/obsolete to load-path; files here will
 ;; automatically warn that they are obsolete when loaded.
 ;;;###autoload
-(add-to-list 'load-path (file-name-as-directory (expand-file-name "obsolete" ess-lisp-directory)))
+(add-to-list 'load-path (directory-file-name (expand-file-name "obsolete" ess-lisp-directory)))
 
 (unless (file-directory-p ess-etc-directory)
   (display-warning 'ess (format "Could not find directory `ess-etc-directory': %s"
