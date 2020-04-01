@@ -979,9 +979,6 @@ use \"bin/Rterm.exe\"."
                   (if (file-exists-p R-path) R-path)))
               R-ver))))
 
-(cl-defmethod ess-font-lock-keywords (&context (major-mode ess-r-transcript-mode))
-  'ess-R-font-lock-keywords)
-
 ;;;###autoload
 (define-derived-mode ess-r-transcript-mode ess-transcript-mode "ESS R Transcript"
   "A Major mode for R transcript files."
