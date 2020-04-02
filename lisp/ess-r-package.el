@@ -306,7 +306,7 @@ With prefix ARG ask for extra args."
   "Interface for `devtools::check_win_XYZ()'.
 With prefix argument, as for arguments to `devtools::check_win_XYZ()' function."
   (interactive "P")
-  (let ((type (completing-read "Release: " '("release" "devel" "oldrelease") nil t)))
+  (let ((type (completing-read "Release: " '("devel" "release" "oldrelease") nil t)))
     (ess-r-package-eval-linewise
      (format "devtools:::check_win_%s(%%s)\n" type)
      "Checking %s on CRAN's Windows server" arg
