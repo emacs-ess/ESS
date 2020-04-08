@@ -1361,7 +1361,7 @@ selected (see `ess-r-set-evaluation-env')."
   (ess-command (format ".ess.ESSRversion <- '%s'\n" essr-version))
   (with-temp-message "Loading ESSR into remote ..."
     (let ((src-dir (expand-file-name "ESSR/R" ess-etc-directory)))
-      (dolist (file (directory-files src-dir t "\\.R$"))
+      (dolist (file (directory-files src-dir t "\\.R\\'"))
         (ess--inject-code-from-file file chunked)))))
 
 (defun ess-r--fetch-ESSR-remote ()
@@ -1369,7 +1369,7 @@ selected (see `ess-r-set-evaluation-env')."
     (unless (ess-boolean-command (format loader essr-version) nil 0.1)
       (let* ((errmsg (with-current-buffer " *ess-command-output*" (buffer-string)))
              (src-dir (expand-file-name "ESSR/R" ess-etc-directory))
-             (files (directory-files src-dir t "\\.R$")))
+             (files (directory-files src-dir t "\\.R\\'")))
         (message (format "Couldn't load ESSR.rds. Injecting from local.\n Error: %s\n" errmsg))
         (ess-r--load-ESSR-remote)))))
 
@@ -2771,9 +2771,9 @@ given field. Options should be separated by value of
 ;;*;; Provide and auto-loads
 
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("/Makevars\\(\\.win\\)?$" . makefile-mode))
+(add-to-list 'auto-mode-alist '("/Makevars\\(\\.win\\)?\\'" . makefile-mode))
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("DESCRIPTION$" . conf-colon-mode))
+(add-to-list 'auto-mode-alist '("DESCRIPTION\\'" . conf-colon-mode))
 
 (provide 'ess-r-mode)
 

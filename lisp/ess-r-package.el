@@ -134,7 +134,7 @@ efficiency reasons."
 
 (defun ess-r-package--all-source-dirs (dir)
   (when (file-directory-p dir)
-    (cl-loop for f in (directory-files-and-attributes dir t "^[^.]")
+    (cl-loop for f in (directory-files-and-attributes dir t "\\`[^.]")
              if (cadr f)
              append (cons (car f) (ess-r-package--all-source-dirs (car f))))))
 
@@ -145,7 +145,7 @@ Return nil if not in a package. Search sub-directories listed in
 return all physically present directories."
   (let ((pkg-root (plist-get (ess-r-package-info) :root)))
     (when pkg-root
-      (let ((files (directory-files-and-attributes pkg-root t "^[^.]")))
+      (let ((files (directory-files-and-attributes pkg-root t "\\`[^.]")))
         (cl-loop for f in files
                  if (and (cadr f)
                          (cl-some (lambda (el) (string-match-p (concat "/" el "$") (car f)))

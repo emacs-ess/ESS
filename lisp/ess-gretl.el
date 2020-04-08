@@ -39,7 +39,7 @@
 (require 'ess-r-mode)
 
 ;;; Code:
-(add-to-list 'auto-mode-alist '("\\.inp$" . ess-gretl-mode))
+(add-to-list 'auto-mode-alist '("\\.inp\\'" . ess-gretl-mode))
 
 
 (defvar gretl-syntax-table
