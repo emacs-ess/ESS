@@ -94,7 +94,7 @@ manually if the remote has restricted network access."
 
 (define-obsolete-variable-alias 'ess-r-versions 'ess-r-runner-prefixes "ESS 19.04")
 (defcustom ess-r-runner-prefixes
-  (let ((r-ver '("R-1" "R-2" "R-3" "R-devel" "R-patched")))
+  (let ((r-ver '("R-1" "R-2" "R-3" "R-4" "R-5" "R-6" "R-7" "R-devel" "R-patched")))
     (if (eq system-type 'darwin) (append r-ver '("R32" "R64")) r-ver))
   "List of partial strings for versions of R to access within ESS.
 Each string specifies the start of a filename. If a filename
