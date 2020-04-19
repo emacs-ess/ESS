@@ -110,6 +110,7 @@ searching for other versions of R. Setting this variable directly
 does not take effect; use either \\[customize-option] or set the
 value by using `ess-r-runners-reset'."
   :group 'ess-R
+  :package-version '(ess . "19.04")
   :type '(repeat string)
   :set #'ess-r-runners-reset
   ;; Use `custom-initialize-default' since we call

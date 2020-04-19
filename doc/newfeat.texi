@@ -101,6 +101,8 @@ buffers. To enable it, customize @code{ess-r-mode-hook}.
 @item ESS removed support for many unused languages.
 This includes old versions of S+, ARC, OMG, VST, and XLS.
 
+@item ess-r-runner-prefixes was modified to find R-4 and later.
+
 @end itemize
 
 The following have been made obsolete or removed, see their
