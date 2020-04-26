@@ -1,31 +1,30 @@
 ;; ess-tracebug.el --- Tracing and debugging facilities for ESS.  -*- lexical-binding: t; -*-
-;;
-;; Copyright (C) 2011--2017 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
-;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
-;;
-;; Filename: ess-tracebug.el
+
+;; Copyright (C) 2011-2020 Free Software Foundation, Inc.
 ;; Author: Vitalie Spinu
 ;; Maintainer: Vitalie Spinu
-;; Copyright (C) 2010-2012, Vitalie Spinu, all rights reserved.
 ;; Created: Oct 14 14:15:22 2010
-;; URL: https://code.google.com/p/ess-tracebug/
-;; Keywords: tools, languages
+
+;; This file is part of GNU Emacs.
+
+;;; License:
 ;;
-;; This file is *NOT* part of GNU Emacs.
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
 ;;
-;; This program is free software; you can redistribute it and/or
-;; modify it under the terms of the GNU General Public License as
-;; published by the Free Software Foundation; either version 3, any later version.
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
 ;;
-;; This program is distributed in the hope that it will be useful, but WITHOUT
-;; ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-;; FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
-;; details.
-;;
-;; A copy of the GNU General Public License is available at
-;; https://www.r-project.org/Licenses/
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see
+;; <http://www.gnu.org/licenses/>
 
 ;;; Commentary:
+
 ;;  Ess-tracebug is a package for interactive debugging of R code from
 ;;  ESS and provides such features as:
 ;;  - visual debugging
@@ -37,9 +36,7 @@
 ;;
 ;;  For a complete description please see the documentation in the ESS
 ;;  manual.
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
+
 ;;; Code:
 
 (eval-when-compile

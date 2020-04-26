@@ -1,44 +1,38 @@
 ;; ess-julia.el --- ESS julia mode and inferior interaction  -*- lexical-binding: t; -*-
-;;
-;; Copyright (C) 2012-2015 Vitalie Spinu and the ESS Core team.
-;;
+
+;; Copyright (C) 2012-2020 Free Software Foundation, Inc.
 ;; Author: Vitalie Spinu
 ;; Maintainer: Vitalie Spinu
 ;; Created: 02-04-2012 (ESS 12.03)
 ;; Keywords: ESS, julia
+
+;; This file is part of GNU Emacs.
+
+;;; License:
 ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;; This file is *NOT* part of GNU Emacs.
-;; This file is part of ESS
-;;
-;; This program is free software; you can redistribute it and/or
-;; modify it under the terms of the GNU General Public License as
-;; published by the Free Software Foundation; either version 3, or
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
 ;;
-;; This file is distributed in the hope that it will be useful,
+;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
 ;;
-;; A copy of the GNU General Public License is available at
-;; https://www.r-project.org/Licenses/
-;;
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see
+;; <http://www.gnu.org/licenses/>
+
 ;;; Commentary:
-;;
+
 ;;  Customize inferior-julia-program to point to your julia binary
 ;;  and start the inferior with M-x julia.
-;;
+
 ;;  As of Sept 2015, this file depends heavily on julia-mode.el from the Julia
 ;;  sources.  If you install ESS using `make', this will work fine, otherwise
 ;;  ensure that julia-mode.el is on your path before loading this file.
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
+
 ;;; Code:
 
 (require 'ess-help)

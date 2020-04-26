@@ -1,49 +1,43 @@
 ;;; msdos.el --- Run an MS-DOS shell in an NTemacs buffer with bash as the shell
 
-;; Copyright (C) 1999 Richard M. Heiberger <rmh@temple.edu>
-;; Copyright (C) 2000--2004 A.J. Rossini, Richard M. Heiberger, Martin
-;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
-
+;; Copyright (C) 1999-2020 Free Software Foundation, Inc.
 ;; Author: Richard M. Heiberger <rmh@temple.edu>
 ;; Created: February 1999
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; Keywords: processes
+;; This file is part of GNU Emacs.
 
-;; This file is part of ESS.
-
-;; This file is free software; you can redistribute it and/or modify
+;;; License:
+;;
+;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation; either version 2, or (at your option)
-;; any later version.
-
-;; This file is distributed in the hope that it will be useful,
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
-;; A copy of the GNU General Public License is available at
-;; http://www.r-project.org/Licenses/
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see
+;; <http://www.gnu.org/licenses/>
 
 ;;; Commentary:
 
 ;; The file msdos.el in the next mail message opens an *msdos* buffer
 ;; in shell-mode and msdos-minor-mode.  When cmdproxy.exe/command.com
-;; is the emacs shell, then this gets various setting right that M-x
+;; is the Emacs shell, then this gets various setting right that M-x
 ;; shell currently misses.  The function M-x msdos-minor-mode could be
-;; automatically run by emacs in shell-mode in that case.
+;; automatically run by Emacs in shell-mode in that case.
 
-;; When bash is the emacs shell, msdos.el still opens a
+;; When bash is the Emacs shell, msdos.el still opens a
 ;; cmdproxy.exe/command.com shell in the buffer *msdos*.  There are
 ;; occasions when it is necessary to run DOS character-based programs
-;; in an emacs window.
+;; in an Emacs window.
 
 ;; I followed the suggestion by AndrewI to look at M-x shell and modify
 ;; it.  It turns out not to have been trivial.
-
-;; I've listed it as part of ESS (emacs speaks statistics) for now.  I
-;; will be happy to sign it over to FSF and have it become part of the
-;; standard distribution for windows machines.
 
 ;;; Code:
 
