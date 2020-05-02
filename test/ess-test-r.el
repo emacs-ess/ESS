@@ -145,7 +145,7 @@
     (ess-eval-linewise "getwd()" 'invisible)
     (should (output= (ess-eval-buffer nil)
                      "setwd('/')\n> [1] \"/\""))
-    (should (string= default-directory "/"))))
+    (should (string= (ess-get-process-variable 'default-directory) "/"))))
 
 (ert-deftest ess-inferior-force-test ()
   (with-r-running nil

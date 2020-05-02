@@ -79,7 +79,9 @@
           ess-ask-for-ess-directory)
       (ess-set-working-directory (expand-file-name "src" pkg-dir))
       (ess-r-package-use-dir)
-      (should (string= pkg-dir (file-truename (directory-file-name default-directory))))
+      (should (string= pkg-dir (file-truename
+                                (directory-file-name
+                                 (ess-get-process-variable 'default-directory)))))
       (ess-wait-for-process)
       (should (string= pkg-dir (file-truename (ess-get-working-directory))))
       (ess-wait-for-process)
