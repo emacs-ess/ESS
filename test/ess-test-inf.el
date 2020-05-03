@@ -215,10 +215,25 @@ OUT-STRING is the content of the region captured by
         (should (looking-at-p "more_code4"))))
     ))
 
-(ert-deftest ess-verbose-setwd-test ()
+(ert-deftest ess-setwd-test ()
   (with-r-running nil
+    ;; Working directory is set verbosely
     (should (output= (ess-set-working-directory temporary-file-directory)
-                     (format "setwd('%s')" temporary-file-directory)))))
+                     (format "setwd('%s')" temporary-file-directory)))
+    ;; Update process default-directory but not caller's buffer
+    (let* ((cur-dir default-directory)
+           (temp-dir (file-name-as-directory (make-temp-file "setwd-dir" t))))
+      (unwind-protect
+          (progn
+            (setq default-directory temp-dir)
+            (ess-set-working-directory temporary-file-directory)
+            (should (equal default-directory temp-dir))
+            (should (equal (ess-get-process-variable 'default-directory)
+                           temporary-file-directory))
+            (ess-set-working-directory temp-dir)
+            (should (equal (ess-get-process-variable 'default-directory)
+                           temp-dir)))
+        (setq default-directory cur-dir)))))
 
 
 ;;*;; Sending input

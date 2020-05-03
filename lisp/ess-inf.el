@@ -2760,8 +2760,8 @@ NO-ERROR prevents errors when this has not been implemented for
                         (with-parsed-tramp-file-name path v v-localname)
                       path)))
         (ess-eval-linewise (format ess-setwd-command lpath))
-        ;; use set instead of setq to take effect even when let bound
-        (set 'default-directory (file-name-as-directory path)))
+        (ess-set-process-variable 'default-directory
+                                  (file-name-as-directory path)))
     (unless no-error
       (error "Not implemented for dialect %s" ess-dialect))))
 
