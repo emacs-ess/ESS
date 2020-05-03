@@ -1344,6 +1344,10 @@ prompts."
         ;; handler, or mpi printing itself takes very long.
         (unless (eq :incomplete (ess-mpi-handle-messages abuf))
           (with-current-buffer abuf
+            ;; Uncomment this line when debugging. This pops up the
+            ;; accumulation buffer and causes point to follow
+            ;; automatically as the parsing progresses.
+            ;; (pop-to-buffer (current-buffer))
             (goto-char (point-min))
             (let ((case-fold-search nil))
               (when (re-search-forward "Error\\(:\\| +in\\)" nil t)
@@ -1378,8 +1382,6 @@ prompts."
                       tpos (if nowait
                                (or (match-end 1) (match-end 3))
                              (match-end 0)))
-                ;; for debugging in R:accum window in order to see the pointer moving
-                ;; (set-window-point (get-buffer-window) tpos)
                 (when (> pos1 pos2)
                   (let ((str (buffer-substring pos2 pos1)))
                     (comint-output-filter proc (ess--offset-output prev-prompt str))))
