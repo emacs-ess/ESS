@@ -567,21 +567,6 @@ can use `ess--busy-slash', `ess--busy-B',`ess--busy-stars',
 (defvar ess--busy-timer nil
   "Timer used for busy process indication.")
 
-(defcustom inferior-ess-replace-long+ t
-  "Determines if ESS replaces long + sequences in output.
-If 'strip, remove all such instances.  Otherwise, if non-nil, '+
-+ + + ' containing more than 4 + is replaced by
-`ess-long+replacement'."
-  :group 'ess-tracebug
-  :type '(choice (const nil :tag "No replacement")
-                 (const 'strip :tag "Replace all")
-                 (const t :tag "Replace 4 or more +")))
-
-(defvar ess-long+replacement ". + "
-  "Replacement used for long + prompt.
-Please don't customize this or other prompt related variables.
-ESS internal code assumes default R prompts.")
-
 (defmacro ess-copy-key (from-map to-map fun)
   `(define-key ,to-map
      (car (where-is-internal ,fun  ,from-map))
@@ -1283,44 +1268,43 @@ ends with an incomplete message."
             (setq out :incomplete))))
       out)))
 
-(defun ess--replace-long+-in-prompt (prompt is-final)
-  "Replace long + + + in PROMPT based on `inferior-ess-replace-long+' value.
-If IS-FINAL means that PROMPT occurs at the end of the process
-chunk. If non-nil, special care is taken not to drop last '+'
-value as it might be a continuation prompt."
-  ;; see #576 for interesting input examples
-  (let ((len (length prompt)))
-    (if (or (null inferior-ess-replace-long+)
-            (< len 2))
-        prompt
-      (let ((last+ (eq (elt prompt (- len 2)) ?+)))
-        (cond
-         ((eq inferior-ess-replace-long+ 'strip)
-          (if (and last+ is-final)
-              "+ "
-            "> "))
-         ((eq inferior-ess-replace-long+ t)
-          (let ((prompt (replace-regexp-in-string "\\(\\+ \\)\\{2\\}\\(\\+ \\)+"
-                                                  ess-long+replacement prompt)))
-            (if (and last+ (not is-final))
-                ;; append > for aesthetic reasons
-                (concat prompt "> ")
-              prompt)))
-         (t (error "Invalid values of `inferior-ess-replace-long+'")))))))
+;; These user-facing variables can be customised by users
+(defvar ess-r-prompt "> ")
+(defvar ess-r-prompt-continue "+ ")
 
-(defun ess--offset-output (prev-prompt str)
-  "Add suitable offset to STR given the preceding PREV-PROMPT."
-  (if prev-prompt
-      (let ((len (length prev-prompt)))
-        ;; prompts have at least 2 chars
-        (if (eq (elt prev-prompt (- len 2)) ?+)
-            ;; when last + append > for aesthetic reasons
-            (concat "> \n" str)
-          (if (eq (elt str 0) ?\n)
-              ;; don't insert empty lines
-              str
-            (concat "\n" str))))
-    str))
+(defvar ess-r--prompt-anchor "[39m[23m")
+(defvar ess-r--prompt-anchor-regexp "\\[39m\\[23m")
+
+(defvar ess-r--prompt (concat ess-r--prompt-anchor ess-r-prompt))
+(defvar ess-r--prompt-continue (concat ess-r--prompt-anchor ess-r-prompt-continue))
+
+(defvar ess-r--prompt-regexp (concat ess-r--prompt-anchor-regexp ess-r-prompt))
+(defvar ess-r--prompt-continue-regexp (concat ess-r--prompt-anchor-regexp "\\+ "))
+
+;; The _continuation_ prompt is displayed when incomplete expressions
+;; are sent to R. For example "{\n\n\n" displays three of these.
+;; Once the expression is completed, the output is displayed.
+;;
+;; The _intermediate_ prompt is displayed when multiple complete
+;; expressions are sent to R.
+;;
+;; Possible outputs:
+;; - "^output$"
+;; - "^+ + + output$"
+;;
+;; Possible intermediate prompts:
+;; - "^> output$"
+;; - "^> + + + output$"
+;;
+;; Finally, actual continuation prompts which should not be stripped
+;; completely:
+;; - "^+ + + $"
+;; - "^> + + + $"
+;;
+;; The intermediate prompts are annoying because they cause outputs to
+;; be misaligned by two characters. However a solution should be found
+;; in base R. Echoing the original expression that produced the value
+;; might be a good solution.
 
 (defun ess--flush-accumulated-output (proc)
   "Flush accumulated output of PROC into its output buffer.
@@ -1355,60 +1339,15 @@ prompts."
                   (setq next-error-last-buffer pbuf)
                   (display-buffer pbuf nil t))))
             (goto-char (point-min))
-            ;; First long + + in the output mirrors the sent input by the user and
-            ;; is unnecessary in nowait case. A single + can be a continuation in
-            ;; the REPL, thus we check if there is an extra output after the + .
-            (when nowait
-              (when (looking-at "\\([+>] \\)\\{2,\\}\n?")
-                (goto-char (match-end 0))
-                (when (eq (point) (point-max))
-                  ;; if this is the last prompt in the output back-up one prompt
-                  ;; (cannot happen after \n)
-                  (backward-char 2))))
-            (let ((do-clean (not (eq visibly t)))
-                  (pos2 (point))
-                  (pos1 (point))
-                  (tpos nil)
-                  (prompt nil)
-                  (regexp (if nowait
-                              ;; we cannot disambiguate printed input fields and
-                              ;; prompts in output in this case; match 2+ pluses or
-                              ;; > and 2+ spaces
-                              "\\(^\\([+>] \\)\\{2,\\}\\)\\|\\(> \\) +"
-                            "^\\([+>] \\)+"))
-                  (prev-prompt (process-get proc 'prev-prompt)))
-              (while (re-search-forward regexp nil t)
-                (setq pos1 (match-beginning 0)
-                      tpos (if nowait
-                               (or (match-end 1) (match-end 3))
-                             (match-end 0)))
-                (when (> pos1 pos2)
-                  (let ((str (buffer-substring pos2 pos1)))
-                    (comint-output-filter proc (ess--offset-output prev-prompt str))))
-                (setq pos2 tpos)
-                (setq prompt (let ((prompt (buffer-substring pos1 pos2)))
-                               (if do-clean
-                                   (ess--replace-long+-in-prompt prompt (eq pos2 (point-max)))
-                                 prompt)))
-                ;; Cannot bypass this trivial call to comint-output-filter because
-                ;; external tools could rely on prompts (org-babel [#598] for
-                ;; example). Setting dummy regexp in order to avoid comint erasing
-                ;; this prompt which contrasts to how we output prompts in all
-                ;; other cases.
-                (with-current-buffer pbuf
-                  (let ((comint-prompt-regexp "^$"))
-                    (comint-output-filter proc prompt)))
-                (setq prev-prompt (and do-clean prompt)
-                      pos1 pos2))
-              ;; insert last chunk if any
-              (unless (eq pos1 (point-max))
-                (let ((str (buffer-substring-no-properties pos1 (point-max))))
-                  (comint-output-filter proc (ess--offset-output prev-prompt str))
-                  (setq prev-prompt nil)))
-              (process-put proc 'prev-prompt prev-prompt)
-              (process-put proc 'flush-time (and (process-get proc 'busy)
-                                                 (float-time)))
-              (erase-buffer))))))))
+            ;; Remove all continuation markers. Keep trailing continuation prompts.
+            (save-excursion
+              (while (re-search-forward ess-r--prompt-continue-regexp nil t)
+                (unless (looking-at-p "$")
+                  (replace-match ""))))
+            (comint-output-filter proc (buffer-substring-no-properties (point-min) (point-max)))
+            (process-put proc 'flush-time (and (process-get proc 'busy)
+                                               (float-time)))
+            (erase-buffer)))))))
 
 (defun inferior-ess-tracebug-output-filter (proc string)
   "Standard output filter for the inferior ESS process.

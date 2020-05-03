@@ -1346,13 +1346,19 @@ selected (see `ess-r-set-evaluation-env')."
       (ess-r--load-ESSR-remote t)))
    (t (ess-r--load-ESSR-local))))
 
+;; FIXME: Sort out defvars with indirection
+(require 'ess-tracebug)
+
 (defun ess-r--load-ESSR-local ()
   (let* ((src-dir (expand-file-name "ESSR/R" ess-etc-directory))
          (cmd (format "local({
                           source('%s/.load.R', local=TRUE) #define load.ESSR
-                          .ess.load.ESSR('%s')
+                          .ess.load.ESSR('%s', '%s', '%s')
                       })\n"
-                      src-dir src-dir)))
+                      src-dir
+                      src-dir
+                      ess-r--prompt
+                      ess-r--prompt-continue)))
     (with-current-buffer (ess-command cmd)
       (let ((msg (buffer-string)))
         (when (> (length msg) 1)
