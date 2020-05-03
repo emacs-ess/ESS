@@ -4,6 +4,12 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item @code{ess-set-working-directory} no longer changes the active
+directory (as defined by the buffer-local variable
+@code{default-directory}) of the buffer where the command is called.
+Instead, the active directory of the inferior buffer is updated to the
+new working directory.
+
 @item The default of ess-eval-visibly is now nil.
 
 @item ESS[R]: There is a new menu entry for reloading the R process.
