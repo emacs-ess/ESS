@@ -390,12 +390,19 @@ defined. If no project directory has been found, use
 ;; FIXME
 (require 'ess-tracebug)
 
+;; Prompt is not tagged until we have a chance to set the options
+(defvar ess--has-tagged-prompt nil)
+
 (defun inferior-ess--process-repl-state (proc string)
   "Internal function to set the status of process PROC.
 Return non-nil if the process is in a ready (not busy) state."
   ;; TODO: do it in one search, use starting position, use prog1
-  (let ((inferior-ess-primary-prompt ess-r--prompt-regexp)
-        (inferior-ess-secondary-prompt ess-r--prompt-continue-regexp))
+  (let ((inferior-ess-primary-prompt (if ess--has-tagged-prompt
+                                         ess-r--tagged-prompt-regexp
+                                       ess-r--initial-prompt-regexp))
+        (inferior-ess-secondary-prompt (if ess--has-tagged-prompt
+                                           ess-r--tagged-prompt-continue-regexp
+                                         ess-r--initial-prompt-continue-regexp)))
     (let ((ready (string-match-p (concat "\\(" inferior-ess-primary-prompt "\\)\\'") string)))
       (process-put proc 'busy-end? (and ready (process-get proc 'busy)))
       ;; When "\n" inserted from inferior-ess-available-p, delete the prompt.
@@ -412,7 +419,7 @@ Return non-nil if the process is in a ready (not busy) state."
             (when is-incomplete
               (process-put proc 'sec-prompt t))
             ;; Remove all continuation prompts except the trailing one.
-            (let* ((string (replace-regexp-in-string ess-r--prompt-continue-regexp "" string))
+            (let* ((string (replace-regexp-in-string ess-r--tagged-prompt-continue-regexp "" string))
                    (string (if is-incomplete
                                (concat string ess-r-prompt-continue)
                              string)))

@@ -1272,14 +1272,19 @@ ends with an incomplete message."
 (defvar ess-r-prompt "> ")
 (defvar ess-r-prompt-continue "+ ")
 
-(defvar ess-r--prompt-anchor "[39m[23m")
-(defvar ess-r--prompt-anchor-regexp "\\[39m\\[23m")
+(defvar ess-r--prompt-tag "[39m[23m")
+(defvar ess-r--prompt-tag-regexp "\\[39m\\[23m")
 
-(defvar ess-r--prompt (concat ess-r--prompt-anchor ess-r-prompt))
-(defvar ess-r--prompt-continue (concat ess-r--prompt-anchor ess-r-prompt-continue))
+(defvar ess-r--prompt (concat ess-r--prompt-tag ess-r-prompt))
+(defvar ess-r--prompt-continue (concat ess-r--prompt-tag ess-r-prompt-continue))
 
-(defvar ess-r--prompt-regexp (concat ess-r--prompt-anchor-regexp ess-r-prompt))
-(defvar ess-r--prompt-continue-regexp (concat ess-r--prompt-anchor-regexp "\\+ "))
+(defvar ess-r--initial-prompt-regexp "> ")
+(defvar ess-r--initial-prompt-continue-regexp "\\+ ")
+
+(defvar ess-r--tagged-prompt-regexp
+  (concat ess-r--prompt-tag-regexp (regexp-quote ess-r-prompt)))
+(defvar ess-r--tagged-prompt-continue-regexp
+  (concat ess-r--prompt-tag-regexp (regexp-quote ess-r-prompt-continue)))
 
 ;; The _continuation_ prompt is displayed when incomplete expressions
 ;; are sent to R. For example "{\n\n\n" displays three of these.
