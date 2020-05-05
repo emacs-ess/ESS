@@ -85,7 +85,7 @@
 (declare-function ess-switch-to-end-of-ESS "ess-inf" ())
 (declare-function ess-eval-region--normalise-region "ess-inf" )
 (declare-function inferior-ess-run-callback "ess-inf")
-(declare-function inferior-ess--set-status "ess-inf")
+(declare-function inferior-ess--process-repl-state "ess-inf")
 (declare-function ess-helpobjs-at-point--read-obj "ess-help")
 (declare-function ess-r-get-evaluation-env "ess-r-mode")
 (declare-function ess-r-package--all-source-dirs "ess-r-package")
@@ -1312,8 +1312,6 @@ Insertion happens chunk by chunk. A chunk is a region between two
 prompts."
   (let* ((abuf (ess--accumulation-buffer proc))
          (pbuf (process-buffer proc))
-         (visibly (process-get proc :eval-visibly))
-         (nowait (eq visibly 'nowait))
          (flush-timer (process-get proc 'flush-timer)))
     (when (> (buffer-size abuf) 0)
       (when (timerp flush-timer)
@@ -1339,11 +1337,6 @@ prompts."
                   (setq next-error-last-buffer pbuf)
                   (display-buffer pbuf nil t))))
             (goto-char (point-min))
-            ;; Remove all continuation markers. Keep trailing continuation prompts.
-            (save-excursion
-              (while (re-search-forward ess-r--prompt-continue-regexp nil t)
-                (unless (looking-at-p "$")
-                  (replace-match ""))))
             (comint-output-filter proc (buffer-substring-no-properties (point-min) (point-max)))
             (process-put proc 'flush-time (and (process-get proc 'busy)
                                                (float-time)))
@@ -1373,11 +1366,12 @@ the output into *ess.dbg* buffer."
                           (string-match ess--dbg-regexp-skip string)
                           (not (string-match ess--dbg-regexp-no-skip string))))
          (match-dbg (or match-skip (and match-input (not match-selection))))
-         (is-ready (inferior-ess--set-status proc string))
          (new-time (float-time))
          (last-time (process-get proc 'flush-time))
-         (flush-timer (process-get proc 'flush-timer)))
-
+         (flush-timer (process-get proc 'flush-timer))
+         (proc-state (inferior-ess--process-repl-state proc string))
+         (string (car proc-state))
+         (is-ready (cdr proc-state)))
     ;; current-buffer is still the user's input buffer here
     (ess--if-verbose-write-process-state proc string)
     (inferior-ess-run-callback proc string)

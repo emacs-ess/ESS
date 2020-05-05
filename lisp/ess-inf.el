@@ -387,25 +387,44 @@ defined. If no project directory has been found, use
               (process-put proc 'last-availability-check ts))
             (not (process-get proc 'busy)))))))
 
-(defun inferior-ess--set-status (proc string)
+;; FIXME
+(require 'ess-tracebug)
+
+(defun inferior-ess--process-repl-state (proc string)
   "Internal function to set the status of process PROC.
 Return non-nil if the process is in a ready (not busy) state."
   ;; TODO: do it in one search, use starting position, use prog1
-  (let ((ready (string-match-p (concat "\\(" inferior-ess-primary-prompt "\\)\\'") string)))
-    (process-put proc 'busy-end? (and ready (process-get proc 'busy)))
-    ;; When "\n" inserted from inferior-ess-available-p, delete the prompt.
-    (when (and ready
-               (process-get proc 'availability-check)
-               (string-match-p (concat "^" inferior-ess-primary-prompt "\\'") string))
-      (process-put proc 'suppress-next-output? t))
-    (process-put proc 'availability-check nil)
-    (when ready
-      (process-put proc 'running-async? nil))
-    (process-put proc 'busy (not ready))
-    (process-put proc 'sec-prompt
-                 (when inferior-ess-secondary-prompt
-                   (string-match (concat "\\(" inferior-ess-secondary-prompt "\\)\\'") string)))
-    ready))
+  (let ((inferior-ess-primary-prompt ess-r--prompt-regexp)
+        (inferior-ess-secondary-prompt ess-r--prompt-continue-regexp))
+    (let ((ready (string-match-p (concat "\\(" inferior-ess-primary-prompt "\\)\\'") string)))
+      (process-put proc 'busy-end? (and ready (process-get proc 'busy)))
+      ;; When "\n" inserted from inferior-ess-available-p, delete the prompt.
+      (when (and ready
+                 (process-get proc 'availability-check)
+                 (string-match-p (concat "^" inferior-ess-primary-prompt "\\'") string))
+        (process-put proc 'suppress-next-output? t))
+      (process-put proc 'availability-check nil)
+      (when ready
+        (process-put proc 'running-async? nil))
+      (process-put proc 'busy (not ready))
+      (if inferior-ess-secondary-prompt
+          (let ((is-incomplete (ess--has-trailing-continue-prompt string)))
+            (when is-incomplete
+              (process-put proc 'sec-prompt t))
+            ;; Remove all continuation prompts except the trailing one.
+            (let* ((string (replace-regexp-in-string ess-r--prompt-continue-regexp "" string))
+                   (string (if is-incomplete
+                               (concat string ess-r-prompt-continue)
+                             string)))
+              (cons string ready)))
+        (cons string ready)))))
+
+(defun ess--has-trailing-continue-prompt (string)
+  (let ((len (length string))
+        (continue-len (length ess-r--prompt-continue)))
+    (and (>= len continue-len)
+         (string= (substring string (- continue-len))
+                  ess-r--prompt-continue))))
 
 (defun inferior-ess-mark-as-busy (proc)
   (process-put proc 'busy t)
@@ -460,13 +479,13 @@ Return non-nil if the process is in a ready (not busy) state."
 Ring Emacs bell if process output starts with an ASCII bell, and pass
 the rest to `comint-output-filter'.
 Taken from octave-mod.el."
-  (inferior-ess--set-status proc string)
-  (ess--if-verbose-write-process-state proc string)
-  (inferior-ess-run-callback proc string)
-  (if (process-get proc 'suppress-next-output?)
-      ;; works only for suppressing short output, for time being is enough (for callbacks)
-      (process-put proc 'suppress-next-output? nil)
-    (comint-output-filter proc (inferior-ess-strip-ctrl-g string))))
+  (let ((string (car (inferior-ess--process-repl-state proc string))))
+    (ess--if-verbose-write-process-state proc string)
+    (inferior-ess-run-callback proc string)
+    (if (process-get proc 'suppress-next-output?)
+        ;; works only for suppressing short output, for time being is enough (for callbacks)
+        (process-put proc 'suppress-next-output? nil)
+      (comint-output-filter proc (inferior-ess-strip-ctrl-g string)))))
 
 (defun inferior-ess-strip-ctrl-g (string)
   "Strip leading `^G' character.
@@ -976,11 +995,11 @@ non-nil stop waiting for output after TIMEOUT seconds."
           (setq wait .3))))))
 
 (defun inferior-ess-ordinary-filter (proc string)
-  (inferior-ess--set-status proc string)
-  (ess--if-verbose-write-process-state proc string "ordinary-filter")
-  (inferior-ess-run-callback proc string)
-  (with-current-buffer (process-buffer proc)
-    (insert string)))
+  (let ((string (car (inferior-ess--process-repl-state proc string))))
+    (ess--if-verbose-write-process-state proc string "ordinary-filter")
+    (inferior-ess-run-callback proc string)
+    (with-current-buffer (process-buffer proc)
+      (insert string))))
 
 (defvar ess-presend-filter-functions nil
   "List of functions to call before sending the input string to the process.
