@@ -163,6 +163,9 @@ This may be useful for debugging."
   ;; This function is primarily used to figure out the Process and
   ;; buffer names to use for inferior-ess.
   (run-hooks 'ess-pre-run-hook)
+  ;; Always start with untagged prompt, in case REPL was restarted in
+  ;; the inferior buffer
+  (setq ess--has-tagged-prompt nil)
   (let* ((dialect (eval (cdr (assoc 'ess-dialect customize-alist))))
          (process-environment process-environment)
          ;; Use dialect if not R, R program name otherwise
