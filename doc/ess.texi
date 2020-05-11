@@ -631,8 +631,8 @@ this. Note that the order matters; @code{*R Dired*} would match
 
 Some users prefer working with multiple frames where one frame has the
 source code and the other frame has the inferior process. To achieve
-this, use this example. @xref{Buffer Display Action Alists,,,
-elisp} for a detailed description of @code{reusable-frames}.
+this, use this example.  For a detailed description of
+@code{reusable-frames}, see @xref{Buffer Display Action Alists,,, elisp}.
 
 @example
 (setq display-buffer-alist
@@ -2219,10 +2219,10 @@ variable @code{ess-help-own-frame}.
 
 Help buffers are displayed by calling the function
 @code{ess-display-help}. You can customize where these buffers are
-displayed by adding an entry in @code{display-buffer-alist} (see
-@xref{Controlling buffer display,,, ess} for examples) or by customizing
-the options @code{ess-help-own-frame}, @code{ess-help-frame-alist},
-and @code{ess-display-buffer-reuse-frame}.
+displayed by adding an entry in @code{display-buffer-alist}; for
+examples, see @xref{Controlling buffer display,,, ess}. Or by
+customizing the options @code{ess-help-own-frame},
+@code{ess-help-frame-alist}, and @code{ess-display-buffer-reuse-frame}.
 
 @findex ess-quit
 @findex ess-cleanup
@@ -3096,9 +3096,9 @@ to change the toolbar.
 @cindex xref
 @cindex finding function definitions
 Xref is an Emacs interface that supports finding ``identifiers,''
-usually function definitions in ESS's view.  ESS ships with support for
-Xref in Emacs versions 25.1 and higher.  @xref{Xref,,, emacs, The Gnu
-Emacs Reference Manual} for how to use this feature.
+usually function definitions in ESS's view. ESS ships with support for
+Xref in Emacs versions 25.1 and higher. For how to use this feature, see
+@xref{Xref,,, emacs, The Gnu Emacs Reference Manual}.
 
 @node Rdired
 @section Rdired

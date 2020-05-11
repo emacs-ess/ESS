@@ -9,7 +9,8 @@ include ../Makeconf
 .PHONY: all dist install uninstall distclean clean compile
 
 JULIAS := julia-mode.el julia-mode-latexsubs.el
-ELS = $(filter-out ess-autoloads.el, $(wildcard *.el obsolete/*.el)) $(JULIAS)
+ELS = $(filter-out ess-autoloads.el, $(wildcard *.el)) $(JULIAS)
+##ELS = $(filter-out ess-autoloads.el, $(wildcard *.el obsolete/*.el)) $(JULIAS)
 ELC = $(ELS:.el=.elc)
 
 all dist: compile ess-autoloads.el
@@ -37,16 +38,16 @@ distclean clean:
 	@for f in $(ELS); do \
 	  sed -n "s|^(require '\(ess.*\)).*$$|$${f}c: \1.elc|p" $${f} >> .dependencies;\
 	done
-	@for f in obsolete/*.el; do \
-	  echo "$$(basename $${f}c):$${f}c" >> .dependencies;\
-	done
+## @for f in obsolete/*.el; do \
+##   echo "$$(basename $${f}c):$${f}c" >> .dependencies;\
+## done
 
 -include .dependencies
 
 .el.elc:
 	$(COMPILE) $<
-obsolete/%.elc: obsolete/%.el
-	$(COMPILE-SIMPLE) $<
+##obsolete/%.elc: obsolete/%.el
+##	$(COMPILE-SIMPLE) $<
 
 JULIA-REPO=https://raw.githubusercontent.com/JuliaEditorSupport/julia-emacs/master
 ## Should happen before building ESS; definitely *NOT* after unpacking tarball :

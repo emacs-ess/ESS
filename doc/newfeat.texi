@@ -3,6 +3,10 @@
 
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
+  
+@item stata support is now obsolete since we were unable to elicit
+FSF paperwork from some of the original authors: see the lisp/obsolete
+sub-directory on the ESS github repo
 
 @item @code{ess-set-working-directory} no longer changes the active
 directory (as defined by the buffer-local variable
@@ -54,8 +58,8 @@ visibility.
 
 @item ESS now respects @code{display-buffer-alist}.
 Users can now use @code{display-buffer-alist} to manage how and where
-windows appear. See @xref{Controlling buffer display,,, ess} for more
-information and examples.
+windows appear. For more information and examples, see @xref{Controlling
+buffer display,,, ess}.
 
 @item @code{ess-roxy-mode} can now be enabled in non-R buffers.
 This is primarily intended to support roxygen documentation for cpp
@@ -184,13 +188,13 @@ So, for example, R buffers will now show ESS[R] rather than ESS[S].
 If you update the autoloads (which installation from
 @code{package-install} does), you should not need to @code{(require
 'ess-site)} at all, as autoloads should automatically load ESS when it
-is needed (e.g. the first time an R buffer is opened). In order to
-defer loading your ESS config, you may want to do something like
+is needed (e.g. the first time an R buffer is opened). In order to defer
+loading your ESS config, you may want to do something like
 @code{(with-require-after-load "ess" <ess-config-here>)} in your Emacs
-init file. Users of the popular @code{use-package} Emacs package can
-now do @code{(use-package ess :defer t)} to take advantage of this
-behavior. @xref{Activating and Loading ESS,,, ess,} for more
-information on this feature.
+init file. Users of the popular @code{use-package} Emacs package can now
+do @code{(use-package ess :defer t)} to take advantage of this behavior.
+For more information on this feature, see @xref{Activating and Loading
+ESS,,, ess,}.
 
 @item ESS now respects Emacs conventions for keybindings.
 This means that The @code{C-c [letter]} bindings have been
@@ -222,8 +226,8 @@ Users need to install the @code{lintr} package to use it. Customizable
 options include @code{ess-use-flymake}, @code{ess-r-flymake-linters},
 and @code{ess-r-flymake-lintr-cache}.
 
-@item @ESS{[R]}: Gained support for xref in Emacs 25+.
-@xref{Xref,,, emacs, The Gnu Emacs Reference Manual}
+@item @ESS{[R]}: Gained support for xref in Emacs 25+
+@xref{Xref,,, emacs, The Gnu Emacs Reference Manual}.
 
 @item @ESS{[R]}: The startup screen is cleaner.
 It also displays the startup directory with an explicit @code{setwd()}.

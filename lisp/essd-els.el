@@ -36,7 +36,7 @@
 (require 'ess-s-lang)
 (require 'ess-sp6-d)
 (require 'ess-sas-d)
-(require 'ess-stata-mode)
+;;(require 'ess-stata-mode)
 (require 'ess-trns)
 (require 'ess-utils)
 
@@ -92,13 +92,13 @@ The default value is nil."
 (defun ess-select-alist-dialect (&optional dialect)
   "Query user for an ESS DIALECT and return the matching customize-alist."
   (interactive)
-  (let* ((dialects '("R" "S+" "julia" "arc" "vst" "omg" "s3" "s4" "stata" "sp3" "sp4"
-                     "sqpe4" "sp5" "sqpe" "XLS" "SAS"))
+  (let* ((dialects '("R" "S+" "julia" "arc" "vst" "omg" "s3" "s4" ;;"stata" 
+                     "sp3" "sp4" "sqpe4" "sp5" "sqpe" "XLS" "SAS"))
          (dialect (or dialect
                       (ess-completing-read "Dialect" dialects nil t))))
     (cond
      ((string= dialect "julia") ess-julia-customize-alist)
-     ((string= dialect "stata") STA-customize-alist)
+;;     ((string= dialect "stata") STA-customize-alist)
      ((string= dialect "R")     ess-r-customize-alist)
      ((string= dialect "SAS")   SAS-customize-alist)
      (t                         S+elsewhere-customize-alist))))
