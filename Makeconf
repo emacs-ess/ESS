@@ -19,7 +19,7 @@ SITELISP ?= $(PREFIX)/share/emacs/site-lisp
 ESSDESTDIR ?= $(SITELISP)/ess
 EMACSBATCH ?= $(EMACS) -batch -Q
 
-##__ GNU Emacs __  for Mac OS X with NeXTstep (Cocoa or GNUstep)
+##__ GNU Emacs __  for macOS
 # PREFIX=/Applications/Emacs.app/Contents/Resources
 # EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs
 # SITELISP=$(PREFIX)/site-lisp
