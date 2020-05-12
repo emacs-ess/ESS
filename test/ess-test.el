@@ -36,9 +36,6 @@
 (ert-deftest R-mode ()
   (should (string= 'ess-r-mode (with-temp-buffer (R-mode) major-mode))))
 
-(ert-deftest STA-mode ()
-  (should (string= 'ess-stata-mode (with-temp-buffer (STA-mode) major-mode))))
-
 (ert-deftest ess-jags-mode ()
   (should (string= 'ess-jags-mode (with-temp-buffer (ess-jags-mode) major-mode))))
 
