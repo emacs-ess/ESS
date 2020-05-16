@@ -132,6 +132,9 @@ If `ess-plain-first-buffername', then initial process is number-free."
 (defvar-local inferior-ess--local-data nil
   "Program name and arguments used to start the inferior process.")
 
+;; Prompt is not tagged until we have a chance to set the options
+(defvar-local inferior-ess--local-tagged-prompt nil)
+
 (defun inferior-ess (start-args customize-alist &optional no-wait)
   "Start inferior ESS process.
 Without a prefix argument, starts a new ESS process, or switches
@@ -163,9 +166,6 @@ This may be useful for debugging."
   ;; This function is primarily used to figure out the Process and
   ;; buffer names to use for inferior-ess.
   (run-hooks 'ess-pre-run-hook)
-  ;; Always start with untagged prompt, in case REPL was restarted in
-  ;; the inferior buffer
-  (setq ess--has-tagged-prompt nil)
   (let* ((dialect (eval (cdr (assoc 'ess-dialect customize-alist))))
          (process-environment process-environment)
          ;; Use dialect if not R, R program name otherwise
@@ -183,6 +183,9 @@ This may be useful for debugging."
       ;; variables they need.
       (ess-setq-vars-local customize-alist)
       (inferior-ess--set-major-mode ess-dialect)
+      ;; Always start with untagged prompt, in case REPL was restarted in
+      ;; the inferior buffer
+      (setq inferior-ess--local-tagged-prompt nil)
       ;; Set local variables after changing mode because they might
       ;; not be permanent
       (setq default-directory cur-dir)
@@ -393,41 +396,39 @@ defined. If no project directory has been found, use
 ;; FIXME
 (require 'ess-tracebug)
 
-;; Prompt is not tagged until we have a chance to set the options
-(defvar ess--has-tagged-prompt nil)
-
 (defun inferior-ess--process-repl-state (proc string)
   "Internal function to set the status of process PROC.
 Return non-nil if the process is in a ready (not busy) state."
   ;; TODO: do it in one search, use starting position, use prog1
-  (let ((inferior-ess-primary-prompt (if ess--has-tagged-prompt
-                                         ess-r--tagged-prompt-regexp
-                                       ess-r--initial-prompt-regexp))
-        (inferior-ess-secondary-prompt (if ess--has-tagged-prompt
-                                           ess-r--tagged-prompt-continue-regexp
-                                         ess-r--initial-prompt-continue-regexp)))
-    (let ((ready (string-match-p (concat "\\(" inferior-ess-primary-prompt "\\)\\'") string)))
-      (process-put proc 'busy-end? (and ready (process-get proc 'busy)))
-      ;; When "\n" inserted from inferior-ess-available-p, delete the prompt.
-      (when (and ready
-                 (process-get proc 'availability-check)
-                 (string-match-p (concat "^" inferior-ess-primary-prompt "\\'") string))
-        (process-put proc 'suppress-next-output? t))
-      (process-put proc 'availability-check nil)
-      (when ready
-        (process-put proc 'running-async? nil))
-      (process-put proc 'busy (not ready))
-      (if inferior-ess-secondary-prompt
-          (let ((is-incomplete (ess--has-trailing-continue-prompt string)))
-            (when is-incomplete
-              (process-put proc 'sec-prompt t))
-            ;; Remove all continuation prompts except the trailing one.
-            (let* ((string (replace-regexp-in-string ess-r--tagged-prompt-continue-regexp "" string))
-                   (string (if is-incomplete
-                               (concat string ess-r-prompt-continue)
-                             string)))
-              (cons string ready)))
-        (cons string ready)))))
+  (with-current-buffer (process-buffer proc)
+    (let ((inferior-ess-primary-prompt (if inferior-ess--local-tagged-prompt
+                                           ess-r--tagged-prompt-regexp
+                                         ess-r--initial-prompt-regexp))
+          (inferior-ess-secondary-prompt (if inferior-ess--local-tagged-prompt
+                                             ess-r--tagged-prompt-continue-regexp
+                                           ess-r--initial-prompt-continue-regexp)))
+      (let ((ready (string-match-p (concat "\\(" inferior-ess-primary-prompt "\\)\\'") string)))
+        (process-put proc 'busy-end? (and ready (process-get proc 'busy)))
+        ;; When "\n" inserted from inferior-ess-available-p, delete the prompt.
+        (when (and ready
+                   (process-get proc 'availability-check)
+                   (string-match-p (concat "^" inferior-ess-primary-prompt "\\'") string))
+          (process-put proc 'suppress-next-output? t))
+        (process-put proc 'availability-check nil)
+        (when ready
+          (process-put proc 'running-async? nil))
+        (process-put proc 'busy (not ready))
+        (if inferior-ess-secondary-prompt
+            (let ((is-incomplete (ess--has-trailing-continue-prompt string)))
+              (when is-incomplete
+                (process-put proc 'sec-prompt t))
+              ;; Remove all continuation prompts except the trailing one.
+              (let* ((string (replace-regexp-in-string ess-r--tagged-prompt-continue-regexp "" string))
+                     (string (if is-incomplete
+                                 (concat string ess-r-prompt-continue)
+                               string)))
+                (cons string ready)))
+          (cons string ready))))))
 
 (defun ess--has-trailing-continue-prompt (string)
   (let ((len (length string))

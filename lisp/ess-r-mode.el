@@ -1360,10 +1360,10 @@ selected (see `ess-r-set-evaluation-env')."
                       ess-r--prompt
                       ess-r--prompt-continue)))
     (with-current-buffer (ess-command cmd)
-      (setq ess--has-tagged-prompt t)
       (let ((msg (buffer-string)))
         (when (> (length msg) 1)
-          (message (format "Messages while loading ESSR: %s" msg)))))))
+          (message (format "Messages while loading ESSR: %s" msg)))))
+    (ess-set-process-variable 'inferior-ess--local-tagged-prompt t)))
 
 (defun ess-r--load-ESSR-remote (&optional chunked)
   (ess-command (format ".ess.ESSRversion <- '%s'\n" essr-version))
