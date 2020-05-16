@@ -1406,12 +1406,12 @@ Used to decide highlighting and tag completion."
                                  "seealso" "source" "docType"
                                  "title" "TODO" "usage" "import"
                                  "exportClass" "exportPattern" "S3method"
-                                 "inheritParams"
+                                 "inherit" "inheritParams" "inheritSection"
                                  "importFrom" "importClassesFrom"
                                  "importMethodsFrom" "useDynLib"
                                  "rawNamespace"
                                  "rdname" "section" "slot" "description"
-                                 "md" "eval")
+                                 "md" "eval" "family")
   "The tags used in roxygen fields that require a parameter.
 Used to decide highlighting and tag completion."
   :group 'ess-roxy
