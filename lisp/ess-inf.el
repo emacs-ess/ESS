@@ -180,10 +180,10 @@ This may be useful for debugging."
       ;; variables they need.
       (ess-setq-vars-local customize-alist)
       (inferior-ess--set-major-mode ess-dialect)
-        ;; Set local variables after changing mode because they might
-        ;; not be permanent
-        (setq default-directory cur-dir)
-        (setq inferior-ess--local-data (cons inferior-ess-program start-args))
+      ;; Set local variables after changing mode because they might
+      ;; not be permanent
+      (setq default-directory cur-dir)
+      (setq inferior-ess--local-data (cons inferior-ess-program start-args))
       ;; Read the history file
       (when ess-history-file
         (setq comint-input-ring-file-name
