@@ -43,6 +43,7 @@
   (should (string= 'ess-bugs-mode (with-temp-buffer (ess-bugs-mode) major-mode))))
 
 (ert-deftest ess-julia-mode ()
+  (skip-unless (and (require 'julia-mode nil t) (require 'ess-julia)))
   (should (string= 'ess-julia-mode (with-temp-buffer (ess-julia-mode) major-mode))))
 
 (ert-deftest sas-mode ()

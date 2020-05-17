@@ -39,7 +39,11 @@
 (require 'ess-inf)
 (require 'ess-r-mode)
 (require 'ess-utils)
-(require 'julia-mode)
+;; Don't require `julia-mode' to compile this file.
+(when t (require 'julia-mode))
+(declare-function julia-mode "julia-mode" ())
+(declare-function julia-latexsub "julia-mode" ())
+(defvar julia-mode-syntax-table)
 
 (defvar ac-prefix)
 (declare-function company-in-string-or-comment "company")
