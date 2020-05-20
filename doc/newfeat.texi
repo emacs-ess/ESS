@@ -3,6 +3,12 @@
 
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
+
+@item ESS[R]: Evaluated lines starting with the Roxygen prefix
+are now always stripped from the prefix, so they can be sent to the
+process easily. Previously, this was only the case inside the
+@code{examples} field. Since roxygen is switching to R markdown, it
+becomes useful to evaluate chunks of R outside examples.
   
 @item stata support is now obsolete since we were unable to elicit
 FSF paperwork from some of the original authors: see the lisp/obsolete
