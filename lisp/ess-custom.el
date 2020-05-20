@@ -1821,17 +1821,18 @@ Otherwise, they get their own temporary buffer."
 
 (defvaralias 'ess-eval-visibly-p 'ess-eval-visibly)
 
-(defcustom ess-eval-visibly nil
+(defcustom ess-eval-visibly 'nowait
   "Non-nil means ess-eval- commands display commands in the process buffer.
+If 'nowait (the default), ESS shows input commands in the process
+buffer, but doesn't wait for the process. Thus all the output is
+printed after the input lines.
+
 If t, ESS waits after each line of the command for the process
 output. This results in a nice sequence of input and output but
 stalls Emacs on long output (like Sys.sleep(5) in R).
 
-If 'nowait, ESS still shows the input commands, but don't wait
-for the process. Thus all the output is printed after the input
-lines.
-
-If nil, ESS doesn't print input commands and doesn't wait for the process.
+If nil, ESS doesn't print input commands and doesn't wait for the
+process.
 
 This variable also affect the evaluation of input code in
 iESS. The effect is similar to the above. If t then ess waits for
