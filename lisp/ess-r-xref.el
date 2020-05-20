@@ -38,9 +38,10 @@
 
 (defvar ess-r-xref-pkg-sources nil
   "Alist of R package->directory associations.
-This variable is used as a cache of package->directory
-associations, but could be used by the users for a more refined
-control of package locations than `ess-r-package-library-paths'.")
+Each element is a cons cell (PACKAGE . DIRECTORY). This variable
+is used as a cache of package->directory associations, but could
+be used by the users for a more refined control of package
+locations than `ess-r-package-library-paths'.")
 
 (defun ess-r-xref-backend ()
   "An `xref-backend-functions' implementation for `ess-r-mode'.
@@ -79,27 +80,32 @@ srcrefs point to temporary locations."
         (goto-char (match-beginning 0))
         (read (current-buffer))))))
 
-(defun ess-r-xref--pkg-srcfile (symbol r-src-file)
-  "Look in the source directory of the R package containing symbol SYMBOL for R-SRC-FILE."
-  (let* ((env-name (ess-string-command (format ".ess_fn_pkg(\"%s\")\n" symbol)))
-         (pkg (if (string-equal env-name "")
-                  (user-error "Can't find package for symbol %s" symbol)
-                env-name))
-         (dir (or (assoc-default pkg ess-r-xref-pkg-sources)
-                  (cond ((stringp ess-r-package-library-paths)
-                         (expand-file-name pkg ess-r-package-library-paths))
-                        ((listp ess-r-package-library-paths)
-                         (cl-loop for d in ess-r-package-library-paths
-                                  for p = (expand-file-name pkg d)
-                                  when (file-exists-p p) return p))
-                        (t (user-error "Invalid value of `ess-r-package-library-paths'")))))
-         (file (when dir (expand-file-name r-src-file dir))))
+(defun ess-r-xref--pkg-srcfile (symbol src-file &optional default-pkg)
+  "Look in the source directory of the R package containing symbol SYMBOL for SRC-FILE.
+DEFAULT-PKG is the name of the package where presumably SYMBOL is located."
+  (let* ((pkgs (delq nil
+                     (delete-dups
+                      (or (cons default-pkg
+                                (ess-get-words-from-vector (format ".ess_fn_pkg(\"%s\")\n" symbol)))
+                          (user-error "Can't find package for symbol %s" symbol)))))
+         (lib-dirs (cond ((stringp ess-r-package-library-paths)
+                          (list ess-r-package-library-paths))
+                         ((listp ess-r-package-library-paths)
+                          ess-r-package-library-paths)
+                         (t (user-error "Invalid value of `ess-r-package-library-paths'"))))
+         (pkg.dir (or (when (= (length pkgs) 1)
+                        (cons (car pkgs) (assoc-default (car pkgs) ess-r-xref-pkg-sources)))
+                      (cl-loop for pkg in pkgs
+                               for d in lib-dirs
+                               for p = (expand-file-name pkg d)
+                               when (file-exists-p p) return (cons pkg p))))
+         (file (when pkg.dir (expand-file-name src-file (cdr pkg.dir)))))
     (when file
       (unless (file-readable-p file)
         (user-error "Can't read %s" file))
       ;; Cache package's source directory.
-      (unless (assoc pkg ess-r-xref-pkg-sources)
-        (push `(,pkg . ,dir) ess-r-xref-pkg-sources))
+      (unless (assoc (car pkg.dir) ess-r-xref-pkg-sources)
+        (push pkg.dir ess-r-xref-pkg-sources))
       file)))
 
 (defun ess-r-xref--xref (symbol)
@@ -120,8 +126,9 @@ srcrefs point to temporary locations."
          (when (file-readable-p file)
            (xref-make symbol (xref-make-file-location file line col)))
          ;; 3) Temporary sources - truncate and locate in ess-r-package-library-paths
-         (when (string-match "/\\(R/.*\\)$" file)
-           (let ((pkg-file (ess-r-xref--pkg-srcfile symbol (match-string 1 file))))
+         (when (string-match "/\\([^/]+\\)/\\(R/.*\\)$" file)
+           (let ((pkg-file (ess-r-xref--pkg-srcfile
+                            symbol (match-string 2 file) (match-string 1 file))))
              (when pkg-file
                (xref-make symbol (xref-make-file-location
                                   (expand-file-name pkg-file) line col))))))))))

@@ -37,6 +37,15 @@ local({
         env <- globalenv()
     }
     fn <- .ess_eval(name, env)
+    if (is.null(fn)) {
+        objs <- getAnywhere(name)$objs
+        for (o in objs) {
+            if (is.function(o)) {
+                fn <- o
+                break;
+            }
+        }
+    }
     out <- "()\n"
     if (is.function(fn) && !is.null(utils::getSrcref(fn))) {
         file <- utils::getSrcFilename(fn, full.names = TRUE)
@@ -46,21 +55,13 @@ local({
             out <- sprintf("(\"%s\" %d %d)\n", file, line, col - 1)
         }
     }
-    cat(out)
+    base::cat(out)
 }
 
 
 .ess_fn_pkg <- function(fn_name) {
-    fn <- .ess_eval(fn_name)
-    env_name <- base::environmentName(base::environment(fn))
-    out <- if (base::is.primitive(fn)) { # environment() does not work on primitives.
-               "base"
-           } else if (base::is.function(fn) && env_name != "R_GlobalEnv") {
-               env_name
-           } else {
-               ""
-           }
-    base::cat(base::sprintf("%s\n", out))
+    objs <- utils::getAnywhere(fn_name)
+    base::print(base::sub("(package|namespace):", "", objs$where))
 }
 
 .ess_funargs <- function(funname) {

@@ -61,10 +61,11 @@ See also `ess-r-set-evaluation-env' and `ess-r-evaluation-env'."
   "Current package info cache.
 See `ess-r-package-info' for its structure.")
 
-(define-obsolete-variable-alias 'ess-r-package-library-path 'ess-r-package-library-paths "v18.04")
 (defcustom ess-r-package-library-paths nil
   "Default path to find user packages.
-Can be either a string specifying a directory or a list of directories."
+Can be either a string specifying a directory or a list of
+directories. This variable is also consulted by
+`xref-find-definitions' in R buffers. See `ess-r-xref-backend'."
   :group 'ess-r-package-library-paths
   :type `(choice string (repeat string)))
 
