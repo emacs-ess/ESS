@@ -818,23 +818,7 @@ Assumes point is at the beginning of the function."
   "Remove `ess-roxy-str' from STRING before sending to R process.
 Useful for sending code from example section. This function is
 placed in `ess-presend-filter-functions'."
-  ;; Only strip the prefix in the @examples field, and only when
-  ;; STRING is entirely contained inside it. This allows better
-  ;; behavior for evaluation of regions.
-  (let ((roxy-re ess-roxy-re))
-    (if (and (ess-roxy-entry-p "examples")
-             ;; don't send just @examples if we're looking at a line
-             ;; like: ##' @examples
-             (not (string-match-p (concat roxy-re "[[:space:]]*@") string))
-             ;; (with-temp-buffer
-             ;;   ;; Need to carry the buffer-local value of
-             ;;   ;; `ess-roxy-re' into the temp buffer:
-             ;;   (setq ess-roxy-re roxy-re)
-             ;;   (insert string)
-             ;;   (ess-roxy-entry-p))
-             )
-        (replace-regexp-in-string (concat ess-roxy-re "\\s-*") "" string)
-      string)))
+  (replace-regexp-in-string (concat ess-roxy-re "\\s-*") "" string))
 
 (defun ess-roxy-find-par-end (stop-point &rest stoppers)
   (mapc #'(lambda (stopper)
