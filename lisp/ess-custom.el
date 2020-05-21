@@ -1802,7 +1802,7 @@ Set to nil if language doesn't support secondary prompt.")
 
 ;; Need this to recognize prompts of the form  + + + > > >
 ;; and "+ . + ", but not "Abcd. "
-(defvar inferior-S-prompt "[]a-zA-Z0-9.[]*[>+] \\(?:[>+.] \\)*"
+(defvar inferior-S-prompt "[]a-zA-Z0-9.[]*[+ ]*> \\(?:[>+.] \\)*"
   "Regexp used in S and R inferior and transcript buffers for prompt navigation.
 Must not be anchored to BOL.")
 
