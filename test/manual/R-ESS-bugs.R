@@ -951,3 +951,8 @@ new <- old+1 # line 2, use ess-eval-line-and-step, i.e., C-c C-n
 ## ----------------------------------------------------------
 
 ## MM: have other examples  which are still buggy (but not "here")
+
+
+### Local Variables:
+### page-delimiter: "^### --- [1-9]"
+### End:
