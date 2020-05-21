@@ -21,7 +21,7 @@ local({
 
 .ess_eval <- function(str, env = globalenv()) {
     ## don't remove; really need eval(parse(  here!!
-    tryCatch(base::eval(base::parse(text=str), envir = env),
+    tryCatch(eval(parse(text=str), envir = env),
              error=function(e) NULL) ## also works for special objects containing @:$ etc
 }
 
@@ -38,7 +38,7 @@ local({
     }
     fn <- .ess_eval(name, env)
     if (is.null(fn)) {
-        objs <- getAnywhere(name)$objs
+        objs <- utils::getAnywhere(name)$objs
         for (o in objs) {
             if (is.function(o)) {
                 fn <- o
@@ -55,13 +55,13 @@ local({
             out <- sprintf("(\"%s\" %d %d)\n", file, line, col - 1)
         }
     }
-    base::cat(out)
+    cat(out)
 }
 
 
 .ess_fn_pkg <- function(fn_name) {
     objs <- utils::getAnywhere(fn_name)
-    base::print(base::sub("(package|namespace):", "", objs$where))
+    print(sub("(package|namespace):", "", objs$where))
 }
 
 .ess_funargs <- function(funname) {
