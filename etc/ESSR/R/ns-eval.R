@@ -392,7 +392,7 @@
 
 .ess.ns_insert_essenv <- function(nsenv) {
     if (is.character(nsenv))
-        nsenv <- base::asNamespace(nsenv)
+        nsenv <- asNamespace(nsenv)
     stopifnot(isNamespace(nsenv))
     if (identical(nsenv, .BaseNamespaceEnv))
         return(.GlobalEnv)
