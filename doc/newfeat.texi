@@ -20,7 +20,9 @@ directory (as defined by the buffer-local variable
 Instead, the active directory of the inferior buffer is updated to the
 new working directory.
 
-@item The default of ess-eval-visibly is now nil.
+@item The default of ess-eval-visibly is now @code{'nowait}.
+With this change you should no longer experience freezes while
+evaluating code.
 
 @item ESS[R]: There is a new menu entry for reloading the R process.
 It is otherwise bound to @code{C-c C-e C-r}. Reloading now reuses the
