@@ -1823,9 +1823,9 @@ Otherwise, they get their own temporary buffer."
 
 (defcustom ess-eval-visibly 'nowait
   "Non-nil means ess-eval- commands display commands in the process buffer.
-If 'nowait (the default), ESS shows input commands in the process
-buffer, but doesn't wait for the process. Thus all the output is
-printed after the input lines.
+If 'nowait, ESS shows input commands in the process buffer, but
+doesn't wait for the process. Thus all the output is printed
+after the input lines.
 
 If t, ESS waits after each line of the command for the process
 output. This results in a nice sequence of input and output but
