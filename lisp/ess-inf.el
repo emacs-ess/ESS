@@ -2540,6 +2540,7 @@ directory in the `load-path'."
 
 (defun ess-complete-filename ()
   "Do file completion only within strings."
+  (declare (obsolete comint-filename-completion "ESS 19.04"))
   (save-restriction ;; explicitly handle inferior-ess
     (ignore-errors
       (when (and (derived-mode-p 'inferior-ess-mode)
@@ -2553,6 +2554,7 @@ directory in the `load-path'."
   ;; Heuristic: after partial pathname if it looks like we're in a
   ;; string, and that string looks like a pathname. Not the best for
   ;; use with unix() (or it's alias, !). Oh well.
+  (declare (obsolete comint-filename-completion "ESS 19.04"))
   (save-excursion
     (save-match-data
       (let ((opoint (point)))
