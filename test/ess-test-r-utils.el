@@ -1,4 +1,4 @@
-;; ess-test-r-utils.el --- Various utilities for ess R tests
+;; ess-test-r-utils.el --- Various utilities for ess R tests  -*- lexical-binding: t; -*-
 ;;
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by

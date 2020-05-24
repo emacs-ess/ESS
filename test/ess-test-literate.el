@@ -1,4 +1,4 @@
-;;; ess-test-literate.el --- ESS literate tests
+;;; ess-test-literate.el --- ESS literate tests  -*- lexical-binding: t; -*-
 
 
 ;;; Commentary:
@@ -12,6 +12,15 @@
 (eval-when-compile
   (require 'cl-lib))
 (require 'ert)
+
+(defvar elt-section-pattern)
+(defvar elt-chunk-pattern)
+(defvar elt-code-pattern)
+(defvar chunk-end)
+(defvar elt-code-cont-pattern)
+(defvar test-case)
+(defvar test-case-state)
+(defvar elt-mode-init)
 
 (defmacro elt-deftest (name args file)
   `(ert-deftest ,name ,args
