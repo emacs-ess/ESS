@@ -263,6 +263,7 @@ generated the latter from NAME."
       buf)))
 
 (defun ess--accumulation-buffer (proc)
+  "Return, creating if needed, the accumulation buffer for PROC."
   (let ((abuf (process-get proc :accum-buffer)))
     (if (buffer-live-p abuf)
         abuf
@@ -287,7 +288,9 @@ Default depends on the ESS language/dialect and hence made buffer local")
 Default depends on the ESS language/dialect and hence made buffer local")
 
 (defun inferior-ess-fontify-region (beg end &optional verbose)
-  "Fontify output by output to avoid fontification spilling over prompts."
+  "Fontify output by output to avoid fontification spilling over prompts.
+BEG and END signify the bounds, VERBOSE gets passed to
+`font-lock-default-fontify-region'."
   (let* ((buffer-undo-list t)
          (inhibit-point-motion-hooks t)
          (font-lock-dont-widen t)
@@ -315,14 +318,14 @@ See `ess-gen-proc-buffer-name-function'."
   (format "*%s*" proc-name))
 
 (defun ess-gen-proc-buffer-name:directory (proc-name)
-  "Function to generate buffer name by wrapping PROC-NAME in *PROC-NAME:DIR-NAME*.
+  "Return a buffer name by wrapping PROC-NAME in *PROC-NAME:DIR-NAME*.
 DIR-NAME is a short directory name. See
 `ess-gen-proc-buffer-name-function'."
   (format "*%s:%s*" proc-name (file-name-nondirectory
                                (directory-file-name default-directory))))
 
 (defun ess-gen-proc-buffer-name:abbr-long-directory (proc-name)
-  "Function to generate buffer name in the form *PROC-NAME:ABBREVIATED-LONG-DIR-NAME*.
+  "Return a buffer name in the form *PROC-NAME:ABBREVIATED-LONG-DIR-NAME*.
 PROC-NAME is a string representing an internal process
 name. ABBREVIATED-LONG-DIR-NAME is an abbreviated full directory
 name. Abbreviation is performed by `abbreviate-file-name'. See
@@ -408,6 +411,7 @@ Return non-nil if the process is in a ready (not busy) state."
     ready))
 
 (defun inferior-ess-mark-as-busy (proc)
+  "Put PROC's busy value to t."
   (process-put proc 'busy t)
   (process-put proc 'sec-prompt nil))
 
@@ -435,6 +439,7 @@ Return non-nil if the process is in a ready (not busy) state."
           (error (message "%s" (error-message-string err))))))))
 
 (defun ess--if-verbose-write-process-state (proc string &optional filter)
+  "Write informaiton about PROC, STRING, and FILTER to the dribble buffer."
   (ess-if-verbose-write
    (format "\n%s:
     --> busy:%s busy-end:%s sec-prompt:%s interruptable:%s <--
@@ -480,8 +485,8 @@ flash or you'll hear a beep.  Taken from octave-mod.el."
   string)
 
 (defun ess-process-sentinel (proc message)
-  "Sentinel for use with ESS processes.
-This marks the process with a message, at a particular time point."
+  "Sentinel for use with ESS processes PROC.
+This marks the process with a MESSAGE, at a particular time point."
   (let ((abuf (process-get proc :accum-buffer)))
     (when (buffer-live-p abuf)
       (kill-buffer abuf)))
@@ -545,6 +550,7 @@ process-less buffer because it was created with
 ;; FIXME EMACS 25.1:
 ;; Deprecate `ess-directory-function' in favor of `project-find-functions'?
 (defun inferior-ess--get-startup-directory ()
+  "Return a startup directory."
   (let ((dir (or (and ess--enable-experimental-projects
                       (fboundp 'project-current)
                       (cdr (project-current)))
@@ -648,6 +654,7 @@ happens interactively (when possible)."
         (t (error "Process %s is not running" name))))
 
 (defun inferior-ess-default-directory ()
+  "Return the `default-directory' of the process."
   (ess-get-process-variable 'default-directory))
 
 ;;--- Unfinished idea (ESS-help / R-help ) -- probably not worth it...
@@ -695,12 +702,12 @@ process was killed. PROC defaults to `ess-local-process-name'"
               (process-live-p proc)))))
 
 (defun ess-process-get (propname &optional proc)
-  "Return the variable PROPNAME (symbol) from the plist of the current ESS process.
+  "Return the variable PROPNAME (symbol) of the current ESS process.
 PROC defaults to process with name `ess-local-process-name'."
   (process-get (or proc (get-process ess-local-process-name)) propname))
 
 (defun ess-process-put (propname value &optional proc)
-  "Set the variable PROPNAME (symbol) to VALUE in the plist of the current ESS process.
+  "Set the variable PROPNAME (symbol) to VALUE in the current ESS process.
 PROC defaults to the process given by `ess-local-process-name'"
   (process-put (or proc (get-process ess-local-process-name)) propname value))
 
@@ -2144,7 +2151,7 @@ to the command if BUFF is not given.)"
 ;;;*;;; Quitting
 
 (cl-defgeneric ess-quit--override (_arg)
-  "Stops the inferior process"
+  "Stop the inferior process."
   (let ((proc (ess-get-process)))
     (ess-cleanup)
     (goto-char (marker-position (process-mark proc)))
@@ -2251,7 +2258,7 @@ START-ARGS gets passed to the dialect-specific
   (user-error "Reloading not implemented for %s" ess-dialect))
 
 (defun inferior-ess--wait-for-exit (proc)
-  "Wait for process exit.
+  "Wait for process PROC to exit.
 This should be used instead of `ess-wait-for-process' for waiting
 after issuing a quit command as the latter assumes a live process."
   (let ((start-time (float-time)))
@@ -2306,9 +2313,9 @@ Returns nil if that file cannot be found, i.e., for R or any non-S language!"
                 (> (car (cdr mod1)) (car (cdr mod2)))))))
 
 (defun ess-get-object-list (name &optional exclude-first)
-  "Return a list of current S object names associated with process NAME,
-using `ess-object-list' if that is non-nil.
-If exclude-first is non-nil, don't return objects in first positon (.GlobalEnv)."
+  "Return a list of current S object names associated with process NAME.
+Uses `ess-object-list' if that is non-nil. If EXCLUDE-FIRST is
+non-nil, don't return objects in first positon (.GlobalEnv)."
   (or ess-object-list ;; <<-  MM: this is now always(?) nil; we cache the *-modtime-alist
       (with-current-buffer (process-buffer (ess-get-process name))
         (ess-make-buffer-current)
@@ -2714,7 +2721,7 @@ P-STRING is the prompt string."
 (defvar ess--handy-history nil)
 
 (defun ess-handy-commands ()
-  "Request and execute a command from `ess-handy-commands' list."
+  "Request and execute a command from variable `ess-handy-commands'."
   (interactive)
   (let* ((commands (or ess--local-handy-commands
                        ess-handy-commands))
