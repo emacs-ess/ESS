@@ -1259,8 +1259,10 @@ selected (see `ess-r-set-evaluation-env')."
   ;; Ugly hack to avoid tcl/tk dialogues
   (let ((pkgs (ess-get-words-from-vector
                (format "as.character(utils::help('%s'))\n" object))))
-    (when (> (length pkgs) 1)
-      (ess-completing-read "Choose location" pkgs nil t))))
+    (if (and (> (length pkgs) 1)
+             (not noninteractive))
+        (ess-completing-read "Choose location" pkgs nil t)
+      (car pkgs))))
 
 (defun ess-r-build-help-command--unqualified (object)
   (if (eq ess-help-type 'index)

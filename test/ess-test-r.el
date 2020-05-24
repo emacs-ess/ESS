@@ -620,7 +620,8 @@ x <- function(x){
       ;; `ess-r-help-mode', Bug#836
       (forward-button 2)
       (push-button)
-      (should (equal ess-help-object "plot.default"))
+      (should (or (equal ess-help-object "plot.default")
+                  (equal ess-help-object "plot")))
       (should (derived-mode-p 'ess-r-help-mode)))))
 
 (ert-deftest ess-test-r-index-mode ()

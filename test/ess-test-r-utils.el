@@ -18,6 +18,7 @@
 
 ;;; Code:
 (require 'ert)
+(require 'ess-r-mode)
 
 (defvar ess-test-fixtures-directory
   (expand-file-name "fixtures"
