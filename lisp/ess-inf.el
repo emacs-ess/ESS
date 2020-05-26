@@ -2154,8 +2154,9 @@ to the command if BUFF is not given.)"
   "Stop the inferior process."
   (let ((proc (ess-get-process)))
     (ess-cleanup)
-    (goto-char (marker-position (process-mark proc)))
-    (insert inferior-ess-exit-command)
+    (when ess-eval-visibly
+      (goto-char (marker-position (process-mark proc)))
+      (insert inferior-ess-exit-command))
     (process-send-string proc inferior-ess-exit-command)))
 
 (defun ess-quit (&optional arg)
