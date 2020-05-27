@@ -564,6 +564,11 @@ can use `ess--busy-slash', `ess--busy-B',`ess--busy-stars',
 (defvar ess--busy-timer nil
   "Timer used for busy process indication.")
 
+(defcustom inferior-ess-fix-misaligned-output nil
+  "If non-nil, try to correct misaligned process output."
+  :group 'ess-tracebug
+  :type 'boolean)
+
 (defcustom inferior-ess-replace-long+ t
   "Determines if ESS replaces long + sequences in output.
 If 'strip, remove all such instances.  Otherwise, if non-nil, '+
@@ -1306,8 +1311,9 @@ value as it might be a continuation prompt."
          (t (error "Invalid values of `inferior-ess-replace-long+'")))))))
 
 (defun ess--offset-output (prev-prompt str)
-  "Add suitable offset to STR given the preceding PREV-PROMPT."
-  (if prev-prompt
+  "Add suitable offset to STR given the preceding PREV-PROMPT.
+Do nothing if `inferior-ess-fix-misaligned-output' is nil."
+  (if (and inferior-ess-fix-misaligned-output prev-prompt)
       (let ((len (length prev-prompt)))
         ;; prompts have at least 2 chars
         (if (eq (elt prev-prompt (- len 2)) ?+)
