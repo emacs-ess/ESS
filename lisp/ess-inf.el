@@ -2265,7 +2265,7 @@ after issuing a quit command as the latter assumes a live process."
   (let ((start-time (float-time)))
     (while (eq (process-status proc) 'run)
       (accept-process-output proc 0.002)
-      (when (> (- (float-time) start-time) 1)
+      (when (> (- (float-time) start-time) 30)
         (error "Timeout while quitting process")))))
 
 
