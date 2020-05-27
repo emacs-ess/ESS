@@ -249,6 +249,7 @@ OUT-STRING is the content of the region captured by
 
 (ert-deftest ess-inf-send-complex-input-test ()
   (let ((ess-eval-visibly nil)
+        (inferior-ess-fix-misaligned-output t)
         (input "identity(
   identity(
     identity(
@@ -288,7 +289,8 @@ cleaned-prompts >
       )))
 
 (ert-deftest ess-inf-send-cat-some.text-test ()
-  (let ((input "cat(\"some. text\\n\")
+  (let ((inferior-ess-fix-misaligned-output t)
+        (input "cat(\"some. text\\n\")
 head(cars, 2)
 ")
         (output "some. text

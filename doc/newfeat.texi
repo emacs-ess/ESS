@@ -4,6 +4,10 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item ESS[R]: Automatic offsetting of R process output is now disabled by default
+because it produces undesirable output in some situations. To re-enable,
+set @code{inferior-ess-fix-misaligned-output} to t.
+
 @item ESS[R]: Improved @code{xref} lookup (@kbd{M-.}).
 Function locations are now always detected for package libraries listed
 in @code{ess-r-package-library-paths}.
