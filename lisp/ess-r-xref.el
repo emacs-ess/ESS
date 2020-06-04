@@ -93,16 +93,17 @@ DEFAULT-PKG is the name of the package where presumably SYMBOL is located."
                          ((listp ess-r-package-library-paths)
                           ess-r-package-library-paths)
                          (t (user-error "Invalid value of `ess-r-package-library-paths'"))))
-         (loc (or (when (= (length pkgs) 1)
-                    (cons (car pkgs) (assoc-default (car pkgs) ess-r-xref-pkg-sources)))
+         (loc (or (cl-loop for pkg in pkgs
+                           for dir = (assoc-default pkg ess-r-xref-pkg-sources)
+                           when (file-exists-p dir) return (cons pkg dir))
                   (cl-loop for pkg in pkgs
-                           for d in lib-dirs
-                           for p = (expand-file-name pkg d)
-                           when (file-exists-p p) return (cons pkg p))))
+                           for dir in lib-dirs
+                           for path = (expand-file-name pkg dir)
+                           when (file-exists-p path) return (cons pkg path))))
          (file (when loc (expand-file-name src-file (cdr loc)))))
     (when file
       (unless (file-readable-p file)
-        (user-error "Can't read %s" file))
+        (error "Can't read %s" file))
       ;; Cache package's source directory.
       (unless (assoc (car loc) ess-r-xref-pkg-sources)
         (push loc ess-r-xref-pkg-sources))
