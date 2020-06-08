@@ -1,34 +1,33 @@
 ;;; ess-utils.el --- General Emacs utility functions used by ESS  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1998--2010 A.J. Rossini, Richard M. Heiberger, Martin
-;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
-;; Copyright (C) 2011--2017 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
-;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
-
+;; Copyright (C) 1998-2020 Free Software Foundation, Inc.
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
 
-;; This file is part of ESS (Emacs Speaks Statistics).
+;; This file is part of GNU Emacs.
 
-;; This file is free software; you can redistribute it and/or modify
+;;; License:
+;;
+;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation; either version 2, or (at your option)
-;; any later version.
-
-;; This file is distributed in the hope that it will be useful,
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
-;; A copy of the GNU General Public License is available at
-;; https://www.r-project.org/Licenses/
-
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see
+;; <http://www.gnu.org/licenses/>
 
 ;;; Commentary:
 ;; Various utilities for ESS.
 
 ;;; Code:
+
 (require 'cl-lib)
 (require 'comint)
 (eval-when-compile
@@ -955,23 +954,6 @@ Otherwise treat \\ in NEWTEXT string as special:
                               (char-to-string c)))))
                        newtext ""))))))
     (concat rtn-str (substring str start))))
-
-;;- From: friedman@gnu.ai.mit.edu (Noah Friedman)
-;;- Date: 12 Feb 1995 21:30:56 -0500
-;;- Newsgroups: gnu.emacs.sources
-;;- Subject: nuke-trailing-whitespace
-;;-
-;;- This is too trivial to make into a big todo with comments and copyright
-;;- notices whose length exceed the size of the actual code, so consider it
-;;- public domain.  Its purpose is along similar lines to that of
-;;- `require-final-newline', which is built in.  I hope the names make it
-;;- obvious.
-
-;; (add-hook 'write-file-hooks 'nuke-trailing-whitespace)
-;;or at least
-;; (add-hook 'ess-mode-hook
-;;         (lambda ()
-;;           (add-hook 'local-write-file-hooks 'nuke-trailing-whitespace)))
 
 (defvar ess-nuke-trailing-whitespace-p nil;disabled by default  'ask
   "[Dis]activates (ess-nuke-trailing-whitespace).

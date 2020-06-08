@@ -1,31 +1,27 @@
 ;;; ess-site.el --- user customization of ESS  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1993 David M. Smith
-;; Copyright (C) 1997--2010 A.J. Rossini, Richard M. Heiberger, Martin
-;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
-;; Copyright (C) 2011--2018 A.J. Rossini, Richard M. Heiberger, Martin
-;;      Maechler, Kurt Hornik, Rodney Sparapani, Stephen Eglen,
-;;      Vitalie Spinu, and Lionel Henry.
-
+;; Copyright (C) 1993-2020 Free Software Foundation, Inc.
 ;; Author: David Smith <D.M.Smith@lancaster.ac.uk>
 ;; Created: 12 Nov 1993
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
-;; Keywords: local
 
-;; This file is part of ESS
+;; This file is part of GNU Emacs.
 
-;; This file is free software; you can redistribute it and/or modify
+;;; License:
+;;
+;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation; either version 2, or (at your option)
-;; any later version.
-
-;; This file is distributed in the hope that it will be useful,
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
-;; A copy of the GNU General Public License is available at
-;; https://www.r-project.org/Licenses/
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see
+;; <http://www.gnu.org/licenses/>
 
 ;;; Commentary:
 
@@ -58,9 +54,7 @@
 ;;; Loading popular dialects (they should become optional in the future)
 
 (require 'ess-r-mode)
-(require 'ess-julia)
 (require 'essd-els) ;; ess-remote
-;;(require 'ess-stata-mode)
 (require 'ess-sas-d)
 (require 'ess-bugs-d)
 (require 'ess-jags-d)

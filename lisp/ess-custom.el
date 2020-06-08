@@ -1,15 +1,27 @@
 ;;; ess-custom.el --- Customize variables for ESS  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1997--2010 A.J. Rossini, Richard M. Heiberger, Martin
-;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
-;; Copyright (C) 2011--2015 A.J. Rossini, Richard M. Heiberger, Martin Maechler,
-;;      Kurt Hornik, Rodney Sparapani, Stephen Eglen and Vitalie Spinu.
+;; Copyright (C) 1997-2020 Free Software Foundation, Inc.
 
-;; Author: A.J. Rossini <blindglobe@gmail.com>
-;; Created: 05 June 2000
-;; Maintainer: ESS-core <ESS-core@r-project.org>
-
+;; Author: Rodney Sparapani
+;; Maintainer: ESS-help <ess-help@r-project.org>
 ;; Keywords: languages
+
+;; This file is part of GNU Emacs
+
+;; This file is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 2, or (at your option)
+;; any later version.
+;;
+;; This file is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; A copy of the GNU General Public License is available at
+;; https://www.r-project.org/Licenses/
+
+
 
 ;; This file is part of ESS
 
@@ -94,11 +106,6 @@
 
 (defgroup ess-sas nil
   "ESS: SAS."
-  :group 'ess
-  :prefix "ess-")
-
-(defgroup ess-Stata nil
-  "ESS: Stata."
   :group 'ess
   :prefix "ess-")
 
@@ -1592,12 +1599,6 @@ name completion. This can mess up evaluation completely."
   :group 'ess-R
   :type 'boolean)
 
-(defcustom inferior-STA-start-args ""
-  "String of switches used when starting Stata.
-Also see `inferior-STA-program'."
-  :group 'ess-Stata
-  :type 'string)
-
 (defvaralias 'inferior-R-objects-command 'inferior-ess-r-objects-command)
 (defcustom inferior-ess-r-objects-command "print(objects(pos=%d, all.names=TRUE), max=1e6)\n"
   "Format string for R command to get a list of objects at position %d.
@@ -1726,15 +1727,6 @@ ask - ask the user whether the S buffers should be killed."
 (defcustom inferior-SAS-program "sas"
   "Program name for invoking an inferior ESS with SAS()."
   :group 'ess-sas
-  :type '(choice (string) (file)))
-
-(define-obsolete-variable-alias 'inferior-STA-program-name
-  'inferior-STA-program "ESS 18.10")
-(defcustom inferior-STA-program "stata"
-  "Program name for invoking an inferior ESS with stata().
-This is NOT Stata, because we need to call Stata with TERM=emacs in
-order for it to work right.  And Emacs is too smart for it."
-  :group 'ess-Stata
   :type '(choice (string) (file)))
 
 (defvaralias 'R-editor 'ess-r-editor)

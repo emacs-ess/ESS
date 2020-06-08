@@ -1,32 +1,27 @@
 ;;; make-regexp.el --- generate efficient regexps to match strings.
 
-;; Copyright (C) 1994, 1995 Simon Marshall.
-
+;; Copyright (C) 1994-2020 Free Software Foundation, Inc.
 ;; Author: Simon Marshall <simon@gnu.ai.mit.edu>
 ;; Keywords: lisp, matching
 ;; Version: 1.02
 
-;; LCD Archive Entry:
-;; make-regexp|Simon Marshall|simon@gnu.ai.mit.edu|
-;; Generate efficient regexps to match strings.|
-;; 11-Jul-1995|1.02|~/functions/make-regexp.el.gz|
+;; This file is part of GNU Emacs.
 
-;; The archive is archive.cis.ohio-state.edu in /pub/gnu/emacs/elisp-archive.
-
-;;; This file is not part of GNU Emacs.
-
-;;; This program is free software; you can redistribute it and/or modify
-;;; it under the terms of the GNU General Public License as published by
-;;; the Free Software Foundation; either version 2, or (at your option)
-;;; any later version.
-
-;;; This program is distributed in the hope that it will be useful,
-;;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;;; GNU General Public License for more details.
-
-;; A copy of the GNU General Public License is available at
-;; https://www.r-project.org/Licenses/
+;;; License:
+;;
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see
+;; <http://www.gnu.org/licenses/>
 
 ;;; Commentary:
 

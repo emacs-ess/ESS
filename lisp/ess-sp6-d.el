@@ -1,28 +1,27 @@
 ;;; ess-sp6-d.el --- S-Plus 6 & 7 & 8  customization
 
-;; Copyright (C) 2001--2005 A.J. Rossini, Richard M. Heiberger, Martin
-;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
-
+;; Copyright (C) 2001-2020 Free Software Foundation, Inc.
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 2001/02/06
 ;; Maintainer: ESS Core Team <ESS-core@r-project.org>
 
-;; Keywords: languages
+;; This file is part of GNU Emacs.
 
-;; This file is part of ESS.
-
-;; This file is free software; you can redistribute it and/or modify
+;;; License:
+;;
+;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation; either version 2, or (at your option)
-;; any later version.
-
-;; This file is distributed in the hope that it will be useful,
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
-;; A copy of the GNU General Public License is available at
-;; https://www.r-project.org/Licenses/
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see
+;; <http://www.gnu.org/licenses/>
 
 ;;; Commentary:
 

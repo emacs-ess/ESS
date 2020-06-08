@@ -1,35 +1,34 @@
 ;;; ess-r-flymake.el --- A ess-r Flymake backend  -*- lexical-binding: t; -*-
-;;
-;; Copyright (C) 2018 J. Alexander Branham (alex DOT branham AT gmail DOT com)
-;; Copyright (C) 2018 ESS-core team
+
+;; Copyright (C) 2018-2020 Free Software Foundation, Inc.
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
+
+
+;; This file is part of GNU Emacs.
+
+;;; License:
 ;;
-;; This file is NOT part of GNU Emacs.
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
 ;;
-;; This is free software; you can redistribute it and/or modify it under
-;; the terms of the GNU General Public License as published by the Free
-;; Software Foundation; either version 3, or (at your option) any later
-;; version.
-;;
-;; This is distributed in the hope that it will be useful, but WITHOUT
-;; ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-;; FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-;; for more details.
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
 ;;
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to the
-;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-;; MA 02110-1301 USA.
-;;
+;; along with this program.  If not, see
+;; <http://www.gnu.org/licenses/>
+
 ;;; Commentary:
-;;
+
 ;; Flymake is the built-in Emacs package that supports on-the-fly
 ;; syntax checking.  This file adds support for this in ess-r-mode by
 ;; relying on the lintr package, available on CRAN and currently
 ;; hosted at https://github.com/jimhester/lintr.
-;;
-;; It is enabled by default.
-;;
+
 ;;; Code:
 
 (eval-when-compile (require 'cl-lib))
