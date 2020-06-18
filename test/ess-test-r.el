@@ -703,6 +703,14 @@ Arguments:
     (with-r-running nil
       (should-not (buffer-local-value 'comint-input-ring-file-name (ess-get-process-buffer))))))
 
+(ert-deftest ess-test-roxy-prefix-strip ()
+  "Only strip prefix if the whole string is prefixed (#1020)"
+  (let ((ess-roxy-re "^#+'"))
+    (should (equal (ess-roxy-remove-roxy-re "#' 1\n#' 2")
+                   "1\n2"))
+    (should (equal (ess-roxy-remove-roxy-re "#' 1\n#' 2\nNULL")
+                   "#' 1\n#' 2\nNULL"))))
+
 (provide 'ess-test-r)
 
 ;;; ess-test-r.el ends here
