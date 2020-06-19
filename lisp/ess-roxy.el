@@ -815,7 +815,20 @@ Assumes point is at the beginning of the function."
   "Remove `ess-roxy-str' from STRING before sending to R process.
 Useful for sending code from example section. This function is
 placed in `ess-presend-filter-functions'."
-  (replace-regexp-in-string (concat ess-roxy-re "\\s-*") "" string))
+  ;; In the future we might want to detect chunks between markdown
+  ;; fences and strip everything that comes before `@examples`
+  (if (ess-roxy--all-prefixed string)
+      (replace-regexp-in-string (concat ess-roxy-re "\\s-*") "" string)
+    string))
+
+(defun ess-roxy--all-prefixed (string)
+  (let ((ess-roxy-re-lexical ess-roxy-re))
+    (with-temp-buffer
+      (insert string)
+      (goto-char 0)
+      (while (and (looking-at-p ess-roxy-re-lexical)
+                  (re-search-forward "\n" nil t)))
+      (looking-at-p ess-roxy-re-lexical))))
 
 (defun ess-roxy-find-par-end (stop-point &rest stoppers)
   (mapc #'(lambda (stopper)
