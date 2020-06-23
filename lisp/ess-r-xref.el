@@ -78,9 +78,13 @@ srcrefs point to temporary locations."
                 "NULL")))
     (with-current-buffer (ess-command (format ".ess_srcref(\"%s\", %s)\n" symbol pkg))
       (goto-char (point-min))
-      (when (re-search-forward "(" nil 'noerror)
-        (goto-char (match-beginning 0))
-        (read (current-buffer))))))
+      (if (re-search-forward "Error" nil t)
+          (progn (message "R srcref lookup failed:\n%s" (buffer-string))
+                 (sit-for 1)
+                 nil)
+        (when (re-search-forward "(" nil 'noerror)
+          (goto-char (match-beginning 0))
+          (read (current-buffer)))))))
 
 (defun ess-r-xref--pkg-srcfile (symbol src-file &optional default-pkg)
   "Look in the source directory of the R package containing symbol SYMBOL for SRC-FILE.
