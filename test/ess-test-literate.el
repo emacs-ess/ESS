@@ -168,9 +168,9 @@
 (defun elt-process-next-subchunk (chunk-end)
   (let* ((continuation (looking-at elt-code-cont-pattern))
          (test-code (elt-process-code))
-         (test-result (elt-run- (if continuation test-case-state test-case)
-                            test-code elt-mode-init
-                            continuation))
+         (test-result (elt-run-chunk test-code
+                                     elt-mode-init
+                                     continuation))
          (subchunk-end (save-excursion
                          (if (re-search-forward elt-code-pattern chunk-end t)
                              (match-beginning 0)
@@ -217,23 +217,28 @@
 (defvar elt--state-buffer nil
   "Evaluation buffer of previous test chunk.")
 
-(defmacro elt-run (init &rest body)
-  (apply 'elt-run- `(,init (,@body))))
+(defun elt--new-buffer (init)
+  (let ((buf (generate-new-buffer " *elt-temp*")))
+    (with-current-buffer buf
+      (setq-local file-local-variables-alist (copy-alist init))
+      (hack-local-variables-apply)
+      (transient-mark-mode 1))
+    buf))
 
-(defun elt-run- (init body local-variables &optional keep-state)
+(defun elt-run-chunk (body local-variables &optional keep-state)
   (unless keep-state
-    (and elt--state-buffer
-         (buffer-name elt--state-buffer)
-         (kill-buffer elt--state-buffer))
-    (setq elt--state-buffer (generate-new-buffer " *temp*")))
-  (save-window-excursion
-    (switch-to-buffer elt--state-buffer)
-    (if keep-state
-        (delete-region (point-min) (point-max))
-      (transient-mark-mode 1)
-      (setq-local file-local-variables-alist (copy-alist local-variables))
-      (hack-local-variables-apply))
-    (insert init)
+    (when (and elt--state-buffer
+               (buffer-name elt--state-buffer))
+      (kill-buffer elt--state-buffer))
+    (setq elt--state-buffer (elt--new-buffer local-variables)))
+  (with-current-buffer elt--state-buffer
+    (delete-region (point-min) (point-max))
+    (insert (if keep-state test-case-state test-case)))
+  (etest-run elt--state-buffer body keep-state)
+  (etest-result elt--state-buffer))
+
+(defun etest-run (buf cmds &optional keep-state)
+  (with-current-buffer buf
     (goto-char (point-min))
     (when (search-forward "×" nil t)
       (backward-delete-char 1)
@@ -255,7 +260,7 @@
       (font-lock-default-fontify-buffer)
       (dolist (cursor cursors-start)
         (goto-char cursor)
-        ;; Reset Emacs state
+        ;; Reset Emacs state for each cursor
         (unless keep-state
           (setq last-command nil)
           (setq current-prefix-arg nil))
@@ -270,7 +275,7 @@
                               (eq (car x) 'kbd))
                          (elt-unalias x))
                         (t (eval x))))
-                body)
+                cmds)
         (let ((marker (point-marker)))
           (set-marker-insertion-type marker t)
           (push marker cursors-end)))
@@ -280,9 +285,11 @@
     (when (region-active-p)
       (exchange-point-and-mark)
       (insert "×"))
-    (buffer-substring-no-properties
-     (point-min)
-     (point-max))))
+    t))
+
+(defun etest-result (buf)
+  (with-current-buffer buf
+    (buffer-substring-no-properties (point-min) (point-max))))
 
 (defun elt-decode-keysequence (str)
   "Decode STR from e.g. \"23ab5c\" to '(23 \"a\" \"b\" 5 \"c\")"
