@@ -254,7 +254,7 @@
           (set-marker-insertion-type marker t)
           (push marker cursors-start)))
       (unless cursors-start
-        (error "There must be at least one point cursor"))
+        (setq cursors-start (list (point-min))))
       ;; Fontification must take place after removing "¶"
       ;; FIXME Emacs 25: Use `font-lock-ensure'
       (font-lock-default-fontify-buffer)
@@ -331,6 +331,46 @@ Insert KEY if there's no command."
       (setq last-command-event (aref key 0))
       (call-interactively cmd)
       (setq last-command cmd))))
+
+(cl-defmacro etest-deftest (name args &body body)
+  (declare (doc-string 3)
+           (indent 2))
+  (let ((docstring (when (stringp (car body))
+                     (list (pop body)))))
+    `(ert-deftest ,name ,args
+       ,@docstring
+       (etest--run-test (quote ,body)))))
+
+(defun etest--run-test (body)
+  (etest--with-test-buffer (etest--pop-init body)
+    (let ((buf (current-buffer)))
+      (while body
+        (let ((key (pop body))
+              (value (pop body)))
+          (pcase key
+            (`:case (progn
+                      (erase-buffer)
+                      (insert value)))
+            (`:test (etest-run buf value))
+            (`:result (should (string= (etest-result buf) value)))
+            (_ (error "Expected an `etest` keyword"))))))))
+
+(defmacro etest--with-test-buffer (init &rest body)
+  (declare (indent 1))
+  `(let ((buf (elt--new-buffer ,init)))
+     (unwind-protect
+         (with-current-buffer buf
+           ,@body)
+       (kill-buffer buf))))
+
+(defmacro etest--pop-init (place)
+  `(let (local)
+     (while (eq (car ,place) :init)
+       (pop ,place)
+       (setq local (append local (pop ,place))))
+     local))
+
+
 
 (provide 'ess-test-literate)
 

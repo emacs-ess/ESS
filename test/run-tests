@@ -38,6 +38,7 @@
   (load (expand-file-name "ess-test-r-package.el" ess-test-path) nil t))
 (when (member "--literate" argv)
   (load (expand-file-name "ess-test-literate.el" ess-test-path) nil t)
+  (load (expand-file-name "ess-test-etest.el" ess-test-path) nil t)
   (elt-deftest test-elt () "elt.R")
   (elt-deftest test-ess-roxy-literate () "roxy.R")
   (elt-deftest test-ess-r-code-fill () "code-fill.R")
