@@ -49,7 +49,7 @@
   :group 'ess-R
   :type 'string)
 
-(defun ess-r-eldoc-function (callback)
+(defun ess-r-eldoc-function (&optional callback)
   "Return the doc string, or nil.
 If an ESS process is not associated with the buffer, do not try
 to look up any doc strings."
