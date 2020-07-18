@@ -258,7 +258,7 @@ objects from that MODULE."
 
 
 ;;; ELDOC
-(defun ess-julia-eldoc-function ()
+(defun ess-julia-eldoc-function (&rest _ignored)
   "Return the doc string, or nil.
 If an ESS process is not associated with the buffer, do not try
 to look up any doc strings. Honors `eldoc-echo-area-use-multiline-p'."
