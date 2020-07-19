@@ -220,7 +220,7 @@
 (defun elt--new-buffer (init)
   (let ((buf (generate-new-buffer " *elt-temp*")))
     (with-current-buffer buf
-      (setq-local file-local-variables-alist (copy-alist init))
+      (setq-local file-local-variables-alist (nreverse (copy-alist init)))
       (hack-local-variables-apply)
       (transient-mark-mode 1))
     buf))
