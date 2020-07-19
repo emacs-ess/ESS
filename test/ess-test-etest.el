@@ -21,3 +21,50 @@
   :test ((forward-char)
          "RET")
   :result "foo ba\n¶r")
+
+(etest-deftest etest-climb-deftest-test ()
+  "Find enclosing `etest-deftest'."
+
+  ;; Within parentheses
+  :case "
+(etest-deftest name ()
+  :test (foo (bar¶))
+"
+  :test ((etest--climb-deftest))
+  :result "
+¶(etest-deftest name ()
+  :test (foo (bar))
+"
+
+  ;; Within a string
+  :case "
+(etest-deftest name ()
+  :test (foo \"bar¶\")
+"
+  :test ((etest--climb-deftest))
+  :result "
+¶(etest-deftest name ()
+  :test (foo \"bar\")
+"
+
+  ;; Behind deftest
+  :case "
+¶(etest-deftest name ()
+  :foo)
+"
+  :test ((etest--climb-deftest))
+  :result "
+¶(etest-deftest name ()
+  :foo)
+"
+
+  ;; In front of deftest
+  :case "
+(etest-deftest name ()
+  :foo)¶
+"
+  :test ((etest--climb-deftest))
+  :result "
+¶(etest-deftest name ()
+  :foo)
+")

@@ -371,6 +371,19 @@ Insert KEY if there's no command."
      local))
 
 
+(defun etest--climb-deftest ()
+  ;; Climb one character when point is in front of a parenthesis.
+  ;; This puts the cursor inside the `etest-deftest` when it is in
+  ;; front.
+  (unless (looking-at "(")
+    (backward-char 1)
+    (unless (looking-at ")")
+      (forward-char 1)))
+  ;; Climb enclosing lists until we find the `test-deftest`
+  (while (and (not (looking-at "(etest-deftest"))
+              (ignore-errors (prog1 t (backward-up-list nil t)))))
+  (point))
+
 
 (provide 'ess-test-literate)
 
