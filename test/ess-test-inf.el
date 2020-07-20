@@ -43,28 +43,15 @@
       (should (string= (inferior-ess-default-directory) temporary-file-directory)))
     (should (string= default-directory user-emacs-directory))))
 
-(ert-deftest ess-test-inferior-return-value ()
-  (let ((inhibit-message ess-inhibit-message-in-tests)
-        (ess-ask-for-ess-directory nil)
-        proc)
-    (unwind-protect
-        (let ((val (R)))
-          (should (bufferp val))
-          (setq proc (get-buffer-process val)))
-      (kill-process proc))))
-
 (ert-deftest ess-test-inferior-live-process-error ()
-  (let ((ess-gen-proc-buffer-name-function
-         ;; Generate same inferior name each time
-         (lambda (&rest args) "" "foo"))
-        (error-msg "Can't start a new session in buffer `foo` because one already exists")
-        proc)
-    (unwind-protect
-        (progn
-          (setq proc (get-buffer-process (run-ess-test-r-vanilla)))
-          (should (string= (cadr (should-error (run-ess-test-r-vanilla)))
-                           (format-message error-msg))))
-      (kill-process proc))))
+  (let* ((ess-gen-proc-buffer-name-function
+          ;; Generate same inferior name each time
+          (lambda (&rest args) "" "foo"))
+         (error-msg "Can't start a new session in buffer `foo` because one already exists")
+         (inf-buf (run-ess-test-r-vanilla)))
+    (ess-test-unwind-protect inf-buf
+      (should (string= (cadr (should-error (run-ess-test-r-vanilla)))
+                       (format-message error-msg))))))
 
 (ert-deftest ess-test-inferior-local-start-args ()
   (with-r-running nil
@@ -75,15 +62,11 @@
 (ert-deftest ess-test-inferior-reload-start-data ()
   (let* ((r-path (executable-find "R"))
          (inferior-ess-r-program r-path)
-         proc)
-    (unwind-protect
-        (progn
-          (setq proc (get-buffer-process (run-ess-test-r-vanilla)))
-          (let* ((inf-buf (process-buffer proc))
-                 (inf-data (buffer-local-value 'inferior-ess--local-data inf-buf)))
-            (should (equal (car inf-data) r-path))
-            (should (equal (cdr inf-data) "--no-readline  --vanilla"))))
-      (kill-process proc))))
+         (inf-buf (run-ess-test-r-vanilla)))
+    (ess-test-unwind-protect inf-buf
+      (let ((inf-data (buffer-local-value 'inferior-ess--local-data inf-buf)))
+        (should (equal (car inf-data) r-path))
+        (should (equal (cdr inf-data) "--no-readline  --vanilla"))))))
 
 
 ;;*;; Evaluation
