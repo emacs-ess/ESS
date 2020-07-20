@@ -14,7 +14,7 @@
 (etest-deftest etest-test-result-test ()
   "`:test' causes side effects in test buffer and `:result' checks output."
   :case "¶foo bar"
-  :test ((forward-word))
+  :test (forward-word)
   :result "foo¶ bar"
   :test ((forward-char)
          (forward-char))
@@ -102,3 +102,14 @@
   :test ("M-f")
   :result "foo¶ bar¶"
   :test ((should (eq last-command 'forward-word))))
+
+(ert-deftest etest-wrap-test-keyword-test ()
+  "`:test' keywords are appropriately wrapped in lists."
+  (should (equal (etest--wrap-test "foo")
+                 '("foo")))
+  (should (equal (etest--wrap-test 'foo)
+                 '(foo)))
+  (should (equal (etest--wrap-test '(foo))
+                 '((foo))))
+  (should (equal (etest--wrap-test '((foo)))
+                 '((foo)))))

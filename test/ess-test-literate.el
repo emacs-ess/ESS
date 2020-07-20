@@ -361,11 +361,11 @@ should be a function taking ACTUAL and EXPECTED strings."
             (`:case (progn
                       (erase-buffer)
                       (insert value)))
-            (`:test (etest-run buf value))
+            (`:test (etest-run buf (etest--wrap-test value)))
             (`:result (funcall do-result
                                (etest-result buf)
                                value))
-            (_ (error "Expected an `etest` keyword"))))))))
+            (_ (error (format "Expected an etest keyword, not `%s`" key)))))))))
 
 (defmacro etest--with-test-buffer (init &rest body)
   (declare (indent 1))
@@ -381,6 +381,12 @@ should be a function taking ACTUAL and EXPECTED strings."
        (pop ,place)
        (setq local (append local (pop ,place))))
      local))
+
+(defun etest--wrap-test (x)
+  (if (or (not (listp x))
+          (symbolp (car x)))
+      (list x)
+    x))
 
 ;;;###autoload
 (defun etest-update ()
