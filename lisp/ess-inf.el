@@ -900,9 +900,10 @@ toggled."
             (message "Found no buffers for `ess-dialect' %s associated with process %s"
                      dialect proc-name)))
       (ess-switch-to-ESS eob))
-    (set-transient-map (let ((map (make-sparse-keymap))
-                             (key (vector last-command-event)))
-                         (define-key map key #'ess-switch-to-inferior-or-script-buffer) map))))
+    (when (called-interactively-p 'any)
+      (set-transient-map (let ((map (make-sparse-keymap))
+                               (key (vector last-command-event)))
+                           (define-key map key #'ess-switch-to-inferior-or-script-buffer) map)))))
 
 
 (defun ess-get-process-buffer (&optional name)
