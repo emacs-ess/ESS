@@ -26,12 +26,10 @@
 ;;*;; Startup
 
 (defun ess-r-tests-startup-output ()
-  (let* ((proc (get-buffer-process (run-ess-test-r-vanilla)))
-         (output-buffer (process-buffer proc)))
-    (unwind-protect
-        (with-current-buffer output-buffer
-          (buffer-string))
-      (kill-process proc))))
+  (let ((inf-buf (run-ess-test-r-vanilla)))
+    (ess-test-unwind-protect inf-buf
+      (with-current-buffer inf-buf
+        (buffer-string)))))
 
 (ert-deftest ess-startup-verbose-setwd-test ()
   (should (string-match "to quit R.\n\n> setwd(.*)$" (ess-r-tests-startup-output))))
