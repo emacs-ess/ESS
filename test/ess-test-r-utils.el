@@ -98,6 +98,21 @@ inserted text."
           (ess-ask-for-ess-directory nil))
       (R "--vanilla"))))
 
+
+(defvar ess-r-test-proc-buf
+  (let* ((buf (run-ess-test-r-vanilla))
+         (proc (get-buffer-process buf)))
+    (ess-wait-for-process proc)
+    (with-current-buffer buf
+      (let ((inhibit-read-only t))
+        (erase-buffer)))
+    buf)
+  "Common process buffer for tests.")
+
+(defvar ess-r-test-proc (get-buffer-process ess-r-test-proc-buf))
+(defvar ess-r-test-proc-name (process-name ess-r-test-proc))
+
+
 (defun ess-send-input-to-R (input &optional type)
   "Eval INPUT and return the entire content of the REPL buffer.
 TYPE can be one of 'string, 'region 'c-c or 'repl. If nil or

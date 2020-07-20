@@ -17,6 +17,7 @@
 ;;
 
 (require 'ert)
+(require 'ess-test-literate)
 (require 'ess-r-mode)
 (require 'ess-test-r-utils)
 (require 'cc-mode)
@@ -710,6 +711,58 @@ Arguments:
                    "1\n2"))
     (should (equal (ess-roxy-remove-roxy-re "#' 1\n#' 2\nNULL")
                    "#' 1\n#' 2\nNULL"))))
+
+(defun ess-r-test-transcript-init ()
+  (ess-r-transcript-mode)
+  (read-only-mode -1)
+  (setq ess-local-process-name ess-r-test-proc-name)
+  (setq etest-local-inferior-buffer ess-r-test-proc-buf))
+
+(etest-deftest ess-r-transcript-motions-test ()
+  "[enter] handles commands, non-commands, and prompts (#1013)."
+  :init ((eval . (ess-r-test-transcript-init)))
+  :case "
+¶R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+"
+  :test "RET"
+  :result "
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+¶"
+
+  :inf-result "
+> "
+
+  :messages "No command at this point"
+
+  :case "
+> ¶for(i in 1:3) {
++   print(i)
++ }
+[1] 1
+[1] 2
+[1] 3
+"
+  :test "RET"
+  :result "
+> for(i in 1:3) {
++   print(i)
++ }
+[1] 1
+[1] 2
+[1] 3
+¶"
+
+  :inf-result "for(i in 1:3) {
++   print(i)
++ }
+[1] 1
+[1] 2
+[1] 3
+> ")
 
 (provide 'ess-test-r)
 
