@@ -1,7 +1,7 @@
 
 include ../Makeconf
 
-.PHONY: literate all julia lisp ess inf r r-indent literate cases indent-cases literate-cases
+.PHONY: literate all julia lisp ess inf org r r-indent literate cases indent-cases literate-cases
 
 all: compile lisp
 
@@ -16,6 +16,9 @@ ess:
 
 inf:
 	${EMACS} -Q --script run-tests --inf
+
+org:
+	${EMACS} -Q --script run-tests --org
 
 r r-core:
 	${EMACS} -Q --script run-tests --r-core

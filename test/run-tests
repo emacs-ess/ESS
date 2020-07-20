@@ -21,12 +21,13 @@
 (setq ess-use-flymake nil)
 
 (when (= (length argv) 0)
-  (setq argv '("--ess" "--inf" "--r-core" "--r-indent" "--r-pkg" "--literate")))
+  (setq argv '("--ess" "--inf" "--org" "--r-core" "--r-indent" "--r-pkg" "--literate")))
 
 (when (member "--ess" argv)
   (load (expand-file-name "ess-test.el" ess-test-path) nil t))
 (when (member "--inf" argv)
-  (load (expand-file-name "ess-test-inf.el" ess-test-path) nil t)
+  (load (expand-file-name "ess-test-inf.el" ess-test-path) nil t))
+(when (member "--org" argv)
   (load (expand-file-name "ess-test-org.el" ess-test-path) nil t))
 (when (member "--r-core" argv)
   (load (expand-file-name "ess-test-r.el" ess-test-path) nil t)
