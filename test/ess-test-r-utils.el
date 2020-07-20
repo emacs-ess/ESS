@@ -240,6 +240,27 @@ representative to the common interactive use with tracebug on."
   (apply #'insert args)
   (font-lock-default-fontify-buffer))
 
+(defmacro ess-test-sleep-while (test seconds timeout &optional msg)
+  `(let ((_seconds ,seconds)
+         (_timeout ,timeout)
+         (_time-start (current-time)))
+     (while ,test
+       (when (time-less-p _timeout (time-subtract (current-time) _time-start))
+         (error (or ,msg "Exceeded timeout")))
+       (sleep-for _seconds))
+     t))
+
+(defmacro ess-test-unwind-protect (inf-buf &rest body)
+  (declare (indent 1))
+  `(unwind-protect (progn ,@body)
+     (let* ((inf-buf ,inf-buf)
+            (inf-proc (get-buffer-process inf-buf)))
+       (when (and inf-proc (process-live-p inf-proc))
+         (kill-process inf-proc)
+         (ess-test-sleep-while (process-live-p inf-proc) 0.001 1
+                               "Expected dead process"))
+       (kill-buffer inf-buf))))
+
 
 (provide 'ess-test-r-utils)
 
