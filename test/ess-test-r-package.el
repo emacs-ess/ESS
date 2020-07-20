@@ -70,26 +70,31 @@
 
 (ert-deftest ess-r-package-vars-test ()
   (with-ess-test-c-file "dummy-pkg/src/test.c"
-    (let ((r-setwd-cmd (cdr (assq 'ess-setwd-command ess-r-customize-alist)))
-          (r-getwd-cmd (cdr (assq 'ess-getwd-command ess-r-customize-alist))))
-      (should (string= ess-setwd-command r-setwd-cmd))
-      (should (string= ess-getwd-command r-getwd-cmd)))
-    (let ((pkg-dir (file-truename (cdr (ess-r-package-project))))
-          ;; Not sure why this is needed:
-          ess-ask-for-ess-directory)
-      (ess-set-working-directory (expand-file-name "src" pkg-dir))
-      (ess-r-package-use-dir)
-      (should (string= pkg-dir (file-truename
-                                (directory-file-name
-                                 (ess-get-process-variable 'default-directory)))))
-      (ess-wait-for-process)
-      (should (string= pkg-dir (file-truename (ess-get-working-directory))))
-      (ess-wait-for-process)
-      (let ((proc-buffer (ess-get-process-buffer)))
-        (inferior-ess-reload)
-        (should (string-match "Process R\\(:.\\)? \\(finished\\|killed\\)"
-                              (with-current-buffer proc-buffer
-                                (buffer-string))))))))
+    (let* ((inf-buf (run-ess-test-r-vanilla))
+           (ess-local-process-name (process-name (get-buffer-process inf-buf))))
+      (unwind-protect
+          (progn
+            (let ((r-setwd-cmd (cdr (assq 'ess-setwd-command ess-r-customize-alist)))
+                  (r-getwd-cmd (cdr (assq 'ess-getwd-command ess-r-customize-alist))))
+              (should (string= ess-setwd-command r-setwd-cmd))
+              (should (string= ess-getwd-command r-getwd-cmd)))
+            (let ((pkg-dir (file-truename (cdr (ess-r-package-project))))
+                  ;; Not sure why this is needed:
+                  ess-ask-for-ess-directory)
+              (ess-set-working-directory (expand-file-name "src" pkg-dir))
+              (ess-r-package-use-dir)
+              (should (string= pkg-dir (file-truename
+                                        (directory-file-name
+                                         (ess-get-process-variable 'default-directory)))))
+              (ess-wait-for-process)
+              (should (string= pkg-dir (file-truename (ess-get-working-directory))))
+              (ess-wait-for-process)
+              (let ((proc-buffer (ess-get-process-buffer)))
+                (inferior-ess-reload)
+                (should (string-match "Process R\\(:.\\)? \\(finished\\|killed\\)"
+                                      (with-current-buffer proc-buffer
+                                        (buffer-string)))))))
+        (kill-process (get-buffer-process inf-buf))))))
 
 (ert-deftest ess-r-package-package-info-test ()
   (let ((kill-buffer-query-functions nil)
