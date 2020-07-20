@@ -141,3 +141,12 @@
           (insert "foobar"))
   :inf-result "foobar"
   :inf-result "")
+
+(etest-deftest etest-messages-test ()
+  "Can retrieve messages with `:messages'."
+  :messages ""
+  :test (message "foo")
+  :test (message "bar")
+  :messages "foo
+bar"
+  :messages "")

@@ -369,10 +369,15 @@ function taking ACTUAL and EXPECTED strings.
 tested with `:inf-result'. The latter keyword work similarly to
 `:result' but returns the current output in the inferior buffer.
 This buffer is flushed. The inferior buffer is stored in the
-buffer-local variable `etest-local-inferior-buffer'."
+buffer-local variable `etest-local-inferior-buffer'.
+
+`:messages' keywords check the contents of the messages buffers
+and are processed with DO-RESULT."
   (etest--with-test-buffer (etest--pop-init body)
-    (let ((buf (current-buffer))
-          cleanup)
+    (let* ((buf (current-buffer))
+           (inhibit-message t)
+           (msg-sentinel (etest--make-message-sentinel))
+           cleanup)
       (unwind-protect
           (while body
             (let ((key (pop body))
@@ -388,6 +393,9 @@ buffer-local variable `etest-local-inferior-buffer'."
                                    (etest-result buf)
                                    value))
                 (`:inf-result (etest--flush-inferior-buffer do-result value))
+                (`:messages (progn
+                              (etest--flush-messages msg-sentinel do-result value)
+                              (setq msg-sentinel (etest--make-message-sentinel))))
                 (_ (error (format "Expected an etest keyword, not `%s`" key))))))
         (mapc #'eval cleanup)))))
 
@@ -423,9 +431,23 @@ buffer-local variable `etest-local-inferior-buffer'."
         (erase-buffer)))
     result))
 
+(defun etest--make-message-sentinel ()
+  (let ((sentinel (format "etest-messages-%s" (gensym))))
+    (message sentinel)
+    sentinel))
+
+(defun etest--flush-messages (msg-sentinel do-result value)
+  (let ((msgs (with-current-buffer (get-buffer "*Messages*")
+                (save-excursion
+                  (goto-char (point-min))
+                  (re-search-forward msg-sentinel nil t)
+                  (let ((start (1+ (point))))
+                    (buffer-substring start (max start (1- (point-max)))))))))
+    (funcall do-result msgs value)))
+
 ;;;###autoload
 (defun etest-update ()
-  "Update all `:result' keywords for the etest block at point."
+  "Update all result keywords for the etest block at point."
   (interactive)
   (save-excursion
     (let* ((beg (etest--climb-deftest))
@@ -441,8 +463,8 @@ buffer-local variable `etest-local-inferior-buffer'."
       (let ((results (etest--read-results body)))
         (goto-char beg)
         (while results
-          (unless (re-search-forward "^ *:\\(inf-\\)?result *\s\"" end t)
-            (error "Can't find `:result' keyword"))
+          (unless (re-search-forward "^ *:\\(\\(inf-\\)?result\\|messages\\) *\s\"" end t)
+            (error "Can't find any result keyword"))
           (let ((result-beg (1- (point)))
                 (result-end (progn (backward-up-list -1 t) (point)))
                 (result-str (prin1-to-string (pop results))))
