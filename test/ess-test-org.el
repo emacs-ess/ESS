@@ -23,14 +23,20 @@
 (require 'ess-test-r-utils)
 (require 'ob-R)
 
+;; ob-R let-binds `ess-local-process-name' to the process of the
+;; session buffer. This session buffer is set to `*R*` by default. It
+;; is safer to pass a dedicated inferior buffer as `:session' keyword
+
 (defun test-org-R-ouput (expect input)
   (declare (indent 1))
-  (let ((proc (get-buffer-process (run-ess-test-r-vanilla)))
-        (org-confirm-babel-evaluate nil)
-        (ess-ask-for-ess-directory nil)
-        (inhibit-message ess-inhibit-message-in-tests))
-    (unwind-protect
-        (with-current-buffer (get-buffer-create "*ess-org-test*")
+  (let* ((inf-buf (run-ess-test-r-vanilla))
+         (inf-proc (get-buffer-process inf-buf)))
+    (setq input (format input (buffer-name inf-buf)))
+    (ess-test-unwind-protect inf-buf
+      (with-current-buffer (get-buffer-create "*ess-org-test*")
+        (let ((org-confirm-babel-evaluate nil)
+              (ess-ask-for-ess-directory nil)
+              (inhibit-message ess-inhibit-message-in-tests))
           (erase-buffer)
           (insert input)
           (org-mode)
@@ -38,8 +44,7 @@
           (forward-line 1)
           (org-ctrl-c-ctrl-c)
           (goto-char (point-max))
-          (should (re-search-backward expect nil t)))
-      (kill-process proc))))
+          (should (re-search-backward expect nil t)))))))
 
 (ert-deftest test-org-ob-R-output-test ()
   (test-org-R-ouput "hello"
@@ -47,7 +52,7 @@
 
 (ert-deftest test-org-ob-R-session-output-test ()
   (test-org-R-ouput "hello"
-    "#+BEGIN_SRC R :session :results output\n  \"hello\"\n#+END_SRC"))
+    "#+BEGIN_SRC R :session %s :results output\n  \"hello\"\n#+END_SRC"))
 
 (ert-deftest test-org-ob-R-value-test ()
   (test-org-R-ouput "hello"
@@ -55,7 +60,7 @@
 
 (ert-deftest test-org-ob-R-session-value-test ()
   (test-org-R-ouput "hello"
-    "#+BEGIN_SRC R :session :results value\n  \"hello\"\n#+END_SRC"))
+    "#+BEGIN_SRC R :session %s :results value\n  \"hello\"\n#+END_SRC"))
 
 (ert-deftest test-org-ob-R-data-frame-test ()
   (test-org-R-ouput "| 3 | c |"
