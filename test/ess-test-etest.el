@@ -129,3 +129,15 @@
              (should (equal foo "foo"))
              (should (equal bar "bar"))
              (setq bar "BAR")))
+
+(etest-deftest etest-inferior-buffer-test ()
+  "Inferior buffer is flushed and tested."
+  :inf-buffer (get-buffer-create "aux-buffer")
+  :test (with-current-buffer etest-local-inferior-buffer
+          (insert "foo"))
+  :inf-result "foo"
+  :inf-result ""
+  :test (with-current-buffer etest-local-inferior-buffer
+          (insert "foobar"))
+  :inf-result "foobar"
+  :inf-result "")

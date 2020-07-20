@@ -335,6 +335,11 @@ Insert KEY if there's no command."
       (call-interactively cmd)
       (setq last-command cmd))))
 
+(defvar-local etest-local-inferior-buffer nil
+  "External buffer containing output to check.
+Use the `:inf-result' to flush this buffer and test its
+contents.")
+
 (cl-defmacro etest-deftest (name args &body body)
   (declare (doc-string 3)
            (indent 2))
@@ -358,7 +363,13 @@ unwind-protected expressions that are evaluated in LIFO order
 after the test succeeds or fails.
 
 `:result' keywords are processed with DO-RESULT. This should be a
-function taking ACTUAL and EXPECTED strings."
+function taking ACTUAL and EXPECTED strings.
+
+`:inf-buffer' takes an auxiliary buffer whose contents can be
+tested with `:inf-result'. The latter keyword work similarly to
+`:result' but returns the current output in the inferior buffer.
+This buffer is flushed. The inferior buffer is stored in the
+buffer-local variable `etest-local-inferior-buffer'."
   (etest--with-test-buffer (etest--pop-init body)
     (let ((buf (current-buffer))
           cleanup)
@@ -367,6 +378,7 @@ function taking ACTUAL and EXPECTED strings."
             (let ((key (pop body))
                   (value (pop body)))
               (pcase key
+                (`:inf-buffer (setq etest-local-inferior-buffer (eval value)))
                 (`:cleanup (push value cleanup))
                 (`:case (progn
                           (erase-buffer)
@@ -375,6 +387,7 @@ function taking ACTUAL and EXPECTED strings."
                 (`:result (funcall do-result
                                    (etest-result buf)
                                    value))
+                (`:inf-result (etest--flush-inferior-buffer do-result value))
                 (_ (error (format "Expected an etest keyword, not `%s`" key))))))
         (mapc #'eval cleanup)))))
 
@@ -399,6 +412,17 @@ function taking ACTUAL and EXPECTED strings."
       (list x)
     x))
 
+(defun etest--flush-inferior-buffer (do-result value)
+  (unless etest-local-inferior-buffer
+    (error "Must set `etest-local-inferior-buffer'"))
+  (let ((result (funcall do-result
+                         (etest-result etest-local-inferior-buffer)
+                         value)))
+    (with-current-buffer etest-local-inferior-buffer
+      (let ((inhibit-read-only t))
+        (erase-buffer)))
+    result))
+
 ;;;###autoload
 (defun etest-update ()
   "Update all `:result' keywords for the etest block at point."
@@ -417,7 +441,7 @@ function taking ACTUAL and EXPECTED strings."
       (let ((results (etest--read-results body)))
         (goto-char beg)
         (while results
-          (unless (re-search-forward "^ *:result *\s\"" end t)
+          (unless (re-search-forward "^ *:\\(inf-\\)?result *\s\"" end t)
             (error "Can't find `:result' keyword"))
           (let ((result-beg (1- (point)))
                 (result-end (progn (backward-up-list -1 t) (point)))
