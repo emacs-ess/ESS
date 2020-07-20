@@ -113,3 +113,19 @@
                  '((foo))))
   (should (equal (etest--wrap-test '((foo)))
                  '((foo)))))
+
+(etest-deftest etest-cleanup-test ()
+  "`:cleanup' keywords are evaluated in LIFO order."
+  :init ((foo . "foo")
+         (bar . "bar"))
+  :cleanup (progn
+             (should (equal foo "FOO"))
+             (should (equal bar "BAR")))
+  :cleanup (progn
+             (should (equal foo "foo"))
+             (should (equal bar "BAR"))
+             (setq foo "FOO"))
+  :cleanup (progn
+             (should (equal foo "foo"))
+             (should (equal bar "bar"))
+             (setq bar "BAR")))

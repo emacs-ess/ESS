@@ -348,24 +348,35 @@ Insert KEY if there's no command."
 
 (defun etest--run-test (body do-result)
   "Parse BODY as list of expressions.
-`:test' arguments are evaluated in a special buffer. The buffer
-is initialised with the list of local variables found in `:init'
-keywords. `:result' keywords are processed with DO-RESULT. This
-should be a function taking ACTUAL and EXPECTED strings."
+`:test' arguments are evaluated in a dedicated buffer. The
+keyword can be a command or a list of commands. Strings are
+interpreted as `kbd' commands.
+
+ The buffer is initialised with the list of local variables found
+in `:init' keywords. The `:cleanup' keyword takes
+unwind-protected expressions that are evaluated in LIFO order
+after the test succeeds or fails.
+
+`:result' keywords are processed with DO-RESULT. This should be a
+function taking ACTUAL and EXPECTED strings."
   (etest--with-test-buffer (etest--pop-init body)
-    (let ((buf (current-buffer)))
-      (while body
-        (let ((key (pop body))
-              (value (pop body)))
-          (pcase key
-            (`:case (progn
-                      (erase-buffer)
-                      (insert value)))
-            (`:test (etest-run buf (etest--wrap-test value)))
-            (`:result (funcall do-result
-                               (etest-result buf)
-                               value))
-            (_ (error (format "Expected an etest keyword, not `%s`" key)))))))))
+    (let ((buf (current-buffer))
+          cleanup)
+      (unwind-protect
+          (while body
+            (let ((key (pop body))
+                  (value (pop body)))
+              (pcase key
+                (`:cleanup (push value cleanup))
+                (`:case (progn
+                          (erase-buffer)
+                          (insert value)))
+                (`:test (etest-run buf (etest--wrap-test value)))
+                (`:result (funcall do-result
+                                   (etest-result buf)
+                                   value))
+                (_ (error (format "Expected an etest keyword, not `%s`" key))))))
+        (mapc #'eval cleanup)))))
 
 (defmacro etest--with-test-buffer (init &rest body)
   (declare (indent 1))
