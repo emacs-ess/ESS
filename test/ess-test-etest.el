@@ -95,3 +95,10 @@
     :result \"foo ba
 ¶r\")
 ")
+
+(etest-deftest etest-keep-state-test ()
+  "`last-command' is preserved"
+  :case "¶foo ¶bar"
+  :test ("M-f")
+  :result "foo¶ bar¶"
+  :test ((should (eq last-command 'forward-word))))

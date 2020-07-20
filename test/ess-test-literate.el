@@ -234,10 +234,13 @@
   (with-current-buffer elt--state-buffer
     (delete-region (point-min) (point-max))
     (insert (if keep-state test-case-state test-case)))
-  (etest-run elt--state-buffer body keep-state)
+  (etest-run elt--state-buffer body (not keep-state))
   (etest-result elt--state-buffer))
 
-(defun etest-run (buf cmds &optional keep-state)
+(defun etest-run (buf cmds &optional reset-state)
+  "Run CMDS in BUF.
+If RESET-STATE is non-nil, `last-command' and
+`current-prefix-arg' are set to nil for all cursors."
   (with-current-buffer buf
     (goto-char (point-min))
     (when (search-forward "×" nil t)
@@ -261,7 +264,7 @@
       (dolist (cursor cursors-start)
         (goto-char cursor)
         ;; Reset Emacs state for each cursor
-        (unless keep-state
+        (when reset-state
           (setq last-command nil)
           (setq current-prefix-arg nil))
         (mapcar (lambda (x)
