@@ -343,10 +343,10 @@ contents.")
 (cl-defmacro etest-deftest (name args &body body)
   (declare (doc-string 3)
            (indent 2))
-  (let ((docstring (when (stringp (car body))
-                     (list (pop body)))))
+  (let ((_etest_docstring (when (stringp (car body))
+                            (list (pop body)))))
     `(ert-deftest ,name ,args
-       ,@docstring
+       ,@_etest_docstring
        (etest--run-test (quote ,body)
                         (lambda (actual expected)
                           (should (string= actual expected)))))))
@@ -393,11 +393,11 @@ buffer-local variable `etest-local-inferior-buffer'."
 
 (defmacro etest--with-test-buffer (init &rest body)
   (declare (indent 1))
-  `(let ((buf (elt--new-buffer ,init)))
+  `(let ((_etest_buf (elt--new-buffer ,init)))
      (unwind-protect
-         (with-current-buffer buf
+         (with-current-buffer _etest_buf
            ,@body)
-       (kill-buffer buf))))
+       (kill-buffer _etest_buf))))
 
 (defmacro etest--pop-init (place)
   `(let (local)
