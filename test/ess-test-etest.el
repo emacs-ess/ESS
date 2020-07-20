@@ -68,3 +68,30 @@
 ¶(etest-deftest name ()
   :foo)
 ")
+
+(etest-deftest etest-update-test ()
+  "`etest-update' updates test block at point."
+  :case "
+  (etest-deftest test-etest-update ()
+    :case \"¶foo bar\"
+    :test ((forward-word))
+    :result \"\"
+    :test ((forward-char)
+           (forward-char))
+    :test ((forward-char)
+           \"RET\")
+    :result \"\")
+"
+  :test ((etest-update))
+  :result "
+  (etest-deftest test-etest-update ()
+    :case \"¶foo bar\"
+    :test ((forward-word))
+    :result \"foo¶ bar\"
+    :test ((forward-char)
+           (forward-char))
+    :test ((forward-char)
+           \"RET\")
+    :result \"foo ba
+¶r\")
+")

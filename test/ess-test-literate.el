@@ -379,6 +379,38 @@ should be a function taking ACTUAL and EXPECTED strings."
        (setq local (append local (pop ,place))))
      local))
 
+;;;###autoload
+(defun etest-update ()
+  "Update all `:result' keywords for the etest block at point."
+  (interactive)
+  (save-excursion
+    (let* ((beg (etest--climb-deftest))
+           (end (progn (forward-sexp) (point-marker)))
+           (str (buffer-substring-no-properties beg end))
+           (body (car (read-from-string str)))
+           results)
+      ;; Skip `etest-deftest` and initial arguments
+      (dotimes (i 3)
+        (pop body))
+      (when (stringp (car body))
+        (pop body))
+      (let ((results (etest--read-results body)))
+        (goto-char beg)
+        (while results
+          (unless (re-search-forward "^ *:result *\s\"" end t)
+            (error "Can't find `:result' keyword"))
+          (let ((result-beg (1- (point)))
+                (result-end (progn (backward-up-list -1 t) (point)))
+                (result-str (prin1-to-string (pop results))))
+            (goto-char result-beg)
+            (delete-region result-beg result-end)
+            (insert result-str)))))))
+
+(defun etest--read-results (body)
+  (let (results)
+    (etest--run-test body (lambda (actual expected)
+                            (push actual results)))
+    (nreverse results)))
 
 (defun etest--climb-deftest ()
   ;; Climb one character when point is in front of a parenthesis.
