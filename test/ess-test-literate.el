@@ -339,9 +339,16 @@ Insert KEY if there's no command."
                      (list (pop body)))))
     `(ert-deftest ,name ,args
        ,@docstring
-       (etest--run-test (quote ,body)))))
+       (etest--run-test (quote ,body)
+                        (lambda (actual expected)
+                          (should (string= actual expected)))))))
 
-(defun etest--run-test (body)
+(defun etest--run-test (body do-result)
+  "Parse BODY as list of expressions.
+`:test' arguments are evaluated in a special buffer. The buffer
+is initialised with the list of local variables found in `:init'
+keywords. `:result' keywords are processed with DO-RESULT. This
+should be a function taking ACTUAL and EXPECTED strings."
   (etest--with-test-buffer (etest--pop-init body)
     (let ((buf (current-buffer)))
       (while body
@@ -352,7 +359,9 @@ Insert KEY if there's no command."
                       (erase-buffer)
                       (insert value)))
             (`:test (etest-run buf value))
-            (`:result (should (string= (etest-result buf) value)))
+            (`:result (funcall do-result
+                               (etest-result buf)
+                               value))
             (_ (error "Expected an `etest` keyword"))))))))
 
 (defmacro etest--with-test-buffer (init &rest body)
