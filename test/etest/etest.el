@@ -239,6 +239,34 @@ If RESET-STATE is non-nil, `last-command' and
   (with-current-buffer buf
     (buffer-substring-no-properties (point-min) (point-max))))
 
+(defun etest--unalias (seq)
+  "Emulate pressing keys decoded from SEQ."
+  (if (vectorp seq)
+      (etest--unalias-key seq (key-binding seq))
+    (let ((lkeys (etest--decode-keysequence seq))
+          (current-prefix-arg current-prefix-arg)
+          key)
+      (while (setq key (pop lkeys))
+        (when (numberp key)
+          (setq current-prefix-arg (list key))
+          (setq key (pop lkeys)))
+        (let ((cmd (key-binding key)))
+          (while (keymapp cmd)
+            (setq key (pop lkeys))
+            (setq cmd (or (lookup-key cmd key)
+                          (error "Can't find binding in keymap"))))
+          (etest--unalias-key key cmd))))))
+
+(defun etest--unalias-key (key cmd)
+  "Call command that corresponds to KEY.
+Insert KEY if there's no command."
+  (setq last-input-event (aref key 0))
+  (if (eq cmd 'self-insert-command)
+      (insert key)
+    (setq last-command-event (aref key 0))
+    (call-interactively cmd)
+    (setq last-command cmd)))
+
 (defun etest--decode-keysequence (str)
   "Decode STR from e.g. \"23ab5c\" to '(23 \"a\" \"b\" 5 \"c\")"
   (let ((table (copy-sequence (syntax-table))))
@@ -255,30 +283,6 @@ If RESET-STATE is non-nil, `last-command' and
                      (mapcar #'string x))))
                (with-syntax-table table
                  (split-string str "\\b" t)))))
-
-(defun etest--unalias (seq)
-  "Emulate pressing keys decoded from SEQ."
-  (if (vectorp seq)
-      (etest--unalias-key seq)
-    (let ((lkeys (etest--decode-keysequence seq))
-          key)
-      (while (setq key (pop lkeys))
-        (if (numberp key)
-            (let ((current-prefix-arg (list key)))
-              (when lkeys
-                (etest--unalias-key (pop lkeys))))
-          (etest--unalias-key key))))))
-
-(defun etest--unalias-key (key)
-  "Call command that corresponds to KEY.
-Insert KEY if there's no command."
-  (setq last-input-event (aref key 0))
-  (let ((cmd (key-binding key)))
-    (if (eq cmd 'self-insert-command)
-        (insert key)
-      (setq last-command-event (aref key 0))
-      (call-interactively cmd)
-      (setq last-command cmd))))
 
 (provide 'etest)
 

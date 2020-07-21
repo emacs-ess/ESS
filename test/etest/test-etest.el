@@ -150,3 +150,13 @@
   :messages "foo
 bar"
   :messages "")
+
+(ert-deftest etest-unalias-prefix-key ()
+  "Can supply keymap prefix commands like `C-c C-c`."
+  (with-temp-buffer
+    (let ((map (make-sparse-keymap))
+          called)
+      (define-key map (kbd "C-c C-c") (lambda () (interactive) (setq called t)))
+      (use-local-map map)
+      (etest--unalias (kbd "C-c C-c"))
+      (should called))))
