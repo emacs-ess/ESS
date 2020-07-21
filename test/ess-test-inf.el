@@ -337,35 +337,19 @@ some. text
   (skip-unless (and (or (executable-find "R-3.2.1")
                         (getenv "CONTINUOUS_INTEGRATION"))
                     (> emacs-major-version 25)))
-  (should
-   (string= "*R-3.2.1:1*"
-            (let ((ess-use-inferior-program-in-buffer-name t)
-                  (ess-plain-first-buffername nil)
-                  (ess-gen-proc-buffer-name-function #'ess-gen-proc-buffer-name:simple)
-                  (ess-ask-for-ess-directory nil)
-                  (inhibit-message ess-inhibit-message-in-tests)
-                  (name))
-              (R-3.2.1)
-              (setq name (buffer-name))
-              (set-process-query-on-exit-flag (get-buffer-process (current-buffer)) nil)
-              (kill-process (get-buffer-process name))
-              ;; FIXME: Does not work in batch mode
-              ;; (kill-buffer name)
-              name)))
-  (should
-   (string= "*R-3.2.1:2*"
-            (let ((ess-use-inferior-program-name-in-buffer-name t)
-                  (ess-plain-first-buffername nil)
-                  (ess-gen-proc-buffer-name-function #'ess-gen-proc-buffer-name:simple)
-                  (ess-ask-for-ess-directory nil)
-                  (inhibit-message ess-inhibit-message-in-tests)
-                  (name))
-              (R-3.2.1)
-              (setq name (buffer-name))
-              (set-process-query-on-exit-flag (get-buffer-process (current-buffer)) nil)
-              (kill-process (get-buffer-process name))
-              ;; (kill-buffer name)
-              name))))
+  (let ((ess-use-inferior-program-in-buffer-name t)
+        (ess-plain-first-buffername nil)
+        (ess-gen-proc-buffer-name-function #'ess-gen-proc-buffer-name:simple)
+        (ess-ask-for-ess-directory nil)
+        (inhibit-message ess-inhibit-message-in-tests))
+    (let ((inf-buf (R-3.2.1)))
+      (ess-test-unwind-protect inf-buf
+        (with-current-buffer inf-buf
+          (should (string= (buffer-name) "*R-3.2.1:1*")))
+        (let ((other-inf-buf (R-3.2.1)))
+          (ess-test-unwind-protect other-inf-buf
+            (with-current-buffer other-inf-buf
+              (should (string= (buffer-name) "*R-3.2.1:2*")))))))))
 
 (ert-deftest ess-switch-to-inferior-or-script-buffer-test ()
   (with-r-running nil

@@ -540,11 +540,12 @@ will be prompted to enter arguments interactively."
         (ess-write-to-dribble-buffer
          (format "(R): inferior-ess-language-start=%s\n"
                  inferior-ess-language-start)))
-      ;; FIXME: Current ob-R expects current buffer set to process buffer
-      (set-buffer inf-buf))))
+      inf-buf)))
 
 ;;;###autoload
-(defalias 'R #'run-ess-r)
+(defun R (&optional start-args)
+  ;; FIXME: Current ob-R expects current buffer set to process buffer
+  (set-buffer (run-ess-r start-args)))
 
 (defun inferior-ess-r--adjust-startup-directory (dir dialect)
   "Adjust startup directory DIR if DIALECT is R.
@@ -879,7 +880,9 @@ prompt for command line arguments."
   (let ((inferior-ess-r-program ess-newest-R))
     (run-ess-r start-args)))
 
-(defalias 'R-newest 'run-ess-r-newest)
+(defun R-newest (&optional start-args)
+  ;; FIXME: Current ob-R expects current buffer set to process buffer
+  (set-buffer (run-ess-r-newest start-args)))
 
 ;; (ess-r-version-date "R-2.5.1") (ess-r-version-date "R-patched")
 ;; (ess-r-version-date "R-1.2.1") (ess-r-version-date "R-1.8.1")
