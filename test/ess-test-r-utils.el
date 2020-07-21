@@ -254,6 +254,7 @@ representative to the common interactive use with tracebug on."
      (let* ((inf-buf ,inf-buf)
             (inf-proc (get-buffer-process inf-buf)))
        (when (and inf-proc (process-live-p inf-proc))
+         (set-process-query-on-exit-flag inf-proc nil)
          (kill-process inf-proc)
          (ess-test-sleep-while (process-live-p inf-proc) 0.001 1
                                "Expected dead process"))
