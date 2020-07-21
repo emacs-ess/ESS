@@ -6,11 +6,13 @@
 ;; Possible arguments: --r --r-indent etc.
 
 (let ((current-directory (file-name-directory load-file-name)))
+  (setq ess-root-path (expand-file-name "../lisp/" current-directory))
   (setq ess-test-path (expand-file-name "." current-directory))
-  (setq ess-root-path (expand-file-name "../lisp/" current-directory)))
+  (setq etest-path (expand-file-name "etest/" ess-test-path)))
 
 (add-to-list 'load-path ess-root-path)
 (add-to-list 'load-path ess-test-path)
+(add-to-list 'load-path etest-path)
 
 (require 'ess-test-r-utils)
 (setq ess-inhibit-message-in-tests t)
@@ -38,7 +40,7 @@
   (load (expand-file-name "ess-test-r-package.el" ess-test-path) nil t))
 (when (member "--literate" argv)
   (load (expand-file-name "ess-test-literate.el" ess-test-path) nil t)
-  (load (expand-file-name "ess-test-etest.el" ess-test-path) nil t)
+  (load (expand-file-name "test-etest.el" etest-path) nil t)
   (elt-deftest test-elt () "elt.R")
   (elt-deftest test-ess-roxy-literate () "roxy.R")
   (elt-deftest test-ess-r-code-fill () "code-fill.R")

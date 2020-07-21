@@ -1,6 +1,6 @@
 
 (require 'ert)
-(require 'ess-test-literate)
+(require 'etest)
 
 (etest-deftest etest-local-vars-test ()
   "`:init' keyword specifies local variables."
