@@ -133,28 +133,29 @@ and are processed with DO-RESULT."
 (defun etest-update ()
   "Update all result keywords for the etest block at point."
   (interactive)
-  (save-excursion
-    (let* ((beg (etest--climb-deftest))
-           (end (progn (forward-sexp) (point-marker)))
-           (str (buffer-substring-no-properties beg end))
-           (body (car (read-from-string str)))
-           results)
-      ;; Skip `etest-deftest` and initial arguments
-      (dotimes (i 3)
-        (pop body))
-      (when (stringp (car body))
-        (pop body))
-      (let ((results (etest--read-results body)))
-        (goto-char beg)
-        (while results
-          (unless (re-search-forward "^ *:\\(\\(inf-\\)?result\\|messages\\) *\s\"" end t)
-            (error "Can't find any result keyword"))
-          (let ((result-beg (1- (point)))
-                (result-end (progn (backward-up-list -1 t) (point)))
-                (result-str (prin1-to-string (pop results))))
-            (goto-char result-beg)
-            (delete-region result-beg result-end)
-            (insert result-str)))))))
+  (save-window-excursion
+    (save-excursion
+      (let* ((beg (etest--climb-deftest))
+             (end (progn (forward-sexp) (point-marker)))
+             (str (buffer-substring-no-properties beg end))
+             (body (car (read-from-string str)))
+             results)
+        ;; Skip `etest-deftest` and initial arguments
+        (dotimes (i 3)
+          (pop body))
+        (when (stringp (car body))
+          (pop body))
+        (let ((results (etest--read-results body)))
+          (goto-char beg)
+          (while results
+            (unless (re-search-forward "^ *:\\(\\(inf-\\)?result\\|messages\\) *\s\"" end t)
+              (error "Can't find any result keyword"))
+            (let ((result-beg (1- (point)))
+                  (result-end (progn (backward-up-list -1 t) (point)))
+                  (result-str (prin1-to-string (pop results))))
+              (goto-char result-beg)
+              (delete-region result-beg result-end)
+              (insert result-str))))))))
 
 (defun etest--read-results (body)
   (let (results)
