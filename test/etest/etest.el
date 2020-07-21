@@ -1,108 +1,15 @@
 ;;; etest.el --- Emacs behavioural test framework  -*- lexical-binding: t; -*-
 
+
+
+
+
+
 ;;; Code:
 
 (require 'ert)
 (eval-when-compile
   (require 'cl-lib))
-
-(defun etest-run (buf cmds &optional reset-state)
-  "Run CMDS in BUF.
-If RESET-STATE is non-nil, `last-command' and
-`current-prefix-arg' are set to nil for all cursors."
-  (with-current-buffer buf
-    (goto-char (point-min))
-    (when (search-forward "×" nil t)
-      (backward-delete-char 1)
-      (set-mark (point))
-      (when (search-forward "×" nil t)
-        (error "There can only be one mark cursor")))
-    (goto-char (point-max))
-    (let (cursors-start
-          cursors-end)
-      (while (search-backward "¶" nil t)
-        (delete-char 1)
-        (let ((marker (point-marker)))
-          (set-marker-insertion-type marker t)
-          (push marker cursors-start)))
-      (unless cursors-start
-        (setq cursors-start (list (point-min))))
-      ;; Fontification must take place after removing "¶"
-      ;; FIXME Emacs 25: Use `font-lock-ensure'
-      (font-lock-default-fontify-buffer)
-      (dolist (cursor cursors-start)
-        (goto-char cursor)
-        ;; Reset Emacs state for each cursor
-        (when reset-state
-          (setq last-command nil)
-          (setq current-prefix-arg nil))
-        (mapcar (lambda (x)
-                  (cond ((equal x '(kbd "C-u"))
-                         (setq current-prefix-arg (list 4)))
-                        ((stringp x)
-                         (if (string= x "C-u")
-                             (setq current-prefix-arg (list 4))
-                           (elt-unalias (kbd x))))
-                        ((and (listp x)
-                              (eq (car x) 'kbd))
-                         (elt-unalias x))
-                        (t (eval x))))
-                cmds)
-        (let ((marker (point-marker)))
-          (set-marker-insertion-type marker t)
-          (push marker cursors-end)))
-      (dolist (cursor cursors-end)
-        (goto-char cursor)
-        (insert "¶")))
-    (when (region-active-p)
-      (exchange-point-and-mark)
-      (insert "×"))
-    t))
-
-(defun etest-result (buf)
-  (with-current-buffer buf
-    (buffer-substring-no-properties (point-min) (point-max))))
-
-(defun elt-decode-keysequence (str)
-  "Decode STR from e.g. \"23ab5c\" to '(23 \"a\" \"b\" 5 \"c\")"
-  (let ((table (copy-sequence (syntax-table))))
-    (cl-loop for i from ?0 to ?9 do
-             (modify-syntax-entry i "." table))
-    (cl-loop for i from ? to ? do
-             (modify-syntax-entry i "w" table))
-    (cl-loop for i in '(? ?\( ?\) ?\[ ?\] ?{ ?} ?\" ?\' ?\ )
-             do (modify-syntax-entry i "w" table))
-    (cl-mapcan (lambda (x)
-                 (let ((y (ignore-errors (read x))))
-                   (if (numberp y)
-                       (list y)
-                     (mapcar #'string x))))
-               (with-syntax-table table
-                 (split-string str "\\b" t)))))
-
-(defun elt-unalias (seq)
-  "Emulate pressing keys decoded from SEQ."
-  (if (vectorp seq)
-      (elt--unalias-key seq)
-    (let ((lkeys (elt-decode-keysequence seq))
-          key)
-      (while (setq key (pop lkeys))
-        (if (numberp key)
-            (let ((current-prefix-arg (list key)))
-              (when lkeys
-                (elt--unalias-key (pop lkeys))))
-          (elt--unalias-key key))))))
-
-(defun elt--unalias-key (key)
-  "Call command that corresponds to KEY.
-Insert KEY if there's no command."
-  (setq last-input-event (aref key 0))
-  (let ((cmd (key-binding key)))
-    (if (eq cmd 'self-insert-command)
-        (insert key)
-      (setq last-command-event (aref key 0))
-      (call-interactively cmd)
-      (setq last-command cmd))))
 
 (defvar-local etest-local-inferior-buffer nil
   "External buffer containing output to check.
@@ -182,7 +89,7 @@ and are processed with DO-RESULT."
                           (insert value)))
                 (`:test (etest-run buf (etest--wrap-test value)))
                 (`:result (funcall do-result
-                                   (etest-result buf)
+                                   (etest--result buf)
                                    value))
                 (`:inf-result (etest--flush-inferior-buffer do-result value))
                 (`:messages (progn
@@ -201,7 +108,7 @@ and are processed with DO-RESULT."
   (unless etest-local-inferior-buffer
     (error "Must set `etest-local-inferior-buffer'"))
   (let ((result (funcall do-result
-                         (etest-result etest-local-inferior-buffer)
+                         (etest--result etest-local-inferior-buffer)
                          value)))
     (with-current-buffer etest-local-inferior-buffer
       (let ((inhibit-read-only t))
@@ -267,6 +174,111 @@ and are processed with DO-RESULT."
   (while (and (not (looking-at "(etest-deftest"))
               (ignore-errors (prog1 t (backward-up-list nil t)))))
   (point))
+
+
+;;; Run commands with cursor and mark tracking
+
+;; The following code is adapted from the `lispy-with' macro by Oleh
+;; Krehel in <https://github.com/abo-abo/lispy/blob/master/lispy-test.el>.
+;; The main difference is support for multiple cursors.
+
+(defun etest-run (buf cmds &optional reset-state)
+  "Run CMDS in BUF.
+If RESET-STATE is non-nil, `last-command' and
+`current-prefix-arg' are set to nil for all cursors."
+  (with-current-buffer buf
+    (goto-char (point-min))
+    (when (search-forward "×" nil t)
+      (backward-delete-char 1)
+      (set-mark (point))
+      (when (search-forward "×" nil t)
+        (error "There can only be one mark cursor")))
+    (goto-char (point-max))
+    (let (cursors-start
+          cursors-end)
+      (while (search-backward "¶" nil t)
+        (delete-char 1)
+        (let ((marker (point-marker)))
+          (set-marker-insertion-type marker t)
+          (push marker cursors-start)))
+      (unless cursors-start
+        (setq cursors-start (list (point-min))))
+      ;; Fontification must take place after removing "¶"
+      ;; FIXME Emacs 25: Use `font-lock-ensure'
+      (font-lock-default-fontify-buffer)
+      (dolist (cursor cursors-start)
+        (goto-char cursor)
+        ;; Reset Emacs state for each cursor
+        (when reset-state
+          (setq last-command nil)
+          (setq current-prefix-arg nil))
+        (mapcar (lambda (x)
+                  (cond ((equal x '(kbd "C-u"))
+                         (setq current-prefix-arg (list 4)))
+                        ((stringp x)
+                         (if (string= x "C-u")
+                             (setq current-prefix-arg (list 4))
+                           (etest--unalias (kbd x))))
+                        ((and (listp x)
+                              (eq (car x) 'kbd))
+                         (etest--unalias x))
+                        (t (eval x))))
+                cmds)
+        (let ((marker (point-marker)))
+          (set-marker-insertion-type marker t)
+          (push marker cursors-end)))
+      (dolist (cursor cursors-end)
+        (goto-char cursor)
+        (insert "¶")))
+    (when (region-active-p)
+      (exchange-point-and-mark)
+      (insert "×"))
+    t))
+
+(defun etest--result (buf)
+  (with-current-buffer buf
+    (buffer-substring-no-properties (point-min) (point-max))))
+
+(defun etest--decode-keysequence (str)
+  "Decode STR from e.g. \"23ab5c\" to '(23 \"a\" \"b\" 5 \"c\")"
+  (let ((table (copy-sequence (syntax-table))))
+    (cl-loop for i from ?0 to ?9 do
+             (modify-syntax-entry i "." table))
+    (cl-loop for i from ? to ? do
+             (modify-syntax-entry i "w" table))
+    (cl-loop for i in '(? ?\( ?\) ?\[ ?\] ?{ ?} ?\" ?\' ?\ )
+             do (modify-syntax-entry i "w" table))
+    (cl-mapcan (lambda (x)
+                 (let ((y (ignore-errors (read x))))
+                   (if (numberp y)
+                       (list y)
+                     (mapcar #'string x))))
+               (with-syntax-table table
+                 (split-string str "\\b" t)))))
+
+(defun etest--unalias (seq)
+  "Emulate pressing keys decoded from SEQ."
+  (if (vectorp seq)
+      (etest--unalias-key seq)
+    (let ((lkeys (etest--decode-keysequence seq))
+          key)
+      (while (setq key (pop lkeys))
+        (if (numberp key)
+            (let ((current-prefix-arg (list key)))
+              (when lkeys
+                (etest--unalias-key (pop lkeys))))
+          (etest--unalias-key key))))))
+
+(defun etest--unalias-key (key)
+  "Call command that corresponds to KEY.
+Insert KEY if there's no command."
+  (setq last-input-event (aref key 0))
+  (let ((cmd (key-binding key)))
+    (if (eq cmd 'self-insert-command)
+        (insert key)
+      (setq last-command-event (aref key 0))
+      (call-interactively cmd)
+      (setq last-command cmd))))
 
 (provide 'etest)
 

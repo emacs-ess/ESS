@@ -209,10 +209,6 @@
     (car (read-from-string test-code))))
 
 
-;; The following functions are borrowed from Lispy's testing
-;; framework. The main difference is that they restore state when
-;; `keep-state' is t. They also run `(kbd)' on strings.
-
 (defvar elt--state-buffer nil
   "Evaluation buffer of previous test chunk.")
 
@@ -226,7 +222,7 @@
     (delete-region (point-min) (point-max))
     (insert (if keep-state test-case-state test-case)))
   (etest-run elt--state-buffer body (not keep-state))
-  (etest-result elt--state-buffer))
+  (etest--result elt--state-buffer))
 
 (provide 'ess-test-literate)
 
