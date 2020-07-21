@@ -107,7 +107,7 @@ and are processed with DO-RESULT."
   (unless etest-local-inferior-buffer
     (error "Must set `etest-local-inferior-buffer'"))
   (let ((result (funcall do-result
-                         (etest--result etest-local-inferior-buffer)
+                         (etest--result etest-local-inferior-buffer t)
                          value)))
     (with-current-buffer etest-local-inferior-buffer
       (let ((inhibit-read-only t))
@@ -235,9 +235,15 @@ If RESET-STATE is non-nil, `last-command' and
       (insert "×"))
     t))
 
-(defun etest--result (buf)
+(defun etest--result (buf &optional trim-last-newline)
   (with-current-buffer buf
-    (buffer-substring-no-properties (point-min) (point-max))))
+    (let ((beg (point-min))
+          (end (point-max)))
+      (when (and trim-last-newline
+                 (> end beg)
+                 (string= (buffer-substring (1- end) end) "\n"))
+        (setq end (1- end)))
+      (buffer-substring-no-properties beg end))))
 
 (defun etest--unalias (seq)
   "Emulate pressing keys decoded from SEQ."
