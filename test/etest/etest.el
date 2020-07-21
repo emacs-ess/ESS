@@ -1,8 +1,21 @@
 ;;; etest.el --- Emacs behavioural test framework  -*- lexical-binding: t; -*-
 
+;; Copyright (C) 2020 Free Software Foundation, Inc.
+;; Copyright (C) 2014-2015 Oleh Krehel
+
+;; Author:
+;;     Lionel Henry <lionel.hry@gmail.com>
+;;     Oleh Krehel
+;; Version: 1.0.0
+;; Package-Requires: ((ert))
+;; Keywords: tools, unit-test
+;; URL: https://github.com/emacs-ess/ESS/tree/master/test/etest
 
 
+;;; Commentary:
 
+;; etest makes it easy to test the behaviour of Emacs commands. See
+;; the project README for documentation.
 
 
 ;;; Code:
@@ -131,9 +144,15 @@ and are processed with DO-RESULT."
                     (buffer-substring start (max start (1- (point-max)))))))))
     (funcall do-result msgs value)))
 
+
+;;; Update expected results in a test block
+
 ;;;###autoload
 (defun etest-update ()
-  "Update all result keywords for the etest block at point."
+  "Update all result keywords for the etest block at point.
+Move point into an `etest-deftest' block and call this function
+to update the value of `:result', `:inf-result', and `:messages'
+keywords."
   (interactive)
   (save-window-excursion
     (save-excursion
