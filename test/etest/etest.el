@@ -19,10 +19,10 @@ contents.")
 (cl-defmacro etest-deftest (name args &body body)
   (declare (doc-string 3)
            (indent 2))
-  (let ((_etest_docstring (when (stringp (car body))
+  (let ((etest--docstring (when (stringp (car body))
                             (list (pop body)))))
     `(ert-deftest ,name ,args
-       ,@_etest_docstring
+       ,@etest--docstring
        (etest--run-test (quote ,body)
                         (lambda (actual expected)
                           (should (string= actual expected)))))))
@@ -36,11 +36,11 @@ contents.")
 
 (defmacro etest--with-test-buffer (init &rest body)
   (declare (indent 1))
-  `(let ((_etest_buf (etest--new-buffer ,init)))
+  `(let ((etest--buf (etest--new-buffer ,init)))
      (unwind-protect
-         (with-current-buffer _etest_buf
+         (with-current-buffer etest--buf
            ,@body)
-       (kill-buffer _etest_buf))))
+       (kill-buffer etest--buf))))
 
 (defun etest--new-buffer (init)
   (let ((buf (generate-new-buffer " *elt-temp*")))
@@ -73,30 +73,29 @@ buffer-local variable `etest-local-inferior-buffer'.
 `:messages' keywords check the contents of the messages buffers
 and are processed with DO-RESULT."
   (etest--with-test-buffer (etest--pop-init body)
-    (let* ((buf (current-buffer))
-           (inhibit-message t)
-           (msg-sentinel (etest--make-message-sentinel))
-           cleanup)
+    (let* ((inhibit-message t)
+           (etest--msg-sentinel (etest--make-message-sentinel))
+           etest--cleanup)
       (unwind-protect
           (while body
-            (let ((key (pop body))
-                  (value (pop body)))
-              (pcase key
-                (`:inf-buffer (setq etest-local-inferior-buffer (eval value)))
-                (`:cleanup (push value cleanup))
+            (let ((etest--key (pop body))
+                  (etest--value (pop body)))
+              (pcase etest--key
+                (`:inf-buffer (setq etest-local-inferior-buffer (eval etest--value)))
+                (`:cleanup (push etest--value etest--cleanup))
                 (`:case (progn
                           (erase-buffer)
-                          (insert value)))
-                (`:test (etest-run buf (etest--wrap-test value)))
+                          (insert etest--value)))
+                (`:test (etest-run (current-buffer) (etest--wrap-test etest--value)))
                 (`:result (funcall do-result
-                                   (etest--result buf)
-                                   value))
-                (`:inf-result (etest--flush-inferior-buffer do-result value))
+                                   (etest--result (current-buffer))
+                                   etest--value))
+                (`:inf-result (etest--flush-inferior-buffer do-result etest--value))
                 (`:messages (progn
-                              (etest--flush-messages msg-sentinel do-result value)
-                              (setq msg-sentinel (etest--make-message-sentinel))))
-                (_ (error (format "Expected an etest keyword, not `%s`" key))))))
-        (mapc #'eval cleanup)))))
+                              (etest--flush-messages etest--msg-sentinel do-result etest--value)
+                              (setq etest--msg-sentinel (etest--make-message-sentinel))))
+                (_ (error (format "Expected an etest keyword, not `%s`" etest--key))))))
+        (mapc #'eval etest--cleanup)))))
 
 (defun etest--wrap-test (x)
   (if (or (not (listp x))
