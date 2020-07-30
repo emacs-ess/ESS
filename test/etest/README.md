@@ -1,7 +1,7 @@
 
 # Introduction
 
-etest is an ERT extension to make it easier to test Emacs behaviour such as cursor and mark movement and inferior buffer output..
+etest is an ERT extension to make it easier to test Emacs behaviour such as cursor and mark movement and inferior buffer output.
 
 This package contains programming tools as well as user commands. Add `ESS/test/etest/` to your load-path or install it with:
 
@@ -35,6 +35,8 @@ All etest tests are run in a dedicated buffer. The `:case` takes a string that d
 (etest-deftest my-test ()
   :case "¶Initial text in the test buffer.")
 ```
+
+The mark cursor `×` is optional. When the point cursor `¶` is omitted, the cursor is set at `(point-min)`.
 
 
 ### `:test`
@@ -216,9 +218,6 @@ Use multiple `¶` characters to define multiple cursors. The `:test` code is run
 Or for testing properties of many keywords:
 
 ```elisp
-(defun face-at-point ()
-  (get-char-property (point) 'face))
-
 (etest-deftest my-test ()
   "Test that control flow keywords are only fontified if they are
 followed by an open parenthesis."
