@@ -715,8 +715,9 @@ Arguments:
 (defun ess-r-test-transcript-init ()
   (ess-r-transcript-mode)
   (read-only-mode -1)
-  (setq ess-local-process-name ess-r-test-proc-name)
-  (setq etest-local-inferior-buffer ess-r-test-proc-buf))
+  (let ((proc-buf (ess-r-test-proc-buf)))
+    (setq ess-local-process-name (process-name (get-buffer-process proc-buf)))
+    (setq etest-local-inferior-buffer proc-buf)))
 
 (etest-deftest ess-r-transcript-motions-test ()
   "[enter] handles commands, non-commands, and prompts (#1013)."

@@ -99,19 +99,19 @@ inserted text."
       (R "--vanilla"))))
 
 
-(defvar ess-r-test-proc-buf
-  (let* ((buf (run-ess-test-r-vanilla))
-         (proc (get-buffer-process buf)))
-    (ess-wait-for-process proc)
-    (with-current-buffer buf
+(let (proc-buf)
+  (defun ess-r-test-proc-buf--init ()
+    (setq proc-buf (run-ess-test-r-vanilla))
+    (ess-wait-for-process (get-buffer-process proc-buf))
+    (with-current-buffer proc-buf
       (let ((inhibit-read-only t))
-        (erase-buffer)))
-    buf)
-  "Common process buffer for tests.")
+        (erase-buffer))))
 
-(defvar ess-r-test-proc (get-buffer-process ess-r-test-proc-buf))
-(defvar ess-r-test-proc-name (process-name ess-r-test-proc))
-
+  (defun ess-r-test-proc-buf ()
+    "Common process buffer for tests."
+    (unless proc-buf
+      (ess-r-test-proc-buf--init))
+    proc-buf))
 
 (defun ess-send-input-to-R (input &optional type)
   "Eval INPUT and return the entire content of the REPL buffer.
