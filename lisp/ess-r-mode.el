@@ -2324,13 +2324,14 @@ If the current buffer does not have a usage section, return nil."
           (forward-line -1)
           (narrow-to-region usage-beg (point))
           (goto-char (point-min))
-          ;; Match objects until a parens
-          (while (re-search-forward (rx bol (0+ whitespace) (not (syntax comment-delimiter))
-                                        (group (1+ (not (any "(")))))
-                                    usage-end t)
-            (push (match-string-no-properties 1) usage-objects)
-            ;; Skip past function arguments
-            (forward-list)))
+          (forward-whitespace 1)
+          (while (not (eobp))
+            (if (looking-at (rx (group (1+ (not (any whitespace)))) "("))
+                (progn
+                  (push (match-string-no-properties 1) usage-objects)
+                  ;; Skip past function arguments
+                  (forward-list))
+              (forward-whitespace 1))))
         (when usage-objects
           ;; Get arguments:
           (setq usage-objects
