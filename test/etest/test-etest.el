@@ -97,11 +97,19 @@
 ")
 
 (etest-deftest etest-keep-state-test ()
-  "`last-command' is preserved"
+  "`last-command' is preserved.
+Using multiple cursors in the test to make sure Emacs state is
+reset after a cursor has finished evaluating."
   :case "¶foo ¶bar"
-  :eval ("M-f")
-  :result "foo¶ bar¶"
-  :eval ((should (eq last-command 'forward-word))))
+  :eval ("M-f"
+         (should (eq last-command 'forward-word))
+         ;; Ideally we'd test `this-command` at the time "M-f" is
+         ;; called but for simplicity we do it here
+         (should (eq this-command 'forward-word))
+         "M-b"
+         (should (eq last-command 'backward-word))
+         (should (eq this-command 'backward-word)))
+  :result "¶foo ¶bar")
 
 (ert-deftest etest-wrap-test-keyword-test ()
   "`:eval' keywords are appropriately wrapped in lists."

@@ -17,7 +17,7 @@
 ;;
 
 (require 'ert)
-(require 'ess-test-literate)
+(require 'etest)
 (require 'ess-r-mode)
 (require 'ess-test-r-utils)
 (require 'cc-mode)
@@ -211,6 +211,32 @@
               (setq last-input-event ?_)
               (call-interactively 'ess-insert-S-assign)
               (buffer-substring (point-min) (point-max))))))
+
+(etest-deftest ess-cycle-assign-test ()
+  "Repeated calls cycle trough assignment operators."
+  :init ((mode . r))
+  :case "foo¶"
+
+  :eval "C-c C-="
+  :result "foo <- ¶"
+
+  :eval "C-c C-="
+  :result "foo <<- ¶"
+
+  :eval "C-c C-="
+  :result "foo = ¶"
+
+  :eval "C-c C-="
+  :result "foo -> ¶"
+
+  :eval "C-c C-="
+  :result "foo ->> ¶"
+
+  :eval "C-c C-="
+  :result "foo <- ¶"
+
+  :eval "C-c C-="
+  :result "foo <<- ¶")
 
 (ert-deftest ess-skip-thing-test ()
   (should (eql 18
