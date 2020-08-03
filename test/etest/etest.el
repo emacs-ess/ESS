@@ -65,7 +65,7 @@ contents.")
 
 (defun etest--run-test (body do-result)
   "Parse BODY as list of expressions.
-`:test' arguments are evaluated in a dedicated buffer. The
+`:eval' arguments are evaluated in a dedicated buffer. The
 keyword can be a command or a list of commands. Strings are
 interpreted as `kbd' commands.
 
@@ -99,7 +99,7 @@ and are processed with DO-RESULT."
                 (`:case (progn
                           (erase-buffer)
                           (insert etest--value)))
-                (`:test (etest-run (current-buffer) (etest--wrap-test etest--value)))
+                (`:eval (etest-run (current-buffer) (etest--wrap-test etest--value)))
                 (`:result (funcall do-result
                                    (etest--result (current-buffer))
                                    etest--value))

@@ -727,7 +727,7 @@ Arguments:
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 "
-  :test "RET"
+  :eval "RET"
   :result "
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -747,7 +747,7 @@ Type 'license()' or 'licence()' for distribution details.
 [1] 2
 [1] 3
 "
-  :test "RET"
+  :eval "RET"
   :result "
 > for(i in 1:3) {
 +   print(i)
