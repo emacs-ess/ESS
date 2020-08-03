@@ -203,14 +203,16 @@
                                          ("2005-12-30" . "R-2.0")))
                  "R-dev")))
 
-(ert-deftest ess-insert-S-assign-test ()
-  ;; one call should insert assignment:
-  (should
-   (string= " <- "
-            (ess-r-test-with-temp-text ""
-              (setq last-input-event ?_)
-              (call-interactively 'ess-insert-S-assign)
-              (buffer-substring (point-min) (point-max))))))
+(etest-deftest ess-insert-assign-test ()
+  "Repeated calls cycle between assignment and self-insert."
+  :init ((mode . r)
+         (eval . (let ((map (make-sparse-keymap)))
+                   (define-key map "_" 'ess-insert-assign)
+                   (use-local-map map))))
+  :case "foo¶"
+  :eval "_" :result "foo <- ¶"
+  :eval "_" :result "foo_¶"
+  :eval "_" :result "foo_ <- ¶")
 
 (etest-deftest ess-cycle-assign-test ()
   "Repeated calls cycle trough assignment operators."
