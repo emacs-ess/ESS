@@ -147,6 +147,8 @@ and are processed with DO-RESULT."
 
 ;;; Update expected results in a test block
 
+(defvar etest--result-re "[ \n\t]*:\\(\\(inf-\\)?result\\|messages\\) *\s\"")
+
 ;;;###autoload
 (defun etest-update ()
   "Update all result keywords for the etest block at point.
@@ -167,9 +169,13 @@ keywords."
           (pop body))
         (let ((results (etest--read-results body)))
           (goto-char beg)
+          (forward-char 1)
           (while results
-            (unless (re-search-forward "^ *:\\(\\(inf-\\)?result\\|messages\\) *\s\"" end t)
+            (while (and (etest--forward-sexp)
+                        (not (looking-at-p etest--result-re))))
+            (unless (looking-at-p etest--result-re)
               (error "Can't find any result keyword"))
+            (re-search-forward etest--result-re end t)
             (let ((result-beg (1- (point)))
                   (result-end (progn (backward-up-list -1 t) (point)))
                   (result-str (prin1-to-string (pop results))))
@@ -182,6 +188,14 @@ keywords."
     (etest--run-test body (lambda (actual _expected)
                             (push actual results)))
     (nreverse results)))
+
+(defun etest--forward-sexp (&optional N)
+  (or N (setq N 1))
+  (condition-case nil
+      (prog1 t
+        (goto-char (or (scan-sexps (point) N)
+                       (buffer-end N))))
+    (error nil)))
 
 (defun etest--climb-deftest ()
   ;; Climb one character when point is in front of a parenthesis.

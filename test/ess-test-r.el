@@ -216,27 +216,13 @@
   "Repeated calls cycle trough assignment operators."
   :init ((mode . r))
   :case "foo¶"
-
-  :eval "C-c C-="
-  :result "foo <- ¶"
-
-  :eval "C-c C-="
-  :result "foo <<- ¶"
-
-  :eval "C-c C-="
-  :result "foo = ¶"
-
-  :eval "C-c C-="
-  :result "foo -> ¶"
-
-  :eval "C-c C-="
-  :result "foo ->> ¶"
-
-  :eval "C-c C-="
-  :result "foo <- ¶"
-
-  :eval "C-c C-="
-  :result "foo <<- ¶")
+  :eval "C-c C-=" :result "foo <- ¶"
+  :eval "C-c C-=" :result "foo <<- ¶"
+  :eval "C-c C-=" :result "foo = ¶"
+  :eval "C-c C-=" :result "foo -> ¶"
+  :eval "C-c C-=" :result "foo ->> ¶"
+  :eval "C-c C-=" :result "foo <- ¶"
+  :eval "C-c C-=" :result "foo <<- ¶")
 
 (ert-deftest ess-skip-thing-test ()
   (should (eql 18

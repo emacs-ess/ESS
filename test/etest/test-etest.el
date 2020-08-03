@@ -96,6 +96,22 @@
 ¶r\")
 ")
 
+(etest-deftest etest-update-result-not-on-bol-test ()
+  "`etest-update' works when `:result` is not at bol."
+  :case "
+  (etest-deftest test-etest-update ()
+    :case \"¶foo bar\"
+    :eval ((forward-word)) :result \"\"
+    :eval ((forward-word)) :result \"\")
+"
+  :eval ((etest-update))
+  :result "
+  (etest-deftest test-etest-update ()
+    :case \"¶foo bar\"
+    :eval ((forward-word)) :result \"foo¶ bar\"
+    :eval ((forward-word)) :result \"foo bar¶\")
+")
+
 (etest-deftest etest-keep-state-test ()
   "`last-command' is preserved.
 Using multiple cursors in the test to make sure Emacs state is
