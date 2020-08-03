@@ -280,19 +280,21 @@ If RESET-STATE is non-nil, `last-command' and
         (let ((cmd (key-binding key)))
           (while (keymapp cmd)
             (setq key (pop lkeys))
-            (setq cmd (or (lookup-key cmd key)
-                          (error "Can't find binding in keymap"))))
+            (setq cmd (lookup-key cmd key)))
           (etest--unalias-key key cmd))))))
 
 (defun etest--unalias-key (key cmd)
   "Call command that corresponds to KEY.
 Insert KEY if there's no command."
   (setq last-input-event (aref key 0))
-  (if (eq cmd 'self-insert-command)
-      (insert key)
-    (setq last-command-event (aref key 0))
-    (call-interactively cmd)
-    (setq last-command cmd)))
+  (cond ((eq cmd 'self-insert-command)
+         (insert key))
+        ((null cmd)
+         (error "Can't find binding in keymap"))
+        (t
+         (setq last-command-event (aref key 0))
+         (call-interactively cmd)
+         (setq last-command cmd))))
 
 (defun etest--decode-keysequence (str)
   "Decode STR from e.g. \"23ab5c\" to '(23 \"a\" \"b\" 5 \"c\")"
