@@ -86,9 +86,8 @@ buffer-local variable `etest-local-inferior-buffer'.
 `:messages' keywords check the contents of the messages buffers
 and are processed with DO-RESULT."
   (etest--with-test-buffer (etest--pop-init body)
-    (let* ((inhibit-message t)
-           (etest--msg-sentinel (etest--make-message-sentinel))
-           etest--cleanup)
+    (let ((etest--msg-sentinel (etest--make-message-sentinel))
+          etest--cleanup)
       (unwind-protect
           (while body
             (let ((etest--key (pop body))
@@ -131,7 +130,8 @@ and are processed with DO-RESULT."
     result))
 
 (defun etest--make-message-sentinel ()
-  (let ((sentinel (format "etest-messages-%s" (gensym))))
+  (let ((sentinel (format "etest-messages-%s" (gensym)))
+        (inhibit-message t))
     (message sentinel)
     sentinel))
 
@@ -258,7 +258,8 @@ If RESET-STATE is non-nil, `last-command' and
                         ((and (listp x)
                               (eq (car x) 'kbd))
                          (etest--unalias x))
-                        (t (eval x))))
+                        (t (let ((inhibit-message t))
+                             (eval x)))))
                 cmds)
           (let ((marker (point-marker)))
             (set-marker-insertion-type marker t)
@@ -309,7 +310,8 @@ Insert KEY if there's no command."
         (t
          (setq last-command-event (aref key 0))
          (setq this-command cmd)
-         (call-interactively cmd)
+         (let ((inhibit-message t))
+           (call-interactively cmd))
          (setq last-command cmd))))
 
 (defun etest--decode-keysequence (str)
