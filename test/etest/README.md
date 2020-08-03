@@ -1,7 +1,7 @@
 
 # Introduction
 
-etest is an ERT extension to make it easier to test Emacs behaviour such as cursor and mark movement and inferior buffer output.
+etest is an ERT extension to make it easier to test Emacs behavior such as cursor and mark movement and inferior buffer output.
 
 This package contains programming tools as well as user commands. Add `ESS/test/etest/` to your load-path or install it with:
 
@@ -41,7 +41,7 @@ The mark cursor `×` is optional. When the point cursor `¶` is omitted, the cur
 
 ### `:test`
 
-To define a behaviour test, add a `:test` keyword. This keyword handles lisp code to be evaluated:
+To define a behavior test, add a `:test` keyword. This keyword handles lisp code to be evaluated:
 
 ```elisp
 (etest-deftest my-test ()
@@ -88,7 +88,7 @@ Then move the point inside the `etest-deftest` block and call `M-x etest-update`
   :result "Initial¶ text in the test buffer.")
 ```
 
-This block has now become a unit test for the behaviour of the `"M-f"` keybinding. When ERT runs the test, the contents of the buffer as well as the position of the cursor after typin `"M-f"` must correspond to the comparison case recorded in `:result`, otherwise the test fails.
+This block has now become a unit test for the behavior of the `"M-f"` keybinding. When ERT runs the test, the contents of the buffer as well as the position of the cursor after typin `"M-f"` must correspond to the comparison case recorded in `:result`, otherwise the test fails.
 
 Note that you don't need a `:result` keyword to perform tests. You can also use `should` statement or any other ERT testing device in the `:test` forms:
 
@@ -99,11 +99,11 @@ Note that you don't need a `:result` keyword to perform tests. You can also use 
 ```
 
 
-## Initialising and cleaning up the test buffer
+## Initializing and cleaning up the test buffer
 
 ### `:init`
 
-By default, the test buffer is in fundamental mode. The `:init` keyword offers a convenient initialisation syntax. It takes an alist of local variables with the same syntax as [directory local variables](https://www.gnu.org/software/emacs/manual/html_node/emacs/Directory-Variables.html).
+By default, the test buffer is in fundamental mode. The `:init` keyword offers a convenient initialization syntax. It takes an alist of local variables with the same syntax as [directory local variables](https://www.gnu.org/software/emacs/manual/html_node/emacs/Directory-Variables.html).
 
 ```elisp
 (etest-deftest my-test ()
@@ -111,7 +111,7 @@ By default, the test buffer is in fundamental mode. The `:init` keyword offers a
          (var . value)))
 ```
 
-The `eval` command supports arbitrary lisp code. This is a convenient way of abstracting initialisation in a function:
+The `eval` command supports arbitrary lisp code. This is a convenient way of abstracting initialization in a function:
 
 ```elisp
 (defun my-init ()
@@ -144,7 +144,7 @@ In addition to checking the side effects in the test buffer, it is often useful 
 
 ### `:inf-buffer`
 
-Let's define rudimentary initialisation and cleanup functions for an R inferior. These save the inferior buffer in a buffer-local variable `inf-buf`.
+Let's define rudimentary initialization and cleanup functions for an R inferior. These save the inferior buffer in a buffer-local variable `inf-buf`.
 
 ```elisp
 (defun my-inferior-init ()
