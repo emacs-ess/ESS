@@ -17,6 +17,7 @@
 ;;
 
 (require 'ert)
+(require 'etest)
 (require 'ess-r-mode)
 (require 'ess-test-r-utils)
 (require 'cc-mode)
@@ -202,14 +203,28 @@
                                          ("2005-12-30" . "R-2.0")))
                  "R-dev")))
 
-(ert-deftest ess-insert-S-assign-test ()
-  ;; one call should insert assignment:
-  (should
-   (string= " <- "
-            (ess-r-test-with-temp-text ""
-              (setq last-input-event ?_)
-              (call-interactively 'ess-insert-S-assign)
-              (buffer-substring (point-min) (point-max))))))
+(etest-deftest ess-insert-assign-test ()
+  "Repeated calls cycle between assignment and self-insert."
+  :init ((mode . r)
+         (eval . (let ((map (make-sparse-keymap)))
+                   (define-key map "_" 'ess-insert-assign)
+                   (use-local-map map))))
+  :case "foo¶"
+  :eval "_" :result "foo <- ¶"
+  :eval "_" :result "foo_¶"
+  :eval "_" :result "foo_ <- ¶")
+
+(etest-deftest ess-cycle-assign-test ()
+  "Repeated calls cycle trough assignment operators."
+  :init ((mode . r))
+  :case "foo¶"
+  :eval "C-c C-=" :result "foo <- ¶"
+  :eval "C-c C-=" :result "foo <<- ¶"
+  :eval "C-c C-=" :result "foo = ¶"
+  :eval "C-c C-=" :result "foo -> ¶"
+  :eval "C-c C-=" :result "foo ->> ¶"
+  :eval "C-c C-=" :result "foo <- ¶"
+  :eval "C-c C-=" :result "foo <<- ¶")
 
 (ert-deftest ess-skip-thing-test ()
   (should (eql 18
@@ -710,6 +725,59 @@ Arguments:
                    "1\n2"))
     (should (equal (ess-roxy-remove-roxy-re "#' 1\n#' 2\nNULL")
                    "#' 1\n#' 2\nNULL"))))
+
+(defun ess-r-test-transcript-init ()
+  (ess-r-transcript-mode)
+  (read-only-mode -1)
+  (let ((proc-buf (ess-r-test-proc-buf)))
+    (setq ess-local-process-name (process-name (get-buffer-process proc-buf)))
+    (setq etest-local-inferior-buffer proc-buf)))
+
+(etest-deftest ess-r-transcript-motions-test ()
+  "[enter] handles commands, non-commands, and prompts (#1013)."
+  :init ((eval . (ess-r-test-transcript-init)))
+  :case "
+¶R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+"
+  :eval "RET"
+  :result "
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+¶"
+
+  :inf-result "
+> "
+
+  :messages "No command at this point"
+
+  :case "
+> ¶for(i in 1:3) {
++   print(i)
++ }
+[1] 1
+[1] 2
+[1] 3
+"
+  :eval "RET"
+  :result "
+> for(i in 1:3) {
++   print(i)
++ }
+[1] 1
+[1] 2
+[1] 3
+¶"
+
+  :inf-result "for(i in 1:3) {
++   print(i)
++ }
+[1] 1
+[1] 2
+[1] 3
+> ")
 
 (provide 'ess-test-r)
 

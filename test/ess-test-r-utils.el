@@ -98,6 +98,21 @@ inserted text."
           (ess-ask-for-ess-directory nil))
       (R "--vanilla"))))
 
+
+(let (proc-buf)
+  (defun ess-r-test-proc-buf--init ()
+    (setq proc-buf (run-ess-test-r-vanilla))
+    (ess-wait-for-process (get-buffer-process proc-buf))
+    (with-current-buffer proc-buf
+      (let ((inhibit-read-only t))
+        (erase-buffer))))
+
+  (defun ess-r-test-proc-buf ()
+    "Common process buffer for tests."
+    (unless proc-buf
+      (ess-r-test-proc-buf--init))
+    proc-buf))
+
 (defun ess-send-input-to-R (input &optional type)
   "Eval INPUT and return the entire content of the REPL buffer.
 TYPE can be one of 'string, 'region 'c-c or 'repl. If nil or
@@ -254,6 +269,7 @@ representative to the common interactive use with tracebug on."
      (let* ((inf-buf ,inf-buf)
             (inf-proc (get-buffer-process inf-buf)))
        (when (and inf-proc (process-live-p inf-proc))
+         (set-process-query-on-exit-flag inf-proc nil)
          (kill-process inf-proc)
          (ess-test-sleep-while (process-live-p inf-proc) 0.001 1
                                "Expected dead process"))

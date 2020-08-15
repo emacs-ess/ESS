@@ -35,7 +35,7 @@
 (require 'ess-inf)
 
 ;; Silence the byte compiler
-(declare-function run-ess-r "ess-r-mode" (&optional start-args))
+(declare-function R "ess-r-mode" (&optional start-args))
 (declare-function S+ "ess-sp6-d" (&optional proc-name))
 (declare-function SAS "ess-sas-d" ())
 
@@ -665,7 +665,7 @@ Function defined using `ess-define-runner'."
             (cond ((string= dialect "R")
                    (let ((inferior-ess-r-program (or path name)))
                      (require 'ess-r-mode)
-                     (run-ess-r start-args)))
+                     (R start-args)))
                   ((string= dialect "S")
                    (let ((inferior-S+-program (or path name)))
                      (require 'ess-sp6-d)

@@ -8,10 +8,9 @@
 ;;; Code:
 
 (require 'ess-r-mode)
-
 (eval-when-compile
   (require 'cl-lib))
-(require 'ert)
+(require 'etest)
 
 (defvar elt-section-pattern)
 (defvar elt-chunk-pattern)
@@ -168,9 +167,9 @@
 (defun elt-process-next-subchunk (chunk-end)
   (let* ((continuation (looking-at elt-code-cont-pattern))
          (test-code (elt-process-code))
-         (test-result (elt-run- (if continuation test-case-state test-case)
-                            test-code elt-mode-init
-                            continuation))
+         (test-result (elt-run-chunk test-code
+                                     elt-mode-init
+                                     continuation))
          (subchunk-end (save-excursion
                          (if (re-search-forward elt-code-pattern chunk-end t)
                              (match-beginning 0)
@@ -210,120 +209,20 @@
     (car (read-from-string test-code))))
 
 
-;; The following functions are borrowed from Lispy's testing
-;; framework. The main difference is that they restore state when
-;; `keep-state' is t. They also run `(kbd)' on strings.
-
 (defvar elt--state-buffer nil
   "Evaluation buffer of previous test chunk.")
 
-(defmacro elt-run (init &rest body)
-  (apply 'elt-run- `(,init (,@body))))
-
-(defun elt-run- (init body local-variables &optional keep-state)
+(defun elt-run-chunk (body local-variables &optional keep-state)
   (unless keep-state
-    (and elt--state-buffer
-         (buffer-name elt--state-buffer)
-         (kill-buffer elt--state-buffer))
-    (setq elt--state-buffer (generate-new-buffer " *temp*")))
-  (save-window-excursion
-    (switch-to-buffer elt--state-buffer)
-    (if keep-state
-        (delete-region (point-min) (point-max))
-      (transient-mark-mode 1)
-      (setq-local file-local-variables-alist (copy-alist local-variables))
-      (hack-local-variables-apply))
-    (insert init)
-    (goto-char (point-min))
-    (when (search-forward "×" nil t)
-      (backward-delete-char 1)
-      (set-mark (point))
-      (when (search-forward "×" nil t)
-        (error "There can only be one mark cursor")))
-    (goto-char (point-max))
-    (let (cursors-start
-          cursors-end)
-      (while (search-backward "¶" nil t)
-        (delete-char 1)
-        (let ((marker (point-marker)))
-          (set-marker-insertion-type marker t)
-          (push marker cursors-start)))
-      (unless cursors-start
-        (error "There must be at least one point cursor"))
-      ;; Fontification must take place after removing "¶"
-      ;; FIXME Emacs 25: Use `font-lock-ensure'
-      (font-lock-default-fontify-buffer)
-      (dolist (cursor cursors-start)
-        (goto-char cursor)
-        ;; Reset Emacs state
-        (unless keep-state
-          (setq last-command nil)
-          (setq current-prefix-arg nil))
-        (mapcar (lambda (x)
-                  (cond ((equal x '(kbd "C-u"))
-                         (setq current-prefix-arg (list 4)))
-                        ((stringp x)
-                         (if (string= x "C-u")
-                             (setq current-prefix-arg (list 4))
-                           (elt-unalias (kbd x))))
-                        ((and (listp x)
-                              (eq (car x) 'kbd))
-                         (elt-unalias x))
-                        (t (eval x))))
-                body)
-        (let ((marker (point-marker)))
-          (set-marker-insertion-type marker t)
-          (push marker cursors-end)))
-      (dolist (cursor cursors-end)
-        (goto-char cursor)
-        (insert "¶")))
-    (when (region-active-p)
-      (exchange-point-and-mark)
-      (insert "×"))
-    (buffer-substring-no-properties
-     (point-min)
-     (point-max))))
-
-(defun elt-decode-keysequence (str)
-  "Decode STR from e.g. \"23ab5c\" to '(23 \"a\" \"b\" 5 \"c\")"
-  (let ((table (copy-sequence (syntax-table))))
-    (cl-loop for i from ?0 to ?9 do
-             (modify-syntax-entry i "." table))
-    (cl-loop for i from ? to ? do
-             (modify-syntax-entry i "w" table))
-    (cl-loop for i in '(? ?\( ?\) ?\[ ?\] ?{ ?} ?\" ?\' ?\ )
-             do (modify-syntax-entry i "w" table))
-    (cl-mapcan (lambda (x)
-                 (let ((y (ignore-errors (read x))))
-                   (if (numberp y)
-                       (list y)
-                     (mapcar #'string x))))
-               (with-syntax-table table
-                 (split-string str "\\b" t)))))
-
-(defun elt-unalias (seq)
-  "Emulate pressing keys decoded from SEQ."
-  (if (vectorp seq)
-      (elt--unalias-key seq)
-    (let ((lkeys (elt-decode-keysequence seq))
-          key)
-      (while (setq key (pop lkeys))
-        (if (numberp key)
-            (let ((current-prefix-arg (list key)))
-              (when lkeys
-                (elt--unalias-key (pop lkeys))))
-          (elt--unalias-key key))))))
-
-(defun elt--unalias-key (key)
-  "Call command that corresponds to KEY.
-Insert KEY if there's no command."
-  (setq last-input-event (aref key 0))
-  (let ((cmd (key-binding key)))
-    (if (eq cmd 'self-insert-command)
-        (insert key)
-      (setq last-command-event (aref key 0))
-      (call-interactively cmd)
-      (setq last-command cmd))))
+    (when (and elt--state-buffer
+               (buffer-name elt--state-buffer))
+      (kill-buffer elt--state-buffer))
+    (setq elt--state-buffer (etest--new-buffer local-variables)))
+  (with-current-buffer elt--state-buffer
+    (delete-region (point-min) (point-max))
+    (insert (if keep-state test-case-state test-case)))
+  (etest-run elt--state-buffer body (not keep-state))
+  (etest--result elt--state-buffer))
 
 (provide 'ess-test-literate)
 
