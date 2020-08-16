@@ -122,9 +122,12 @@ efficiency reasons."
     (let* ((path (ess-r-package--find-package-path (or dir default-directory)))
            (name (when path
                    (ess-r-package--find-package-name path)))
+           (local (if (and path (file-remote-p path))
+                      (tramp-file-name-localname (tramp-dissect-file-name path))
+                    path))
            (info (if name
                      (list :name name
-                           :root path)
+                           :root local)
                    '(nil))))
       ;; If DIR was supplied we cannot cache in the current buffer.
       (if dir
@@ -169,8 +172,7 @@ return all physically present directories."
   "Get the root of R package in directory DIR.
 DIR defaults to the current buffer's file name (if non-nil) or
 `default-directory'. Root is determined by locating
-`ess-r-package-root-file'. If the path looks like a tramp file,
-remove the remote information."
+`ess-r-package-root-file'."
   (when-let ((path (cond
                     (dir)
                     ((buffer-file-name)
@@ -194,9 +196,7 @@ remove the remote information."
                          (setq presumptive-path known-path)
                        (setq path (ess--parent-dir path 1))))
                    presumptive-path)))))
-    (if (file-remote-p pkg-path)
-        (tramp-file-name-localname (tramp-dissect-file-name pkg-path))
-      (directory-file-name pkg-path))))
+    (directory-file-name pkg-path)))
 
 (defun ess-r-package--find-package-name (path)
   (let ((file (expand-file-name ess-r-package-root-file path))
