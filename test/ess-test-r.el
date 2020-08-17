@@ -779,6 +779,11 @@ Type 'license()' or 'licence()' for distribution details.
 [1] 3
 > ")
 
+(ert-deftest ess-r-commands-test ()
+  "M-x R works (#1035)"
+  (should (commandp 'R))
+  (should (commandp 'R-newest)))
+
 (provide 'ess-test-r)
 
 ;;; ess-test-r.el ends here
