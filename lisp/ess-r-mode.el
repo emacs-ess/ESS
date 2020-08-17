@@ -544,6 +544,7 @@ will be prompted to enter arguments interactively."
 
 ;;;###autoload
 (defun R (&optional start-args)
+  (interactive "P")
   ;; FIXME: Current ob-R expects current buffer set to process buffer
   (set-buffer (run-ess-r start-args)))
 
@@ -881,6 +882,7 @@ prompt for command line arguments."
     (run-ess-r start-args)))
 
 (defun R-newest (&optional start-args)
+  (interactive "P")
   ;; FIXME: Current ob-R expects current buffer set to process buffer
   (set-buffer (run-ess-r-newest start-args)))
 
