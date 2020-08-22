@@ -119,17 +119,18 @@ and are processed with DO-RESULT."
 (defun etest--flush-inferior-buffer (do-result value)
   (unless etest-local-inferior-buffer
     (error "Must set `etest-local-inferior-buffer'"))
-  ;; Sleep for 1ms before flushing inferior output to make sure the
-  ;; test commands have been processed. Can we do better?
-  (accept-process-output (get-buffer-process etest-local-inferior-buffer)
-                         0.001)
-  (let ((result (funcall do-result
-                         (etest--result etest-local-inferior-buffer t)
-                         value)))
+  (unwind-protect
+      (progn
+        ;; Sleep for 1ms before flushing inferior output to make sure
+        ;; the test commands have been processed. Can we do better?
+        (accept-process-output (get-buffer-process etest-local-inferior-buffer)
+                               0.001)
+        (funcall do-result
+                 (etest--result etest-local-inferior-buffer t)
+                 value))
     (with-current-buffer etest-local-inferior-buffer
       (let ((inhibit-read-only t))
-        (erase-buffer)))
-    result))
+        (erase-buffer)))))
 
 (defun etest--make-message-sentinel ()
   (let ((sentinel (format "etest-messages-%s" (gensym)))
