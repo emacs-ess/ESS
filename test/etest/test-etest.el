@@ -206,7 +206,7 @@ bar"
 (etest-deftest etest-skip-comments-test ()
   "Parser skips any comments when looking for `:result' keywords."
   :case "
-(etest-deftest etest-multiple-results-test ()
+(etest-deftest test ()
   :case \"¶1\"
   :eval \"<right>\"
   ;; Comment
@@ -217,7 +217,7 @@ bar"
 "
   :eval (etest-update)
   :result "
-(etest-deftest etest-multiple-results-test ()
+(etest-deftest test ()
   :case \"¶1\"
   :eval \"<right>\"
   ;; Comment
@@ -226,3 +226,11 @@ bar"
   ;; Comment
   :result \"1¶\")
 ")
+
+(etest-deftest etest-mark-test ()
+  "Mark is properly handled."
+  :case "¶foo×"
+  :eval "<right>"
+  :result "f¶oo×"
+  :eval "<right>"
+  :result "fo¶o×")

@@ -274,7 +274,8 @@ If RESET-STATE is non-nil, `last-command' and
         (insert "¶")))
     (when (region-active-p)
       (exchange-point-and-mark)
-      (insert "×"))
+      (insert "×")
+      (exchange-point-and-mark))
     t))
 
 (defun etest--result (buf &optional trim-last-newline)
