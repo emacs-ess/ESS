@@ -1365,12 +1365,12 @@ Waits for prompt after each line of input, so won't break on large texts.
 
 If optional second arg INVISIBLY is non-nil, don't echo commands.
 If it is a string, just include that string. If optional third
-arg EOB is non-nil go to end of ESS process buffer after
-evaluation.  If optional 4th arg EVEN-EMPTY is non-nil, also send
-empty text (e.g. an empty line).  If 5th arg WAIT-LAST-PROMPT is
+arg EOB is non-nil, display ESS process buffer after evaluation.
+If optional 4th arg EVEN-EMPTY is non-nil, also send empty
+text (e.g. an empty line). If 5th arg WAIT-LAST-PROMPT is
 non-nil, also wait for the prompt after the last line; if 6th arg
 SLEEP-SEC is a number, ESS will call '(\\[sleep-for] SLEEP-SEC)
-at the end of this function.  If the 7th arg WAIT-SEC is set, it
+at the end of this function. If the 7th arg WAIT-SEC is set, it
 will be used instead of the default .001s and be passed to
 \\[ess-wait-for-process].
 
@@ -1412,7 +1412,10 @@ TEXT."
         (when (or (> (length text) 0)
                   wait-last-prompt)
           (ess-wait-for-process inf-proc t (or wait-sec 0.001))))
-      (if eob (with-temp-buffer (buffer-name inf-buf)))
+      (when eob
+        (display-buffer inf-buf))
+      ;; This used to be conditioned on EOB but this is no longer the
+      ;; case since commit fd90550d in 2012 (probably an accident)
       (goto-char (marker-position (process-mark inf-proc)))
       (when win
         (with-selected-window win
