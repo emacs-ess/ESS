@@ -48,7 +48,8 @@ contents.")
      local))
 
 (defmacro etest--with-test-buffer (init &rest body)
-  (declare (indent 1))
+  (declare (indent 1)
+           (debug (&rest form)))
   `(let ((etest--buf (etest--new-buffer ,init)))
      (unwind-protect
          (with-current-buffer etest--buf
