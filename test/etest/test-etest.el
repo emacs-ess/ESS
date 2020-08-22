@@ -202,3 +202,27 @@ bar"
   :result \"1¶\"
   :result \"1¶\")
 ")
+
+(etest-deftest etest-skip-comments-test ()
+  "Parser skips any comments when looking for `:result' keywords."
+  :case "
+(etest-deftest etest-multiple-results-test ()
+  :case \"¶1\"
+  :eval \"<right>\"
+  ;; Comment
+  ;; Comment
+
+  ;; Comment
+  :result \"\")
+"
+  :eval (etest-update)
+  :result "
+(etest-deftest etest-multiple-results-test ()
+  :case \"¶1\"
+  :eval \"<right>\"
+  ;; Comment
+  ;; Comment
+
+  ;; Comment
+  :result \"1¶\")
+")

@@ -174,6 +174,8 @@ keywords."
           (forward-char 1)
           (while results
             (while (and (etest--forward-sexp)
+                        (prog1 t
+                          (while (forward-comment 1)))
                         (not (looking-at-p etest--result-re))))
             (unless (looking-at-p etest--result-re)
               (error "Can't find any result keyword"))
