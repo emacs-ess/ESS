@@ -99,19 +99,28 @@ inserted text."
       (R "--vanilla"))))
 
 
-(let (proc-buf)
-  (defun ess-r-test-proc-buf--init ()
-    (setq proc-buf (run-ess-test-r-vanilla))
-    (ess-wait-for-process (get-buffer-process proc-buf))
-    (with-current-buffer proc-buf
-      (let ((inhibit-read-only t))
-        (erase-buffer))))
+(let ((inf-bufs '((output . nil)
+                  (tracebug . nil))))
+  (defun ess-r-test-proc-buf--init (type)
+    (setf (cdr (assq type inf-bufs))
+          (run-ess-test-r-vanilla))
+    (let* ((inf-buf (cdr (assq type inf-bufs)))
+           (inf-proc (get-buffer-process inf-buf))
+           (inf-filter (pcase type
+                         (`output 'inferior-ess-output-filter)
+                         (`tracebug 'inferior-ess-tracebug-output-filter)
+                         (_ (error "Unknown filter type")))))
+      (ess-wait-for-process (get-buffer-process inf-buf))
+      (set-process-filter inf-proc inf-filter)
+      (with-current-buffer inf-buf
+        (let ((inhibit-read-only t))
+          (erase-buffer)))
+      inf-buf))
 
-  (defun ess-r-test-proc-buf ()
+  (defun ess-r-test-proc-buf (type)
     "Common process buffer for tests."
-    (unless proc-buf
-      (ess-r-test-proc-buf--init))
-    proc-buf))
+    (or (cdr (assq type inf-bufs))
+        (ess-r-test-proc-buf--init type))))
 
 (defun ess-send-input-to-R (input &optional type)
   "Eval INPUT and return the entire content of the REPL buffer.
@@ -275,8 +284,8 @@ representative to the common interactive use with tracebug on."
                                "Expected dead process"))
        (kill-buffer inf-buf))))
 
-(defun ess-test-r-set-local-process (&optional inf-buf)
-  (let ((proc-buf (or inf-buf (ess-r-test-proc-buf))))
+(defun ess-test-r-set-local-process (&optional type)
+  (let ((proc-buf (ess-r-test-proc-buf (or type 'tracebug))))
     (setq ess-local-process-name (process-name (get-buffer-process proc-buf)))
     (setq etest-local-inferior-buffer proc-buf)))
 
