@@ -1358,8 +1358,8 @@ similar to `load-library' Emacs function."
 
 ;;*;;  Evaluating lines, paragraphs, regions, and buffers.
 
-(defun ess-eval-linewise
-    (text &optional invisibly eob even-empty wait-last-prompt sleep-sec wait-sec)
+(defun ess-eval-linewise (text &optional invisibly eob even-empty
+                               wait-last-prompt sleep-sec wait-sec)
   "Evaluate TEXT in the ESS process buffer as if typed in w/o tabs.
 Waits for prompt after each line of input, so won't break on large texts.
 
@@ -1377,21 +1377,19 @@ will be used instead of the default .001s and be passed to
 Run `comint-input-filter-functions' and
 `ess-presend-filter-functions' of the associated PROCESS on the
 TEXT."
-  (unless (numberp wait-sec)
-    (setq wait-sec 0.001))
   (ess-force-buffer-current "Process to use: ")
   ;; Use this to evaluate some code, but don't wait for output.
   (let* ((deactivate-mark)           ; keep local {do *not* deactivate wrongly}
-         (sprocess (ess-get-process ess-current-process-name))
-         (sbuffer (process-buffer sprocess))
-         (win (get-buffer-window sbuffer t)))
+         (inf-proc (ess-get-process ess-current-process-name))
+         (inf-buf (process-buffer inf-proc))
+         (win (get-buffer-window inf-buf t)))
     (setq text (ess--concat-new-line-maybe
-                (ess--run-presend-hooks sprocess text)))
-    (with-current-buffer sbuffer
+                (ess--run-presend-hooks inf-proc text)))
+    (with-current-buffer inf-buf
       (setq text (propertize text 'field 'input 'front-sticky t))
-      (goto-char (marker-position (process-mark sprocess)))
-      (if (stringp invisibly)
-          (insert-before-markers (concat "*** " invisibly " ***\n")))
+      (goto-char (marker-position (process-mark inf-proc)))
+      (when (stringp invisibly)
+        (insert-before-markers (concat "*** " invisibly " ***\n")))
       ;; dbg:
       ;; dbg (ess-write-to-dribble-buffer
       ;; dbg  (format "(eval-visibly 2): text[%d]= '%s'\n" (length text) text))
@@ -1402,26 +1400,27 @@ TEXT."
                           "\n"
                         (concat (substring text 0 pos) "\n"))))
           (setq text (substring text (min (length text) (1+ pos))))
-          (goto-char (marker-position (process-mark sprocess)))
-          (if win (set-window-point win (process-mark sprocess)))
+          (goto-char (marker-position (process-mark inf-proc)))
+          (when win
+            (set-window-point win (process-mark inf-proc)))
           (unless invisibly
             ;; for consistency with comint :(
             (insert (propertize input 'font-lock-face 'comint-highlight-input))
-            (set-marker (process-mark sprocess) (point)))
-          (inferior-ess-mark-as-busy sprocess)
-          (process-send-string sprocess input))
+            (set-marker (process-mark inf-proc) (point)))
+          (inferior-ess-mark-as-busy inf-proc)
+          (process-send-string inf-proc input))
         (when (or (> (length text) 0)
                   wait-last-prompt)
-          (ess-wait-for-process sprocess t wait-sec)))
-      (if eob (with-temp-buffer (buffer-name sbuffer)))
-      (goto-char (marker-position (process-mark sprocess)))
+          (ess-wait-for-process inf-proc t (or wait-sec 0.001))))
+      (if eob (with-temp-buffer (buffer-name inf-buf)))
+      (goto-char (marker-position (process-mark inf-proc)))
       (when win
         (with-selected-window win
           (goto-char (point))
           ;; this is crucial to avoid resetting window-point
           (recenter (- -1 scroll-margin))))))
-  (if (numberp sleep-sec)
-      (sleep-for sleep-sec)))
+  (when (numberp sleep-sec)
+    (sleep-for sleep-sec)))
 
 
 ;;;*;;; Evaluate only
