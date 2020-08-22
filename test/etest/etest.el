@@ -119,9 +119,10 @@ and are processed with DO-RESULT."
 (defun etest--flush-inferior-buffer (do-result value)
   (unless etest-local-inferior-buffer
     (error "Must set `etest-local-inferior-buffer'"))
-  ;; Sleep for 10ms before flushing inferior output to make sure the
+  ;; Sleep for 1ms before flushing inferior output to make sure the
   ;; test commands have been processed. Can we do better?
-  (sleep-for 0.010)
+  (accept-process-output (get-buffer-process etest-local-inferior-buffer)
+                         0.001)
   (let ((result (funcall do-result
                          (etest--result etest-local-inferior-buffer t)
                          value)))
