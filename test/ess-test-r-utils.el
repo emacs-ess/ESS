@@ -275,6 +275,10 @@ representative to the common interactive use with tracebug on."
                                "Expected dead process"))
        (kill-buffer inf-buf))))
 
+(defun ess-test-r-set-local-process (&optional inf-buf)
+  (let ((proc-buf (or inf-buf (ess-r-test-proc-buf))))
+    (setq ess-local-process-name (process-name (get-buffer-process proc-buf)))
+    (setq etest-local-inferior-buffer proc-buf)))
 
 (provide 'ess-test-r-utils)
 
