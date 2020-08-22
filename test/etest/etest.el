@@ -182,7 +182,8 @@ keywords."
                   (result-str (prin1-to-string (pop results))))
               (goto-char result-beg)
               (delete-region result-beg result-end)
-              (insert result-str))))))))
+              (insert result-str)
+              (etest--forward-sexp -1))))))))
 
 (defun etest--read-results (body)
   (let (results)

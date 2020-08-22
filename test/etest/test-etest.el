@@ -184,3 +184,21 @@ bar"
       (use-local-map map)
       (etest--unalias (kbd "C-c C-c"))
       (should called))))
+
+(etest-deftest etest-multiple-results-test ()
+  "Parser is not fazed by multiple consecutive results."
+  :case "
+(etest-deftest etest-multiple-results-test ()
+  :case \"¶1\"
+  :eval \"<right>\"
+  :result \"\"
+  :result \"\")
+"
+  :eval (etest-update)
+  :result "
+(etest-deftest etest-multiple-results-test ()
+  :case \"¶1\"
+  :eval \"<right>\"
+  :result \"1¶\"
+  :result \"1¶\")
+")
