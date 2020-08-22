@@ -120,14 +120,20 @@ and are processed with DO-RESULT."
   (unless etest-local-inferior-buffer
     (error "Must set `etest-local-inferior-buffer'"))
   (unwind-protect
-      (progn
-        ;; Sleep for 1ms before flushing inferior output to make sure
-        ;; the test commands have been processed. Can we do better?
-        (accept-process-output (get-buffer-process etest-local-inferior-buffer)
-                               0.001)
-        (funcall do-result
-                 (etest--result etest-local-inferior-buffer t)
-                 value))
+      (let* ((inf-buf etest-local-inferior-buffer)
+             (inf-proc (get-buffer-process inf-buf)))
+        ;; Wait until a trailing prompt for maximum 10ms
+        (with-current-buffer inf-buf
+          (save-excursion
+            (let ((times 0))
+              (while (and (< times 10)
+                          (not (re-search-forward "> \\'" nil t)))
+                (accept-process-output inf-proc 0.001)
+                (goto-char (point-min))
+                (setq times (1+ times)))))
+          (funcall do-result
+                   (etest--result inf-buf t)
+                   value)))
     (with-current-buffer etest-local-inferior-buffer
       (let ((inhibit-read-only t))
         (erase-buffer)))))
