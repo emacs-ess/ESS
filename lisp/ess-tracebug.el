@@ -572,12 +572,12 @@ can use `ess--busy-slash', `ess--busy-B',`ess--busy-stars',
 (defcustom inferior-ess-replace-long+ t
   "Determines if ESS replaces long + sequences in output.
 If 'strip, remove all such instances.  Otherwise, if non-nil, '+
-+ + + ' containing more than 4 + is replaced by
++ + + ' containing 3 or more + is replaced by
 `ess-long+replacement'."
   :group 'ess-tracebug
   :type '(choice (const nil :tag "No replacement")
                  (const 'strip :tag "Replace all")
-                 (const t :tag "Replace 4 or more +")))
+                 (const t :tag "Replace 3 or more +")))
 
 (defvar ess-long+replacement ". + "
   "Replacement used for long + prompt.
