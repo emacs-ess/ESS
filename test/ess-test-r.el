@@ -777,6 +777,39 @@ Type 'license()' or 'licence()' for distribution details.
 [1] 3
 > ")
 
+(etest-deftest ess-r-eval-linewise-visibly-test ()
+  "C-c C-n always evaluates visibly.
+https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
+  :init ((mode . r)
+         (eval . (ess-test-r-set-local-process)))
+  :case "
+¶1
+2
+3
+"
+
+  :eval ((setq-local ess-eval-visibly-p 'nowait)
+         "C-c C-n")
+  :result "
+1
+¶2
+3
+"
+  :inf-result "1
+[1] 1
+> "
+
+  :eval ((setq-local ess-eval-visibly-p nil)
+         "C-c C-n")
+  :result "
+1
+2
+¶3
+"
+  :inf-result "2
+[1] 2
+> ")
+
 (ert-deftest ess-r-commands-test ()
   "M-x R works (#1035)"
   (should (commandp 'R))
