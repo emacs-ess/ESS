@@ -21,8 +21,67 @@
 (require 'ess-r-mode)
 (require 'ess-test-r-utils)
 
+(etest-deftest ess-r-eval-visibility-eval-standard-filter-test ()
+  "`ess-eval-region' respects `ess-eval-visibly'.
+Standard filter."
+  :init ((mode . r)
+         (ess-eval-deactivate-mark . nil)
+         (eval . (ess-test-r-set-local-process 'output)))
+
+  :case "
+¶1
+2
+{
+  3
+  4
+}
+5; 6×
+"
+
+  :eval ((setq-local ess-eval-visibly t)
+         "C-c C-r")
+  :inf-result "1
+[1] 1
+> 2
+[1] 2
+> {
++   3
++   4
++ }
+[1] 4
+> 5; 6
+[1] 5
+[1] 6
+> "
+
+  :eval ((setq-local ess-eval-visibly 'nowait)
+         "C-c C-r")
+  :inf-result "1
++ 2
++ {
++   3
++   4
++ }
++ 5; 6
+[1] 1
+> [1] 2
+> + + + [1] 4
+> [1] 5
+[1] 6
+> "
+
+  :eval ((setq-local ess-eval-visibly nil)
+         "C-c C-r")
+  :inf-result "[1] 1
+> [1] 2
+> + + + [1] 4
+> [1] 5
+[1] 6
+> ")
+
 (etest-deftest ess-r-eval-visibility-eval-test ()
-  "`ess-eval-region' respects `ess-eval-visibly'."
+  "`ess-eval-region' respects `ess-eval-visibly'.
+Default filter"
   :init ((mode . r)
          (eval . (progn
                    (ess-test-r-set-local-process)
