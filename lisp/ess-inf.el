@@ -734,6 +734,11 @@ to `ess-completing-read'."
                            (delete-dups (list "R" "S+" (or (bound-and-true-p S+-dialect-name) "S+")
                                               "stata" (or (bound-and-true-p STA-dialect-name) "stata")
                                               "julia" "SAS")))))
+         ;; Set `display-buffer-overriding-action' here since we
+         ;; explicitly handle buffer switching below with
+         ;; `pop-to-buffer' which handles the `display-buffer'
+         ;; framework.
+         (display-buffer-overriding-action '(display-buffer-no-window (allow-no-window . t)))
          (pname-list (delq nil ;; keep only those matching dialect
                            (append
                             (mapcar (lambda (lproc)
@@ -780,8 +785,7 @@ to `ess-completing-read'."
                     (process-name (get-buffer-process buf))
                   (ess-start-process-specific ess-language ess-dialect)
                   (caar ess-process-name-list))))))
-    (if noswitch
-        (pop-to-buffer (current-buffer)) ;; VS: this is weird, but is necessary
+    (unless noswitch
       (pop-to-buffer (ess-get-process-buffer proc)))
     proc))
 
