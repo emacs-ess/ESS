@@ -719,6 +719,19 @@ LANGUAGE is ignored."
         (error "No ESS processes running; not yet implemented to start (%s,%s)"
                language dialect)))))
 
+(defmacro ess--with-no-pop-to-buffer (&rest body)
+  "Disable some effects of `pop-to-buffer'.
+Prevent `display-buffer' from performing an action and save the
+current buffer to prevent `pop-to-buffer' from setting a new
+current buffer."
+  ;; `pop-to-buffer' might still raise windows and frames so it may be
+  ;; better to have our own configurable `ess--pop-to-buffer' wrapper.
+  (declare (indent 0)
+           (debug (&rest form)))
+  `(let ((display-buffer-overriding-action '(display-buffer-no-window (allow-no-window . t))))
+     (save-current-buffer
+       ,@body)))
+
 (defun ess-request-a-process (message &optional noswitch ask-if-1)
   "Ask for a process, and make it the current ESS process.
 If there is exactly one process, only ask if ASK-IF-1 is non-nil.
@@ -734,11 +747,6 @@ to `ess-completing-read'."
                            (delete-dups (list "R" "S+" (or (bound-and-true-p S+-dialect-name) "S+")
                                               "stata" (or (bound-and-true-p STA-dialect-name) "stata")
                                               "julia" "SAS")))))
-         ;; Set `display-buffer-overriding-action' here since we
-         ;; explicitly handle buffer switching below with
-         ;; `pop-to-buffer' which handles the `display-buffer'
-         ;; framework.
-         (display-buffer-overriding-action '(display-buffer-no-window (allow-no-window . t)))
          (pname-list (delq nil ;; keep only those matching dialect
                            (append
                             (mapcar (lambda (lproc)
@@ -783,7 +791,11 @@ to `ess-completing-read'."
               (let ((buf (ess-completing-read message (append proc-buffers (list "*new*")) nil t nil nil)))
                 (if (not (equal buf "*new*"))
                     (process-name (get-buffer-process buf))
-                  (ess-start-process-specific ess-language ess-dialect)
+                  ;; Prevent new process buffer from being popped
+                  ;; because we handle display depending on the value
+                  ;; of `no-switch`
+                  (ess--with-no-pop-to-buffer
+                    (ess-start-process-specific ess-language ess-dialect))
                   (caar ess-process-name-list))))))
     (unless noswitch
       (pop-to-buffer (ess-get-process-buffer proc)))

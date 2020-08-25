@@ -4,6 +4,10 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item iESS: Inferior processes can now properly reuse frames (#987).
+Fixed issue that caused the current buffer to be incorrectly displayed
+in the new frame when @code{display-buffer} is set to pop up frames.
+
 @item ESS[R]: Fixed package evaluation on remote servers with Tramp (#950).
 Fix contributed by David Pritchard.
 
