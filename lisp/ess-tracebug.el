@@ -328,11 +328,11 @@ by `ess-inject-source' variable."
                           ((eq type 'buffer)
                            (or (eq ess-inject-source t)
                                (eq ess-inject-source 'function-and-buffer)))
-                          (t (or (eq ess-inject-source t)
-                                 ;; We need to always inject with namespaced
-                                 ;; evaluation (fixme: not right place for
-                                 ;; this).
-                                 (ess-r-get-evaluation-env)))))
+                          ((eq ess-inject-source t))
+                          ;; We need to always inject with namespaced
+                          ;; evaluation (FIXME: not right place for
+                          ;; this).
+                          ((ess-r-get-evaluation-env))))
          (ess--dbg-del-empty-p (unless inject-p ess--dbg-del-empty-p))
          (string (if inject-p
                      (ess-make-source-refd-command start end visibly process)
