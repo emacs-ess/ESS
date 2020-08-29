@@ -143,12 +143,13 @@ Default filter"
 [1] 6
 > ")
 
-(etest-deftest ess-r-eval-ns-env-roxy ()
+(etest-deftest ess-r-eval-ns-env-roxy-test ()
   "Roxygen blocks are not evaluated in current eval-env."
   :init ((mode . r)
          (ess-r-evaluation-env . "base")
          (eval . (ess-test-r-set-local-process 'output)))
   :case "#' ¶identical(environment(), globalenv())"
+
   :eval "C-c C-j"
   :inf-result "identical(environment(), globalenv())
 [1] TRUE
@@ -156,16 +157,21 @@ Default filter"
 
   ;; Shouldn't mention "[base]"
   :messages "Starting evaluation...
-[base] Loading line: #' identical(environment(), globalenv())"
+Loading line: #' identical(environment(), globalenv())"
 
   :case "
 #' ¶identical(environment(), globalenv())
 NULL×"
+
   :eval "C-c C-r"
   :inf-result "+ > identical(environment(), globalenv())
 [1] FALSE
 > NULL
 NULL
-> ")
+> "
+
+  ;; Mentions "[base]"
+  :messages "Starting evaluation...
+[base] Eval region")
 
 ;;; ess-test-r-eval.el ends here

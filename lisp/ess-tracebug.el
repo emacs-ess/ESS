@@ -320,11 +320,17 @@ command conforms to VISIBLY."
 (defun ess-process-buffer-substring (process start end)
   (ess--run-presend-hooks process (buffer-substring-no-properties start end)))
 
+;; Declare globally so that the bytecode compiler let-binds it
+;; properly
+(defvar-local ess-r-evaluation-env nil)
+
 (defun ess-tracebug-send-region (process start end &optional visibly message type)
   "Send region to process adding source references as specified
 by `ess-inject-source' variable."
   (ess-eval-region--normalise-region start end)
-  (let* ((inject-p  (cond ((eq type 'function)
+  (let* ((ess-r-evaluation-env (unless (ess-roxy--region-p start end)
+                                 (ess-r-get-evaluation-env)))
+         (inject-p  (cond ((eq type 'function)
                            ess-inject-source)
                           ((eq type 'buffer)
                            (or (eq ess-inject-source t)
@@ -333,8 +339,7 @@ by `ess-inject-source' variable."
                           ;; We need to always inject with namespaced
                           ;; evaluation (FIXME: not right place for
                           ;; this).
-                          ((and (ess-r-get-evaluation-env)
-                                (not (ess-roxy--region-p start end))))))
+                          (ess-r-evaluation-env)))
          (ess--dbg-del-empty-p (unless inject-p ess--dbg-del-empty-p))
          (string (if inject-p
                      (ess-make-source-refd-command start end visibly process)

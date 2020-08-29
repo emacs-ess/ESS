@@ -1025,14 +1025,15 @@ Only do this if in a roxygen block and
   (add-hook 'c++-mode-hook #'ess-roxy-enable-in-cpp))
 
 (defun ess-roxy--region-p (beg end)
-  (save-excursion
-    (goto-char beg)
-    (catch 'ess-r-not-roxy
-      (while (< (point) end)
-        (unless (looking-at-p ess-roxy-re)
-          (throw 'ess-r-not-roxy nil))
-        (forward-line))
-      t)))
+  (when ess-roxy-re
+    (save-excursion
+      (goto-char beg)
+      (catch 'ess-r-not-roxy
+        (while (< (point) end)
+          (unless (looking-at-p ess-roxy-re)
+            (throw 'ess-r-not-roxy nil))
+          (forward-line))
+        t))))
 
 (provide 'ess-roxy)
 
