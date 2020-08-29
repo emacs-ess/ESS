@@ -1164,9 +1164,7 @@ variable.")
 
 (defun ess-r-get-evaluation-env ()
   "Get current evaluation env."
-  (or ess-r-evaluation-env
-      (and ess-current-process-name
-           (ess-get-process-variable 'ess-r-evaluation-env))))
+  ess-r-evaluation-env)
 
 (defun ess-r-set-evaluation-env (&optional arg)
   "Select a package namespace for evaluation of R code.
@@ -1184,7 +1182,6 @@ attached packages."
                    (t "*none*"))))
     (if (equal env "*none*")
         (let ((cur-env (ess-r-get-evaluation-env)))
-          ;; fixme: does not work if env is set at process level
           (setq ess-r-evaluation-env nil)
           (delq 'ess-r--evaluation-env-mode-line ess--local-mode-line-process-indicator)
           (message (format "Evaluation in %s disabled" (propertize cur-env 'face font-lock-function-name-face))))
