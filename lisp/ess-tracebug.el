@@ -88,6 +88,7 @@
 (declare-function ess-r-package--all-source-dirs "ess-r-package")
 (declare-function ess-r-package-name "ess-r-package")
 (declare-function ess-r-package-source-dirs "ess-r-package")
+(declare-function ess-roxy--region-p "ess-roxy")
 
 ;; Do not require tramp at runtime. It is expensive to load. Instead,
 ;; guard calls with (require 'tramp) and silence the byte compiler
@@ -332,7 +333,8 @@ by `ess-inject-source' variable."
                           ;; We need to always inject with namespaced
                           ;; evaluation (FIXME: not right place for
                           ;; this).
-                          ((ess-r-get-evaluation-env))))
+                          ((and (ess-r-get-evaluation-env)
+                                (not (ess-roxy--region-p start end))))))
          (ess--dbg-del-empty-p (unless inject-p ess--dbg-del-empty-p))
          (string (if inject-p
                      (ess-make-source-refd-command start end visibly process)
