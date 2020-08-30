@@ -328,6 +328,8 @@ command conforms to VISIBLY."
   "Send region to process adding source references as specified
 by `ess-inject-source' variable."
   (ess-eval-region--normalise-region start end)
+  ;; Disable evaluation env if we're sending a roxy region. This is
+  ;; not the ideal place to do this.
   (let* ((ess-r-evaluation-env (unless (ess-roxy--region-p start end)
                                  (ess-r-get-evaluation-env)))
          (inject-p  (cond ((eq type 'function)
