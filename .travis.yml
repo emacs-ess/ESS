@@ -1,48 +1,68 @@
-language: emacs-lisp
-env:
-  # When there's a new major Emacs release, also update
-  # byte-compile-error-on-warn to the new release, below
-  - EVM_EMACS=emacs-25.1-travis
-  - EVM_EMACS=emacs-25.3-travis
-  - EVM_EMACS=emacs-26.1-travis-linux-xenial
-  - EVM_EMACS=emacs-26.2-travis-linux-xenial
-  - EVM_EMACS=emacs-26.3-travis-linux-xenial
-  - EVM_EMACS=emacs-git-snapshot-travis-linux-xenial
+# https://github.com/purcell/nix-emacs-ci
+language: nix
+cache:
+  directories:
+  - $HOME/nix.store
+
+jobs:
+  include:
+    - os: linux
+      dist: bionic
+      env: EMACS_CI=emacs-25-1
+    - os: linux
+      dist: bionic
+      env: EMACS_CI=emacs-25-2
+    - os: linux
+      dist: bionic
+      env: EMACS_CI=emacs-25-3
+    - os: linux
+      dist: bionic
+      env: EMACS_CI=emacs-26-1
+    - os: linux
+      dist: bionic
+      env: EMACS_CI=emacs-26-2
+    - os: linux
+      dist: bionic
+      env: EMACS_CI=emacs-26-3
+    - os: linux
+      dist: bionic
+      env: EMACS_CI=emacs-27-1
+    - os: linux
+      dist: bionic
+      env: EMACS_CI=emacs-snapshot
 
 before_install:
-  - echo "deb https://cloud.r-project.org/bin/linux/ubuntu trusty/" | sudo tee -a /etc/apt/sources.list
-  - sudo add-apt-repository ppa:marutter/c2d4u -y
-  - sudo apt-get update -qq
-  - sudo apt-get install -y --no-install-recommends --allow-unauthenticated
-      r-recommended
-      r-cran-roxygen2
-      texinfo
-      texlive-latex-base
-      texlive-latex-recommended
-      texlive-latex-extra
+  - sudo mkdir -p /etc/nix
+  - echo "substituters = https://cache.nixos.org/ file://$HOME/nix.store" | sudo tee -a /etc/nix/nix.conf > /dev/null
+  - echo 'require-sigs = false' | sudo tee -a /etc/nix/nix.conf > /dev/null
 
-  - git clone https://github.com/rejeep/evm.git $HOME/.evm
-  - export PATH=$HOME/.evm/bin:$PATH
+before_cache:
+  - mkdir -p $HOME/nix.store
+  - nix copy --to file://$HOME/nix.store -f default.nix buildInputs
 
-  - evm config path /tmp
-  - evm install $EVM_EMACS --use --skip
-
-before_script:
-  # link R executable to test defining runners based on other R
-  # versions found on PATH. We're lying here that it is in fact a
-  # different R version but that doesn't matter.
-  - mkdir ess-r
-  - ln -s $(which R) $PWD/ess-r/R-3.2.1
-  - export PATH=$PATH:$PWD/ess-r/
+install:
+  # The default "emacs" executable on the $PATH will now be the version named by $EMACS_CI
+  - bash <(curl https://raw.githubusercontent.com/purcell/nix-emacs-ci/master/travis-install)
+  - travis_retry eval $"curl -fsSL https://raw.githubusercontent.com/cask/cask/master/go | python ; sleep 10"
+  - export PATH=$HOME/.cask/bin:$PATH
+  - travis_retry eval $"cask install ; sleep 10"
+  # - nix-env -i texlive-full
+  - nix-env -iA nixos.texlive.combined.scheme-basic
 
 script:
-- emacs --version
-- R --version
-- cd lisp; make julia-mode.elc
-- cd ..
-- make -C test -k all
-- make -C doc ../README
-# Create package.el-installable tar file, test that it installs
-# successfully:
-- make package
-- emacs --script targets/travis-install-package.el
+  - export PATH=$HOME/.cask/bin:$PATH
+  - emacs --version
+  - cask build
+  # - make build
+  # - make test
+  - make -C test -k all
+  - make -C doc ../README
+  # Create package.el-installable tar file, test that it installs
+  # successfully:
+  - make package
+  - emacs --script targets/travis-install-package.el
+
+allow_failures:
+  - os: linux
+    dist: bionic
+    env: EMACS_CI=emacs-snapshot
