@@ -1274,7 +1274,7 @@ selected (see `ess-r-set-evaluation-env')."
           (command (format inferior-ess-r-help-command object)))
       (if pkg-dir
           ;; Invoking `print.help_files_with_topic'
-          (format "do.call(structure, c('%s', attributes(%s)))\n" pkg-dir command)
+          (format "base::evalq(do.call(structure, c('%s', attributes(%s))), base::as.environment('ESSR'))\n" pkg-dir command)
         command))))
 
 (cl-defmethod ess-build-help-command (object &context (ess-dialect "R"))
