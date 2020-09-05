@@ -83,15 +83,8 @@ Standard filter."
   "`ess-eval-region' respects `ess-eval-visibly'.
 Default filter"
   :init ((mode . r)
-         (eval . (progn
-                   (ess-test-r-set-local-process)
-                   (setq-local old-replace inferior-ess-replace-long+)
-                   ;; Replacing strings of " +" causes random
-                   ;; failures, probably because of the buffered
-                   ;; output
-                   (setq inferior-ess-replace-long+ nil)))
+         (eval . (ess-test-r-set-local-process 'tracebug))
          (ess-eval-deactivate-mark . nil))
-  :cleanup (setq inferior-ess-replace-long+ old-replace)
 
   :case "
 ¶1

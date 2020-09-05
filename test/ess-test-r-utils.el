@@ -113,6 +113,9 @@ inserted text."
       (ess-wait-for-process (get-buffer-process inf-buf))
       (set-process-filter inf-proc inf-filter)
       (with-current-buffer inf-buf
+        ;; Replacing strings of " +" causes random failures, probably
+        ;; because of the buffered output
+        (setq-local inferior-ess-replace-long+ nil)
         (let ((inhibit-read-only t))
           (erase-buffer)))
       inf-buf))
