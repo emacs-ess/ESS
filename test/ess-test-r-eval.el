@@ -205,4 +205,11 @@ NULL
   :messages "Starting evaluation...
 [base] Eval region")
 
+(ert-deftest ess-rd-eval-ns-env-test ()
+  "Namespaced eval is disabled in doc files (#1026)."
+  (with-temp-buffer
+    (find-file-noselect "dummy-pkg/man/doc.Rd")
+    (Rd-mode)
+    (should (not ess-r-evaluation-env))))
+
 ;;; ess-test-r-eval.el ends here
