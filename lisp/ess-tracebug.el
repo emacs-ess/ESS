@@ -253,10 +253,12 @@ inferior process command for loading the temporary file.  This
 command conforms to VISIBLY."
   (let* ((filename buffer-file-name)
          (proc-dir (ess-get-process-variable 'default-directory))
-         (remote (when (file-remote-p proc-dir)
+         (proc-prefix (ess-get-process-variable 'comint-file-name-prefix))
+         (remote (when (file-remote-p proc-prefix)
                    (require 'tramp)
                    ;; should this be done in process buffer?
-                   (tramp-dissect-file-name proc-dir)))
+                   (tramp-dissect-file-name (concat proc-prefix
+                                                    proc-dir))))
          (orig-marker (or ess-tracebug-original-buffer-marker
                           org-edit-src-beg-marker
                           org-babel-current-src-block-location))
