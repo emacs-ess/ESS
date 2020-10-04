@@ -2463,7 +2463,11 @@ from all installed packages, which can be very slow."
     (define-key map "l" #'ess-r-package-list-local-packages)
     (define-key map "r" #'ess-r-package-list-available-packages)
     (define-key map "u" #'ess-r-package-update-packages)
+    (define-key map "a" #'ess-display-help-apropos)
+    (define-key map "m" #'ess-rutils-rm-all)
     (define-key map "o" #'ess-rdired)
+    (define-key map "w" #'ess-rutils-load-workspace)
+    (define-key map "s" #'ess-rutils-save-workspace)
     (define-key map "d" #'ess-change-directory)
     (define-key map "H" #'ess-rutils-html-docs)
     map))
@@ -2647,15 +2651,17 @@ needed."
   (when (y-or-n-p "Delete all objects? ")
     (ess-execute "rm(list=ls())" 'buffer)))
 
-(defun ess-rutils-load-wkspc (file)
+(defun ess-rutils-load-workspace (file)
   "Load workspace FILE into R."
   (interactive "fFile with workspace to load: ")
   (ess-execute (concat "load('" file "')") 'buffer))
+(define-obsolete-function-alias 'ess-rutils-load-wkspc #'ess-rutils-load-workspace "ESS 19.04")
 
-(defun ess-rutils-save-wkspc (file)
+(defun ess-rutils-save-workspace (file)
   "Save FILE workspace as file.RData."
   (interactive "FSave workspace to file (no extension): ")
   (ess-execute (concat "save.image('" file ".RData')") 'buffer))
+(define-obsolete-function-alias 'ess-rutils-save-wkspc #'ess-rutils-save-workspace "ESS 19.04")
 
 (defun ess-rutils-quit ()
   "Kill the ess-rutils buffer and return to the iESS buffer."

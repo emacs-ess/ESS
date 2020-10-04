@@ -3162,12 +3162,12 @@ repository @var{repos}.
 @kbd{C-c C-. m} Remove all R objects.
 @end deffn
 
-@deffn Command ess-rutils-load-wkspc
+@deffn Command ess-rutils-load-workspace
 @kindex C-c C-. w
 @kbd{C-c C-. w} Load a workspace file into R.
 @end deffn
 
-@deffn Command ess-rutils-save-wkspc
+@deffn Command ess-rutils-save-workspace
 @kindex C-c C-. s
 @kbd{C-c C-. s} Save a workspace file.
 @end deffn
