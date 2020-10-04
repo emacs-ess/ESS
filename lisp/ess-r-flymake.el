@@ -103,8 +103,8 @@ the user's home directory.  Return nil if we couldn't find a .lintr file."
                             (ess-r-package-project)
                             (expand-file-name ".lintr" (cdr (ess-r-package-project)))))
         (proj-file (and (project-current)
-                        (project-roots (project-current))
-                        (expand-file-name ".lintr" (car (project-roots (project-current))))))
+                        (ess-project-root (project-current))
+                        (expand-file-name ".lintr" (ess-project-root (project-current)))))
         (home-file (expand-file-name ".lintr" (getenv "HOME"))))
     (cond (;; current directory
            (file-readable-p cur-dir-file)
@@ -113,7 +113,7 @@ the user's home directory.  Return nil if we couldn't find a .lintr file."
           ((and ess-proj-file
                 (file-readable-p ess-proj-file))
            ess-proj-file)
-          ;; Project root according to `project-roots'
+          ;; Project root according to `ess-project-root'
           ((and proj-file
                 (file-readable-p proj-file)))
           ;; Home directory

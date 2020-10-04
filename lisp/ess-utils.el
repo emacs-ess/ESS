@@ -30,6 +30,7 @@
 
 (require 'cl-lib)
 (require 'comint)
+(require 'project)
 (eval-when-compile
   (require 'tramp))
 ;; The only ESS file this file should depend on is ess-custom.el
@@ -1033,6 +1034,14 @@ nil and not t, query for each instance."
 
 (define-obsolete-function-alias 'ess-beginning-of-function 'beginning-of-defun "ESS 19.04")
 (define-obsolete-function-alias 'ess-end-of-function 'end-of-defun "ESS 19.04")
+
+(with-no-warnings
+  (defalias 'ess-project-root
+    ;; TODO: Remove once we drop support for Emacs 27
+    (if (fboundp 'project-root)
+        'project-root
+      (lambda (project)
+        (car (project-roots project))))))
 
 (provide 'ess-utils)
 

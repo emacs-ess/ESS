@@ -108,6 +108,10 @@ is searched from that directory instead of `default-directory'."
   "Return the project root for ESS R packages"
   (list (cdr project)))
 
+(cl-defmethod project-root ((project (head ess-r-package)))
+  "Return the project root for ESS R packages"
+  (cdr project))
+
 (defun ess-r-package-name (&optional dir)
   "Return the name of the current package as a string."
   (plist-get (ess-r-package-info dir) :name))
