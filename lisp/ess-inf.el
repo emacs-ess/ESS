@@ -2815,6 +2815,25 @@ To be used in `ess-idle-timer-functions'."
     (message "(ESS / default) directory: %s" dir)
     (setq default-directory (file-name-as-directory dir))))
 
+(defun ess-path-update-local-portion (current-path new-local-path)
+  "Construct a (possibly remote) path with an updated local portion.
+If the string CURRENT-PATH is determined to be a non-TRAMP path,
+then the value of the string NEW-LOCAL-PATH is returned.
+Otherwise, the portion of the string in CURRENT-PATH that
+represents the local portion of the path is replaced by
+NEW-LOCAL-PATH and the reconstructed string including the remote
+host and connection information is returned."
+  (require 'tramp)
+  (if (tramp-tramp-file-p current-path)
+      ;; `tramp-dissect-file-name' returns a list of the form constructed by
+      ;; `make-tramp-file-name', the 0th element of which is an unneeded (for
+      ;; us) symbol used to identify the list. The local path element in the
+      ;; list is the 5th element after removing this identifying symbol.
+      (let ((dissected-file-name (cdr (tramp-dissect-file-name current-path))))
+        (setcar (nthcdr 5 dissected-file-name) new-local-path)
+        (apply #'tramp-make-tramp-file-name dissected-file-name))
+    new-local-path))
+
 ;; search path
 (defun ess--mark-search-list-as-changed ()
   "Internal. Mark all the search-list related variables as changed."
