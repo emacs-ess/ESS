@@ -2801,8 +2801,9 @@ To be used in `ess-idle-timer-functions'."
              (inferior-ess-available-p))
     (ess-when-new-input last-sync-dirs
       (ess-if-verbose-write "\n(ess-synchronize-dirs)\n")
-      (setq default-directory
-            (car (ess-get-words-from-vector ess-getwd-command)))
+      (let ((lpath (car (ess-get-words-from-vector ess-getwd-command))))
+        (setq default-directory
+              (ess-path-update-local-portion default-directory lpath)))
       default-directory)))
 
 (defun ess-dirs ()
@@ -2811,9 +2812,10 @@ To be used in `ess-idle-timer-functions'."
   ;; default-directory and subprocess working directory are
   ;; synchronized automatically.
   (interactive)
-  (let ((dir (car (ess-get-words-from-vector "getwd()\n"))))
+  (let* ((dir (car (ess-get-words-from-vector "getwd()\n")))
+         (new-default-dir (ess-path-update-local-portion default-directory dir)))
     (message "(ESS / default) directory: %s" dir)
-    (setq default-directory (file-name-as-directory dir))))
+    (setq default-directory (file-name-as-directory new-default-dir))))
 
 (defun ess-path-update-local-portion (current-path new-local-path)
   "Construct a (possibly remote) path with an updated local portion.
