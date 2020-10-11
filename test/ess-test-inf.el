@@ -320,6 +320,15 @@ some. text
     (should (cl-every #'string= (ess-get-words-from-vector "c('aaa','bbb\"ccc', 'dddd')\n")
                       '("aaa" "bbb\\\"ccc" "dddd")))))
 
+(ert-deftest ess-path-update-local-portion ()
+  (let ((current-local-path "/path/to/dir")
+        (current-remote-path "/ssh:10.0.1.213:/path/to/dir")
+        (new-local-path "/home/username/projects"))
+    (should (string= (ess-path-update-local-portion current-local-path new-local-path)
+                     new-local-path))
+    (should (string= (ess-path-update-local-portion current-remote-path new-local-path)
+                     "/ssh:10.0.1.213:/home/username/projects"))))
+
 ;; Test runners
 
 ;; Note that we add R-3.2.1 to continuous integration via a symlink to
