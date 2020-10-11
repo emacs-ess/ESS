@@ -2246,7 +2246,7 @@ START-ARGS gets passed to the dialect-specific
       ;; Use current working directory as default
       (let ((project-find-functions nil)
             (ess-directory-function nil)
-            (ess-startup-directory (ess-get-working-directory))
+            (ess-startup-directory default-directory)
             (ess-ask-for-ess-directory nil))
         (ess-quit 'no-save)
         (inferior-ess--wait-for-exit inf-proc)
