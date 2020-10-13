@@ -2827,14 +2827,28 @@ NEW-LOCAL-PATH and the reconstructed string including the remote
 host and connection information is returned."
   (require 'tramp)
   (if (tramp-tramp-file-p current-path)
-      ;; `tramp-dissect-file-name' returns a list of the form constructed by
-      ;; `make-tramp-file-name', the 0th element of which is an unneeded (for
-      ;; us) symbol used to identify the list. The local path element in the
-      ;; list is the 5th element after removing this identifying symbol.
-      (let ((dissected-file-name (cdr (tramp-dissect-file-name current-path))))
-        (setcar (nthcdr 5 dissected-file-name) new-local-path)
-        (apply #'tramp-make-tramp-file-name dissected-file-name))
+      (if (>= emacs-major-version 26)
+          (ess-path-update-local-portion--version-ge-26 current-path new-local-path)
+        (ess-path-update-local-portion--version-le-25 current-path new-local-path))
     new-local-path))
+
+(defun ess-path-update-local-portion--version-ge-26 (current-path new-local-path)
+  "Update the local portion of a tramp path for Emacs 26 or later."
+  (let ((dissected-file-name (cdr (tramp-dissect-file-name current-path))))
+    ;; For Emacs major version 26 or later `tramp-dissect-file-name' returns a
+    ;; length-8 list, the 0th element of which is an unneeded (for us) symbol
+    ;; used to identify the list. The local path element in the list is the 5th
+    ;; element after removing this identifying symbol.
+    (setf (elt dissected-file-name 5) new-local-path)
+    (apply #'tramp-make-tramp-file-name dissected-file-name)))
+
+(defun ess-path-update-local-portion--version-le-25 (current-path new-local-path)
+  "Update the local portion of a tramp path for Emacs 25 or earlier."
+  (let ((dissected-file-name (tramp-dissect-file-name current-path)))
+    ;; For Emacs major version 25 or earlier `tramp-dissect-file-name' returns a
+    ;; length-5 vector, the 3rd element of which is the local path element.
+    (setf (elt dissected-file-name 3) new-local-path)
+    (apply #'tramp-make-tramp-file-name dissected-file-name)))
 
 ;; search path
 (defun ess--mark-search-list-as-changed ()
