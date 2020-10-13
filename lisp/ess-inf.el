@@ -2847,8 +2847,8 @@ host and connection information is returned."
   (let ((dissected-file-name (tramp-dissect-file-name current-path)))
     ;; For Emacs major version 25 or earlier `tramp-dissect-file-name' returns a
     ;; length-5 vector, the 3rd element of which is the local path element.
-    (setf (elt dissected-file-name 3) new-local-path)
-    (apply #'tramp-make-tramp-file-name dissected-file-name)))
+    (setf (aref dissected-file-name 3) new-local-path)
+    (apply #'tramp-make-tramp-file-name (append dissected-file-name nil))))
 
 ;; search path
 (defun ess--mark-search-list-as-changed ()
