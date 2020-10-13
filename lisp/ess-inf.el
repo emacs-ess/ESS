@@ -47,13 +47,10 @@
 
 ;; Don't require tramp at run time. It's an expensive library to load.
 ;; Instead, guard calls with (require 'tramp) and silence the byte
-;; compiler. Note that the argument list for
-;; `tramp-make-tramp-file-name' is ommitted since the function
-;; signature differs between Emacs 25 and 26.
+;; compiler.
 (declare-function tramp-sh-handle-expand-file-name "tramp-sh" (name &optional dir))
 (declare-function tramp-dissect-file-name "tramp" (name &optional nodefault))
 (declare-function tramp-tramp-file-p "tramp" (name))
-(declare-function tramp-make-tramp-file-name "tramp")
 (declare-function inferior-ess-r-mode "ess-r-mode" ())
 (declare-function inferior-ess-julia-mode "ess-julia" ())
 (declare-function inferior-ess-stata-mode "ess-stata-mode" ())
@@ -2837,7 +2834,6 @@ host and connection information is returned."
 
 (defun ess-path-update-local-portion--version-ge-26 (current-path new-local-path)
   "Update the local portion of a tramp path for Emacs 26 or later."
-  (require 'tramp)
   (let ((dissected-file-name (cdr (tramp-dissect-file-name current-path))))
     ;; For Emacs major version 26 or later `tramp-dissect-file-name' returns a
     ;; length-8 list, the 0th element of which is an unneeded (for us) symbol
@@ -2848,7 +2844,6 @@ host and connection information is returned."
 
 (defun ess-path-update-local-portion--version-le-25 (current-path new-local-path)
   "Update the local portion of a tramp path for Emacs 25 or earlier."
-  (require 'tramp)
   (let ((dissected-file-name (tramp-dissect-file-name current-path)))
     ;; For Emacs major version 25 or earlier `tramp-dissect-file-name' returns a
     ;; length-5 vector, the 3rd element of which is the local path element.
