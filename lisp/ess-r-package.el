@@ -126,12 +126,9 @@ efficiency reasons."
     (let* ((path (ess-r-package--find-package-path (or dir default-directory)))
            (name (when path
                    (ess-r-package--find-package-name path)))
-           (local (if (and path (file-remote-p path))
-                      (tramp-file-name-localname (tramp-dissect-file-name path))
-                    path))
            (info (if name
                      (list :name name
-                           :root local)
+                           :root path)
                    '(nil))))
       ;; If DIR was supplied we cannot cache in the current buffer.
       (if dir
