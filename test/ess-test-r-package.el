@@ -102,6 +102,11 @@
         (should (string= (plist-get pkg-info :name) "foo"))
         (should (string-match-p "dummy-pkg$" (plist-get pkg-info :root)))
         (kill-buffer)))
+    (with-ess-test-r-file (ess-test-make-remote-path "dummy-pkg/R/test.R")
+      (let ((pkg-info (ess-r-package-info)))
+        (should (string= (plist-get pkg-info :name) "foo"))
+        (should (string-match-p "^/mock:.*dummy-pkg$" (plist-get pkg-info :root)))
+        (kill-buffer)))
     (with-ess-test-c-file "dummy-pkg/src/test.c"
       (let ((pkg-info (ess-r-package-info)))
         (should (string= (plist-get pkg-info :name) "foo"))
