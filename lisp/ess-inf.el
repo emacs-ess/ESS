@@ -2803,7 +2803,7 @@ To be used in `ess-idle-timer-functions'."
       (ess-if-verbose-write "\n(ess-synchronize-dirs)\n")
       (let ((lpath (car (ess-get-words-from-vector ess-getwd-command))))
         (setq default-directory
-              (ess-path-update-local-portion default-directory lpath)))
+              (ess--derive-connection-path default-directory lpath)))
       default-directory)))
 
 (defun ess-dirs ()
@@ -2813,11 +2813,10 @@ To be used in `ess-idle-timer-functions'."
   ;; synchronized automatically.
   (interactive)
   (let* ((dir (car (ess-get-words-from-vector "getwd()\n")))
-         (new-default-dir (ess-path-update-local-portion default-directory dir)))
+         (new-default-dir (ess--derive-connection-path default-directory dir)))
     (message "(ESS / default) directory: %s" dir)
     (setq default-directory (file-name-as-directory new-default-dir))))
 
-(defun ess-path-update-local-portion (current-path new-local-path)
   "Construct a (possibly remote) path with an updated local portion.
 If the string CURRENT-PATH is determined to be a non-TRAMP path,
 then the value of the string NEW-LOCAL-PATH is returned.
@@ -2826,6 +2825,7 @@ represents the local portion of the path is replaced by
 NEW-LOCAL-PATH and the reconstructed string including the remote
 host and connection information is returned."
   (concat (file-remote-p current-path) new-local-path))
+(defun ess--derive-connection-path (old new)
 
 ;; search path
 (defun ess--mark-search-list-as-changed ()
