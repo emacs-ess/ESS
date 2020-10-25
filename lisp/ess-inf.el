@@ -2817,15 +2817,14 @@ To be used in `ess-idle-timer-functions'."
     (message "(ESS / default) directory: %s" dir)
     (setq default-directory (file-name-as-directory new-default-dir))))
 
-  "Construct a (possibly remote) path with an updated local portion.
-If the string CURRENT-PATH is determined to be a non-TRAMP path,
-then the value of the string NEW-LOCAL-PATH is returned.
-Otherwise, the portion of the string in CURRENT-PATH that
-represents the local portion of the path is replaced by
-NEW-LOCAL-PATH and the reconstructed string including the remote
-host and connection information is returned."
-  (concat (file-remote-p current-path) new-local-path))
 (defun ess--derive-connection-path (old new)
+  "Derive a (possibly remote) path with an updated local filename.
+A new connection path is derived from OLD (a path) and NEW (a
+path), in such a way that the host and connection information (if
+any) in OLD is retained in the NEW path. NEW must be an absolute
+path, and can be a remote path"
+  (concat (file-remote-p old)
+          (or (file-remote-p new 'localname) new)))
 
 ;; search path
 (defun ess--mark-search-list-as-changed ()
