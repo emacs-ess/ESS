@@ -320,6 +320,36 @@ some. text
     (should (cl-every #'string= (ess-get-words-from-vector "c('aaa','bbb\"ccc', 'dddd')\n")
                       '("aaa" "bbb\\\"ccc" "dddd")))))
 
+(ert-deftest ess--derive-connection-path ()
+  (let* ((old-localname "/path/to/file")
+         (new-localname "/home/username/projects")
+         (connection-basic "/ssh:melancholia.danann.net:")
+         (connection-ip4 "/ssh:10.0.1.213:")
+         (connection-ip6 "/ssh:[::1]:")
+         (connection-user "/scp:user@host:")
+         (connection-port "/ssh:daniel@melancholia#42:")
+         (connection-domain "/smb:daniel%BIZARRE@melancholia:")
+         (connection-hop "/ssh:bird@bastion|ssh:news.my.domain:")
+         (make-check-replacement
+          (lambda (new-connection)
+            (lambda (old-connection)
+              (let ((old-path (concat old-connection old-localname))
+                    (new-path (concat new-connection new-localname)))
+                (string= (ess--derive-connection-path old-path new-path)
+                         (concat old-connection new-localname))))))
+         (check-new-localpath (funcall make-check-replacement ""))
+         (check-new-remotepath (funcall make-check-replacement connection-basic)))
+    (should (funcall check-new-localpath ""))
+    (should (funcall check-new-localpath connection-basic))
+    (should (funcall check-new-localpath connection-ip4))
+    (should (funcall check-new-localpath connection-ip6))
+    (should (funcall check-new-localpath connection-user))
+    (should (funcall check-new-localpath connection-port))
+    (should (funcall check-new-localpath connection-domain))
+    (should (funcall check-new-localpath connection-hop))
+    (should (funcall check-new-remotepath ""))
+    (should (funcall check-new-remotepath connection-basic))))
+
 ;; Test runners
 
 ;; Note that we add R-3.2.1 to continuous integration via a symlink to

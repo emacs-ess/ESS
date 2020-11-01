@@ -2246,7 +2246,7 @@ START-ARGS gets passed to the dialect-specific
       ;; Use current working directory as default
       (let ((project-find-functions nil)
             (ess-directory-function nil)
-            (ess-startup-directory (ess-get-working-directory))
+            (ess-startup-directory (ess-get-process-variable 'default-directory))
             (ess-ask-for-ess-directory nil))
         (ess-quit 'no-save)
         (inferior-ess--wait-for-exit inf-proc)
@@ -2801,8 +2801,9 @@ To be used in `ess-idle-timer-functions'."
              (inferior-ess-available-p))
     (ess-when-new-input last-sync-dirs
       (ess-if-verbose-write "\n(ess-synchronize-dirs)\n")
-      (setq default-directory
-            (car (ess-get-words-from-vector ess-getwd-command)))
+      (let ((lpath (car (ess-get-words-from-vector ess-getwd-command))))
+        (setq default-directory
+              (ess--derive-connection-path default-directory lpath)))
       default-directory)))
 
 (defun ess-dirs ()
@@ -2811,9 +2812,19 @@ To be used in `ess-idle-timer-functions'."
   ;; default-directory and subprocess working directory are
   ;; synchronized automatically.
   (interactive)
-  (let ((dir (car (ess-get-words-from-vector "getwd()\n"))))
+  (let* ((dir (car (ess-get-words-from-vector "getwd()\n")))
+         (new-default-dir (ess--derive-connection-path default-directory dir)))
     (message "(ESS / default) directory: %s" dir)
-    (setq default-directory (file-name-as-directory dir))))
+    (setq default-directory (file-name-as-directory new-default-dir))))
+
+(defun ess--derive-connection-path (old new)
+  "Derive a (possibly remote) path with an updated local filename.
+A new connection path is derived from OLD (a path) and NEW (a
+path), in such a way that the host and connection information (if
+any) in OLD is retained in the NEW path. NEW must be an absolute
+path, and can be a remote path"
+  (concat (file-remote-p old)
+          (or (file-remote-p new 'localname) new)))
 
 ;; search path
 (defun ess--mark-search-list-as-changed ()
