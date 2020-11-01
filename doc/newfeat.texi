@@ -8,8 +8,10 @@ Changes and New Features in 19.04 (unreleased):
 Fixed issue that caused the current buffer to be incorrectly displayed
 in the new frame when @code{display-buffer} is set to pop up frames.
 
-@item ESS[R]: Fixed package evaluation on remote servers with Tramp (#950).
-Fix contributed by David Pritchard.
+@item ESS[R]: Better support for tramp.
+Fixed package evaluation on remote servers with Tramp (#950);
+process reloading (#1001); and an evaluation issue (#1024).
+These fixes were contributed by David Pritchard.
 
 @item ESS[R]: Automatic offsetting of R process output is now disabled by default
 because it produces undesirable output in some situations. To re-enable,
