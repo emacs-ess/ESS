@@ -388,14 +388,15 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
                        (args (mapcar (lambda (a) (concat a ess-R-argument-suffix))
                                      args)))
                   (all-completions arg args)))
-    (meta (let ((proc (ess-get-next-available-process)))
-            (when (and proc
-                       (with-current-buffer (process-buffer proc)
-                         (not (file-remote-p default-directory))))
-              ;; fixme: ideally meta should be fetched with args
-              (let ((doc (ess-r-get-arg-help-string arg proc)))
-                (replace-regexp-in-string "^ +\\| +$" ""
-                                          (replace-regexp-in-string "[ \t\n]+" " " doc))))))
+    (meta (unless (bound-and-true-p ess-r--no-company-meta)
+            (let ((proc (ess-get-next-available-process)))
+              (when (and proc
+                         (with-current-buffer (process-buffer proc)
+                           (not (file-remote-p default-directory))))
+                ;; fixme: ideally meta should be fetched with args
+                (let ((doc (ess-r-get-arg-help-string arg proc)))
+                  (replace-regexp-in-string "^ +\\| +$" ""
+                                            (replace-regexp-in-string "[ \t\n]+" " " doc)))))))
     (sorted t)
     (require-match 'never)
     (doc-buffer (company-doc-buffer (ess-r-get-arg-help-string arg)))))
