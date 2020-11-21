@@ -27,9 +27,6 @@
 
 ;;; Code:
 
-
-;;;*;;; ElDoc
-
 (require 'cl-lib)
 (require 'ess-inf)
 (require 'ess-help)
@@ -48,6 +45,9 @@
   "Suffix appended by `ac-source-R' and `ac-source-R-args' to candidates."
   :group 'ess-R
   :type 'string)
+
+
+;;;*;;; ElDoc
 
 (defun ess-r-eldoc-function (&rest _ignored)
   "Return the doc string, or nil.
