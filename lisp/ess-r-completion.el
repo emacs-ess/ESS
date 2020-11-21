@@ -28,7 +28,7 @@
 ;;; Code:
 
 
-;;; ElDoc
+;;;*;;; ElDoc
 
 (require 'cl-lib)
 (require 'ess-inf)
@@ -142,7 +142,7 @@ to look up any doc strings."
       (format "%s: %s" (propertize funname 'face 'font-lock-function-name-face) doc))))
 
 
-;;; OBJECTS
+;;;*;;; OBJECTS
 
 (defun ess-r-object-completion ()
   "Return completions at point in a format required by `completion-at-point-functions'."
@@ -297,7 +297,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
              (mapcar 'cddr ess--cached-sp-objects)))))
 
 
-;;; ARGUMENTS
+;;;*;;; ARGUMENTS
 
 (defvar ess-r--funargs-pre-cache
   '(("plot"
@@ -321,7 +321,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
   "Alist of cached arguments for time consuming functions.")
 
 
-;;; HELP
+;;;*;;; HELP
 
 (defun ess-r-get-object-help-string (sym)
   "Help string for ac."
@@ -353,8 +353,8 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
           (buffer-substring-no-properties (point) (point-max)))))))
 
 
-;;; COMPANY
-;;; https://company-mode.github.io/
+;;;*;;; COMPANY
+;; https://company-mode.github.io
 
 (defun company-R-objects (command &optional arg &rest ignored)
   (interactive (list 'interactive))
@@ -428,8 +428,8 @@ Return format suitable for `completion-at-point-functions'."
           (lambda (_) " <pkg>"))))
 
 
-;;; AC SOURCES
-;;; http://cx4a.org/software/auto-complete/index.html
+;;;*;;; AC SOURCES
+;; http://cx4a.org/software/auto-complete/index.html
 ;; auto-complete is de-facto unmaintained, users should switch to `company-mode'.
 
 (defvar ac-source-R
