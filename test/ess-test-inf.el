@@ -72,9 +72,8 @@
 
 ;;*;; Evaluation
 
-(etest-deftest ess-command-test ()
-  :init ((mode . r)
-         (eval . (ess-test-r-set-local-process)))
+(etest-deftest-r ess-command-test ()
+  "`ess-command' saves output in specified buffer."
   :eval (let ((output-buffer (get-buffer-create " *ess-test-command-output*")))
           (ess-command "identity(TRUE)\n" output-buffer)
           (should (string= (with-current-buffer output-buffer

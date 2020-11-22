@@ -18,6 +18,7 @@
 
 ;;; Code:
 (require 'ert)
+(require 'etest)
 (require 'ess-r-mode)
 
 (defvar ess-test-fixtures-directory
@@ -288,6 +289,17 @@ representative to the common interactive use with tracebug on."
   (let ((proc-buf (ess-r-test-proc-buf (or type 'tracebug))))
     (setq ess-local-process-name (process-name (get-buffer-process proc-buf)))
     (setq etest-local-inferior-buffer proc-buf)))
+
+(cl-defmacro etest-deftest-r (name args &body body)
+  (declare (doc-string 3)
+           (indent 2))
+  (let ((etest--docstring (when (stringp (car body))
+                            (list (pop body)))))
+    `(etest-deftest ,name ,args
+       ,@etest--docstring
+       :init ((mode . r)
+              (eval . (ess-test-r-set-local-process)))
+       ,@body)))
 
 (provide 'ess-test-r-utils)
 
