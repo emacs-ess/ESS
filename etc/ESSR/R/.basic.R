@@ -134,11 +134,18 @@ if(.ess.Rversion < "1.8")
     }
 
 .ess.command <- function(expr) {
-    old.value <- .Last.value
+    expr <- substitute(expr)
 
-    result <- eval(substitute(expr), globalenv())
-    print(result)
+    # Evaluate in caller frame, which might be different from global
+    # if we're step-debugging
+    out <- withVisible(eval(expr, parent.frame()))
+
+    # Print result manually because we can't rely on auto-print
+    # without changing the last value
+    if (out$visible) {
+        print(out$value)
+    }
 
     # Keep `.Last.value` stable
-    invisible(old.value)
+    invisible(.Last.value)
 }
