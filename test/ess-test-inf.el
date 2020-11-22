@@ -17,6 +17,7 @@
 ;; Tests for inferior processes.
 
 (require 'ert)
+(require 'etest)
 (require 'cl-lib)
 
 ;; As we use the R inferior for the generic tests
@@ -71,14 +72,17 @@
 
 ;;*;; Evaluation
 
-(ert-deftest ess-command-test ()
-  (with-r-running nil
-    (let ((output-buffer (get-buffer-create " *ess-test-command-output*")))
-      (ess-command "identity(TRUE)\n" output-buffer)
-      (should (string= (with-current-buffer output-buffer
-                         (ess-kill-last-line)
-                         (buffer-string))
-                       "[1] TRUE")))))
+(etest-deftest ess-command-test ()
+  :init ((mode . r)
+         (eval . (ess-test-r-set-local-process)))
+  :eval (let ((output-buffer (get-buffer-create " *ess-test-command-output*")))
+          (ess-command "identity(TRUE)\n" output-buffer)
+          (should (string= (with-current-buffer output-buffer
+                             (ess-kill-last-line)
+                             (buffer-string))
+                           "[1] TRUE")))
+  ;; No impact on inferior output
+  :inf-result "")
 
 (ert-deftest ess-async-command-test ()
   ;; (ess-async-command "{cat(1:5);Sys.sleep(5);cat(2:6)}\n" nil (get-process "R")
