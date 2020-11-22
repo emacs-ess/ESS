@@ -1,4 +1,4 @@
-#!/usr/bin/Rscript
+#!/usr/bin/env Rscript
 ## -*- mode: R -*-
 ## code to build ESSR environemnt.
 ## Assume that current directory is etc/ESSR
