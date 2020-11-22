@@ -267,7 +267,7 @@ process to avoid excessive requests."
            out)))))
 
 
-;;; Emacs Integration
+;;*;; Emacs Integration
 
 (defun ess-derived-mode-p ()
   "Non-nil if the current major mode is an ESS major mode."
@@ -365,7 +365,7 @@ ess-[dialect]-font-lock-keywords variable."
                  t])))
 
 
-;;; External modes
+;;*;; External modes
 
 ;; Define these here for the byte compiler since ido dynamically
 ;; let-binds them:
@@ -490,7 +490,7 @@ formats: one for directory and another for the output file."
   nil)
 
 
-;;; Emacs itself
+;;*;; Emacs itself
 
 (defun ess-yank-cleaned-commands ()
   "Yank and strip the code, leaving only (R/S/Lsp/..) commands.
@@ -570,7 +570,7 @@ GTags file (default TAGS): ")
         (message "Building tags .. ok!")))))
 
 
-;;; UI
+;;*;; UI
 
 (defvar ess-current-region-overlay
   (let ((overlay (make-overlay (point) (point))))
@@ -669,7 +669,7 @@ Copied almost verbatim from gnus-utils.el (but with test for mac added)."
 (define-obsolete-function-alias 'ess-do-auto-fill 'do-auto-fill "ESS 19.04")
 
 
-;;; Syntax
+;;*;; Syntax
 
 (defun ess-containing-sexp-position ()
   "Return the `cadr' of `syntax-ppss'."
@@ -849,7 +849,7 @@ also return t if inside curly brackets."
       r)))
 
 
-;;; String manipulation
+;;*;; String manipulation
 
 (defun ess-quote-special-chars (string)
   "Quote special characters in STRING."
@@ -996,7 +996,7 @@ nil and not t, query for each instance."
     nil))
 
 
-;;; Debugging tools
+;;*;; Debugging tools
 
 (defun ess-write-to-dribble-buffer (text)
   "Write TEXT to `ess-dribble-buffer'."
