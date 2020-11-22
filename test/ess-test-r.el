@@ -815,6 +815,25 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
   (should (commandp 'R))
   (should (commandp 'R-newest)))
 
+(etest-deftest-r ess-command-last-value-test ()
+  "`ess-command` preserves `.Last.value (#1058)"
+  :case "100¶"
+  :eval "C-c C-c"
+  :inf-result "100
+[1] 100
+> "
+  :case ".Last.value¶"
+  :eval "C-c C-c"
+  :inf-result ".Last.value
+[1] 100
+> "
+  :eval (ess-command "-1\n")
+  :case ".Last.value¶"
+  :eval "C-c C-c"
+  :inf-result ".Last.value
+[1] 100
+> ")
+
 (provide 'ess-test-r)
 
 ;;; ess-test-r.el ends here

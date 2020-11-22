@@ -383,6 +383,7 @@ To be used as part of `font-lock-defaults' keywords."
    '((ess-local-customize-alist             . 'ess-r-customize-alist)
      (ess-dialect                           . "R")
      (ess-suffix                            . "R")
+     (ess-command-command                   . ess-r-command-command)
      (ess-traceback-command                 . ess-r-traceback-command)
      (ess-call-stack-command                . ess-r-call-stack-command)
      (ess-mode-completion-syntax-table      . ess-r-completion-syntax-table)
@@ -417,6 +418,8 @@ To be used as part of `font-lock-defaults' keywords."
 fill=TRUE); try(traceback(), silent=TRUE)})\n")
 
 (defvar ess-r-call-stack-command "traceback(1)\n")
+
+(defvar ess-r-command-command ".ess.command(%s)\n")
 
 (defvar ess-r-dump-filename-template
   (replace-regexp-in-string
@@ -1336,16 +1339,25 @@ selected (see `ess-r-set-evaluation-env')."
 
 (defun ess-r-load-ESSR ()
   "Load ESSR functionality."
-  (cond
-   ((file-remote-p (ess-get-process-variable 'default-directory))
-    (if (eq ess-r-fetch-ESSR-on-remotes t)
-        (ess-r--fetch-ESSR-remote)
-      (ess-r--load-ESSR-remote)))
-   ((and (bound-and-true-p ess-remote))
-    (if ess-r-fetch-ESSR-on-remotes
-        (ess-r--fetch-ESSR-remote)
-      (ess-r--load-ESSR-remote t)))
-   (t (ess-r--load-ESSR-local))))
+  ;; `.ess.command()` is not defined until ESSR is loaded so disable
+  ;; it temporarily. Would be helpful to implement an `inferior-ess-let'
+  ;; macro .
+  (with-current-buffer (process-buffer (ess-command--get-proc nil nil))
+    (let ((old-cmd ess-command-command))
+      (unwind-protect
+          (progn
+            (setq ess-command-command nil)
+            (cond
+             ((file-remote-p (ess-get-process-variable 'default-directory))
+              (if (eq ess-r-fetch-ESSR-on-remotes t)
+                  (ess-r--fetch-ESSR-remote)
+                (ess-r--load-ESSR-remote)))
+             ((and (bound-and-true-p ess-remote))
+              (if ess-r-fetch-ESSR-on-remotes
+                  (ess-r--fetch-ESSR-remote)
+                (ess-r--load-ESSR-remote t)))
+             (t (ess-r--load-ESSR-local))))
+        (setq ess-command-command old-cmd)))))
 
 (defun ess-r--load-ESSR-local ()
   (let* ((src-dir (expand-file-name "ESSR/R" ess-etc-directory))

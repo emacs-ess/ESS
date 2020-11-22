@@ -132,3 +132,13 @@ if(.ess.Rversion < "1.8")
 
         unquote(substitute(expr))
     }
+
+.ess.command <- function(expr) {
+    old.value <- .Last.value
+
+    result <- eval(substitute(expr), globalenv())
+    print(result)
+
+    # Keep `.Last.value` stable
+    invisible(old.value)
+}
