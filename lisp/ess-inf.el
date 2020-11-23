@@ -1255,8 +1255,8 @@ wrapping the code into:
                   ;; right there.
                   (while (eq :incomplete (ess-mpi-handle-messages (current-buffer)))
                     (ess-wait-for-process proc nil wait force-redisplay))
-                  ;; Remove prompt
-                  ;; If output is cat(..)ed this deletes the output
+                  ;; Remove prompt. If output is cat(..)ed without a
+                  ;; final newline, this deletes the last line of output.
                   (goto-char (point-max))
                   (delete-region (point-at-bol) (point-max)))
                 (ess-if-verbose-write " .. ok{ess-command}")))
