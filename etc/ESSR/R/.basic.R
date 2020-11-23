@@ -134,11 +134,7 @@ if(.ess.Rversion < "1.8")
     }
 
 .ess.command <- function(expr) {
-    expr <- substitute(expr)
-
-    # Evaluate in caller frame, which might be different from global
-    # if we're step-debugging
-    out <- withVisible(eval(expr, parent.frame()))
+    out <- withVisible(expr)
 
     # Print result manually because we can't rely on auto-print
     # without changing the last value
