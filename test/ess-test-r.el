@@ -834,6 +834,10 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
 [1] 100
 > ")
 
+(etest-deftest-r ess-r-pager-test ()
+  :eval ((should (string= (car (ess-get-words-from-vector "getOption('pager')\n"))
+                          "cat"))))
+
 (provide 'ess-test-r)
 
 ;;; ess-test-r.el ends here

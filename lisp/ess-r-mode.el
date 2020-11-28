@@ -588,11 +588,11 @@ the package directory was selected in the first place."
 (defun R-initialize-on-start ()
   "This function is run after the first R prompt.
 Executed in process buffer."
-  (ess-command (format
-                "if(identical(getOption('pager'),
-                                  file.path(R.home(), 'bin', 'pager')))
-                        options(pager='%s')\n"
-                inferior-ess-pager))
+  (ess-r--without-format-command
+    (ess-command (format
+                  "if (identical(getOption('pager'), file.path(R.home(), 'bin', 'pager')))
+                       options(pager = '%s')\n"
+                  inferior-ess-pager)))
   (ess-r-load-ESSR)
   (when inferior-ess-language-start
     (ess-command (concat inferior-ess-language-start "\n")))
