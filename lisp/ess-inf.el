@@ -1190,6 +1190,14 @@ This handles Tramp when working on a remote."
       (user-error "ESS process not ready. Finish your command before trying again")))
   proc)
 
+(defvar-local ess-format-command-alist nil
+  "Alist of mode-specific parameters for formatting a command.
+All elements are optional.
+
+- `fun': A formatting function for running a command. First
+  argument is the background command to run. Must include a
+  catch-all `&rest` parameter for extensibility.")
+
 (defun ess-command (cmd &optional out-buffer _sleep no-prompt-check wait proc force-redisplay)
   "Send the ESS process CMD and delete the output from the ESS process buffer.
 If an optional second argument OUT-BUFFER exists save the output
@@ -1223,7 +1231,11 @@ wrapping the code into:
       (let ((primary-prompt inferior-ess-primary-prompt)
             (oldpb (process-buffer proc))
             (oldpf (process-filter proc))
-            (oldpm (marker-position (process-mark proc))))
+            (oldpm (marker-position (process-mark proc)))
+            (cmd (if-let ((cmd-fun (alist-get 'fun ess-format-command-alist)))
+                     (funcall cmd-fun
+                              (ess--strip-final-newlines cmd))
+                   cmd)))
         (ess-if-verbose-write (format "(ess-command %s ..)" cmd))
         ;; Swap the process buffer with the output buffer before
         ;; sending the command
@@ -1247,8 +1259,8 @@ wrapping the code into:
                   ;; right there.
                   (while (eq :incomplete (ess-mpi-handle-messages (current-buffer)))
                     (ess-wait-for-process proc nil wait force-redisplay))
-                  ;; Remove prompt
-                  ;; If output is cat(..)ed this deletes the output
+                  ;; Remove prompt. If output is cat(..)ed without a
+                  ;; final newline, this deletes the last line of output.
                   (goto-char (point-max))
                   (delete-region (point-at-bol) (point-max)))
                 (ess-if-verbose-write " .. ok{ess-command}")))

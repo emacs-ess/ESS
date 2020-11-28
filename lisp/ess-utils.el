@@ -995,6 +995,9 @@ nil and not t, query for each instance."
     ;; always return nil, in case this is on write-file-hooks.
     nil))
 
+(defun ess--strip-final-newlines (string)
+  (replace-regexp-in-string "\n+" "" string))
+
 
 ;;*;; Debugging tools
 

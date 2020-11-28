@@ -4,6 +4,10 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item ESS[R]: @code{ess-command} no longer changes @code{.Last.value}.
+As a result, background tasks like completions no longer affect
+the last value binding (#1058).
+
 @item ESS[R]: Namespaced evaluation is disable in roxygen examples (#1026).
 Part of this change is that namespaced evaluation has become a
 buffer-local rather than process-local setting (#1046). This makes it

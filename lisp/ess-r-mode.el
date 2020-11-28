@@ -383,6 +383,7 @@ To be used as part of `font-lock-defaults' keywords."
    '((ess-local-customize-alist             . 'ess-r-customize-alist)
      (ess-dialect                           . "R")
      (ess-suffix                            . "R")
+     (ess-format-command-alist              . ess-r-format-command-alist)
      (ess-traceback-command                 . ess-r-traceback-command)
      (ess-call-stack-command                . ess-r-call-stack-command)
      (ess-mode-completion-syntax-table      . ess-r-completion-syntax-table)
@@ -417,6 +418,13 @@ To be used as part of `font-lock-defaults' keywords."
 fill=TRUE); try(traceback(), silent=TRUE)})\n")
 
 (defvar ess-r-call-stack-command "traceback(1)\n")
+
+(defun ess-r-format-command (cmd &rest args)
+  (format ".ess.command(%s)\n" cmd))
+
+(defvar ess-r-format-command-alist
+  '((fun          . ess-r-format-command)
+    (use-sentinel . t)))
 
 (defvar ess-r-dump-filename-template
   (replace-regexp-in-string
@@ -566,14 +574,25 @@ the package directory was selected in the first place."
 (defun inferior-ess-r--init-callback (_proc _name)
   (R-initialize-on-start))
 
+(defmacro ess-r--without-format-command (&rest body)
+  (declare (indent 0)
+           (debug (&rest form)))
+  `(with-current-buffer (process-buffer (ess-command--get-proc nil nil))
+     (let ((old-alist ess-format-command-alist))
+       (unwind-protect
+           (progn
+             (setq ess-format-command-alist nil)
+             ,@body)
+         (setq ess-format-command-alist old-alist)))))
+
 (defun R-initialize-on-start ()
   "This function is run after the first R prompt.
 Executed in process buffer."
-  (ess-command (format
-                "if(identical(getOption('pager'),
-                                  file.path(R.home(), 'bin', 'pager')))
-                        options(pager='%s')\n"
-                inferior-ess-pager))
+  (ess-r--without-format-command
+    (ess-command (format
+                  "if (identical(getOption('pager'), file.path(R.home(), 'bin', 'pager')))
+                       options(pager = '%s')\n"
+                  inferior-ess-pager)))
   (ess-r-load-ESSR)
   (when inferior-ess-language-start
     (ess-command (concat inferior-ess-language-start "\n")))
@@ -1336,16 +1355,20 @@ selected (see `ess-r-set-evaluation-env')."
 
 (defun ess-r-load-ESSR ()
   "Load ESSR functionality."
-  (cond
-   ((file-remote-p (ess-get-process-variable 'default-directory))
-    (if (eq ess-r-fetch-ESSR-on-remotes t)
-        (ess-r--fetch-ESSR-remote)
-      (ess-r--load-ESSR-remote)))
-   ((and (bound-and-true-p ess-remote))
-    (if ess-r-fetch-ESSR-on-remotes
-        (ess-r--fetch-ESSR-remote)
-      (ess-r--load-ESSR-remote t)))
-   (t (ess-r--load-ESSR-local))))
+  ;; `.ess.command()` is not defined until ESSR is loaded so disable
+  ;; it temporarily. Would be helpful to implement an `inferior-ess-let'
+  ;; macro .
+  (ess-r--without-format-command
+    (cond
+     ((file-remote-p (ess-get-process-variable 'default-directory))
+      (if (eq ess-r-fetch-ESSR-on-remotes t)
+          (ess-r--fetch-ESSR-remote)
+        (ess-r--load-ESSR-remote)))
+     ((and (bound-and-true-p ess-remote))
+      (if ess-r-fetch-ESSR-on-remotes
+          (ess-r--fetch-ESSR-remote)
+        (ess-r--load-ESSR-remote t)))
+     (t (ess-r--load-ESSR-local)))))
 
 (defun ess-r--load-ESSR-local ()
   (let* ((src-dir (expand-file-name "ESSR/R" ess-etc-directory))

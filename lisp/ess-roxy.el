@@ -600,11 +600,11 @@ point. Place it in a buffer and return that buffer."
          (R-old-roxy
           (concat
            "..results <- roxygen2:::roc_process(rd_roclet(), parse.files(P), \"\");"
-           "cat(vapply(..results, function(x) roxygen2:::rd_out_cache$compute(x, format(x)), character(1)))" ))
+           "cat(vapply(..results, function(x) roxygen2:::rd_out_cache$compute(x, format(x)), character(1)), \"\\n\")" ))
          (R-new-roxy
           (concat
            "..results <- roc_proc_text(rd_roclet(), readChar(P, file.info(P)$size));"
-           "cat(vapply(..results, format, character(1)), \"\n\")" ))
+           "cat(vapply(..results, format, character(1)), \"\\n\")" ))
          (out-rd-roclet
           (cond ((string= "roxygen" ess-roxy-package)
                  "make.Rd2.roclet()$parse")
