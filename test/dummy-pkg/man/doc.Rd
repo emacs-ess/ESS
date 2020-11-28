@@ -1,0 +1,5 @@
+\name{doc}
+
+\examples{
+letters
+}

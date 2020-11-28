@@ -1024,6 +1024,17 @@ Only do this if in a roxygen block and
 (with-eval-after-load "cc-mode"
   (add-hook 'c++-mode-hook #'ess-roxy-enable-in-cpp))
 
+(defun ess-roxy--region-p (beg end)
+  (when ess-roxy-re
+    (save-excursion
+      (goto-char beg)
+      (catch 'ess-r-not-roxy
+        (while (< (point) end)
+          (unless (looking-at-p ess-roxy-re)
+            (throw 'ess-r-not-roxy nil))
+          (forward-line))
+        t))))
+
 (provide 'ess-roxy)
 
 ;;; ess-roxy.el ends here

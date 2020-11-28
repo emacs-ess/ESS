@@ -88,6 +88,7 @@
 (declare-function ess-r-package--all-source-dirs "ess-r-package")
 (declare-function ess-r-package-name "ess-r-package")
 (declare-function ess-r-package-source-dirs "ess-r-package")
+(declare-function ess-roxy--region-p "ess-roxy")
 
 ;; Do not require tramp at runtime. It is expensive to load. Instead,
 ;; guard calls with (require 'tramp) and silence the byte compiler
@@ -319,20 +320,28 @@ command conforms to VISIBLY."
 (defun ess-process-buffer-substring (process start end)
   (ess--run-presend-hooks process (buffer-substring-no-properties start end)))
 
+;; Declare globally so that the bytecode compiler let-binds it
+;; properly
+(defvar-local ess-r-evaluation-env nil)
+
 (defun ess-tracebug-send-region (process start end &optional visibly message type)
   "Send region to process adding source references as specified
 by `ess-inject-source' variable."
   (ess-eval-region--normalise-region start end)
-  (let* ((inject-p  (cond ((eq type 'function)
+  ;; Disable evaluation env if we're sending a roxy region. This is
+  ;; not the ideal place to do this.
+  (let* ((ess-r-evaluation-env (unless (ess-roxy--region-p start end)
+                                 (ess-r-get-evaluation-env)))
+         (inject-p  (cond ((eq type 'function)
                            ess-inject-source)
                           ((eq type 'buffer)
                            (or (eq ess-inject-source t)
                                (eq ess-inject-source 'function-and-buffer)))
-                          (t (or (eq ess-inject-source t)
-                                 ;; We need to always inject with namespaced
-                                 ;; evaluation (fixme: not right place for
-                                 ;; this).
-                                 (ess-r-get-evaluation-env)))))
+                          ((eq ess-inject-source t))
+                          ;; We need to always inject with namespaced
+                          ;; evaluation (FIXME: not right place for
+                          ;; this).
+                          (ess-r-evaluation-env)))
          (ess--dbg-del-empty-p (unless inject-p ess--dbg-del-empty-p))
          (string (if inject-p
                      (ess-make-source-refd-command start end visibly process)

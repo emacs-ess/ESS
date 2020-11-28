@@ -4,6 +4,12 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item ESS[R]: Namespaced evaluation is disable in roxygen examples (#1026).
+Part of this change is that namespaced evaluation has become a
+buffer-local rather than process-local setting (#1046). This makes it
+possible to disable namespaced evaluation in specific buffers or
+contexts.
+
 @item iESS: Inferior processes can now properly reuse frames (#987).
 Fixed issue that caused the current buffer to be incorrectly displayed
 in the new frame when @code{display-buffer} is set to pop up frames.

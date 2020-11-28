@@ -21,6 +21,11 @@
 (require 'ess-r-mode)
 (require 'ess-test-r-utils)
 
+;; Make sure inferiors have been loaded so that messages etc. do not
+;; interfere with the tests
+(ess-r-test-proc-buf 'output)
+(ess-r-test-proc-buf 'tracebug)
+
 (etest-deftest ess-r-eval-visibility-eval-standard-filter-test ()
   "`ess-eval-region' respects `ess-eval-visibly'.
 Standard filter."
@@ -142,5 +147,69 @@ Default filter"
 > [1] 5
 [1] 6
 > ")
+
+(etest-deftest ess-r-eval-ns-env-roxy-standard-test ()
+  "Roxygen blocks are not evaluated in current eval-env (#1026).
+Standard filter."
+  :init ((mode . r)
+         (ess-r-evaluation-env . "base")
+         (eval . (ess-test-r-set-local-process 'output)))
+
+  :case "#' ¶identical(environment(), globalenv())"
+  :eval "C-c C-j"
+  :inf-result "identical(environment(), globalenv())
+[1] TRUE
+> "
+  ;; Shouldn't mention "[base]"
+  :messages "Starting evaluation...
+Loading line: #' identical(environment(), globalenv())"
+
+  :case "
+#' ¶identical(environment(), globalenv())
+NULL×"
+
+  :eval "C-c C-r"
+  :inf-result "+ > identical(environment(), globalenv())
+[1] FALSE
+> NULL
+NULL
+> "
+  ;; Mentions "[base]"
+  :messages "Starting evaluation...
+[base] Eval region")
+
+(etest-deftest ess-r-eval-ns-env-roxy-tracebug-test ()
+  "Roxygen blocks are not evaluated in current eval-env (#1026).
+Tracebug filter."
+  :init ((mode . r)
+         (eval . (ess-test-r-set-local-process 'tracebug))
+         (ess-r-evaluation-env . "base")
+         (ess-eval-visibly . nil))
+  :case "#' ¶identical(environment(), globalenv())"
+  :eval "C-c C-j"
+  :inf-result "[1] TRUE
+> "
+  ;; Shouldn't mention "[base]"
+  :messages "Starting evaluation...
+Loading line: #' identical(environment(), globalenv())"
+
+  :case "
+#' ¶identical(environment(), globalenv())
+NULL×"
+
+  :eval "C-c C-r"
+  :inf-result "+ [1] FALSE
+NULL
+> "
+  ;; Mentions "[base]"
+  :messages "Starting evaluation...
+[base] Eval region")
+
+(ert-deftest ess-rd-eval-ns-env-test ()
+  "Namespaced eval is disabled in doc files (#1026)."
+  (with-temp-buffer
+    (find-file-noselect "dummy-pkg/man/doc.Rd")
+    (Rd-mode)
+    (should (not ess-r-evaluation-env))))
 
 ;;; ess-test-r-eval.el ends here
