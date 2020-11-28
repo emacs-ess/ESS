@@ -573,7 +573,8 @@ can use `ess--busy-slash', `ess--busy-B',`ess--busy-stars',
   "Determines if ESS replaces long + sequences in output.
 If 'strip, remove all such instances.  Otherwise, if non-nil, '+
 + + + ' containing 3 or more + is replaced by
-`ess-long+replacement'."
+`ess-long+replacement'.
+This variable can be process-local but not buffer-local."
   :group 'ess-tracebug
   :type '(choice (const nil :tag "No replacement")
                  (const 'strip :tag "Replace all")
@@ -1285,13 +1286,16 @@ ends with an incomplete message."
             (setq out :incomplete))))
       out)))
 
-(defun ess--replace-long+-in-prompt (prompt is-final)
+(defun ess--replace-long+-in-prompt (proc prompt is-final)
   "Replace long + + + in PROMPT based on `inferior-ess-replace-long+' value.
 If IS-FINAL means that PROMPT occurs at the end of the process
 chunk. If non-nil, special care is taken not to drop last '+'
 value as it might be a continuation prompt."
   ;; see #576 for interesting input examples
-  (let ((len (length prompt)))
+  (let ((len (length prompt))
+        (inferior-ess-replace-long+ (buffer-local-value
+                                     'inferior-ess-replace-long+
+                                     (process-buffer proc))))
     (if (or (null inferior-ess-replace-long+)
             (< len 2))
         prompt
@@ -1391,7 +1395,7 @@ prompts."
                 (setq pos2 tpos)
                 (setq prompt (let ((prompt (buffer-substring pos1 pos2)))
                                (if do-clean
-                                   (ess--replace-long+-in-prompt prompt (eq pos2 (point-max)))
+                                   (ess--replace-long+-in-prompt proc prompt (eq pos2 (point-max)))
                                  prompt)))
                 ;; Cannot bypass this trivial call to comint-output-filter because
                 ;; external tools could rely on prompts (org-babel [#598] for
