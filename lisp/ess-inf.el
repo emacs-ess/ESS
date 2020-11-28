@@ -1190,9 +1190,13 @@ This handles Tramp when working on a remote."
       (user-error "ESS process not ready. Finish your command before trying again")))
   proc)
 
-(defvar-local ess-command-command nil
-  "Format-string for building an ESS background command.
-If non-nil, must include a %s slot for substituting the command.")
+(defvar-local ess-format-command-alist nil
+  "Alist of mode-specific parameters for formatting a command.
+All elements are optional.
+
+- `fun': A formatting function for running a command. First
+  argument is the background command to run. Must include a
+  catch-all `&rest` parameter for extensibility.")
 
 (defun ess-command (cmd &optional out-buffer _sleep no-prompt-check wait proc force-redisplay)
   "Send the ESS process CMD and delete the output from the ESS process buffer.
@@ -1228,9 +1232,9 @@ wrapping the code into:
             (oldpb (process-buffer proc))
             (oldpf (process-filter proc))
             (oldpm (marker-position (process-mark proc)))
-            (cmd (if ess-command-command
-                     (format ess-command-command
-                             (ess--strip-final-newlines cmd))
+            (cmd (if-let ((cmd-fun (alist-get 'fun ess-format-command-alist)))
+                     (funcall cmd-fun
+                              (ess--strip-final-newlines cmd))
                    cmd)))
         (ess-if-verbose-write (format "(ess-command %s ..)" cmd))
         ;; Swap the process buffer with the output buffer before
