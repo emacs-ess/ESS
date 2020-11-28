@@ -133,7 +133,9 @@ if(.ess.Rversion < "1.8")
         unquote(substitute(expr))
     }
 
-.ess.command <- function(expr) {
+.ess.command <- function(expr, sentinel) {
+    on.exit(writeLines(sentinel))
+
     out <- withVisible(expr)
 
     # Print result manually because we can't rely on auto-print
