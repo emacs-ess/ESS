@@ -1616,7 +1616,7 @@ Note that when inside a package and namespaced evaluation is in
 place (see `ess-r-set-evaluation-env') evaluation of multiline
 input will fail."
   (interactive)
-  (ess-force-buffer-current)
+  (save-window-excursion (ess-force-buffer-current))
   (display-buffer (ess-get-process-buffer)
                   ;; Use a different window for the process buffer:
                   '(nil (inhibit-same-window . t))
