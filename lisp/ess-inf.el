@@ -769,8 +769,10 @@ to `ess-completing-read'."
                                 'ess-dialect
                                 (process-buffer (get-process
                                                  (car pname-list))))))))
-      ;; try to start "the appropriate" process
-      (ess-start-process-specific ess-language ess-dialect)
+      ;; try to start "the appropriate" process, don't show the buffer
+      ;; since we handle that explicitly with no-switch
+      (ess--with-no-pop-to-buffer
+        (ess-start-process-specific ess-language ess-dialect))
       (setq num-processes 1
             pname-list (car ess-process-name-list)
             auto-started? t))
