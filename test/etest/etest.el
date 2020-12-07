@@ -134,9 +134,12 @@ and are processed with DO-RESULT."
           (funcall do-result
                    (etest--result inf-buf t)
                    value)))
-    (with-current-buffer etest-local-inferior-buffer
-      (let ((inhibit-read-only t))
-        (erase-buffer)))))
+    (etest-clear-inferior-buffer)))
+
+(defun etest-clear-inferior-buffer ()
+  (with-current-buffer etest-local-inferior-buffer
+    (let ((inhibit-read-only t))
+      (erase-buffer))))
 
 (defun etest--make-message-sentinel ()
   (let ((sentinel (format "etest-messages-%s" (gensym)))

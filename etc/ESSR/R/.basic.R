@@ -134,7 +134,25 @@ if(.ess.Rversion < "1.8")
     }
 
 .ess.command <- function(expr, sentinel) {
-    on.exit(writeLines(sentinel))
+    ## It is possible that the REPL is marked as non-busy when the
+    ## output is sinked because prompts are not sinked. In that case,
+    ## redirect the sinked output temporarily to ESS.
+    sinked <- sink.number() != 0
+    if (sinked) {
+        ## Write to the PTY that R is connected to. Some context about
+        ## this can be found at https://unix.stackexchange.com/a/385782
+        terminal <- file("stdin")
+        open(terminal, open = "w")
+        sink(file = terminal)
+    }
+
+    on.exit({
+        writeLines(sentinel)
+        if (sinked) {
+            sink(NULL)
+            close(terminal)
+        }
+    })
 
     out <- withVisible(expr)
 
