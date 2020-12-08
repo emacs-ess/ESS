@@ -138,12 +138,11 @@ if(.ess.Rversion < "1.8")
 
     out <- withVisible(expr)
 
-    # Print result manually because we can't rely on auto-print
-    # without changing the last value
-    if (out$visible) {
+    ## Print result manually because we can't rely on auto-print
+    ## without changing the last value
+    if (out$visible)
         print(out$value)
-    }
 
-    # Keep `.Last.value` stable
+    ## Keep `.Last.value` stable
     invisible(.Last.value)
 }
