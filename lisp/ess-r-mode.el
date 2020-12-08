@@ -420,7 +420,8 @@ fill=TRUE); try(traceback(), silent=TRUE)})\n")
 (defvar ess-r-call-stack-command "traceback(1)\n")
 
 (defun ess-r-format-command (cmd &rest args)
-  (format ".ess.command(%s)\n" cmd))
+  (let ((sentinel (alist-get 'output-sentinel args)))
+    (format ".ess.command(%s, '%s')\n" cmd sentinel)))
 
 (defvar ess-r-format-command-alist
   '((fun          . ess-r-format-command)

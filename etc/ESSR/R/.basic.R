@@ -133,15 +133,16 @@ if(.ess.Rversion < "1.8")
         unquote(substitute(expr))
     }
 
-.ess.command <- function(expr) {
+.ess.command <- function(expr, sentinel) {
+    on.exit(writeLines(sentinel))
+
     out <- withVisible(expr)
 
-    # Print result manually because we can't rely on auto-print
-    # without changing the last value
-    if (out$visible) {
+    ## Print result manually because we can't rely on auto-print
+    ## without changing the last value
+    if (out$visible)
         print(out$value)
-    }
 
-    # Keep `.Last.value` stable
+    ## Keep `.Last.value` stable
     invisible(.Last.value)
 }

@@ -407,6 +407,19 @@ Return non-nil if the process is in a ready (not busy) state."
                    (string-match (concat "\\(" inferior-ess-secondary-prompt "\\)\\'") string)))
     ready))
 
+(defun inferior-ess--set-status-sentinel (proc output-buf sentinel)
+  (with-current-buffer output-buf
+    (save-excursion
+      (save-match-data
+        ;; The only assumption is that the prompt finishes with "> "
+        (goto-char (- (point-max) 2))
+        (when (looking-at inferior-ess-primary-prompt)
+          (forward-line -1)
+          (when (looking-at (concat sentinel "\n"))
+            (delete-region (match-beginning 0) (match-end 0))
+            (process-put proc 'busy nil)
+            (process-put proc 'ess-output-sentinel nil)))))))
+
 (defun inferior-ess-mark-as-busy (proc)
   "Put PROC's busy value to t."
   (process-put proc 'busy t)
@@ -981,11 +994,16 @@ non-nil stop waiting for output after TIMEOUT seconds."
           (setq wait .3))))))
 
 (defun inferior-ess-ordinary-filter (proc string)
-  (inferior-ess--set-status proc string)
-  (ess--if-verbose-write-process-state proc string "ordinary-filter")
-  (inferior-ess-run-callback proc string)
-  (with-current-buffer (process-buffer proc)
-    (insert string)))
+  (let ((sentinel (process-get proc 'ess-output-sentinel)))
+    (unless sentinel
+      (inferior-ess--set-status proc string)
+      (inferior-ess-run-callback proc string))
+    (ess--if-verbose-write-process-state proc string "ordinary-filter")
+    (with-current-buffer (process-buffer proc)
+      (insert string))
+    (when sentinel
+      (inferior-ess--set-status-sentinel proc (process-buffer proc) sentinel)
+      (inferior-ess-run-callback proc string))))
 
 (defvar ess-presend-filter-functions nil
   "List of functions to call before sending the input string to the process.
@@ -1198,7 +1216,17 @@ All elements are optional.
 
 - `fun': A formatting function for running a command. First
   argument is the background command to run. Must include a
-  catch-all `&rest` parameter for extensibility.")
+  catch-all `&rest` parameter for extensibility.
+
+- `use-sentinel' : Whether to wait for an output sentinel. If
+  non-nil, `fun' should get the `output-sentinel' element of the
+  alist of parameters and ensure the sentinel is written to the
+  process output at the end of the command.")
+
+(defvar inferior-ess--output-sentinel-count 0)
+(defun inferior-ess--output-sentinel ()
+  (setq inferior-ess--output-sentinel-count (1+ inferior-ess--output-sentinel-count))
+  (format "ess-output-sentinel%s" inferior-ess--output-sentinel-count))
 
 (defun ess-command (cmd &optional out-buffer _sleep no-prompt-check wait proc force-redisplay)
   "Send the ESS process CMD and delete the output from the ESS process buffer.
@@ -1228,21 +1256,26 @@ wrapping the code into:
         ;; Set `inhibit-quit' to t to avoid dumping R output to the
         ;; process buffer if `ess-command' gets interrupted for some
         ;; reason. See bugs #794 and #842
-        (inhibit-quit t))
+        (inhibit-quit t)
+        (sentinel (inferior-ess--output-sentinel)))
     (with-current-buffer (process-buffer proc)
       (let ((primary-prompt inferior-ess-primary-prompt)
             (oldpb (process-buffer proc))
             (oldpf (process-filter proc))
             (oldpm (marker-position (process-mark proc)))
+            (use-sentinel (alist-get 'use-sentinel ess-format-command-alist))
             (cmd (if-let ((cmd-fun (alist-get 'fun ess-format-command-alist)))
                      (funcall cmd-fun
-                              (ess--strip-final-newlines cmd))
+                              (ess--strip-final-newlines cmd)
+                              (cons 'output-sentinel sentinel))
                    cmd)))
         (ess-if-verbose-write (format "(ess-command %s ..)" cmd))
         ;; Swap the process buffer with the output buffer before
         ;; sending the command
         (unwind-protect
             (progn
+              (when use-sentinel
+                (process-put proc 'ess-output-sentinel sentinel))
               (set-process-buffer proc out-buffer)
               (set-process-filter proc 'inferior-ess-ordinary-filter)
               (with-current-buffer out-buffer
@@ -1268,6 +1301,7 @@ wrapping the code into:
                 (ess-if-verbose-write " .. ok{ess-command}")))
           (ess-if-verbose-write " .. exiting{ess-command}\n")
           ;; Restore the process buffer in its previous state
+          (process-put proc 'ess-output-sentinel nil)
           (set-process-buffer proc oldpb)
           (set-process-filter proc oldpf)
           (set-marker (process-mark proc) oldpm))))
