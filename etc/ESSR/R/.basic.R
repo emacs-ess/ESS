@@ -134,7 +134,18 @@ if(.ess.Rversion < "1.8")
     }
 
 .ess.command <- function(expr, sentinel) {
-    on.exit(writeLines(sentinel))
+    ## It is possible that the REPL is marked as non-busy when the
+    ## output is sinked because prompts are not sinked. In that case,
+    ## redirect the sinked output temporarily to ESS.
+    sinked <- sink.number() != 0
+    if (sinked)
+        sink(.ess.stdout)
+
+    on.exit({
+        writeLines(sentinel)
+        if (sinked)
+            sink(NULL)
+    })
 
     out <- withVisible(expr)
 
@@ -146,3 +157,9 @@ if(.ess.Rversion < "1.8")
     ## Keep `.Last.value` stable
     invisible(.Last.value)
 }
+
+## stdout() always returns the current file where output is sinked to.
+## If there is any sink, it returns that file rather than connection 1.
+## Since we can't get the default stdout connection when a sink is
+## active we save it here.
+.ess.stdout <- stdout()

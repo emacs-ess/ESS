@@ -212,4 +212,47 @@ NULL
     (Rd-mode)
     (should (not ess-r-evaluation-env))))
 
+(etest-deftest ess-r-eval-sink-freeze-test ()
+  "Completions don't freeze Emacs when output is sinked.
+TODO: Install company-mode dependency in CI."
+  :init ((mode . r)
+         (eval ess-test-r-set-local-process))
+
+  :cleanup
+  (progn
+    (process-send-string ess-local-process-name "if (sink.number() != 0) sink(NULL)\n")
+    (ess-wait-for-process)
+    (etest-clear-inferior-buffer))
+
+  :case "
+  ¶file <- tempfile()
+  sink(file)×"
+
+  :eval "C-c C-r"
+  :inf-result "file <- tempfile()
++   sink(file)
+> "
+
+  :eval (should (equal (ess-get-words-from-vector "letters[1:3]\n")
+                       '("a" "b" "c")))
+  :inf-result ""
+
+  :case "si¶"
+  :eval (when (require 'company nil 'noerror)
+          (company-complete-common))
+  :inf-result ""
+
+  :case "¶{
+  sink(NULL)
+  if (length(readLines(file)))
+      stop('sinked output should be empty')
+  unlink(file)
+  rm(file)
+}×"
+
+  :eval ((setq-local ess-eval-visibly nil)
+         "C-c C-r")
+  :inf-result "+ + + + + + > ")
+
+
 ;;; ess-test-r-eval.el ends here
