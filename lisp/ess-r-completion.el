@@ -388,7 +388,9 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
                        (args (mapcar (lambda (a) (concat a ess-R-argument-suffix))
                                      args)))
                   (all-completions arg args)))
-    (meta (unless (bound-and-true-p ess-r--no-company-meta)
+    ;; Displaying help for the argument in the echo area is disabled
+    ;; by default for performance reasons. It causes delays or hangs (#1062).
+    (meta (when (bound-and-true-p ess-r--company-meta)
             (let ((proc (ess-get-next-available-process)))
               (when (and proc
                          (with-current-buffer (process-buffer proc)
