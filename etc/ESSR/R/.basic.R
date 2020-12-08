@@ -138,20 +138,13 @@ if(.ess.Rversion < "1.8")
     ## output is sinked because prompts are not sinked. In that case,
     ## redirect the sinked output temporarily to ESS.
     sinked <- sink.number() != 0
-    if (sinked) {
-        ## Write to the PTY that R is connected to. Some context about
-        ## this can be found at https://unix.stackexchange.com/a/385782
-        terminal <- file("stdin")
-        open(terminal, open = "w")
-        sink(file = terminal)
-    }
+    if (sinked)
+        sink(.ess.stdout)
 
     on.exit({
         writeLines(sentinel)
-        if (sinked) {
+        if (sinked)
             sink(NULL)
-            close(terminal)
-        }
     })
 
     out <- withVisible(expr)
@@ -164,3 +157,9 @@ if(.ess.Rversion < "1.8")
     ## Keep `.Last.value` stable
     invisible(.Last.value)
 }
+
+## stdout() always returns the current file where output is sinked to.
+## If there is any sink, it returns that file rather than connection 1.
+## Since we can't get the default stdout connection when a sink is
+## active we save it here.
+.ess.stdout <- stdout()
