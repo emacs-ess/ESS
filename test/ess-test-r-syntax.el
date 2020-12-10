@@ -29,6 +29,18 @@
   :eval (should (equal (syntax-after (point))
                        (string-to-syntax "\\"))))
 
+(etest-deftest-r ess-r-font-lock-boolean-operator-test ()
+  :case "foo ¶| foo ¶|¶| foo ¶& foo ¶&¶& foo"
+  :eval (ess-with-enabled-font-lock-keyword 'ess-fl-keyword:operators
+          (font-lock-ensure)
+          (should (eq (face-at-point) 'ess-operator-face))))
+
+(etest-deftest-r ess-r-font-lock-pipe-operator-test ()
+  :case "a ¶|¶> b"
+  :eval (ess-with-enabled-font-lock-keyword 'ess-fl-keyword:operators
+          (font-lock-ensure)
+          (should (eq (face-at-point) 'ess-operator-face))))
+
 (etest-deftest-r ess-r-tokens-pipe-operator-test ()
   :case "a ¶|> b"
   :eval (should (token= "|>"))

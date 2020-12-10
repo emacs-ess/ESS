@@ -391,6 +391,36 @@ token."
   (and (ess-jump-token type value)
        (ess-token-before= type value)))
 
+(defmacro ess-with-toggled-font-lock-keyword (enable keywords &rest body)
+  (declare (indent 2)
+           (debug (&rest form)))
+  `(progn
+     (let* ((enable ,enable)
+            (keywords ,keywords)
+            (keywords (if (listp keywords)
+                          keywords
+                        (list keywords)))
+            toggled)
+       (mapc (lambda (kw)
+               (if (not (eq enable (cdr (assq kw ess-R-font-lock-keywords))))
+                   (progn
+                     (ess-font-lock-toggle-keyword kw)
+                     (push kw toggled))))
+             keywords)
+       ,@body
+       (mapc #'ess-font-lock-toggle-keyword
+             toggled))))
+
+(defmacro ess-with-disabled-font-lock-keyword (keywords &rest body)
+  (declare (indent 1)
+           (debug (&rest form)))
+  `(ess-with-toggled-font-lock-keyword nil ,keywords ,@body))
+
+(defmacro ess-with-enabled-font-lock-keyword (keywords &rest body)
+  (declare (indent 1)
+           (debug (&rest form)))
+  `(ess-with-toggled-font-lock-keyword t ,keywords ,@body))
+
 (provide 'ess-test-r-utils)
 
 ;;; ess-test-r-utils.el ends here
