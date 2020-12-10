@@ -384,6 +384,13 @@ Throws an error if unsuccesful."
       (should (ess--essr-check-if-in-essrenv)))
     (kill-buffer)))
 
+(defun token= (type &optional value)
+  "Check that the next token conforms to TYPE and VALUE.
+This checks it back and forth and moves the point after the
+token."
+  (and (ess-jump-token type value)
+       (ess-token-before= type value)))
+
 (provide 'ess-test-r-utils)
 
 ;;; ess-test-r-utils.el ends here

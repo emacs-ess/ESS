@@ -1148,6 +1148,13 @@ object$fun_call() %>%
     object$fun_Call()
 
 
+## 39
+x |>
+    f1() |>
+    f2() |>
+    f3()
+
+
 ### Comments
 
 ## 1

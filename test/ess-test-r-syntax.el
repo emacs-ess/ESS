@@ -28,3 +28,8 @@
   :case "c(\"¶\\\"\")"
   :eval (should (equal (syntax-after (point))
                        (string-to-syntax "\\"))))
+
+(etest-deftest-r ess-r-tokens-pipe-operator-test ()
+  :case "a ¶|> b"
+  :eval (should (token= "|>"))
+  :result "a |>¶ b")
