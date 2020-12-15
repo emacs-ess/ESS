@@ -4,6 +4,9 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item ESS[R]: @code{ess-command} is now more robust and resilient to hangs
+and custom prompts (#1043).
+
 @item ESS[R]: @code{ess-command} now handles sinked consoles correctly.
 
 @item ESS[R]: @code{ess-command} no longer changes @code{.Last.value}.
