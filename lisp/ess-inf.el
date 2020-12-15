@@ -414,8 +414,8 @@ Return non-nil if the process is in a ready (not busy) state."
         ;; The only assumption is that the prompt finishes with "> "
         (goto-char (- (point-max) 2))
         (when (looking-at inferior-ess-primary-prompt)
-          (forward-line -1)
-          (when (looking-at (concat sentinel "\n"))
+          (goto-char (point-min))
+          (when (re-search-forward (concat "^\\(" sentinel "[\n\r]+\\)") nil t)
             (delete-region (match-beginning 0) (match-end 0))
             (process-put proc 'busy nil)
             (process-put proc 'ess-output-sentinel nil)))))))
