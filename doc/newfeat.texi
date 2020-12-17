@@ -4,6 +4,10 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item ESS[R]: Fixed performance issue with argument completions.
+The help summary for the argument is no longer displayed in the
+echo area. This fixes delays and hangs (#1062).
+
 @item ESS[R]: @code{ess-command} is now more robust and resilient to hangs
 and custom prompts (#1043).
 
