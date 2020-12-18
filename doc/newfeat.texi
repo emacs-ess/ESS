@@ -4,6 +4,11 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item ESS: New @code{ess-toggle-trace} function.
+Call it once to start tracing all ESS functions with
+@code{trace-function}. Call it again to stop tracing.
+Tracing is useful for debugging background ESS behaviour.
+
 @item ESS[R]: @code{ess-get-help-aliases-list} now caches the aliases
 on the R side. This should speed up help lookup when the search path has
 changed and the aliases are read again.

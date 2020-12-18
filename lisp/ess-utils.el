@@ -364,6 +364,25 @@ ess-[dialect]-font-lock-keywords variable."
                                             (ess--extract-fl-keywords)))
                  t])))
 
+(declare-function untrace-function "trace" ())
+(defvar ess--is-tracing nil)
+
+;;;###autoload
+(defun ess-toggle-trace ()
+  "Toggle tracing of all ESS functions.
+Tracing is useful for debugging background ESS behaviour. The
+first call starts tracing all ESS functions with `trace-function'.
+The second call stops the tracing."
+  (interactive)
+  (let ((fns (append (all-completions "ess-" obarray)
+                     (all-completions "inferior-ess-" obarray)))
+        (do (symbol-function (if ess--is-tracing
+                                 #'untrace-function
+                               #'trace-function))))
+    (setq ess--is-tracing (not ess--is-tracing))
+    (dolist (fn fns)
+      (funcall do (intern fn)))))
+
 
 ;;*;; External modes
 
