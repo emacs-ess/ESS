@@ -415,12 +415,15 @@ Return non-nil if the process is in a ready (not busy) state."
         (goto-char (- (point-max) 2))
         (when (looking-at inferior-ess-primary-prompt)
           (goto-char (point-min))
-          (when (re-search-forward (concat "^\\(" sentinel "-START$\\)") nil t)
+          (when (re-search-forward (inferior-ess--sentinel-start-re sentinel) nil t)
             (delete-region (match-beginning 0) (1+ (match-end 0))))
           (when (re-search-forward (concat "^\\(" sentinel "-END[\n\r]+\\)") nil t)
             (delete-region (match-beginning 0) (match-end 0))
             (process-put proc 'busy nil)
             (process-put proc 'ess-output-sentinel nil)))))))
+
+(defun inferior-ess--sentinel-start-re (sentinel)
+  (concat "^\\(" sentinel "-START$\\)"))
 
 (defun inferior-ess-mark-as-busy (proc)
   "Put PROC's busy value to t."
@@ -1276,7 +1279,8 @@ wrapping the code into:
         (sentinel (inferior-ess--output-sentinel))
         (timeout (or timeout 1)))
     (with-current-buffer (process-buffer proc)
-      (let ((primary-prompt inferior-ess-primary-prompt)
+      (let ((proc-alist (ess--alist (ess-local-process-name
+                                     inferior-ess-primary-prompt)))
             (oldpb (process-buffer proc))
             (oldpf (process-filter proc))
             (oldpm (marker-position (process-mark proc)))
@@ -1297,7 +1301,7 @@ wrapping the code into:
               (set-process-buffer proc out-buffer)
               (set-process-filter proc 'inferior-ess-ordinary-filter)
               (with-current-buffer out-buffer
-                (setq inferior-ess-primary-prompt primary-prompt)
+                (ess-setq-vars-local proc-alist)
                 (setq buffer-read-only nil)
                 (erase-buffer)
                 (set-marker (process-mark proc) (point-min))
@@ -1315,13 +1319,23 @@ wrapping the code into:
                   (delete-region (point-at-bol) (point-max))))
               (setq early-exit nil))
           ;; Restore the process buffer in its previous state
+          (when early-exit
+            (with-current-buffer out-buffer
+              (goto-char (point-min))
+              (when (and use-sentinel
+                         (not (re-search-forward
+                               (inferior-ess--sentinel-start-re sentinel)
+                               nil t)))
+                ;; CMD probably failed to parse if the start sentinel
+                ;; can't be found in the output. Disable the sentinel
+                ;; before interrupt to avoid a freeze.
+                (process-put proc 'ess-output-sentinel nil))
+              (goto-char (point-max))
+              (ess-interrupt)))
           (process-put proc 'ess-output-sentinel nil)
           (set-process-buffer proc oldpb)
           (set-process-filter proc oldpf)
-          (set-marker (process-mark proc) oldpm)
-          (when early-exit
-            (with-current-buffer oldpb
-              (ess-interrupt))))))
+          (set-marker (process-mark proc) oldpm))))
     out-buffer))
 
 (defun ess-boolean-command (com &optional buf wait)

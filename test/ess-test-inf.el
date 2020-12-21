@@ -116,19 +116,23 @@
                           (output nil (ess-load-file (expand-file-name "file.R" ess-test-fixtures-directory)))))))
 
 (etest-deftest-r ess-command-incomplete-test ()
-  "`ess-command' fails with hanging and/or incomplete input."
+  "`ess-command' fails with incomplete input."
   :eval (should-error (ess-command "list(" nil nil nil nil nil nil 0.01))
 
-  ;; Fresh prompt is shown in inferior after the interrupt 
-  :inf-result "
-> "
+  ;; No impact on inferior output
+  :inf-result ""
 
   ;; Process has been interrupted, is no longer busy, and we can run a
   ;; command again
   :eval ((should (inferior-ess-available-p)) 
          (should-error (ess-command "list(" nil nil nil nil nil nil 0.01)))
-  :inf-result "
-> ")
+  :inf-result "")
+
+(etest-deftest-r ess-command-hanging-test ()
+  "`ess-command' fails with hanging command."
+  :eval (should-error (ess-command "Sys.sleep(2)\n" nil nil nil nil nil nil 0.01))
+  :inf-result ""
+  :eval (should (inferior-ess-available-p)))
 
 
 ;;*;; Inferior interaction
