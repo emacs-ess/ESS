@@ -115,6 +115,20 @@
     (should (string-match "^\\[1\\] \"foo\"\nSourced file"
                           (output nil (ess-load-file (expand-file-name "file.R" ess-test-fixtures-directory)))))))
 
+(etest-deftest-r ess-command-incomplete-test ()
+  "`ess-command' fails with hanging and/or incomplete input."
+  :eval (should-error (ess-command "list(" nil nil nil nil nil nil 0.01))
+
+  ;; Fresh prompt is shown in inferior after the interrupt 
+  :inf-result "
+> "
+
+  ;; Process has been interrupted, is no longer busy, and we can run a
+  ;; command again
+  :eval ((should (inferior-ess-available-p)) 
+         (should-error (ess-command "list(" nil nil nil nil nil nil 0.01)))
+  :inf-result "
+> ")
 
 
 ;;*;; Inferior interaction

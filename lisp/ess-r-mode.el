@@ -1378,7 +1378,7 @@ selected (see `ess-r-set-evaluation-env')."
                           .ess.load.ESSR('%s')
                       })\n"
                       src-dir src-dir)))
-    (with-current-buffer (ess-command cmd)
+    (with-current-buffer (ess-command cmd nil nil nil nil nil nil 5)
       (let ((msg (buffer-string)))
         (when (> (length msg) 1)
           (message (format "Messages while loading ESSR: %s" msg)))))))

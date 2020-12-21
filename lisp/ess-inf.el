@@ -970,7 +970,9 @@ is non-nil wait for WAIT seconds for process output before the
 prompt check, default 0.002s. When FORCE-REDISPLAY is non-nil
 force redisplay. You better use WAIT >= 0.1 if you need
 FORCE-REDISPLAY to avoid excessive redisplay. If TIMEOUT is
-non-nil stop waiting for output after TIMEOUT seconds."
+non-nil stop waiting for output after TIMEOUT seconds.
+
+Returns nil if TIMEOUT was reached, non-nil otherwise."
   (setq proc (or proc (get-process ess-local-process-name)))
   (setq wait (or wait 0.005))
   (setq timeout (or timeout most-positive-fixnum))
@@ -991,7 +993,8 @@ non-nil stop waiting for output after TIMEOUT seconds."
           (redisplay 'force))
         (setq elapsed (- (float-time) start-time))
         (when (>  elapsed .3)
-          (setq wait .3))))))
+          (setq wait .3))))
+    (< elapsed timeout)))
 
 (defun inferior-ess-ordinary-filter (proc string)
   (let ((sentinel (process-get proc 'ess-output-sentinel)))
@@ -1228,16 +1231,27 @@ All elements are optional.
   (setq inferior-ess--output-sentinel-count (1+ inferior-ess--output-sentinel-count))
   (format "ess-output-sentinel%s" inferior-ess--output-sentinel-count))
 
-(defun ess-command (cmd &optional out-buffer _sleep no-prompt-check wait proc force-redisplay)
+;; NOTE: We might want to switch to somethig like `cl-defun' with
+;; keyword arguments given the length of the signature. Would also
+;; make it easier to deprecate arguments.
+(defun ess-command (cmd &optional out-buffer _sleep no-prompt-check wait proc
+                        force-redisplay timeout)
   "Send the ESS process CMD and delete the output from the ESS process buffer.
 If an optional second argument OUT-BUFFER exists save the output
 in that buffer. OUT-BUFFER is erased before use. CMD should have
 a terminating newline. Guarantees that the value of `.Last.value'
 will be preserved.
 
-SLEEP is deprecated and no longer has any effect. WAIT and
-FORCE-REDISPLAY are as in `ess-wait-for-process' and are passed
-to `ess-wait-for-process'.
+`ess-command' is executes CMD in the background synchronously,
+meaning that the Emacs UI blocks while CMD is running. Make sure
+that CMD returns immediately. Blocking the UI for more than 0.1
+seconds should generally be considered a bug.
+
+SLEEP is deprecated and no longer has any effect. WAIT,
+FORCE-REDISPLAY, and TIMEOUT are as in `ess-wait-for-process' and
+are passed to `ess-wait-for-process'. The default timeout is 1
+second. The process is interrupted with `interrupt-process' when
+the timeout is reached or when an error occurs.
 
 PROC should be a process, if nil the process name is taken from
 `ess-local-process-name'.  This command doesn't set 'last-eval
@@ -1257,7 +1271,8 @@ wrapping the code into:
         ;; process buffer if `ess-command' gets interrupted for some
         ;; reason. See bugs #794 and #842
         (inhibit-quit t)
-        (sentinel (inferior-ess--output-sentinel)))
+        (sentinel (inferior-ess--output-sentinel))
+        (timeout (or timeout 1)))
     (with-current-buffer (process-buffer proc)
       (let ((primary-prompt inferior-ess-primary-prompt)
             (oldpb (process-buffer proc))
@@ -1268,7 +1283,8 @@ wrapping the code into:
                      (funcall cmd-fun
                               (ess--strip-final-newlines cmd)
                               (cons 'output-sentinel sentinel))
-                   cmd)))
+                   cmd))
+            (early-exit t))
         (ess-if-verbose-write (format "(ess-command %s ..)" cmd))
         ;; Swap the process buffer with the output buffer before
         ;; sending the command
@@ -1288,18 +1304,22 @@ wrapping the code into:
                 ;; Need time for ess-create-object-name-db on PC
                 (if no-prompt-check
                     (sleep-for 0.02)   ; 0.1 is noticeable!
-                  (ess-wait-for-process proc nil wait force-redisplay)
+                  (unless (ess-wait-for-process proc nil wait force-redisplay timeout)
+                    (error "Reached timeout during background ESS command '%s'"
+                           (ess--strip-final-newlines cmd)))
                   ;; Remove prompt. If output is cat(..)ed without a
                   ;; final newline, this deletes the last line of output.
                   (goto-char (point-max))
-                  (delete-region (point-at-bol) (point-max)))
-                (ess-if-verbose-write " .. ok{ess-command}")))
-          (ess-if-verbose-write " .. exiting{ess-command}\n")
+                  (delete-region (point-at-bol) (point-max))))
+              (setq early-exit nil))
           ;; Restore the process buffer in its previous state
           (process-put proc 'ess-output-sentinel nil)
           (set-process-buffer proc oldpb)
           (set-process-filter proc oldpf)
-          (set-marker (process-mark proc) oldpm))))
+          (set-marker (process-mark proc) oldpm)
+          (when early-exit
+            (with-current-buffer oldpb
+              (ess-interrupt))))))
     out-buffer))
 
 (defun ess-boolean-command (com &optional buf wait)
@@ -2217,18 +2237,22 @@ method, see `ess-quit--override'."
 This sends an interrupt and quits a debugging session."
   (interactive)
   (inferior-ess-force)
-  (let ((proc (ess-get-process)))
+  (let ((proc (ess-get-process))
+        (timeout 1))
     ;; Interrupt current task before reloading. Useful if the process is
     ;; prompting for input, for instance in R in case of a crash
     (interrupt-process proc comint-ptyp)
     ;; Workaround for Windows terminals
     (unless (memq system-type '(gnu/linux darwin))
       (process-send-string nil "\n"))
-    (ess-wait-for-process proc)
+    (unless (ess-wait-for-process proc nil nil nil timeout)
+      (error "Reached timeout while interrupting process"))
     ;; Quit debugging session before reloading
     (when (ess-debug-active-p)
       (ess-debug-command-quit)
-      (ess-wait-for-process proc))))
+      (ess-wait-for-process proc nil nil nil timeout))
+    (with-current-buffer (process-buffer proc)
+      (goto-char (process-mark proc)))))
 
 (defun ess-abort ()
   "Kill the ESS process, without executing .Last or terminating devices.

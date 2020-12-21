@@ -4,6 +4,15 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item ESS: @code{ess-command} now uses a default timeout of 1 second.
+It should normally be used for instantaneous background tasks since it
+is synchronous and causes Emacs to block while the command is running.
+If the timeout is reached, an error is thrown to avoid hanging Emacs.
+An interrupt is sent to the process in case of early exit.
+
+@item ESS: @code{ess-wait-for-process} now returns nil if a timeout is
+reached.
+
 @item ESS[R]: Fixed performance issue with argument completions.
 The help summary for the argument is no longer displayed in the
 echo area. This fixes delays and hangs (#1062).
