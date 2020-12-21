@@ -142,10 +142,12 @@ if(.ess.Rversion < "1.8")
         sink(.ess.stdout)
 
     on.exit({
-        writeLines(sentinel)
+        writeLines(paste0(sentinel, "-END"))
         if (sinked)
             sink(NULL)
     })
+
+    writeLines(paste0(sentinel, "-START"))
 
     out <- withVisible(expr)
 

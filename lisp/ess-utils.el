@@ -1032,6 +1032,12 @@ nil and not t, query for each instance."
             (put (car pair) 'permanent-local t))) ;; hack for Rnw
         alist))
 
+(defmacro ess--alist (vars)
+  "Build a self-named alist from VARS.
+VARS must be a list of symbols."
+  (declare (debug 0))
+  `(list ,@(mapcar (lambda (var) `(cons ',var ,var)) vars)))
+
 (defvar ess-error-regexp   "^\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$"
   "Regexp to search for errors.")
 
