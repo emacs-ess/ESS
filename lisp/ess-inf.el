@@ -1285,11 +1285,11 @@ wrapping the code into:
             (oldpf (process-filter proc))
             (oldpm (marker-position (process-mark proc)))
             (use-sentinel (alist-get 'use-sentinel ess-format-command-alist))
-            (cmd (if-let ((cmd-fun (alist-get 'fun ess-format-command-alist)))
-                     (funcall cmd-fun
-                              (ess--strip-final-newlines cmd)
-                              (cons 'output-sentinel sentinel))
-                   cmd))
+            (rich-cmd (if-let ((cmd-fun (alist-get 'fun ess-format-command-alist)))
+                          (funcall cmd-fun
+                                   (ess--strip-final-newlines cmd)
+                                   (cons 'output-sentinel sentinel))
+                        cmd))
             (early-exit t))
         (ess-if-verbose-write (format "(ess-command %s ..)" cmd))
         ;; Swap the process buffer with the output buffer before
@@ -1306,12 +1306,12 @@ wrapping the code into:
                 (erase-buffer)
                 (set-marker (process-mark proc) (point-min))
                 (inferior-ess-mark-as-busy proc)
-                (process-send-string proc cmd)
+                (process-send-string proc rich-cmd)
                 ;; Need time for ess-create-object-name-db on PC
                 (if no-prompt-check
                     (sleep-for 0.02)   ; 0.1 is noticeable!
                   (unless (ess-wait-for-process proc nil wait force-redisplay timeout)
-                    (error "Reached timeout during background ESS command '%s'"
+                    (error "Timeout during background ESS command '%s'"
                            (ess--strip-final-newlines cmd)))
                   ;; Remove prompt. If output is cat(..)ed without a
                   ;; final newline, this deletes the last line of output.
@@ -2262,7 +2262,7 @@ This sends an interrupt and quits a debugging session."
     (unless (memq system-type '(gnu/linux darwin))
       (process-send-string nil "\n"))
     (unless (ess-wait-for-process proc nil nil nil timeout)
-      (error "Reached timeout while interrupting process"))
+      (error "Timeout while interrupting process"))
     ;; Quit debugging session before reloading
     (when (ess-debug-active-p)
       (ess-debug-command-quit)
