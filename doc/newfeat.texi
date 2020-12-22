@@ -13,6 +13,8 @@ An interrupt is sent to the process in case of early exit.
 @item ESS: @code{ess-wait-for-process} now returns nil if a timeout is
 reached.
 
+@item ESS: @code{ess-get-words-from-vector} gains a @code{timeout} argument.
+
 @item ESS[R]: Fixed performance issue with argument completions.
 The help summary for the argument is no longer displayed in the
 echo area. This fixes delays and hangs (#1062).

@@ -2426,11 +2426,13 @@ non-nil, don't return objects in first positon (.GlobalEnv)."
             (setq i (1+ i)))
           (setq ess-object-list (delete-dups result))))))
 
-(defun ess-get-words-from-vector (command &optional no-prompt-check wait proc)
+(defun ess-get-words-from-vector (command &optional no-prompt-check wait proc
+                                          timeout)
   "Evaluate the S command COMMAND, which returns a character vector.
 Return the elements of the result of COMMAND as an alist of
 strings. COMMAND should have a terminating newline.
-NO-PROMPT-CHECK, WAIT, and PROC are passed to `ess-command'.
+NO-PROMPT-CHECK, WAIT, PROC, and TIMEOUT are passed to `ess-command'.
+
 FILTER may be the keyword 'non-... or nil. To avoid truncation of
 long vectors, wrap your command (%s) like this, or a version with
 explicit options(max.print=1e6): \"local({ out <- try({%s});
@@ -2449,7 +2451,7 @@ print(out, max=1e6) })\n\"."
                   "\\( \\|$\\)"; space or end
                   ))
          words)
-    (ess-command command tbuffer 'sleep no-prompt-check wait proc)
+    (ess-command command tbuffer 'sleep no-prompt-check wait proc timeout)
     (with-current-buffer tbuffer
       (goto-char (point-min))
       (while (re-search-forward full-word-regexp nil t)

@@ -681,7 +681,9 @@ nil otherwise."
   ;; ess-command locks display, make sure the above message is visible
   (redisplay t)
   (ess-write-to-dribble-buffer "Processing RDS files ...\n")
-  (prog1 (ess-get-words-from-vector ".ess.getHelpAliases()\n")
+  ;; FIXME: This should be run asynchronously. The large timeout is
+  ;; necessary for some users (#1025).
+  (prog1 (ess-get-words-from-vector ".ess.getHelpAliases()\n" nil nil nil 10)
     (message "Retrieving RDS aliases...done")))
 
 (defun ess-nuke-help-bs ()
