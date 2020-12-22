@@ -499,8 +499,6 @@ return it.  Otherwise, return `ess-help-topics-list'."
      ((or (not ess-help-topics-list)
           (ess-process-get 'sp-for-help-changed?))
       (ess-process-put 'sp-for-help-changed? nil)
-      (ess-command ".ess.getHelpAliases(reset = TRUE)\n"
-                   nil nil nil nil proc nil ess-help--aliases-timeout)
       (setq ess-help-topics-list
             (delete-dups
              (append (ess-get-object-list proc 'exclude-1st)
@@ -508,6 +506,10 @@ return it.  Otherwise, return `ess-help-topics-list'."
                      (ess-get-help-aliases-list)))))
      (t
       ess-help-topics-list))))
+
+(cl-defmethod ess-help--reset-cache-override (&context (ess-dialect "R"))
+  (ess-command ".ess.getHelpAliases(reset = TRUE)\n"
+               nil nil nil nil nil nil ess-help--aliases-timeout))
 
 (defalias 'S 'S+)
 (defalias 's-mode 'S+-mode)

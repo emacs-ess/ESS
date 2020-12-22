@@ -326,7 +326,11 @@ some. text
 (etest-deftest-r ess-help-aliases-test ()
   :eval (let ((aliases (ess-get-help-aliases-list)))
           (should (member "list" aliases)))
-  :inf-result "")
+  :inf-result ""
+
+  :eval ((ess-help--reset-cache)
+         (let ((aliases (ess-get-help-aliases-list)))
+           (should (member "list" aliases)))))
 
 
 ;;*;; Inferior utils

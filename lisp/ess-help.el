@@ -132,8 +132,8 @@ supplied, it is used instead of `inferior-ess-help-command'."
   (interactive
    (progn
      (ess-force-buffer-current)
-     (when current-prefix-arg ;update cache if prefix
-       (ess-process-put 'sp-for-help-changed? t))
+     (when current-prefix-arg
+       (ess-help--reset-cache))
      (list (ess-find-help-file "Help on"))))
   (let* ((hb-name (concat "*help[" ess-current-process-name "]("
                           (replace-regexp-in-string "^\\?\\|`" "" object) ")*"))
@@ -150,6 +150,13 @@ supplied, it is used instead of `inferior-ess-help-command'."
               ess-help-type 'help)))
     (unless (ess--help-kill-bogus-buffer-maybe tbuffer)
       (ess-display-help tbuffer))))
+
+(defun ess-help--reset-cache ()
+  "Reset all cached help files."
+  (ess-process-put 'sp-for-help-changed? t)
+  (ess-help--reset-cache-override))
+
+(cl-defgeneric ess-help--reset-cache-override ())
 
 (defun ess-help-revert-buffer (_ignore-auto _noconfirm)
   "Revert the current help buffer.
