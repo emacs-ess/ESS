@@ -321,6 +321,14 @@ some. text
       )))
 
 
+;;*;; Help
+
+(etest-deftest-r ess-help-aliases-test ()
+  :eval (let ((aliases (ess-get-help-aliases-list)))
+          (should (member "list" aliases)))
+  :inf-result "")
+
+
 ;;*;; Inferior utils
 
 (ert-deftest ess-build-eval-command-test ()

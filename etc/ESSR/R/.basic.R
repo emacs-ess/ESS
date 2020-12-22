@@ -44,18 +44,35 @@
     }
 }
 
-.ess.getHelpAliases <- function(){
-    readrds <-
-        if(.ess.Rversion >= '2.13.0') readRDS
-        else .readRDS
-    rds.files <- paste(searchpaths(), "/help/aliases.rds", sep = "")
-    unlist(lapply(rds.files,
-                  function(f){
-                      if( file.exists(f) )
-                          try(names(readrds(f)))
-                  }),
-           use.names = FALSE)
-}
+.ess.getHelpAliases <- local({
+    readrds <- if (.ess.Rversion >= '2.13.0') readRDS else .readRDS
+    aliasesCache <- new.env()
+
+    getAliases <- function(file) {
+        cached <- aliasesCache[[file]]
+        if (!is.null(cached))
+            return(cached)
+
+        aliases <- tryCatch(
+            error = function(...) NULL,
+            if (file.exists(file))
+                names(readrds(file))
+            else
+                NULL
+        )
+
+        aliasesCache[[file]] <- aliases
+        aliases
+    }
+
+    function(reset = FALSE) {
+        if (reset)
+            aliasesCache <<- new.env()
+
+        rdsFiles <- paste(searchpaths(), "/help/aliases.rds", sep = "")
+        unlist(lapply(rdsFiles, getAliases), use.names = FALSE)
+    }
+})
 
 ### SOURCING
 .ess.eval <- function(string, visibly = TRUE, output = FALSE,

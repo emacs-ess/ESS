@@ -499,6 +499,8 @@ return it.  Otherwise, return `ess-help-topics-list'."
      ((or (not ess-help-topics-list)
           (ess-process-get 'sp-for-help-changed?))
       (ess-process-put 'sp-for-help-changed? nil)
+      (ess-command ".ess.getHelpAliases(reset = TRUE)\n"
+                   nil nil nil nil proc nil ess-help--aliases-timeout)
       (setq ess-help-topics-list
             (delete-dups
              (append (ess-get-object-list proc 'exclude-1st)

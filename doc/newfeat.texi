@@ -4,6 +4,10 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item ESS[R]: @code{ess-get-help-aliases-list} now caches the aliases
+on the R side. This should speed up help lookup when the search path has
+changed and the aliases are read again.
+
 @item ESS: @code{ess-command} now uses a default timeout of 1 second.
 It should normally be used for instantaneous background tasks since it
 is synchronous and causes Emacs to block while the command is running.
