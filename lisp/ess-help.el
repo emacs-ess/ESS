@@ -53,6 +53,9 @@
 (defvar ess--help-frame nil
   "Stores the frame used for displaying R help buffers.")
 
+(defvar ess-help--aliases-timeout 10
+  "The large timeout is necessary for some users (#1025, #1081).")
+
  ; ess-help-mode
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; In this section:
@@ -682,9 +685,6 @@ nil otherwise."
                      (and (file-directory-p dirname)
                           (directory-files dirname))))
                  (ess-search-list))))
-
-(defvar ess-help--aliases-timeout 10
-  "The large timeout is necessary for some users (#1025, #1081).")
 
 (defun ess-get-help-aliases-list ()
   "Return a list of aliases which have help available."
