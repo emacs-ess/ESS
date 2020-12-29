@@ -507,6 +507,10 @@ return it.  Otherwise, return `ess-help-topics-list'."
      (t
       ess-help-topics-list))))
 
+(cl-defmethod ess-help--reset-cache-override (&context (ess-dialect "R"))
+  (ess-command ".ess.getHelpAliases(reset = TRUE)\n"
+               nil nil nil nil nil nil ess-help--aliases-timeout))
+
 (defalias 'S 'S+)
 (defalias 's-mode 'S+-mode)
 (defalias 's-transcript-mode 'S+-transcript-mode)

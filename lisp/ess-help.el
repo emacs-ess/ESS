@@ -132,8 +132,8 @@ supplied, it is used instead of `inferior-ess-help-command'."
   (interactive
    (progn
      (ess-force-buffer-current)
-     (when current-prefix-arg ;update cache if prefix
-       (ess-process-put 'sp-for-help-changed? t))
+     (when current-prefix-arg
+       (ess-help--reset-cache))
      (list (ess-find-help-file "Help on"))))
   (let* ((hb-name (concat "*help[" ess-current-process-name "]("
                           (replace-regexp-in-string "^\\?\\|`" "" object) ")*"))
@@ -150,6 +150,13 @@ supplied, it is used instead of `inferior-ess-help-command'."
               ess-help-type 'help)))
     (unless (ess--help-kill-bogus-buffer-maybe tbuffer)
       (ess-display-help tbuffer))))
+
+(defun ess-help--reset-cache ()
+  "Reset all cached help files."
+  (ess-process-put 'sp-for-help-changed? t)
+  (ess-help--reset-cache-override))
+
+(cl-defgeneric ess-help--reset-cache-override ())
 
 (defun ess-help-revert-buffer (_ignore-auto _noconfirm)
   "Revert the current help buffer.
@@ -675,15 +682,18 @@ nil otherwise."
                           (directory-files dirname))))
                  (ess-search-list))))
 
+(defvar ess-help--aliases-timeout 10
+  "The large timeout is necessary for some users (#1025).")
+
 (defun ess-get-help-aliases-list ()
   "Return a list of aliases which have help available."
   (message "Retrieving RDS aliases...")
   ;; ess-command locks display, make sure the above message is visible
   (redisplay t)
   (ess-write-to-dribble-buffer "Processing RDS files ...\n")
-  ;; FIXME: This should be run asynchronously. The large timeout is
-  ;; necessary for some users (#1025).
-  (prog1 (ess-get-words-from-vector ".ess.getHelpAliases()\n" nil nil nil 10)
+  ;; FIXME: This should be run asynchronously
+  (prog1 (ess-get-words-from-vector ".ess.getHelpAliases()\n"
+                                    nil nil nil ess-help--aliases-timeout)
     (message "Retrieving RDS aliases...done")))
 
 (defun ess-nuke-help-bs ()
