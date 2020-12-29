@@ -140,7 +140,9 @@
              (ess-debug-command-quit)
              (ess-wait-for-process)
              (etest-clear-inferior-buffer))
-  :eval (ess-send-string (ess-get-process) "{ browser(); NULL }\n")
+  :eval (progn
+          (ess-send-string (ess-get-process) "{ browser(); NULL }\n")
+          (ess-wait-for-process))
   :inf-result "Called from: top level 
 Browse[1]> debug at #1: NULL
 Browse[1]> "
@@ -152,7 +154,9 @@ Browse[1]> "
   :eval (should (inferior-ess-available-p))
 
   ;; We're still in the browser
-  :eval (ess-send-string (ess-get-process) "NULL\n")
+  :eval (progn
+          (ess-send-string (ess-get-process) "NULL\n")
+          (ess-wait-for-process))
   :inf-result "NULL
 Browse[1]> ")
 
