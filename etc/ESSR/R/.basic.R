@@ -166,7 +166,16 @@ if(.ess.Rversion < "1.8")
 
     writeLines(paste0(sentinel, "-START"))
 
-    out <- withVisible(expr)
+    ## Don't interrupt `browser()` sessions (#1081)
+    restart <- function(...) {
+        if (!is.null(findRestart("browser")))
+            invokeRestart("browser")
+    }
+
+    out <- withCallingHandlers(
+        interrupt = restart,
+        withVisible(expr)
+    )
 
     ## Print result manually because we can't rely on auto-print
     ## without changing the last value

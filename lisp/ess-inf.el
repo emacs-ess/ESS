@@ -2263,10 +2263,6 @@ This sends an interrupt and quits a debugging session."
       (process-send-string nil "\n"))
     (unless (ess-wait-for-process proc nil nil nil timeout)
       (error "Timeout while interrupting process"))
-    ;; Quit debugging session before reloading
-    (when (ess-debug-active-p)
-      (ess-debug-command-quit)
-      (ess-wait-for-process proc nil nil nil timeout))
     (with-current-buffer (process-buffer proc)
       (goto-char (process-mark proc)))))
 
@@ -2324,6 +2320,10 @@ START-ARGS gets passed to the dialect-specific
          (start-args (or start-args (cdr inf-start-data))))
     ;; Interrupt early so we can get working directory
     (ess-interrupt)
+    ;; Quit debugging session before reloading
+    (when (ess-debug-active-p)
+      (ess-debug-command-quit)
+      (ess-wait-for-process inf-proc nil nil nil 1))
     (save-window-excursion
       ;; Make sure we don't ask for directory again
       ;; Use current working directory as default

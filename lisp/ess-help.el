@@ -683,7 +683,7 @@ nil otherwise."
                  (ess-search-list))))
 
 (defvar ess-help--aliases-timeout 10
-  "The large timeout is necessary for some users (#1025).")
+  "The large timeout is necessary for some users (#1025, #1081).")
 
 (defun ess-get-help-aliases-list ()
   "Return a list of aliases which have help available."

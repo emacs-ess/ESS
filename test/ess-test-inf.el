@@ -134,6 +134,32 @@
   :inf-result ""
   :eval (should (inferior-ess-available-p)))
 
+(etest-deftest-r ess--command-browser-timeout-test ()
+  "`ess-command' fails with hanging command within browser (#1081)."
+  :cleanup (progn
+             (ess-debug-command-quit)
+             (ess-wait-for-process)
+             (etest-clear-inferior-buffer))
+  :eval (progn
+          (ess-send-string (ess-get-process) "{ browser(); NULL }\n")
+          (ess-wait-for-process))
+  :inf-result "Called from: top level 
+Browse[1]> debug at #1: NULL
+Browse[1]> "
+
+  :eval (should-error (ess-command "Sys.sleep(2)\n" nil nil nil nil nil nil 0.01))
+
+  ;; No impact on inferior
+  :inf-result ""
+  :eval (should (inferior-ess-available-p))
+
+  ;; We're still in the browser
+  :eval (progn
+          (ess-send-string (ess-get-process) "NULL\n")
+          (ess-wait-for-process))
+  :inf-result "NULL
+Browse[1]> ")
+
 
 ;;*;; Inferior interaction
 
