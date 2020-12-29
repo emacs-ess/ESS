@@ -301,7 +301,7 @@ REG-START gives the start location from where to search linkifying, and HELP-OBJ
       (ess-setq-vars-local (eval alist))
       (setq ess-help-object help-object
             ess-help-sec-regex "\\(^\\s-.*\n\\)\\|\\(^\n\\)")
-      (ess-command command buff)
+      (ess--foreground-command command buff)
       (ess-help-underline)
       (set-buffer-modified-p 'nil)
       (goto-char (point-min))

@@ -1338,6 +1338,14 @@ wrapping the code into:
           (set-marker (process-mark proc) oldpm))))
     out-buffer))
 
+(defun ess--foreground-command (cmd &optional out-buffer _sleep no-prompt-check wait proc)
+  "Same as `ess-command' but does not timeout.
+Currently blocks the Emacs UI. Eventually it would make sense to
+lock the inferior to prevent interactions and use
+`ess-async-command' with a callback."
+  (let ((timeout most-positive-fixnum))
+    (ess-command cmd out-buffer nil no-prompt-check wait proc nil timeout)))
+
 (defun ess-boolean-command (com &optional buf wait)
   "Like `ess-command' but expects COM to print TRUE or FALSE.
 If TRUE (or true) is found return non-nil otherwise nil.
