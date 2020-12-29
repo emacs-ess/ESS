@@ -2352,7 +2352,8 @@ If the current buffer does not have a usage section, return nil."
           (goto-char (point-min))
           (forward-whitespace 1)
           (while (not (eobp))
-            (if (looking-at (rx (group (1+ (not (any whitespace)))) "("))
+            (if (looking-at "#") (forward-line 1))
+            (if (looking-at (rx (group (1+ (not (any "#" whitespace)))) "("))
                 (progn
                   (push (match-string-no-properties 1) usage-objects)
                   ;; Skip past function arguments
