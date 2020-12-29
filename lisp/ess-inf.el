@@ -2459,7 +2459,7 @@ print(out, max=1e6) })\n\"."
                   "\\( \\|$\\)"; space or end
                   ))
          words)
-    (ess-command command tbuffer 'sleep no-prompt-check wait proc timeout)
+    (ess-command command tbuffer 'sleep no-prompt-check wait proc nil timeout)
     (with-current-buffer tbuffer
       (goto-char (point-min))
       (while (re-search-forward full-word-regexp nil t)
