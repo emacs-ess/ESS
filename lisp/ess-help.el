@@ -682,7 +682,7 @@ nil otherwise."
                           (directory-files dirname))))
                  (ess-search-list))))
 
-(defvar ess-help--aliases-timeout 10
+(defvar ess-help--aliases-timeout 30
   "The large timeout is necessary for some users (#1025, #1081).")
 
 (defun ess-get-help-aliases-list ()
