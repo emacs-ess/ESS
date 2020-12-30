@@ -1338,6 +1338,7 @@ wrapping the code into:
           (set-marker (process-mark proc) oldpm))))
     out-buffer))
 
+;; TODO: Needs some Julia tests as well
 (defun ess--foreground-command (cmd &optional out-buffer _sleep no-prompt-check wait proc)
   "Same as `ess-command' but does not timeout.
 Currently blocks the Emacs UI. Eventually it would make sense to
