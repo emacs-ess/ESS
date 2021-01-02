@@ -42,9 +42,9 @@ find your R binaries, on Unix you can change the Unix environment
 variable @code{PATH}, as this variable is used to set @code{exec-path}.
 
 R on GNU/Linux systems and other Unix-like systems (macOS): If you have
-"R-1.8.1" on your @code{exec-path}, it can be started using @kbd{M-x
-R-1.8.1}.  By default, ESS will find versions of R beginning ``R-1'',
-``R-2'', ``R-3'', ``R-devel'', or ``R-patched''.  If your versions of R
+"R-3.6.3" on your @code{exec-path}, it can be started using @kbd{M-x
+R-3.6.3}.  By default, ESS will find versions of R beginning ``R-1'',
+``R-2'', @dots{}, ``R-7'', ``R-devel'', or ``R-patched''.  If your versions of R
 are called other names, consider renaming them with a symbolic link or
 change the variable @code{ess-r-runners-prefixes}.  To see which functions have
 been created for starting different versions of R, type @kbd{M-x R-} and
