@@ -14,6 +14,10 @@ is synchronous and causes Emacs to block while the command is running.
 If the timeout is reached, an error is thrown to avoid hanging Emacs.
 An interrupt is sent to the process in case of early exit.
 
+This is a behaviour change: you will now have to explicitly opt in
+blocking the whole Emacs UI for more than 2 seconds by supplying a
+larger timeout (use @code{most-positive-fixnum} for infinity).
+
 @item ESS: @code{ess-wait-for-process} now returns nil if a timeout is
 reached.
 

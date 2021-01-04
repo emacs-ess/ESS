@@ -2472,6 +2472,10 @@ print(out, max=1e6) })\n\"."
        (format " |-> words= '%s'\n" words)))
     (reverse words)))
 
+(defun ess-get-words-from-vector--foreground (command &optional no-prompt-check wait proc)
+  (let ((timeout most-positive-fixnum))
+    (ess-get-words-from-vector command no-prompt-check wait proc timeout)))
+
 (defun ess-compiled-dir (dir)
   "Return non-nil if DIR is an S object directory with special files.
 I.e. if the filenames in DIR are not representative of the objects in DIR."
