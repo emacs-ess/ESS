@@ -72,6 +72,7 @@
 (declare-function ess-get-process "ess-inf")
 (declare-function ess-get-process-variable "ess-inf")
 (declare-function ess-get-words-from-vector "ess-inf")
+(declare-function ess-get-words-from-vector--foreground "ess-inf")
 (declare-function ess-process-get "ess-inf")
 (declare-function ess-process-live-p "ess-inf")
 (declare-function ess-process-put "ess-inf")
@@ -2712,7 +2713,7 @@ for signature and trace it with browser tracer."
   (ess-force-buffer-current "Process to use: ")
   (let* ((tbuffer (get-buffer-create " *ess-command-output*")) ;; output buffer name is hard-coded in ess-inf.el
          (pkg (ess-r-package-name))
-         (all-functions (ess-get-words-from-vector
+         (all-functions (ess-get-words-from-vector--foreground
                          (if pkg
                              (format ".ess_all_functions(c('%s'))\n" pkg)
                            ".ess_all_functions()\n")))
