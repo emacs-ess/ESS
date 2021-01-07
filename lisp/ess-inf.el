@@ -1311,7 +1311,7 @@ wrapping the code into:
                 (if no-prompt-check
                     (sleep-for 0.02)   ; 0.1 is noticeable!
                   (unless (ess-wait-for-process proc nil wait force-redisplay timeout)
-                    (error "Timeout during background ESS command '%s'"
+                    (error "Timeout during background ESS command `%s'"
                            (ess--strip-final-newlines cmd)))
                   ;; Remove prompt. If output is cat(..)ed without a
                   ;; final newline, this deletes the last line of output.
