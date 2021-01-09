@@ -141,3 +141,34 @@
             } else remote
     paste0(home, "/doc/html/index.html")
 }
+
+
+.ess.rdired <- function() {
+    cat('\n')
+
+    objs <- ls(envir = .GlobalEnv)
+    if (length(objs)==0) {
+        cat("No objects to view!\n")
+        return(invisible(NULL))
+    }
+
+    names(objs) <- objs
+    objs <- lapply(objs, get, envir = .GlobalEnv)
+
+    mode <- sapply(objs, data.class)
+    length <- sapply(objs, length)
+    size <- sapply(objs, function(obj) format(object.size(obj)))
+    d <- data.frame(mode, length, size)
+    
+    var.names <- row.names(d)
+    
+    ## If any names contain spaces, we need to quote around them.
+    quotes <- rep('', length(var.names))
+    spaces <- grep(' ', var.names)
+    if (any(spaces))
+        quotes[spaces] <- '\"'
+    var.names <- paste(quotes, var.names, quotes, sep = '')
+    row.names(d) <- paste('  ', var.names, sep = '')
+
+    print(d)
+}
