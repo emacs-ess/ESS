@@ -152,15 +152,12 @@
         return(invisible(NULL))
     }
 
-    mode <- sapply(objs, function(my.x) {
-        eval(parse(text = sprintf('data.class(get("%s"))', my.x)))
-    })
-    length <- sapply(objs, function(my.x) {
-        eval(parse(text = sprintf('length(get("%s"))', my.x)))
-    })
-    size <- sapply(objs, function(my.x) {
-        eval(parse(text = sprintf('format(object.size(get("%s")), units="b")', my.x)))
-    })
+    names(objs) <- objs
+    objs <- lapply(objs, get, envir = .GlobalEnv)
+
+    mode <- sapply(objs, data.class)
+    length <- sapply(objs, length)
+    size <- sapply(objs, function(obj) format(object.size(obj)))
     d <- data.frame(mode, length, size)
     
     var.names <- row.names(d)
