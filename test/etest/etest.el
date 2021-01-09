@@ -96,6 +96,11 @@ and are processed with DO-RESULT."
               (pcase etest--key
                 (`:inf-buffer (setq etest-local-inferior-buffer (eval etest--value)))
                 (`:cleanup (push etest--value etest--cleanup))
+                (`:inf-cleanup (push `(progn
+                                        ,etest--value
+                                        (etest--wait-for-inferior)
+                                        (etest-clear-inferior-buffer))
+                                     etest--cleanup))
                 (`:case (progn
                           (erase-buffer)
                           (insert etest--value)))
@@ -116,24 +121,28 @@ and are processed with DO-RESULT."
       (list x)
     x))
 
-(defun etest--flush-inferior-buffer (do-result value)
+(defun etest--wait-for-inferior ()
   (unless etest-local-inferior-buffer
     (error "Must set `etest-local-inferior-buffer'"))
+  (let* ((inf-buf etest-local-inferior-buffer)
+         (inf-proc (get-buffer-process inf-buf)))
+    ;; Wait until a trailing prompt for maximum 10ms
+    (with-current-buffer inf-buf
+      (save-excursion
+        (let ((times 0))
+          (while (and (< times 10)
+                      (not (re-search-forward "> \\'" nil t)))
+            (accept-process-output inf-proc 0.001)
+            (goto-char (point-min))
+            (setq times (1+ times))))))))
+
+(defun etest--flush-inferior-buffer (do-result value)
   (unwind-protect
-      (let* ((inf-buf etest-local-inferior-buffer)
-             (inf-proc (get-buffer-process inf-buf)))
-        ;; Wait until a trailing prompt for maximum 10ms
-        (with-current-buffer inf-buf
-          (save-excursion
-            (let ((times 0))
-              (while (and (< times 10)
-                          (not (re-search-forward "> \\'" nil t)))
-                (accept-process-output inf-proc 0.001)
-                (goto-char (point-min))
-                (setq times (1+ times)))))
-          (funcall do-result
-                   (etest--result inf-buf t)
-                   value)))
+      (progn
+        (etest--wait-for-inferior)
+        (funcall do-result
+                 (etest--result etest-local-inferior-buffer t)
+                 value))
     (etest-clear-inferior-buffer)))
 
 (defun etest-clear-inferior-buffer ()

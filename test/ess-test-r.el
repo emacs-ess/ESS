@@ -843,12 +843,11 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
 (require 'ess-rdired)
 
 (etest-deftest-r ess-rdired-test ()
-  :cleanup
+  :inf-cleanup
   (progn
     (kill-buffer ess-rdired-buffer)
-    (ess-command "rm(my_rdired_variable)\n")
-    (ess-wait-for-process)
-    (etest-clear-inferior-buffer))
+    (ess-command "rm(my_rdired_variable)\n"))
+  
   :eval
   ((ess-command "my_rdired_variable <- TRUE\n")
    (save-window-excursion
