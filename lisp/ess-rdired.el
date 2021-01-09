@@ -173,7 +173,7 @@ details."
          text)
     (when (and proc-name proc
                (not (process-get proc 'busy)))
-      (ess-command ess-rdired-objects out-buff nil nil nil proc)
+      (ess--foreground-command ess-rdired-objects out-buff nil nil nil proc)
       (with-current-buffer out-buff
         (goto-char (point-min))
         ;; Delete two lines. One filled with +'s from R's prompt
