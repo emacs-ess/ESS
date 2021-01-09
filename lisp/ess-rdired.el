@@ -76,33 +76,8 @@
 (eval-when-compile
   (require 'subr-x))
 
-(defvar ess-rdired-objects "local({.rdired.objects <- function(objs) {
-  if (length(objs)==0) {
-    \"No objects to view!\"
-  } else {
-  mode <- sapply(objs, function(my.x) {
-    eval( parse( text=sprintf('data.class(get(\"%s\"))', my.x))) })
-  length <- sapply(objs, function(my.x) {
-    eval( parse( text=sprintf('length(get(\"%s\"))', my.x))) })
-  size <- sapply(objs, function(my.x) {
-    eval( parse( text=sprintf('format(object.size(get(\"%s\")), units=\"b\")', my.x))) })
-  d <- data.frame(mode, length, size)
-
-  var.names <- row.names(d)
-
-  ## If any names contain spaces, we need to quote around them.
-  quotes = rep('', length(var.names))
-  spaces = grep(' ', var.names)
-  if (any(spaces))
-    quotes[spaces] <- '\"'
-  var.names = paste(quotes, var.names, quotes, sep='')
-  row.names(d) <- paste('  ', var.names, sep='')
-  d
-  }
-}; cat('\n'); print(.rdired.objects(ls(envir = .GlobalEnv)))})\n"
-  "Function to call within R to print information on objects.
-The last line of this string should be the instruction to call
-the function which prints the output for rdired.")
+(defvar ess-rdired-objects ".ess.rdired()\n"
+  "Function to call within R to print information on objects.")
 
 (defvar ess-rdired-buffer "*R dired*"
   "Name of buffer for displaying R objects.")
