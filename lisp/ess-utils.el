@@ -364,6 +364,34 @@ ess-[dialect]-font-lock-keywords variable."
                                             (ess--extract-fl-keywords)))
                  t])))
 
+(declare-function untrace-function "trace" ())
+(defvar ess--is-tracing nil)
+
+;;;###autoload
+(define-minor-mode ess-elisp-trace-mode ()
+  "Toggle tracing of ess-prefixed functions.
+Tracing is useful for debugging background ESS behaviour. When
+enabled, all functions prefixed in `ess-' and `inferior-ess' are
+instrumented with `trace-function'. Tracing is turned off by
+calling `untrace-function' on these functions."
+  :global t
+  :group 'ess
+  (let ((fns (append (all-completions "ess-" obarray)
+                     (all-completions "inferior-ess-" obarray)
+                     (list "update-ess-process-name-list"
+                           "forward-ess-r-expr"
+                           "forward-ess-r-sexp"
+                           "backward-ess-r-expr"
+                           "backward-ess-r-sexp"
+                           "company-ess-julia-objects"
+                           "run-ess-r"
+                           "run-ess-r-newest")))
+        (do (symbol-function (if ess-elisp-trace-mode
+                                 #'untrace-function
+                               #'trace-function))))
+    (dolist (fn fns)
+      (funcall do (intern fn)))))
+
 
 ;;*;; External modes
 
