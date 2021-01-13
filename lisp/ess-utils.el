@@ -375,6 +375,7 @@ enabled, all functions prefixed in `ess-' and `inferior-ess' are
 instrumented with `trace-function'. Tracing is turned off by
 calling `untrace-function' on these functions."
   :global t
+  :group 'ess
   (let ((fns (append (all-completions "ess-" obarray)
                      (all-completions "inferior-ess-" obarray)
                      (list "update-ess-process-name-list"
