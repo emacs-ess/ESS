@@ -369,13 +369,22 @@ ess-[dialect]-font-lock-keywords variable."
 
 ;;;###autoload
 (defun ess-toggle-trace ()
-  "Toggle tracing of all ESS functions.
+  "Toggle tracing of ess-prefixed functions.
 Tracing is useful for debugging background ESS behaviour. The
-first call starts tracing all ESS functions with `trace-function'.
-The second call stops the tracing."
+first call starts tracing all functions prefixed in `ess-' and
+`inferior-ess' with `trace-function'. The second call stops the
+tracing."
   (interactive)
   (let ((fns (append (all-completions "ess-" obarray)
-                     (all-completions "inferior-ess-" obarray)))
+                     (all-completions "inferior-ess-" obarray)
+                     (list 'update-ess-process-name-list
+                           'forward-ess-r-expr
+                           'forward-ess-r-sexp
+                           'backward-ess-r-expr
+                           'backward-ess-r-sexp
+                           'company-ess-julia-objects
+                           'run-ess-r
+                           'run-ess-r-newest)))
         (do (symbol-function (if ess--is-tracing
                                  #'untrace-function
                                #'trace-function))))
