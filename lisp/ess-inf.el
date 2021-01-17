@@ -2918,7 +2918,7 @@ path), in such a way that the host and connection information (if
 any) in OLD is retained in the NEW path. NEW must be an absolute
 path, and can be a remote path"
   (concat (file-remote-p old)
-          (or (file-remote-p new 'localname) new)))
+          (ess-path-get-local-portion new)))
 
 (defun ess-path-get-local-portion (path)
   "Obtain the local portion of a (possibly remote) path.
