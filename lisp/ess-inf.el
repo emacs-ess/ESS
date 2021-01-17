@@ -1272,10 +1272,6 @@ wrapping the code into:
  })"
   (let ((out-buffer (or out-buffer (get-buffer-create " *ess-command-output*")))
         (proc (ess-command--get-proc proc no-prompt-check))
-        ;; Set `inhibit-quit' to t to avoid dumping R output to the
-        ;; process buffer if `ess-command' gets interrupted for some
-        ;; reason. See bugs #794 and #842
-        (inhibit-quit t)
         (sentinel (inferior-ess--output-sentinel))
         (timeout (or timeout 1)))
     (with-current-buffer (process-buffer proc)
