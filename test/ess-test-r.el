@@ -669,7 +669,6 @@ x <- function(x){
   (should (equal (line-number-at-pos) 3)))
 
 (ert-deftest ess-r-help-usage-objects-test ()
-  (skip-unless (not noninteractive))
   (with-r-running nil
     (let ((ess-dialect "R")
           (inhibit-read-only t))
@@ -696,6 +695,35 @@ Arguments:
                        ("pt" "q" "df" "ncp" "lower.tail" "log.p")
                        ("qt" "p" "df" "ncp" "lower.tail" "log.p")
                        ("rt" "n" "df" "ncp")))))))
+
+(ert-deftest ess-r-help-usage-objects-comments-test ()
+  "Comments do not interfere with usage parsing (#1025)."
+  (with-r-running nil
+    (let ((ess-dialect "R")
+          (inhibit-read-only t))
+      (ess--help-major-mode)
+      (insert "Creates a join 'data.table'
+
+Description:
+
+     Creates a 'data.table' for use in 'i' in a '[.data.table' join.
+
+Usage:
+
+     # DT[J(...)]                          # J() only for use inside DT[...]
+     # DT[.(...)]                          # .() only for use inside DT[...]
+     # DT[list(...)]                       # same; .(), list() and J() are identical
+     SJ(...)                             # DT[SJ(...)]
+     CJ(..., sorted=TRUE, unique=FALSE)  # DT[CJ(...)]
+
+Arguments:
+")
+      (let ((x (ess-r-help-usage-objects)))
+        (should (or (equal x '(("SJ" "...")
+                               ("CJ" "..." "sorted" "unique")))
+                    ;; 'data.table' package is not necessarily available/visible
+                    (equal x '(("SJ")
+                               ("CJ")))))))))
 
 (ert-deftest ess-test-r-comint-input-ring-file-name ()
   (let ((ess-history-file t)

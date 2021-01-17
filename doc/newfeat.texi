@@ -4,6 +4,9 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item ESS[R]: Fixed issue that caused ESS-help to hang when usage blocks
+include R comments (#1025). Fix contributed by Bill Evans.
+
 @item ESS: New @code{ess-elisp-trace-mode} minor mode.
 Toggle it to start or stop tracing all @code{ess}-prefixed functions
 with @code{trace-function}. Tracing is useful for debugging background
