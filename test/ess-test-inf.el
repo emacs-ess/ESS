@@ -160,6 +160,21 @@ Browse[1]> "
   :inf-result "NULL
 Browse[1]> ")
 
+(etest-deftest-r ess-command-quit-test ()
+  "`ess-command' does not leak output on quit (#794, #842).
+This is especially important within `while-no-input' used by
+packages like eldoc and company-quickhelp. `throw-on-input' sets
+`quit-flag'."
+  ;; Simulate a quit by throwing from a timer. The timer runs as soon
+  ;; as `ess-command' starts waiting for process output.
+  :eval ((run-at-time nil nil (lambda () (throw 'my-quit 'thrown)))
+         (should (eq (catch 'my-quit
+                       (ess-command "{ cat('output\n'); Sys.sleep(10) }\n" nil nil nil nil nil nil 0.5))
+                     'thrown)))
+  ;; There should be no output after the early exit
+  :inf-result ""
+  :eval (should (inferior-ess-available-p)))
+
 
 ;;*;; Inferior interaction
 
