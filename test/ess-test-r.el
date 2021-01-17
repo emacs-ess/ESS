@@ -697,6 +697,7 @@ Arguments:
                        ("rt" "n" "df" "ncp")))))))
 
 (ert-deftest ess-r-help-usage-objects-comments-test ()
+  "Comments do not interfere with usage parsing (#1025)."
   (with-r-running nil
     (let ((ess-dialect "R")
           (inhibit-read-only t))
