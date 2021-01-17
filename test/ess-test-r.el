@@ -669,7 +669,6 @@ x <- function(x){
   (should (equal (line-number-at-pos) 3)))
 
 (ert-deftest ess-r-help-usage-objects-test ()
-  (skip-unless (not noninteractive))
   (with-r-running nil
     (let ((ess-dialect "R")
           (inhibit-read-only t))
@@ -698,7 +697,6 @@ Arguments:
                        ("rt" "n" "df" "ncp")))))))
 
 (ert-deftest ess-r-help-usage-objects-comments-test ()
-  (skip-unless (not noninteractive))
   (with-r-running nil
     (let ((ess-dialect "R")
           (inhibit-read-only t))
