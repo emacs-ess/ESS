@@ -4,6 +4,9 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item ESS[R]: Fixed issue that caused ESS-help to hang when usage blocks
+include R comments (#1025). Fix contributed by Bill Evans.
+
 @item ESS[R]: @code{ess-get-help-aliases-list} now caches the aliases
 on the R side. This should speed up help lookup when the search path has
 changed and the aliases are read again.
