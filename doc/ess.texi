@@ -1690,8 +1690,8 @@ behavior by adding the line
 @code{(setq ess-indent-with-fancy-comments nil)} to your @file{.emacs} file.
 @vindex ess-indent-with-fancy-comments
 
-ESS also supports Roxygen entries which is R documentation maintained in
-the source code as comments @xref{Roxygen}.
+ESS also supports roxygen2 entries which is R documentation maintained in
+the source code as comments @xref{roxygen2}.
 
 The indentation commands provided by ESS are:
 @cindex indenting
@@ -2547,11 +2547,11 @@ and automatically updates. Quit the watch window with @kbd{q}.
 ESS provides two ways of writing documentation for R objects. Either
 using the standard R documentation system or using in-source
 documentation written as structured comment fields for use with the
-Roxygen package.
+roxygen2 package.
 
 @menu
 * R documentation files::       Edit objects in a specialized buffer
-* Roxygen::                     Loading source files into the ESS process
+* roxygen2::                     Loading source files into the ESS process
 @end menu
 
 @node R documentation files
@@ -2652,19 +2652,19 @@ add the following lines to one of your Emacs startup files:
            (font-lock-mode 1)))
 @end example
 
-@node Roxygen
-@subsection Editing Roxygen documentation
-@cindex Roxygen
+@node roxygen2
+@subsection Editing roxygen2 documentation
+@cindex roxygen2
 @cindex roxy
 @cindex ess-roxy
 
-The Roxygen R package makes it possible to keep the intended contents
-for Rd files as structured comments in the R source files. Roxygen can
+The roxygen2 R package makes it possible to keep the intended contents
+for Rd files as structured comments in the R source files. roxygen2 can
 then parse R files and generate appropriate Rd files from these
 comments, fill the usage fields as well as updating @file{NAMESPACE}
-files. See the Roxygen documentation found via @uref{http://roxygen.org}
-for more information on its usage. An example of an Roxygen entry for a
-simple R function can look like this:
+files. See the roxygen2 documentation found via
+@uref{https://roxygen2.r-lib.org} for more information on its usage. An
+example of an roxygen2 entry for a simple R function can look like this:
 
 @example
 @verbatim
@@ -2680,22 +2680,22 @@ myfun <- function(me)
 @end verbatim
 @end example
 The entry is immediately preceding the object to document and all lines
-start with the Roxygen prefix string, in this case @code{##'}. ESS
+start with the roxygen2 prefix string, in this case @code{##'}. ESS
 provides support to edit these documentation entries by providing line
 filling, navigation, template generation etc. Syntax highlighting is
 provided.
 
-Roxygen is customized by the variables in the customization group ``Ess
-Roxy''. Customizables include the Roxygen prefix, use of folding
-to toggle visibility of Roxygen entries and the Roxygen template.
+roxygen2 is customized by the variables in the customization group ``Ess
+Roxy''. Customizables include the roxygen2 prefix, use of folding
+to toggle visibility of roxygen2 entries and the roxygen2 template.
 
-All ESS Roxygen support is defined in @file{ess-roxy.el} which is loaded
+All ESS roxygen2 support is defined in @file{ess-roxy.el} which is loaded
 by default in ESS. The following special Emacs commands are provided.
 
 @deffn Command ess-roxy-update-entry
 @kindex C-c C-o C-o
-@kbd{C-c C-o C-o} Generate a Roxygen template or update the parameter
-list in Roxygen entry at point (or above the function at the
+@kbd{C-c C-o C-o} Generate a roxygen2 template or update the parameter
+list in roxygen2 entry at point (or above the function at the
 point). Documented parameters that are not in the function are placed
 last in the list, parameters that are not documented and not in the
 definition are dropped. Parameter descriptions are filled if
@@ -2704,9 +2704,9 @@ definition are dropped. Parameter descriptions are filled if
 
 @deffn Command ess-roxy-toggle-roxy-region @var{beg} @var{end}
 @kindex C-c C-o C-c
-@kbd{C-c C-o C-c} Toggle the presence of the leading Roxygen string on
+@kbd{C-c C-o C-c} Toggle the presence of the leading roxygen2 string on
 all lines in the marked region (between @var{beg} and
-@var{end}. Convenient for transferring text to Roxygen entries and to
+@var{end}. Convenient for transferring text to roxygen2 entries and to
 evaluate example fields.
 @end deffn
 
@@ -2717,7 +2717,7 @@ to obtain the Rd code. Convenient for previewing and checking
 syntax. When used with the prefix argument @var{name-file},
 i.e. @kbd{C-u C-c C-e C-r}, place the content in a buffer associated
 with a Rd file with the same name as the documentation. Requires the
-Roxygen package to be installed.
+roxygen2 package to be installed.
 @end deffn
 
 @deffn Command ess-roxy-preview-HTML @var{visit-instead-of-open}
@@ -2725,35 +2725,35 @@ Roxygen package to be installed.
 @kbd{C-c C-o C-t} Use the attached R process to parse the entry at to
 generate HTML for the entry and open it in a browser. When used with the
 prefix argument @var{visit-instead-of-open}, i.e. @kbd{C-u C-c C-e C-t},
-visit the generated HTML file instead.  Requires the Roxygen and tools
+visit the generated HTML file instead.  Requires the roxygen2 and tools
 packages to be installed.
 @end deffn
 
 @deffn Command ess-roxy-previous-entry
 @kindex C-c C-o p
-@kbd{C-c C-o p} Go to start of the Roxygen entry above point.
+@kbd{C-c C-o p} Go to start of the roxygen2 entry above point.
 @end deffn
 
 @deffn Command ess-roxy-next-entry
 @kindex C-c C-o n
-@kbd{C-c C-o n} Go to end of the Roxygen entry above point.
+@kbd{C-c C-o n} Go to end of the roxygen2 entry above point.
 @end deffn
 
 @deffn Command ess-roxy-hide-all
 @kindex C-c C-o C-h
 @kbd{C-c C-o C-h} Use the hideshow mode to fold away the visibility of
-all Roxygen entries. Hide-show support must be enabled for this binding
+all roxygen2 entries. Hide-show support must be enabled for this binding
 to get defined.
 @end deffn
 
 ESS also advises the following standard editing functions in order to
-make Roxygen editing more intuitive:
+make roxygen2 editing more intuitive:
 
 @c not very precise, TAB calls it indirectly
 @table @kbd
 @item TAB
 @findex ess-R-complete-object-name
-@code{ess-R-complete-object-name} Complete Roxygen tag at
+@code{ess-R-complete-object-name} Complete roxygen2 tag at
 point. E.g. doing @kbd{TAB} when the point is at the end of @code{@@par}
 completes to @code{@@param}.
 
@@ -2765,20 +2765,20 @@ and point at start end end of the field at point and activate the mark.
 @item TAB
 @findex ess-indent-command
 @code{ess-indent-command} If hide-show support is enabled, fold away the
-visibility of the Roxygen entry at point.
+visibility of the roxygen2 entry at point.
 
 @item M-q
 @findex fill-paragraph
-@code{fill-paragraph} Fill the Roxygen field at point.
+@code{fill-paragraph} Fill the roxygen2 field at point.
 
 @item C-a
 @findex ess-roxy-move-beginning-of-line
 @code{ess-roxy-move-beginning-of-line} Move to the point directly to the right of
-the Roxygen start string. If already there, move to the beginning of the line.
+the roxygen2 start string. If already there, move to the beginning of the line.
 
 @item RET
 @findex newline-and-indent
-@code{newline-and-indent} Insert a new line and the Roxygen prefix
+@code{newline-and-indent} Insert a new line and the roxygen2 prefix
 string.
 @end table
 

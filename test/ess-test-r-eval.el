@@ -218,11 +218,10 @@ TODO: Install company-mode dependency in CI."
   :init ((mode . r)
          (eval ess-test-r-set-local-process))
 
-  :cleanup
-  (progn
-    (process-send-string ess-local-process-name "if (sink.number() != 0) sink(NULL)\n")
-    (ess-wait-for-process)
-    (etest-clear-inferior-buffer))
+  :inf-cleanup
+  (process-send-string
+   ess-local-process-name
+   "if (sink.number() != 0) sink(NULL)\n")
 
   :case "
   ¶file <- tempfile()

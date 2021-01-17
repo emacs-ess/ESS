@@ -866,6 +866,24 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
   :eval ((should (string= (car (ess-get-words-from-vector "getOption('pager')\n"))
                           "cat"))))
 
+;; rdired
+
+(require 'ess-rdired)
+
+(etest-deftest-r ess-rdired-test ()
+  :inf-cleanup
+  (progn
+    (kill-buffer ess-rdired-buffer)
+    (ess-command "rm(my_rdired_variable)\n"))
+  
+  :eval
+  ((ess-command "my_rdired_variable <- TRUE\n")
+   (save-window-excursion
+     (ess-rdired))
+   (with-current-buffer ess-rdired-buffer
+     (goto-char (point-min))
+     (should (re-search-forward "my_rdired_variable" nil t)))))
+
 (provide 'ess-test-r)
 
 ;;; ess-test-r.el ends here

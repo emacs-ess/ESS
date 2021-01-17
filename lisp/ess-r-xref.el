@@ -67,7 +67,7 @@ srcrefs point to temporary locations."
 
 (cl-defmethod xref-backend-identifier-completion-table ((_backend (eql ess-r)))
   (inferior-ess-r-force)
-  (ess-get-words-from-vector ".ess_all_functions()\n"))
+  (ess-get-words-from-vector--foreground ".ess_all_functions()\n"))
 
 (defun ess-r-xref--srcref (symbol)
   (inferior-ess-r-force)

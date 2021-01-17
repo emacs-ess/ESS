@@ -68,7 +68,7 @@ VISIBLY is not currently used."
 
 ;;; HELP
 (cl-defmethod ess-help-get-topics (proc &context (ess-dialect "julia"))
-  (append (with-current-buffer (ess-command "ESS.all_help_topics()\n")
+  (append (with-current-buffer (ess--foreground-command "ESS.all_help_topics()\n")
             (split-string (buffer-string) "\n"))
           (ess-julia--get-objects proc)))
 
@@ -191,8 +191,8 @@ objects from that MODULE."
               (process-put proc 'last-objects-cache (current-time)))))))))
 
 (defun ess-julia--get-components (proc obj &optional cache?)
-  (with-current-buffer (ess-command (format "ESS.components(%s)\n" obj)
-                                    nil nil nil nil proc)
+  (with-current-buffer (ess--foreground-command (format "ESS.components(%s)\n" obj)
+                                                nil nil nil nil proc)
     (goto-char (point-min))
     (let (list)
       (while (re-search-forward

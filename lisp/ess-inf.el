@@ -1311,7 +1311,7 @@ wrapping the code into:
                 (if no-prompt-check
                     (sleep-for 0.02)   ; 0.1 is noticeable!
                   (unless (ess-wait-for-process proc nil wait force-redisplay timeout)
-                    (error "Timeout during background ESS command '%s'"
+                    (error "Timeout during background ESS command `%s'"
                            (ess--strip-final-newlines cmd)))
                   ;; Remove prompt. If output is cat(..)ed without a
                   ;; final newline, this deletes the last line of output.
@@ -1338,6 +1338,7 @@ wrapping the code into:
           (set-marker (process-mark proc) oldpm))))
     out-buffer))
 
+;; TODO: Needs some Julia tests as well
 (defun ess--foreground-command (cmd &optional out-buffer _sleep no-prompt-check wait proc)
   "Same as `ess-command' but does not timeout.
 Currently blocks the Emacs UI. Eventually it would make sense to
@@ -2470,6 +2471,10 @@ print(out, max=1e6) })\n\"."
          (format " |-> (length words)= %d\n" (length words))
        (format " |-> words= '%s'\n" words)))
     (reverse words)))
+
+(defun ess-get-words-from-vector--foreground (command &optional no-prompt-check wait proc)
+  (let ((timeout most-positive-fixnum))
+    (ess-get-words-from-vector command no-prompt-check wait proc timeout)))
 
 (defun ess-compiled-dir (dir)
   "Return non-nil if DIR is an S object directory with special files.

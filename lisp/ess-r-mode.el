@@ -1064,7 +1064,7 @@ With argument UPDATE, update cached packages list."
             (not ess--packages-cache))
     (message "Fetching R packages ... ")
     (setq ess--packages-cache
-          (ess-get-words-from-vector "print(rownames(available.packages()), max=1e6)\n")))
+          (ess-get-words-from-vector--foreground "print(rownames(available.packages()), max=1e6)\n")))
   (let* ((ess-eval-visibly-p t)
          (package (or package
                       (ess-completing-read "Package to install" ess--packages-cache))))
@@ -1117,7 +1117,7 @@ Placed into `ess-presend-filter-functions' for R dialects."
 
 (cl-defmethod ess-installed-packages (&context (ess-dialect "R"))
   ;;; FIXME? .packages() does not cache; installed.packages() does but is slower first time
-  (ess-get-words-from-vector "print(.packages(T), max=1e6)\n"))
+  (ess-get-words-from-vector--foreground "print(.packages(T), max=1e6)\n"))
 
 (cl-defmethod ess-load-library--override (pack &context (ess-dialect "R"))
   "Load an R package."
