@@ -47,13 +47,19 @@
 
 (declare-function ess-rdired "ess-rdired" ())
 
-(define-obsolete-variable-alias 'R-mode-hook 'ess-r-mode-hook "19.04")
 (defcustom ess-r-mode-hook nil
   "Hook run when entering `ess-r-mode'."
   :options '(electric-layout-local-mode)
   :type 'hook
   :group 'ess-R)
 
+;; Define and run old hook for backward compatibility. We don't
+;; obsolete it with warnings because this is a historically important
+;; user-facing variable and it would not be worth the trouble.
+(defvar R-mode-hook nil
+  "This variable is obsolete since ESS 19.04;
+use `ess-r-mode-hook' instead.")
+(add-hook 'ess-r-mode-hook (lambda () (run-hooks 'R-mode-hook)))
 
 (defcustom ess-r-fetch-ESSR-on-remotes nil
   "If non-nil, fetch ESSR from the GitHub repository.
