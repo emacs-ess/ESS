@@ -113,6 +113,25 @@
         (should (string-match-p "dummy-pkg$" (plist-get pkg-info :root)))
         (kill-buffer)))))
 
+(ert-deftest ess-r-package-use-dir-test ()
+  (with-ess-test-r-file "dummy-pkg/R/test.R"
+    (ess-set-working-directory "/")
+    (ess-wait-for-process)
+    (should (string= (ess-get-working-directory) "/"))
+    (ess-r-package-use-dir)
+    (ess-wait-for-process)
+    (should (string-match-p "dummy-pkg$" (ess-get-working-directory)))
+    (kill-buffer))
+  (with-ess-test-r-file (ess-test-make-remote-path "dummy-pkg/R/test.R")
+    (should (string-match-p "/mock:.*/dummy-pkg/R/test.R" buffer-file-name))
+    (ess-set-working-directory "/")
+    (ess-wait-for-process)
+    (should (string= (ess-get-working-directory) "/"))
+    (ess-r-package-use-dir)
+    (ess-wait-for-process)
+    (should (string-match-p "dummy-pkg$" (ess-get-working-directory)))
+    (kill-buffer)))
+
 (provide 'ess-test-r-package)
 
 ;;; ess-test-r-package.el ends here
