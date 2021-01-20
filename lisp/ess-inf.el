@@ -2922,7 +2922,7 @@ path, and can be a remote path"
 
 (defun ess-path-get-local-portion (path)
   "Obtain the local portion of a (possibly remote) path.
-If the string PATH is determined to be a remote path, then the
+If the string PATH is determined to be a local path, then the
 value of PATH is returned unchanged. Otherwise, the portion of
 the string in PATH that represents the local portion of the path
 is returned."
