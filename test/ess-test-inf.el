@@ -394,7 +394,7 @@ some. text
     (should (cl-every #'string= (ess-get-words-from-vector "c('aaa','bbb\"ccc', 'dddd')\n")
                       '("aaa" "bbb\\\"ccc" "dddd")))))
 
-(ert-deftest ess--derive-connection-path ()
+(ert-deftest ess--derive-connection-path-test ()
   (let* ((old-localname "/path/to/file")
          (new-localname "/home/username/projects")
          (connection-basic "/ssh:melancholia.danann.net:")
@@ -423,6 +423,10 @@ some. text
     (should (funcall check-new-localpath connection-hop))
     (should (funcall check-new-remotepath ""))
     (should (funcall check-new-remotepath connection-basic))))
+
+(ert-deftest ess-path-get-local-portion-test ()
+  (should (string= "/path/to/file" (ess-path-get-local-portion  "/path/to/file")))
+  (should (string= "/some/file" (ess-path-get-local-portion "/ssh:melancholia.danann.net:/some/file"))))
 
 ;; Test runners
 
