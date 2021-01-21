@@ -132,6 +132,21 @@
     (should (string-match-p "dummy-pkg$" (ess-get-working-directory)))
     (kill-buffer)))
 
+;; Return DIR unless both (i) DIR is the path of package root directory and (ii)
+;; the buffer file name is in the tests/ package directory. When both (i) and
+;; (ii) hold then return the path corresponding to tests/.
+(ert-deftest inferior-ess-r--adjust-startup-directory-test ()
+  (with-ess-test-r-file (ess-test-make-remote-path "dummy-pkg/tests/example.R")
+    (let* ((pkg-dir (plist-get (ess-r-package-info) :root))
+           (inst-dir (expand-file-name "inst" pkg-dir))) ;; arbitrary non-package root directory choice
+      (should (string-match-p "^/mock:.*/dummy-pkg/tests/$" default-directory))
+      (should (string-match-p "^/mock:.*/dummy-pkg$" pkg-dir))
+      (should (string= inst-dir
+                       (inferior-ess-r--adjust-startup-directory inst-dir "R")))
+      (should (string= default-directory
+                       (inferior-ess-r--adjust-startup-directory pkg-dir "R"))))
+    (kill-buffer)))
+
 (provide 'ess-test-r-package)
 
 ;;; ess-test-r-package.el ends here
