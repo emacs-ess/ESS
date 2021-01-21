@@ -218,7 +218,7 @@ DIR defaults to the current buffer's file name (if non-nil) or
   (let ((pkg-root (plist-get (ess-r-package-info) :root)))
     (unless pkg-root
       (user-error "Not in a project"))
-    (let* ((lpath (ess-path-get-local-portion pkg-root))
+    (let* ((lpath (ess--path-get-local-portion pkg-root))
            (lpath-abbreviated (abbreviate-file-name lpath)))
       (ess-set-working-directory lpath-abbreviated))))
 
@@ -261,7 +261,7 @@ arguments, or expressions which return R arguments."
     (ess-project-save-buffers)
     (message msg (plist-get pkg-info :name))
     (display-buffer (ess-get-process-buffer))
-    (let* ((lpath (ess-path-get-local-portion (plist-get pkg-info :root)))
+    (let* ((lpath (ess--path-get-local-portion (plist-get pkg-info :root)))
            (pkg-path (concat "'" (abbreviate-file-name lpath) "'")))
       (ess-eval-linewise (format command (concat pkg-path args))))))
 

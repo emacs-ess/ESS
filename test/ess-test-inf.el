@@ -424,9 +424,9 @@ some. text
     (should (funcall check-new-remotepath ""))
     (should (funcall check-new-remotepath connection-basic))))
 
-(ert-deftest ess-path-get-local-portion-test ()
-  (should (string= "/path/to/file" (ess-path-get-local-portion  "/path/to/file")))
-  (should (string= "/some/file" (ess-path-get-local-portion "/ssh:melancholia.danann.net:/some/file"))))
+(ert-deftest ess--path-get-local-portion-test ()
+  (should (string= "/path/to/file" (ess--path-get-local-portion  "/path/to/file")))
+  (should (string= "/some/file" (ess--path-get-local-portion "/ssh:melancholia.danann.net:/some/file"))))
 
 ;; Test runners
 
