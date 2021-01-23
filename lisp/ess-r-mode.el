@@ -2331,9 +2331,9 @@ state.")
         ess-help-sec-regex ess-help-r-sec-regex
         ess-help-sec-keys-alist ess-help-r-sec-keys-alist ; TODO: Still necessary?
         inferior-ess-help-command inferior-ess-r-help-command)
-  (ess-r-help-add-links))
+  (ess-r-help--add-links))
 
-(defun ess-r-help-usage-objects ()
+(defun ess-r-help--usage-objects ()
   "Return a list of objects in the usage section for the current help buffer.
 In other words, if in the help buffer for \"qt\", return
 
@@ -2374,21 +2374,21 @@ If the current buffer does not have a usage section, return nil."
                         usage-objects)))
         (nreverse usage-objects)))))
 
-(define-button-type 'ess-r-help-link
+(define-button-type 'ess-r-help--link
   'follow-link t
-  'action (lambda (_) (ess-r-help-button-action)))
+  'action (lambda (_) (ess-r-help--button-action)))
 
-(defun ess-r-help-button-action ()
+(defun ess-r-help--button-action ()
   "Display help for button at point."
-  (let ((text (get-text-property (point) 'ess-r-help-link-text)))
+  (let ((text (get-text-property (point) 'ess-r-help--link-text)))
     (ess-display-help-on-object text)))
 
-(defun ess-r-help-add-links ()
+(defun ess-r-help--add-links ()
   "Add links to the help buffer."
   (let ((help-topics (when (ess-process-live-p)
                        (ess-help-get-topics ess-local-process-name)))
         (inhibit-read-only t)
-        (usage-objects (ess-flatten-list (ess-r-help-usage-objects))))
+        (usage-objects (ess-flatten-list (ess-r-help--usage-objects))))
     (save-excursion
       ;; Search for fancy quotes only. If users have
       ;; options(useFancyQuotes) set to something other than TRUE this
@@ -2404,8 +2404,8 @@ If the current buffer does not have a usage section, return nil."
                      (not (member text usage-objects)))
             (delete-region (match-beginning 0) (match-end 0))
             (insert-text-button text
-                                'ess-r-help-link-text text
-                                'type 'ess-r-help-link
+                                'ess-r-help--link-text text
+                                'type 'ess-r-help--link
                                 'help-echo (format "mouse-2, RET: Help on %s" text))))))))
 
 (cl-defmethod ess--display-vignettes-override (all &context (ess-dialect "R"))

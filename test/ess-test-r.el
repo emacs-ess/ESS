@@ -668,7 +668,7 @@ x <- function(x){
   (comint-next-prompt 1)
   (should (equal (line-number-at-pos) 3)))
 
-(ert-deftest ess-r-help-usage-objects-test ()
+(ert-deftest ess-r-help--usage-objects-test ()
   (with-r-running nil
     (let ((ess-dialect "R")
           (inhibit-read-only t))
@@ -690,13 +690,13 @@ Usage:
 
 Arguments:
 ")
-      (should (equal (ess-r-help-usage-objects)
+      (should (equal (ess-r-help--usage-objects)
                      '(("dt" "x" "df" "ncp" "log")
                        ("pt" "q" "df" "ncp" "lower.tail" "log.p")
                        ("qt" "p" "df" "ncp" "lower.tail" "log.p")
                        ("rt" "n" "df" "ncp")))))))
 
-(ert-deftest ess-r-help-usage-objects-comments-test ()
+(ert-deftest ess-r-help--usage-objects-comments-test ()
   "Comments do not interfere with usage parsing (#1025)."
   (with-r-running nil
     (let ((ess-dialect "R")
@@ -718,7 +718,7 @@ Usage:
 
 Arguments:
 ")
-      (let ((x (ess-r-help-usage-objects)))
+      (let ((x (ess-r-help--usage-objects)))
         (should (or (equal x '(("SJ" "...")
                                ("CJ" "..." "sorted" "unique")))
                     ;; 'data.table' package is not necessarily available/visible
