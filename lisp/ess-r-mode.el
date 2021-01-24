@@ -2356,47 +2356,6 @@ state.")
         inferior-ess-help-command inferior-ess-r-help-command)
   (ess-r-help--add-links))
 
-(defun ess-r-help--usage-objects ()
-  "Return a list of objects in the usage section for the current help buffer.
-In other words, if in the help buffer for \"qt\", return
-
-'((\"dt\" \"x\" \"df\" \"ncp\" \"log\")
-  (\"pt\" \"q\" \"df\" \"ncp\" \"lower.tail\" \"log.p\")
-  (\"qt\" \"p\" \"df\" \"ncp\" \"lower.tail\" \"log.p\")
-  (\"rt\" \"n\" \"df\" \"ncp\")).
-
-If the current buffer does not have a usage section, return nil."
-  (unless (derived-mode-p 'ess-r-help-mode)
-    (error "Not an R help buffer"))
-  (save-excursion
-    (save-restriction
-      (let (usage-objects)
-        (widen)
-        (goto-char (point-min))
-        ;; Narrow the buffer to just the "Usage" section
-        (when-let ((usage-beg (re-search-forward "^Usage:" nil t))
-                   (usage-end (re-search-forward "^[^[:space:]]" nil t)))
-          (forward-line -1)
-          (narrow-to-region usage-beg (point))
-          (goto-char (point-min))
-          (forward-whitespace 1)
-          (while (not (eobp))
-            (cond ((looking-at (rx (group (1+ (not (any "#" whitespace)))) "("))
-                   (push (match-string-no-properties 1) usage-objects)
-                   ;; Skip past function arguments
-                   (forward-list))
-                  ((looking-at "#")
-                   ;; Skip past comments
-                   (forward-line 1))
-                  (t
-                   (forward-whitespace 1)))))
-        (when usage-objects
-          ;; Get arguments:
-          (setq usage-objects
-                (mapcar (lambda (u) (cons u (ess-get-words-from-vector (concat "names(formals(" u "))\n"))))
-                        usage-objects)))
-        (nreverse usage-objects)))))
-
 (define-button-type 'ess-r-help--link
   'follow-link t
   'action (lambda (_) (ess-r-help--button-action)))
@@ -2408,10 +2367,12 @@ If the current buffer does not have a usage section, return nil."
 
 (defun ess-r-help--add-links ()
   "Add links to the help buffer."
-  (let ((help-topics (when (ess-process-live-p)
-                       (ess-help-get-topics ess-local-process-name)))
-        (inhibit-read-only t)
-        (usage-objects (ess-flatten-list (ess-r-help--usage-objects))))
+  (let ((links (when (ess-process-live-p)
+                 (ess-get-words-from-vector
+                  (format ".ess.helpLinks('%s' %s)\n"
+                          ess-r-help--local-object
+                          (ess-r-arg "package" ess-r-help--local-package t)))))
+        (inhibit-read-only t))
     (save-excursion
       ;; Search for fancy quotes only. If users have
       ;; options(useFancyQuotes) set to something other than TRUE this
@@ -2422,9 +2383,8 @@ If the current buffer does not have a usage section, return nil."
                (text (if (string-match-p ".*()\\'" text)
                          (substring text nil (- (length text) 2))
                        text)))
-          (when (and (member text help-topics)
-                     (not (member text usage-objects))
-                     (not (member text usage-objects)))
+          (when (member text links)
+            ;; FIXME: This removes trailing parentheses
             (delete-region (match-beginning 0) (match-end 0))
             (insert-text-button text
                                 'ess-r-help--link-text text
