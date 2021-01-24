@@ -147,6 +147,23 @@
                        (inferior-ess-r--adjust-startup-directory pkg-dir "R"))))
     (kill-buffer)))
 
+(ert-deftest ess-r-package-eval-linewise-test ()
+  (let ((output-regex "^# '.*/dummy-pkg'$"))
+    ;; Test with an R package on a local filesystem
+    (with-ess-test-r-file "dummy-pkg/R/test.R"
+      (with-r-running (current-buffer)
+        (let ((actual (output (ess-r-package-eval-linewise "# %s"))))
+          (should (string-match-p output-regex actual))))
+      (kill-buffer))
+    ;; Test with an R package on a remote filesystem. The remote prefix portion
+    ;; of the package location should be stripped from the command.
+    (with-ess-test-r-file (ess-test-make-remote-path "dummy-pkg/R/test.R")
+      (with-r-running (current-buffer)
+        (should (string-match-p "^/mock:.*/dummy-pkg/R/test.R$" buffer-file-name))
+        (let ((actual (output (ess-r-package-eval-linewise "# %s"))))
+          (should (string-match-p output-regex actual))
+          (should (not (string-match-p "/mock:" actual)))))
+      (kill-buffer))))
 (provide 'ess-test-r-package)
 
 ;;; ess-test-r-package.el ends here
