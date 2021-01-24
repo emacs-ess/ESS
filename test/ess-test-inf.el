@@ -165,9 +165,8 @@ Browse[1]> ")
 This is especially important within `while-no-input' used by
 packages like eldoc and company-quickhelp. `throw-on-input' sets
 `quit-flag'."
-  ;; Simulate a quit by throwing from a timer. The timer runs as soon
-  ;; as `ess-command' starts waiting for process output.
-  :eval ((run-at-time nil nil (lambda () (throw 'my-quit 'thrown)))
+  ;; Simulate a quit by throwing from a timer
+  :eval ((run-at-time 0.1 nil (lambda () (throw 'my-quit 'thrown)))
          (should (eq (catch 'my-quit
                        (ess-command "{ cat('output\n'); Sys.sleep(10) }\n" nil nil nil nil nil nil 0.5))
                      'thrown)))
