@@ -97,7 +97,7 @@ inserted text."
   (save-window-excursion
     (let ((inhibit-message ess-inhibit-message-in-tests)
           (ess-ask-for-ess-directory nil))
-      (R "--vanilla"))))
+      (R "--no-init-file --no-site-file"))))
 
 
 (let ((inf-bufs '((output . nil)

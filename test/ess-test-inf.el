@@ -58,7 +58,7 @@
   (with-r-running nil
     (let ((inf-data (buffer-local-value 'inferior-ess--local-data *inf-buf*)))
       (should (equal (car inf-data) "R"))
-      (should (equal (cdr inf-data) "--no-readline  --vanilla")))))
+      (should (equal (cdr inf-data) "--no-readline  --no-init-file --no-site-file")))))
 
 (ert-deftest ess-test-inferior-reload-start-data ()
   (let* ((r-path (executable-find "R"))
@@ -67,7 +67,7 @@
     (ess-test-unwind-protect inf-buf
       (let ((inf-data (buffer-local-value 'inferior-ess--local-data inf-buf)))
         (should (equal (car inf-data) r-path))
-        (should (equal (cdr inf-data) "--no-readline  --vanilla"))))))
+        (should (equal (cdr inf-data) "--no-readline  --no-init-file --no-site-file"))))))
 
 
 ;;*;; Evaluation
