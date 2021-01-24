@@ -164,6 +164,26 @@
           (should (string-match-p output-regex actual))
           (should (not (string-match-p "/mock:" actual)))))
       (kill-buffer))))
+
+(ert-deftest ess-r--flymake-parse-output-test ()
+  (with-ess-test-r-file (ess-test-make-remote-path "dummy-pkg/R/test.R")
+    (let ((ess-proj-file (expand-file-name "../.lintr"))
+          (cur-dir-file (expand-file-name ".lintr")))
+      ;; no .lintr file
+      (should (null (ess-r--find-lintr-file)))
+      ;; .lintr file in the package directory
+      (write-region "" nil ess-proj-file)
+      (let ((actual (ess-r--find-lintr-file)))
+        (should (string-match-p "^/mock:.*/dummy-pkg/\\.lintr$" actual)))
+      ;; .lintr file in the current directory takes precedence over any other
+      ;; locations
+      (write-region "" nil cur-dir-file)
+      (let ((actual (ess-r--find-lintr-file)))
+        (should (string-match-p "^/mock:.*/dummy-pkg/R/\\.lintr$" actual)))
+      ;; clean up created files
+      (delete-file ess-proj-file)
+      (delete-file cur-dir-file))))
+
 (provide 'ess-test-r-package)
 
 ;;; ess-test-r-package.el ends here
