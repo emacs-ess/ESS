@@ -227,9 +227,10 @@ TODO: Install company-mode dependency in CI."
   ¶file <- tempfile()
   sink(file)×"
 
-  :eval "C-c C-r"
+  :eval ((setq-local ess-eval-visibly t)
+         "C-c C-r")
   :inf-result "file <- tempfile()
-+   sink(file)
+>   sink(file)
 > "
 
   :eval (should (equal (ess-get-words-from-vector "letters[1:3]\n")
