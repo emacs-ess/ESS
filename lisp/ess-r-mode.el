@@ -1270,39 +1270,54 @@ selected (see `ess-r-set-evaluation-env')."
 
 ;;;*;;; Help
 
-(defun ess-r-namespaced-object-p (object)
-  (string-match "^[[:alnum:].]+::" object))
-
-(defun ess-r-build-help-command--qualified (object)
-  (when (ess-r-namespaced-object-p object)
-    (let* ((pkg-name (substring object (match-beginning 0) (- (match-end 0) 2)))
-           (object (concat "'" (substring object (match-end 0)) "'"))
-           (pkg (ess-r-arg "package" pkg-name t)))
-      (concat ".ess.help(" object pkg ")\n"))))
-
-(defun ess-r-build-help-command--get-package-dir (object)
-  ;; Ugly hack to avoid tcl/tk dialogues
-  (let ((pkgs (ess-get-words-from-vector
-               (format "as.character(utils::help('%s'))\n" object))))
-    (if (and (> (length pkgs) 1)
-             (not noninteractive))
-        (ess-completing-read "Choose location" pkgs nil t)
-      (car pkgs))))
-
-(defun ess-r-build-help-command--unqualified (object)
-  (if (eq ess-help-type 'index)
-      ;; we are in index page, qualify with namespace
-      (ess-r-build-help-command--qualified (format "%s::%s" ess-help-object object))
-    (let ((pkg-dir (ess-r-build-help-command--get-package-dir object))
-          (command (format inferior-ess-r-help-command object)))
-      (if pkg-dir
-          ;; Invoking `print.help_files_with_topic'
-          (format "base::evalq(do.call(structure, c('%s', attributes(%s))), base::as.environment('ESSR'))\n" pkg-dir command)
-        command))))
-
 (cl-defmethod ess-build-help-command (object &context (ess-dialect "R"))
-  (or (ess-r-build-help-command--qualified object)
-      (ess-r-build-help-command--unqualified object)))
+  (let ((info (ess-r--split-namespace object)))
+    (if info
+        (ess-r-help--build-help-command--qualified (car info) (cdr info))
+      (ess-r-help--build-help-command--unqualified object))))
+
+(defun ess-r--split-namespace (sym)
+  (when (string-match "^[[:alnum:].]+::" sym)
+      (let ((pkg (substring-no-properties sym (match-beginning 0) (- (match-end 0) 2)))
+            (obj (substring-no-properties sym (match-end 0))))
+        (cons pkg obj))))
+
+(defun ess-r-help--build-help-command--qualified (pkg obj)
+  (let ((obj-arg (concat "'" obj "'"))
+        (pkg-arg (ess-r-arg "package" pkg t)))
+    (concat ".ess.help(" obj-arg pkg-arg ")\n")))
+
+(defun ess-r-help--build-help-command--unqualified (obj)
+  (if (eq ess-help-type 'index)
+      ;; We are in index page, qualify with namespace
+      (ess-r-help--build-help-command--qualified ess-help-object obj)
+    (let ((pkg (ess-r-help--find-package obj)))
+      (if pkg
+          (ess-r-help--build-help-command--qualified pkg obj)
+        (format ".ess.help(%s)\n" obj)))))
+
+(defun ess-r-help--find-package (object)
+  "Find package where to find OBJECT.
+If there are multiple packages attached to the search path, the
+user is prompted for a package location."
+  (let ((paths (ess-get-words-from-vector
+                (format "as.character(utils::help('%s'))\n" object))))
+    (cond ((not paths)
+           nil)
+          ((and (> (length paths) 1)
+                (not noninteractive))
+           (let ((path (ess-completing-read "Choose location" paths nil t)))
+             (ess-r-help--get-pkg-from-help-path path)))
+          (t
+           (ess-r-help--get-pkg-from-help-path (car paths))))))
+
+(defun ess-r-help--get-pkg-from-help-path (path)
+  (file-name-base
+   (directory-file-name
+    (file-name-directory
+     (directory-file-name
+      (file-name-directory
+       path))))))
 
 (defconst inferior-ess-r--input-help (format "^ *help *(%s)" ess-help-arg-regexp))
 (defconst inferior-ess-r--input-?-help-regexp "^ *\\(?:\\(?1:[a-zA-Z ]*?\\?\\{1,2\\}\\) *\\(?2:.+\\)\\)")
