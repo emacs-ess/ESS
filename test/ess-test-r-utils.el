@@ -121,9 +121,10 @@ inserted text."
           (erase-buffer)))
       inf-buf))
 
-  (defun ess-r-test-proc-buf (type)
+  (defun ess-r-test-proc-buf (type &optional force)
     "Common process buffer for tests."
-    (or (cdr (assq type inf-bufs))
+    (or (unless force
+          (cdr (assq type inf-bufs)))
         (ess-r-test-proc-buf--init type))))
 
 (defun ess-send-input-to-R (input &optional type)
@@ -289,7 +290,11 @@ representative to the common interactive use with tracebug on."
        (kill-buffer inf-buf))))
 
 (defun ess-test-r-set-local-process (&optional type)
-  (let ((proc-buf (ess-r-test-proc-buf (or type 'tracebug))))
+  (let* ((proc-buf (ess-r-test-proc-buf (or type 'tracebug)))
+         (proc (get-buffer-process proc-buf)))
+    (unless proc
+      (ess-r-test-proc-buf (or type 'tracebug) 'force)
+      (error "process for unit tests died unexpectedly in a previous test and was just relaunched"))
     (setq ess-local-process-name (process-name (get-buffer-process proc-buf)))
     (setq etest-local-inferior-buffer proc-buf)))
 
