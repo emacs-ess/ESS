@@ -1282,7 +1282,14 @@ selected (see `ess-r-set-evaluation-env')."
             (obj (substring-no-properties sym (match-end 0))))
         (cons pkg obj))))
 
+(defvar-local ess-r-help--local-object nil)
+(defvar-local ess-r-help--local-package nil)
+(put 'ess-r-help--local-object 'permanent-local t)
+(put 'ess-r-help--local-package 'permanent-local t)
+
 (defun ess-r-help--build-help-command--qualified (pkg obj)
+  (setq ess-r-help--local-package pkg)
+  (setq ess-r-help--local-object obj)
   (let ((obj-arg (concat "'" obj "'"))
         (pkg-arg (ess-r-arg "package" pkg t)))
     (concat ".ess.help(" obj-arg pkg-arg ")\n")))
@@ -1294,6 +1301,7 @@ selected (see `ess-r-set-evaluation-env')."
     (let ((pkg (ess-r-help--find-package obj)))
       (if pkg
           (ess-r-help--build-help-command--qualified pkg obj)
+        (setq ess-r-help--local-object obj)
         (format ".ess.help(%s)\n" obj)))))
 
 (defun ess-r-help--find-package (object)
