@@ -329,7 +329,7 @@ representative to the common interactive use with tracebug on."
       (format "/mock::%s" temporary-file-directory)))
   "Temporary directory for Tramp tests.")
 
-(defun ess-test-make-remote-path (path)
+(defun ess-test-create-remote-path (path)
   "Construct a remote path using the 'mock' TRAMP method.
 Take a string PATH representing a local path, and construct a
 remote path that uses the 'mock' TRAMP method."
