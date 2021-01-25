@@ -159,6 +159,20 @@
                        (inferior-ess-r--adjust-startup-directory pkg-dir "R"))))
     (kill-buffer)))
 
+(ert-deftest ess-r-package-source-dirs-test ()
+  (with-ess-test-r-file "dummy-pkg/R/test.R"
+    (let ((source-dirs (ess-r-package-source-dirs)))
+      (should (string-match-p ".*/dummy-pkg/R$" (car source-dirs)))
+      (should (string-match-p ".*/dummy-pkg/src$" (car (cdr source-dirs))))
+      (should (null (cdr (cdr source-dirs))))
+      (kill-buffer)))
+  (with-ess-test-r-file (ess-test-make-remote-path "dummy-pkg/R/test.R")
+    (let ((source-dirs (ess-r-package-source-dirs)))
+      (should (string-match-p "^/mock:.*/dummy-pkg/R$" (car source-dirs)))
+      (should (string-match-p "^/mock:.*/dummy-pkg/src$" (car (cdr source-dirs))))
+      (should (null (cdr (cdr source-dirs))))
+      (kill-buffer))))
+
 (ert-deftest ess-r-package-eval-linewise-test ()
   (let ((output-regex "^# '.*/dummy-pkg'$"))
     ;; Test with an R package on a local filesystem
