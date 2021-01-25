@@ -113,6 +113,18 @@
         (should (string-match-p "dummy-pkg$" (plist-get pkg-info :root)))
         (kill-buffer)))))
 
+(ert-deftest ess-r-package-project-test ()
+  (with-ess-test-r-file "dummy-pkg/R/test.R"
+    (let ((project-info (ess-r-package-project)))
+      (should (equal 'ess-r-package (car project-info)))
+      (should (string-match-p "dummy-pkg$" (cdr project-info)))
+      (kill-buffer)))
+  (with-ess-test-r-file (ess-test-make-remote-path "dummy-pkg/R/test.R")
+    (let ((project-info (ess-r-package-project)))
+      (should (equal 'ess-r-package (car project-info)))
+      (should (string-match-p "^/mock:.*dummy-pkg$" (cdr project-info)))
+      (kill-buffer))))
+
 (ert-deftest ess-r-package-use-dir-test ()
   (with-ess-test-r-file "dummy-pkg/R/test.R"
     (ess-set-working-directory "/")
