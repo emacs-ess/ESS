@@ -2380,14 +2380,13 @@ state.")
       ;; searching through the whole buffer takes too long.
       (while (re-search-forward "‘\\([^[:space:]]+?\\)’" nil t)
         (let* ((text (match-string 1))
-               (text (if (string-match-p ".*()\\'" text)
-                         (substring text nil (- (length text) 2))
-                       text)))
-          (when (member text links)
-            ;; FIXME: This removes trailing parentheses
+               (text-stripped (if (string-match-p ".*()\\'" text)
+                                  (substring text nil (- (length text) 2))
+                                text)))
+          (when (member text-stripped links)
             (delete-region (match-beginning 0) (match-end 0))
             (insert-text-button text
-                                'ess-r-help--link-text text
+                                'ess-r-help--link-text text-stripped
                                 'type 'ess-r-help--link
                                 'help-echo (format "mouse-2, RET: Help on %s" text))))))))
 
