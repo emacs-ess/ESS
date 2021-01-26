@@ -74,14 +74,13 @@
     }
 })
 
-.ess.helpLinks <- function(topic, package = NULL) {
+.ess.helpLinks <- function(topic, package) {
     tryCatch(
         warning = function(...) NULL,
         error = function(...) NULL,
         {
-            if (is.null(package))
-                stop("TODO: Make sure package is always supplied")
-            .ess.findLinks(.ess.fetchParsedRd(topic, package))
+            ast <- .ess.fetchParsedRd(topic, package)
+            .ess.findLinks(ast)
         }
     )
 }

@@ -1299,15 +1299,15 @@ selected (see `ess-r-set-evaluation-env')."
       ;; We are in index page, qualify with namespace
       (ess-r-help--build-help-command--qualified ess-help-object obj)
     (let ((pkg (ess-r-help--find-package obj)))
-      (if pkg
-          (ess-r-help--build-help-command--qualified pkg obj)
-        (setq ess-r-help--local-object obj)
-        (format ".ess.help(%s)\n" obj)))))
+      (unless pkg
+        (error "Can't find documentation for `%s'" obj))
+      (ess-r-help--build-help-command--qualified pkg obj))))
 
 (defun ess-r-help--find-package (object)
   "Find package where to find OBJECT.
 If there are multiple packages attached to the search path, the
-user is prompted for a package location."
+user is prompted for a package location. If OBJECT is not
+documented, returns nil."
   (let ((paths (ess-get-words-from-vector
                 (format "as.character(utils::help('%s'))\n" object))))
     (cond ((not paths)
