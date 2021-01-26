@@ -74,6 +74,62 @@
     }
 })
 
+.ess.helpLinks <- function(topic, package) {
+    tryCatch(
+        warning = function(...) NULL,
+        error = function(...) NULL,
+        {
+            ast <- .ess.fetchParsedRd(topic, package)
+            .ess.findLinks(ast)
+        }
+    )
+}
+
+.ess.fetchParsedRd <- function(topic, package) {
+    path <- utils:::index.search(topic, find.package(package))
+    utils:::.getHelpFile(path)
+}
+
+.ess.findLinks <- function(x) {
+    links <- NULL
+    findLinksRec <- function(x) {
+        if (.ess.isRdLink(x)) {
+            ## Ignore `pkg` for now
+            links <<- c(links, .ess.getRdLink(x)[[2]])
+        } else if (is.list(x)) {
+            for (elt in x)
+                findLinksRec(elt)
+        }
+    }
+
+    findLinksRec(x)
+    links
+}
+
+.ess.isRdLink <- function(x) {
+    identical(attr(x, "Rd_tag"), "\\link")
+}
+
+## From `tools:::get_link()`
+.ess.getRdLink <- function(x) {
+    pkg <- ""
+    dest <- paste(unlist(x), collapse = "")
+
+    opt <- attr(x, "Rd_option")
+    if (!is.null(opt)) {
+        if (grepl("^=", opt, perl = TRUE, useBytes = TRUE)) {
+            dest <- sub("^=", "", opt)
+        } else if (grepl(":", opt, perl = TRUE, useBytes = TRUE)) {
+    	    dest <- sub("^[^:]*:", "", opt)
+            pkg <- sub(":.*", "", opt)
+        } else {
+            pkg <- as.character(opt)
+        }
+    }
+
+    c(pkg, dest)
+}
+
 ### SOURCING
 .ess.eval <- function(string, visibly = TRUE, output = FALSE,
                       max.deparse.length = 300,
