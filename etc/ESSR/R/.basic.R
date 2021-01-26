@@ -96,11 +96,9 @@
         if (.ess.isRdLink(x)) {
             ## Ignore `pkg` for now
             links <<- c(links, .ess.getRdLink(x)[[2]])
-            NULL
         } else if (is.list(x)) {
-            for (elt in x) {
+            for (elt in x)
                 findLinksRec(elt)
-            }
         }
     }
 
