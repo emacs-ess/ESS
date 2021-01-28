@@ -1320,7 +1320,7 @@ documented, returns nil."
            (ess-r-help--get-pkg-from-help-path (car paths))))))
 
 (defun ess-r-help--get-pkg-from-help-path (path)
-  (file-name-base
+  (file-name-nondirectory
    (directory-file-name
     (file-name-directory
      (directory-file-name

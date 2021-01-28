@@ -827,6 +827,15 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
      (goto-char (point-min))
      (should (re-search-forward "my_rdired_variable" nil t)))))
 
+
+;; help
+
+(ert-deftest ess-help-get-pkg-from-help-path-test ()
+  "Handles packages with `.` in name (#1101)."
+  (should (string= (ess-r-help--get-pkg-from-help-path "~/library/4.0/data.table/help/data.table")
+                   "data.table")))
+
+
 (provide 'ess-test-r)
 
 ;;; ess-test-r.el ends here
