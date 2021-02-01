@@ -102,10 +102,11 @@ DEFAULT-PKG is the name of the package where presumably SYMBOL is located."
          (loc (or (cl-loop for pkg in pkgs
                            for dir = (assoc-default pkg ess-r-xref-pkg-sources)
                            when (and dir (file-exists-p dir)) return (cons pkg dir))
-                  (cl-loop for pkg in pkgs
-                           for dir in lib-dirs
-                           for path = (expand-file-name pkg dir)
-                           when (file-exists-p path) return (cons pkg path))))
+                  (cl-some (lambda (dir)
+                             (cl-loop for pkg in pkgs
+                                      for path = (expand-file-name pkg dir)
+                                      when (file-exists-p path) return (cons pkg path)))
+                           lib-dirs)))
          (file (when loc (expand-file-name src-file (cdr loc)))))
     (when file
       (unless (file-readable-p file)
