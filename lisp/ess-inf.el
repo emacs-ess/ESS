@@ -1236,6 +1236,8 @@ All elements are optional.
   (setq inferior-ess--output-sentinel-count (1+ inferior-ess--output-sentinel-count))
   (format "ess-output-sentinel%s" inferior-ess--output-sentinel-count))
 
+(defvar ess--command-default-timeout 30)
+
 ;; NOTE: We might want to switch to somethig like `cl-defun' with
 ;; keyword arguments given the length of the signature. Would also
 ;; make it easier to deprecate arguments.
@@ -1254,8 +1256,8 @@ seconds should generally be considered a bug.
 
 SLEEP is deprecated and no longer has any effect. WAIT,
 FORCE-REDISPLAY, and TIMEOUT are as in `ess-wait-for-process' and
-are passed to `ess-wait-for-process'. The default timeout is 1
-second. The process is interrupted with `interrupt-process' when
+are passed to `ess-wait-for-process'. The default timeout is 30
+seconds. The process is interrupted with `interrupt-process' when
 the timeout is reached or when an error occurs.
 
 PROC should be a process, if nil the process name is taken from
@@ -1273,7 +1275,7 @@ wrapping the code into:
   (let ((out-buffer (or out-buffer (get-buffer-create " *ess-command-output*")))
         (proc (ess-command--get-proc proc no-prompt-check))
         (sentinel (inferior-ess--output-sentinel))
-        (timeout (or timeout 1)))
+        (timeout (or timeout ess--command-default-timeout)))
     (with-current-buffer (process-buffer proc)
       (let ((proc-alist (ess--alist (ess-local-process-name
                                      inferior-ess-primary-prompt)))

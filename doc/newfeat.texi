@@ -16,14 +16,14 @@ ESS behaviour.
 on the R side. This should speed up help lookup when the search path has
 changed and the aliases are read again.
 
-@item ESS: @code{ess-command} now uses a default timeout of 1 second.
-It should normally be used for instantaneous background tasks since it
-is synchronous and causes Emacs to block while the command is running.
-If the timeout is reached, an error is thrown to avoid hanging Emacs.
-An interrupt is sent to the process in case of early exit.
+@item ESS: @code{ess-command} now uses a default timeout of 30 seconds.
+It should normally be avoided with long-running tasks because it causes
+Emacs to block while the command is running. If the timeout is reached,
+an error is thrown. An interrupt is also sent to the process in case of early
+exit.
 
 This is a behaviour change: you will now have to explicitly opt in
-blocking the whole Emacs UI for more than 2 seconds by supplying a
+blocking the whole Emacs UI for more than 30 seconds by supplying a
 larger timeout (use @code{most-positive-fixnum} for infinity).
 
 @item ESS: @code{ess-wait-for-process} now returns nil if a timeout is
