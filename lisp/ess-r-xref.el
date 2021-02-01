@@ -101,7 +101,7 @@ DEFAULT-PKG is the name of the package where presumably SYMBOL is located."
                          (t (user-error "Invalid value of `ess-r-package-library-paths'"))))
          (loc (or (cl-loop for pkg in pkgs
                            for dir = (assoc-default pkg ess-r-xref-pkg-sources)
-                           when (file-exists-p dir) return (cons pkg dir))
+                           when (and dir (file-exists-p dir)) return (cons pkg dir))
                   (cl-loop for pkg in pkgs
                            for dir in lib-dirs
                            for path = (expand-file-name pkg dir)
