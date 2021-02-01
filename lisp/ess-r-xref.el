@@ -129,10 +129,21 @@ DEFAULT-PKG is the name of the package where presumably SYMBOL is located."
            (when ess-buff
              ;; FIXME: this breaks when eval is on larger spans than function
              (xref-make symbol (xref-make-buffer-location ess-buff (nth 2 ess-ref)))))
-         ;; 2) Actual file location
+         ;; 2) Real file from R proc working directory
+         (unless (file-name-absolute-p file)
+           (let ((file (expand-file-name file (ess-get-process-variable 'default-directory))))
+             (when (file-readable-p file)
+               (xref-make symbol (xref-make-file-location file line col)))))
+         ;; 3) Real file from the R's working directory
+         (unless (file-name-absolute-p file)
+           (when-let ((wdir (car (ess-get-words-from-vector ess-getwd-command))))
+             (let ((file (expand-file-name file wdir)))
+               (when (file-readable-p file)
+                 (xref-make symbol (xref-make-file-location file line col))))))
+         ;; 4) Real file location from the current directory
          (when (file-readable-p file)
            (xref-make symbol (xref-make-file-location file line col)))
-         ;; 3) Temporary sources - truncate and locate in ess-r-package-library-paths
+         ;; 5) Temporary sources - truncate and locate in ess-r-package-library-paths
          (when (string-match "/\\([^/]+\\)/\\(R/.*\\)$" file)
            (let ((pkg-file (ess-r-xref--pkg-srcfile
                             symbol (match-string 2 file) (match-string 1 file))))
