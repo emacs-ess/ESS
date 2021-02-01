@@ -19,6 +19,7 @@
 (require 'ert)
 (require 'ess-r-mode)
 (require 'ess-r-package)
+(require 'ess-r-flymake)
 (require 'ess-test-r-utils)
 
 ;;; Code:
