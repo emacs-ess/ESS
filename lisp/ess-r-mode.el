@@ -1397,10 +1397,17 @@ documented, returns nil."
      ((and (bound-and-true-p ess-remote))
       (if ess-r-fetch-ESSR-on-remotes
           (ess-r--fetch-ESSR-remote)
-        (ess-r--load-ESSR-remote t)))
+        (ess-r--load-ESSR-remote)))
      (t (ess-r--load-ESSR-local)))))
 
 (defun ess-r--load-ESSR-local ()
+  "Load ESSR functionality onto a local process.
+Sources the .load.R file in the R process, the contents of which
+are a single function named .ess.load.ESSR function. The
+.ess.load.ESSR function is then invoked in the process which has
+the effect of sourcing all of the contents of the ESSR/R
+directory into the ESSR environment and attaching the environment
+to the search path."
   (let* ((src-dir (expand-file-name "ESSR/R" ess-etc-directory))
          (cmd (format "local({
                           source('%s/.load.R', local=TRUE) #define load.ESSR
@@ -1412,12 +1419,25 @@ documented, returns nil."
         (when (> (length msg) 1)
           (message (format "Messages while loading ESSR: %s" msg)))))))
 
-(defun ess-r--load-ESSR-remote (&optional chunked)
-  (ess-command (format ".ess.ESSRversion <- '%s'\n" essr-version))
-  (with-temp-message "Loading ESSR into remote ..."
-    (let ((src-dir (expand-file-name "ESSR/R" ess-etc-directory)))
+(defun ess-r--load-ESSR-remote ()
+  "Load ESSR functionality onto a remote process.
+Copies the files in etc/ESSR/R over to the remote filesystem
+before sourcing them."
+  ;; bind `ess-etc-directory' to the local pathname of the copy of etc/ESSR/R on
+  ;; the remote machine for use by `ess-r--load-ESSR-local'
+  (let* ((src-dir (expand-file-name "ESSR/R" ess-etc-directory))
+         (tmp-dir (with-ess-process-buffer nil (temporary-file-directory)))
+         (tmp-essr (expand-file-name "ESSR/R" tmp-dir))
+         (ess-etc-directory (file-remote-p tmp-dir 'localname)))
+    (make-directory tmp-essr t)
+    (message "Loading ESSR onto the remote...")
+    (let ((inhibit-message t))
       (dolist (file (directory-files src-dir t "\\.R\\'"))
-        (ess--inject-code-from-file file chunked)))))
+        (let* ((file-nopath (file-name-nondirectory file))
+               (dest (expand-file-name file-nopath tmp-essr)))
+          (copy-file file dest t))))
+    (message nil)
+    (ess-r--load-ESSR-local)))
 
 (defun ess-r--fetch-ESSR-remote ()
   (let ((loader (ess-file-content (expand-file-name "ESSR/LOADREMOTE" ess-etc-directory))))
