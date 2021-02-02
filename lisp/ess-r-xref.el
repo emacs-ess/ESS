@@ -33,6 +33,8 @@
 (require 'ess-inf)
 (require 'ess-r-package)
 (require 'ess-tracebug)
+(eval-when-compile
+  (require 'subr-x))
 
 ;; Silence the byte compiler. OK because this file is only loaded by ess-r-mode.
 (declare-function inferior-ess-r-force "ess-r-mode")
@@ -52,14 +54,12 @@ srcrefs point to temporary locations."
   'ess-r)
 
 (cl-defmethod xref-backend-identifier-at-point ((_backend (eql ess-r)))
-  (let ((sym (ess-symbol-at-point)))
-    (when sym
-      (symbol-name sym))))
+  (when-let ((sym (ess-symbol-at-point)))
+    (symbol-name sym)))
 
 (cl-defmethod xref-backend-definitions ((_backend (eql ess-r)) symbol)
-  (let ((xref (ess-r-xref--xref symbol)))
-    (when xref
-      (list xref))))
+  (when-let ((xref (ess-r-xref--xref symbol)))
+    (list xref)))
 
 (cl-defmethod xref-backend-apropos ((_backend (eql ess-r)))
   ;; Not yet supported.
@@ -118,39 +118,37 @@ DEFAULT-PKG is the name of the package where presumably SYMBOL is located."
 
 (defun ess-r-xref--xref (symbol)
   "Create an xref for the source file reference of R symbol SYMBOL."
-  (let ((ref (ess-r-xref--srcref symbol)))
-    (when ref
-      (let ((file (nth 0 ref))
-            (line (nth 1 ref))
-            (col  (nth 2 ref)))
-        (or
-         ;; 1) Result of ESS evaluation
-         (let* ((ess-ref (gethash file ess--srcrefs))
-                (ess-buff (when ess-ref (ess--dbg-find-buffer (car ess-ref)))))
-           (when ess-buff
-             ;; FIXME: this breaks when eval is on larger spans than function
-             (xref-make symbol (xref-make-buffer-location ess-buff (nth 2 ess-ref)))))
-         ;; 2) Real file from R proc working directory
-         (unless (file-name-absolute-p file)
-           (let ((file (expand-file-name file (ess-get-process-variable 'default-directory))))
+  (when-let ((ref (ess-r-xref--srcref symbol)))
+    (let ((file (nth 0 ref))
+          (line (nth 1 ref))
+          (col  (nth 2 ref)))
+      (or
+       ;; 1) Result of ESS evaluation
+       (let* ((ess-ref (gethash file ess--srcrefs))
+              (ess-buff (when ess-ref (ess--dbg-find-buffer (car ess-ref)))))
+         (when ess-buff
+           ;; FIXME: this breaks when eval is on larger spans than function
+           (xref-make symbol (xref-make-buffer-location ess-buff (nth 2 ess-ref)))))
+       ;; 2) Real file from R proc working directory
+       (unless (file-name-absolute-p file)
+         (let ((file (expand-file-name file (ess-get-process-variable 'default-directory))))
+           (when (file-readable-p file)
+             (xref-make symbol (xref-make-file-location file line col)))))
+       ;; 3) Real file from the R's working directory
+       (unless (file-name-absolute-p file)
+         (when-let ((wdir (car (ess-get-words-from-vector ess-getwd-command))))
+           (let ((file (expand-file-name file wdir)))
              (when (file-readable-p file)
-               (xref-make symbol (xref-make-file-location file line col)))))
-         ;; 3) Real file from the R's working directory
-         (unless (file-name-absolute-p file)
-           (when-let ((wdir (car (ess-get-words-from-vector ess-getwd-command))))
-             (let ((file (expand-file-name file wdir)))
-               (when (file-readable-p file)
-                 (xref-make symbol (xref-make-file-location file line col))))))
-         ;; 4) Real file location from the current directory
-         (when (file-readable-p file)
-           (xref-make symbol (xref-make-file-location file line col)))
-         ;; 5) Temporary sources - truncate and locate in ess-r-package-library-paths
-         (when (string-match "/\\([^/]+\\)/\\(R/.*\\)$" file)
-           (let ((pkg-file (ess-r-xref--pkg-srcfile
-                            symbol (match-string 2 file) (match-string 1 file))))
-             (when pkg-file
-               (xref-make symbol (xref-make-file-location
-                                  (expand-file-name pkg-file) line col))))))))))
+               (xref-make symbol (xref-make-file-location file line col))))))
+       ;; 4) Real file location from the current directory
+       (when (file-readable-p file)
+         (xref-make symbol (xref-make-file-location file line col)))
+       ;; 5) Temporary sources - truncate and locate in ess-r-package-library-paths
+       (when (string-match "/\\([^/]+\\)/\\(R/.*\\)$" file)
+         (when-let ((pkg-file (ess-r-xref--pkg-srcfile
+                               symbol (match-string 2 file) (match-string 1 file))))
+           (xref-make symbol (xref-make-file-location
+                              (expand-file-name pkg-file) line col))))))))
 
 (provide 'ess-r-xref)
 
