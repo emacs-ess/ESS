@@ -1293,30 +1293,37 @@ wrapping the code into:
         ;; Swap the process buffer with the output buffer before
         ;; sending the command
         (unwind-protect
-            (unwind-protect
-                (progn
-                  (when use-sentinel
-                    (process-put proc 'ess-output-sentinel sentinel))
-                  (set-process-buffer proc out-buffer)
-                  (set-process-filter proc 'inferior-ess-ordinary-filter)
-                  (with-current-buffer out-buffer
-                    (ess-setq-vars-local proc-alist)
-                    (setq buffer-read-only nil)
-                    (erase-buffer)
-                    (set-marker (process-mark proc) (point-min))
-                    (inferior-ess-mark-as-busy proc)
-                    (process-send-string proc rich-cmd)
-                    ;; Need time for ess-create-object-name-db on PC
-                    (if no-prompt-check
-                        (sleep-for 0.02) ; 0.1 is noticeable!
-                      (unless (ess-wait-for-process proc nil wait force-redisplay timeout)
-                        (error "Timeout during background ESS command `%s'"
-                               (ess--strip-final-newlines cmd)))
-                      ;; Remove prompt. If output is cat(..)ed without a
-                      ;; final newline, this deletes the last line of output.
-                      (goto-char (point-max))
-                      (delete-region (point-at-bol) (point-max))))
-                  (setq early-exit nil))
+            (progn
+              (when use-sentinel
+                (process-put proc 'ess-output-sentinel sentinel))
+              (set-process-buffer proc out-buffer)
+              (set-process-filter proc 'inferior-ess-ordinary-filter)
+              (with-current-buffer out-buffer
+                (ess-setq-vars-local proc-alist)
+                (setq buffer-read-only nil)
+                (erase-buffer)
+                (set-marker (process-mark proc) (point-min))
+                (inferior-ess-mark-as-busy proc)
+                (process-send-string proc rich-cmd)
+                ;; Need time for ess-create-object-name-db on PC
+                (if no-prompt-check
+                    (sleep-for 0.02) ; 0.1 is noticeable!
+                  (unless (ess-wait-for-process proc nil wait force-redisplay timeout)
+                    (error "Timeout during background ESS command `%s'"
+                           (ess--strip-final-newlines cmd)))
+                  ;; Remove prompt. If output is cat(..)ed without a
+                  ;; final newline, this deletes the last line of output.
+                  (goto-char (point-max))
+                  (delete-region (point-at-bol) (point-max))))
+              (setq early-exit nil))
+          ;; In case of unexpected exit we send an interrupt to the
+          ;; process and block until prompt. That interruption
+          ;; prevents the command output from being sent to the
+          ;; process buffer once we have restored it. However the
+          ;; interruption might fail, so we unwind-protect it again in
+          ;; order to ensure the process buffer and filter are
+          ;; correctly restored.
+          (unwind-protect
               (when early-exit
                 (with-current-buffer out-buffer
                   (goto-char (point-min))
@@ -1329,12 +1336,12 @@ wrapping the code into:
                     ;; before interrupt to avoid a freeze.
                     (process-put proc 'ess-output-sentinel nil))
                   (goto-char (point-max))
-                  (ess-interrupt))))
-          ;; Restore the process buffer in its previous state
-          (process-put proc 'ess-output-sentinel nil)
-          (set-process-buffer proc oldpb)
-          (set-process-filter proc oldpf)
-          (set-marker (process-mark proc) oldpm))))
+                  (ess-interrupt)))
+            ;; Restore the process buffer in its previous state
+            (process-put proc 'ess-output-sentinel nil)
+            (set-process-buffer proc oldpb)
+            (set-process-filter proc oldpf)
+            (set-marker (process-mark proc) oldpm)))))
     out-buffer))
 
 ;; TODO: Needs some Julia tests as well
