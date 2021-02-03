@@ -1336,7 +1336,7 @@ wrapping the code into:
                     ;; before interrupt to avoid a freeze.
                     (process-put proc 'ess-output-sentinel nil))
                   (goto-char (point-max))
-                  (ess-interrupt)))
+                  (ess--interrupt proc 1)))
             ;; Restore the process buffer in its previous state
             (process-put proc 'ess-output-sentinel nil)
             (set-process-buffer proc oldpb)
@@ -2263,23 +2263,25 @@ method, see `ess-quit--override'."
   (ess-make-buffer-current)
   (ess-quit--override arg))
 
+(defvar ess--interrupt-timeout 5)
+
 (defun ess-interrupt ()
   "Interrupt the inferior process.
 This sends an interrupt and quits a debugging session."
   (interactive)
   (inferior-ess-force)
-  (let ((proc (ess-get-process))
-        (timeout 1))
-    ;; Interrupt current task before reloading. Useful if the process is
-    ;; prompting for input, for instance in R in case of a crash
-    (interrupt-process proc comint-ptyp)
-    ;; Workaround for Windows terminals
-    (unless (memq system-type '(gnu/linux darwin))
-      (process-send-string nil "\n"))
-    (unless (ess-wait-for-process proc nil nil nil timeout)
-      (error "Timeout while interrupting process"))
+  (let ((proc (ess-get-process)))
+    (ess--interrupt proc ess--interrupt-timeout)
     (with-current-buffer (process-buffer proc)
       (goto-char (process-mark proc)))))
+
+(defun ess--interrupt (proc timeout)
+  (interrupt-process proc comint-ptyp)
+  ;; Workaround for Windows terminals
+  (unless (memq system-type '(gnu/linux darwin))
+    (process-send-string nil "\n"))
+  (unless (ess-wait-for-process proc nil nil nil timeout)
+    (error "Timeout while interrupting process")))
 
 (defun ess-abort ()
   "Kill the ESS process, without executing .Last or terminating devices.
