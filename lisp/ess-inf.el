@@ -1307,7 +1307,7 @@ wrapping the code into:
                 (process-send-string proc rich-cmd)
                 ;; Need time for ess-create-object-name-db on PC
                 (if no-prompt-check
-                    (sleep-for 0.02)   ; 0.1 is noticeable!
+                    (sleep-for 0.02) ; 0.1 is noticeable!
                   (unless (ess-wait-for-process proc nil wait force-redisplay timeout)
                     (error "Timeout during background ESS command `%s'"
                            (ess--strip-final-newlines cmd)))
@@ -1316,24 +1316,32 @@ wrapping the code into:
                   (goto-char (point-max))
                   (delete-region (point-at-bol) (point-max))))
               (setq early-exit nil))
-          ;; Restore the process buffer in its previous state
-          (when early-exit
-            (with-current-buffer out-buffer
-              (goto-char (point-min))
-              (when (and use-sentinel
-                         (not (re-search-forward
-                               (inferior-ess--sentinel-start-re sentinel)
-                               nil t)))
-                ;; CMD probably failed to parse if the start sentinel
-                ;; can't be found in the output. Disable the sentinel
-                ;; before interrupt to avoid a freeze.
-                (process-put proc 'ess-output-sentinel nil))
-              (goto-char (point-max))
-              (ess-interrupt)))
-          (process-put proc 'ess-output-sentinel nil)
-          (set-process-buffer proc oldpb)
-          (set-process-filter proc oldpf)
-          (set-marker (process-mark proc) oldpm))))
+          ;; In case of unexpected exit we send an interrupt to the
+          ;; process and block until prompt. That interruption
+          ;; prevents the command output from being sent to the
+          ;; process buffer once we have restored it. However the
+          ;; interruption might fail, so we unwind-protect it again in
+          ;; order to ensure the process buffer and filter are
+          ;; correctly restored.
+          (unwind-protect
+              (when early-exit
+                (with-current-buffer out-buffer
+                  (goto-char (point-min))
+                  (when (and use-sentinel
+                             (not (re-search-forward
+                                   (inferior-ess--sentinel-start-re sentinel)
+                                   nil t)))
+                    ;; CMD probably failed to parse if the start sentinel
+                    ;; can't be found in the output. Disable the sentinel
+                    ;; before interrupt to avoid a freeze.
+                    (process-put proc 'ess-output-sentinel nil))
+                  (goto-char (point-max))
+                  (ess--interrupt proc 1)))
+            ;; Restore the process buffer in its previous state
+            (process-put proc 'ess-output-sentinel nil)
+            (set-process-buffer proc oldpb)
+            (set-process-filter proc oldpf)
+            (set-marker (process-mark proc) oldpm)))))
     out-buffer))
 
 ;; TODO: Needs some Julia tests as well
@@ -2255,23 +2263,25 @@ method, see `ess-quit--override'."
   (ess-make-buffer-current)
   (ess-quit--override arg))
 
+(defvar ess--interrupt-timeout 5)
+
 (defun ess-interrupt ()
   "Interrupt the inferior process.
 This sends an interrupt and quits a debugging session."
   (interactive)
   (inferior-ess-force)
-  (let ((proc (ess-get-process))
-        (timeout 1))
-    ;; Interrupt current task before reloading. Useful if the process is
-    ;; prompting for input, for instance in R in case of a crash
-    (interrupt-process proc comint-ptyp)
-    ;; Workaround for Windows terminals
-    (unless (memq system-type '(gnu/linux darwin))
-      (process-send-string nil "\n"))
-    (unless (ess-wait-for-process proc nil nil nil timeout)
-      (error "Timeout while interrupting process"))
+  (let ((proc (ess-get-process)))
+    (ess--interrupt proc ess--interrupt-timeout)
     (with-current-buffer (process-buffer proc)
       (goto-char (process-mark proc)))))
+
+(defun ess--interrupt (proc timeout)
+  (interrupt-process proc comint-ptyp)
+  ;; Workaround for Windows terminals
+  (unless (memq system-type '(gnu/linux darwin))
+    (process-send-string nil "\n"))
+  (unless (ess-wait-for-process proc nil nil nil timeout)
+    (error "Timeout while interrupting process")))
 
 (defun ess-abort ()
   "Kill the ESS process, without executing .Last or terminating devices.
