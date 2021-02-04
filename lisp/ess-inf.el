@@ -420,7 +420,7 @@ Return non-nil if the process is in a ready (not busy) state."
           (when (re-search-forward (concat "^\\(" sentinel "-END[\n\r]+\\)") nil t)
             (delete-region (match-beginning 0) (match-end 0))
             (process-put proc 'busy nil)
-            (process-put proc 'ess-output-sentinel nil)))))))
+            (process-put proc 'output-delimiter nil)))))))
 
 (defun inferior-ess--sentinel-start-re (sentinel)
   (concat "^\\(" sentinel "-START$\\)"))
@@ -1002,15 +1002,15 @@ Returns nil if TIMEOUT was reached, non-nil otherwise."
     (< elapsed timeout)))
 
 (defun inferior-ess-ordinary-filter (proc string)
-  (let ((sentinel (process-get proc 'ess-output-sentinel)))
-    (unless sentinel
+  (let ((delim (process-get proc 'output-delimiter)))
+    (unless delim
       (inferior-ess--set-status proc string)
       (inferior-ess-run-callback proc string))
     (ess--if-verbose-write-process-state proc string "ordinary-filter")
     (with-current-buffer (process-buffer proc)
       (insert string))
-    (when sentinel
-      (inferior-ess--set-status-sentinel proc (process-buffer proc) sentinel)
+    (when delim
+      (inferior-ess--set-status-sentinel proc (process-buffer proc) delim)
       (inferior-ess-run-callback proc string))))
 
 (defvar ess-presend-filter-functions nil
@@ -1226,15 +1226,15 @@ All elements are optional.
   argument is the background command to run. Must include a
   catch-all `&rest` parameter for extensibility.
 
-- `use-sentinel' : Whether to wait for an output sentinel. If
-  non-nil, `fun' should get the `output-sentinel' element of the
+- `use-delimiter' : Whether to wait for an output sentinel. If
+  non-nil, `fun' should get the `output-delimiter' element of the
   alist of parameters and ensure the sentinel is written to the
   process output at the end of the command.")
 
-(defvar inferior-ess--output-sentinel-count 0)
-(defun inferior-ess--output-sentinel ()
-  (setq inferior-ess--output-sentinel-count (1+ inferior-ess--output-sentinel-count))
-  (format "ess-output-sentinel%s" inferior-ess--output-sentinel-count))
+(defvar inferior-ess--output-delimiter-count 0)
+(defun inferior-ess--output-delimiter ()
+  (setq inferior-ess--output-delimiter-count (1+ inferior-ess--output-delimiter-count))
+  (format "ess-output-delimiter%s" inferior-ess--output-delimiter-count))
 
 (defvar ess--command-default-timeout 30)
 
@@ -1274,7 +1274,7 @@ wrapping the code into:
  })"
   (let ((out-buffer (or out-buffer (get-buffer-create " *ess-command-output*")))
         (proc (ess-command--get-proc proc no-prompt-check))
-        (sentinel (inferior-ess--output-sentinel))
+        (sentinel (inferior-ess--output-delimiter))
         (timeout (or timeout ess--command-default-timeout)))
     (with-current-buffer (process-buffer proc)
       (let ((proc-alist (ess--alist (ess-local-process-name
@@ -1282,11 +1282,11 @@ wrapping the code into:
             (oldpb (process-buffer proc))
             (oldpf (process-filter proc))
             (oldpm (marker-position (process-mark proc)))
-            (use-sentinel (alist-get 'use-sentinel ess-format-command-alist))
+            (use-delimiter (alist-get 'use-delimiter ess-format-command-alist))
             (rich-cmd (if-let ((cmd-fun (alist-get 'fun ess-format-command-alist)))
                           (funcall cmd-fun
                                    (ess--strip-final-newlines cmd)
-                                   (cons 'output-sentinel sentinel))
+                                   (cons 'output-delimiter sentinel))
                         cmd))
             (early-exit t))
         (ess-if-verbose-write (format "(ess-command %s ..)" cmd))
@@ -1294,8 +1294,8 @@ wrapping the code into:
         ;; sending the command
         (unwind-protect
             (progn
-              (when use-sentinel
-                (process-put proc 'ess-output-sentinel sentinel))
+              (when use-delimiter
+                (process-put proc 'output-delimiter sentinel))
               (set-process-buffer proc out-buffer)
               (set-process-filter proc 'inferior-ess-ordinary-filter)
               (with-current-buffer out-buffer
@@ -1327,18 +1327,18 @@ wrapping the code into:
               (when early-exit
                 (with-current-buffer out-buffer
                   (goto-char (point-min))
-                  (when (and use-sentinel
+                  (when (and use-delimiter
                              (not (re-search-forward
                                    (inferior-ess--sentinel-start-re sentinel)
                                    nil t)))
                     ;; CMD probably failed to parse if the start sentinel
                     ;; can't be found in the output. Disable the sentinel
                     ;; before interrupt to avoid a freeze.
-                    (process-put proc 'ess-output-sentinel nil))
+                    (process-put proc 'output-delimiter nil))
                   (goto-char (point-max))
                   (ess--interrupt proc 1)))
             ;; Restore the process buffer in its previous state
-            (process-put proc 'ess-output-sentinel nil)
+            (process-put proc 'output-delimiter nil)
             (set-process-buffer proc oldpb)
             (set-process-filter proc oldpf)
             (set-marker (process-mark proc) oldpm)))))
