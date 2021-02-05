@@ -194,7 +194,10 @@ Needed with slow-responding processes."
                                nil nil nil nil nil nil 0.5))
                 'thrown))
     ;; Wait for the async interrupt
-    (should (ess-wait-for-process (ess-get-process) nil nil 0.5)))
+    (should (ess-wait-for-process (ess-get-process) nil nil 0.5))
+    ;; Check that marker buffer was properly restored
+    (should (eq (marker-buffer (process-mark (ess-get-process)))
+                (ess-get-process-buffer))))
 
   ;; There should be no output after the early exit or async restoration
   :inf-result "")

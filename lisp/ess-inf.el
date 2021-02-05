@@ -1359,9 +1359,12 @@ wrapping the code into:
 (defun ess--command-proc-restore (proc restore-alist)
   (process-put proc 'cmd-output-delimiter nil)
   (process-put proc 'cmd-restore-alist nil)
-  (set-process-buffer proc (alist-get 'old-pb restore-alist))
-  (set-process-filter proc (alist-get 'old-pf restore-alist))
-  (set-marker (process-mark proc) (alist-get 'old-pm restore-alist)))
+  (let ((old-pb (alist-get 'old-pb restore-alist))
+        (old-pf (alist-get 'old-pf restore-alist))
+        (old-pm (alist-get 'old-pm restore-alist)))
+    (set-process-buffer proc old-pb)
+    (set-process-filter proc old-pf)
+    (set-marker (process-mark proc) old-pm old-pb)))
 
 ;; TODO: Needs some Julia tests as well
 (defun ess--foreground-command (cmd &optional out-buffer _sleep no-prompt-check wait proc)
