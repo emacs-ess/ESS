@@ -1348,6 +1348,8 @@ wrapping the code into:
                     ;; CMD probably failed to parse if the start delimiter
                     ;; can't be found in the output. Disable the delimiter
                     ;; before interrupt to avoid a freeze.
+                    (ess-write-to-dribble-buffer
+                     "Disabling output delimiter because CMD failed to parse")
                     (process-put proc 'cmd-output-delimiter nil))
                   (goto-char (point-max))
                   (ess--interrupt proc)
