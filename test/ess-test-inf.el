@@ -174,6 +174,30 @@ packages like eldoc and company-quickhelp. `throw-on-input' sets
   :inf-result ""
   :eval (should (inferior-ess-available-p)))
 
+(etest-deftest-r ess-command-quit-async-interrupt-test ()
+  "`ess-command' interrupts asynchronously on quits (#1091, #1102).
+Needed with slow-responding processes."
+  :eval
+  (progn
+    (should (eq (identity (marker-buffer (process-mark (ess-get-process))))
+                (ess-get-process-buffer)))
+    (run-at-time 0.1 nil (lambda () (throw 'my-quit 'thrown)))
+    (should (eq (catch 'my-quit
+                  (ess-command "{
+                                       cat('output\n')
+                                       withCallingHandlers(
+                                         interrupt = function(...) Sys.sleep(0.2),
+                                         Sys.sleep(10)
+                                       )
+                                     }
+                                     "
+                               nil nil nil nil nil nil 0.5))
+                'thrown))
+    ;; Wait for the async interrupt
+    (should (ess-wait-for-process (ess-get-process) nil nil 0.5)))
+
+  ;; There should be no output after the early exit or async restoration
+  :inf-result "")
 
 ;;*;; Inferior interaction
 
