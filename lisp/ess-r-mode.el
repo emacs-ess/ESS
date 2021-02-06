@@ -1397,7 +1397,7 @@ documented, returns nil."
      ((and (bound-and-true-p ess-remote))
       (if ess-r-fetch-ESSR-on-remotes
           (ess-r--fetch-ESSR-remote)
-        (ess-r--load-ESSR-remote)))
+        (ess-r--load-ESSR-remote t)))
      (t (ess-r--load-ESSR-local)))))
 
 (defun ess-r--load-ESSR-local ()
@@ -1419,25 +1419,50 @@ to the search path."
         (when (> (length msg) 1)
           (message (format "Messages while loading ESSR: %s" msg)))))))
 
-(defun ess-r--load-ESSR-remote ()
-  "Load ESSR functionality onto a remote process.
-Copies the files in etc/ESSR/R over to the remote filesystem
-before sourcing them."
-  ;; bind `ess-etc-directory' to the local pathname of the copy of etc/ESSR/R on
-  ;; the remote machine for use by `ess-r--load-ESSR-local'
-  (let* ((src-dir (expand-file-name "ESSR/R" ess-etc-directory))
-         (tmp-dir (with-ess-process-buffer nil (temporary-file-directory)))
-         (tmp-essr (expand-file-name "ESSR/R" tmp-dir))
-         (ess-etc-directory (file-remote-p tmp-dir 'localname)))
-    (make-directory tmp-essr t)
-    (message "Loading ESSR onto the remote...")
-    (let ((inhibit-message t))
+(defun ess-r--load-ESSR-remote (&optional chunked)
+  (ess-command (format ".ess.ESSRversion <- '%s'\n" essr-version))
+  (with-temp-message "Loading ESSR into remote ..."
+    (let ((src-dir (expand-file-name "ESSR/R" ess-etc-directory))
+          (cmd (format
+                "local({
+
+                     Rver <- if(exists('getRversion', mode='function')) getRversion()
+                             else paste(R.version$major, R.version$minor, sep='.')
+                     oldR <- Rver <= '1.3.0'
+
+                     ESSR <-
+                         if(oldR) ## really old library() revert order a bit
+                             attach(NULL, name = 'ESSR')
+                         else if(length(nn <- names(formals(new.env))) && any(nn == 'parent'))
+                             new.env(parent =
+                                         if(Rver >= '1.9.0') getNamespace('utils')
+                                         else .BaseNamespaceEnv)
+                         else
+                             new.env()
+
+                     assign('.ess.Rversion', Rver, envir = ESSR)
+                     VERSION <- '%s'
+                     assign('.ess.ESSRversion', VERSION, envir = ESSR)
+
+
+                     essr_nms <- grep('\\\\.(ess|ESS)', ls(.GlobalEnv, all.names = TRUE), value = TRUE)
+                     for (nm in essr_nms) {
+                         ESSR[[nm]] <- get(nm, pos = .GlobalEnv)
+                     }
+                     rm(list = essr_nms, pos = .GlobalEnv)
+
+                     if(Rver >= '2.4.0')
+                         attach(ESSR)
+                     else if(!oldR) { ## borrow from older library()
+                         e <- attach(NULL, name = 'ESSR')
+                         .Internal(lib.fixup(ESSR, e))
+                     } else { ## if(oldR), use as in that old library():
+                         .Internal(lib.fixup(ESSR, .GlobalEnv))
+                     }
+                 })\n" essr-version)))
       (dolist (file (directory-files src-dir t "\\.R\\'"))
-        (let* ((file-nopath (file-name-nondirectory file))
-               (dest (expand-file-name file-nopath tmp-essr)))
-          (copy-file file dest t))))
-    (message nil)
-    (ess-r--load-ESSR-local)))
+        (ess--inject-code-from-file file chunked))
+      (ess-command cmd nil nil nil nil nil nil 5))))
 
 (defun ess-r--fetch-ESSR-remote ()
   (let ((loader (ess-file-content (expand-file-name "ESSR/LOADREMOTE" ess-etc-directory))))
