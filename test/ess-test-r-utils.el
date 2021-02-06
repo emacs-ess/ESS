@@ -330,6 +330,51 @@ Take a string PATH representing a local path, and construct a
 remote path that uses the 'mock' TRAMP method."
   (let ((full-path (abbreviate-file-name (expand-file-name path))))
     (concat "/mock::" full-path)))
+
+;; Utilities for testing ESSR injection
+
+(defun ess--essr-detach ()
+  "Ensure that ESSR is not attached."
+  (ess-command "try(detach('ESSR'), silent = TRUE)\n"))
+
+(defun ess--essr-remove-global-objs ()
+  "Ensure that all ESSR objects are removed from the global env."
+  (ess-command "rm(list = grep('\\\\.(ess|ESS)', ls(all.names = TRUE), value = TRUE))\n"))
+
+(defun ess--essr-check-if-attached ()
+  "Check whether ESSR is attached to the search path."
+  (let ((attached-nms (ess-get-words-from-vector "search()\n")))
+    (seq-some (lambda (str) (string= str "ESSR")) attached-nms)))
+
+(defun ess--essr-check-if-in-globalenv ()
+  "Check whether any ESSR objects are in the global env."
+  (let* ((r-input "grep('\\\\.(ess|ESS)', ls(all.names = TRUE), value = TRUE)\n")
+         (output-list (ess-get-words-from-vector r-input)))
+    (> (length output-list) 0)))
+
+(defun ess--essr-check-if-in-essrenv ()
+  "Check whether any ESSR objects are in the ESSR env."
+  (let* ((r-input "grep('\\\\.(ess|ESS)', ls('ESSR', all.names = TRUE), value = TRUE)\n")
+         (output-list (ess-get-words-from-vector r-input)))
+    (> (length output-list) 0)))
+
+(defun ess--essr-load-or-throw-error (file)
+  "Attempt to attach the ESSR environment.
+Throws an error if unsuccesful."
+  (with-ess-test-r-file file
+    (with-r-running (current-buffer)
+      ;; ensure that there is no ESSR environment nor any ESSR objects in the
+      ;; global environment
+      (ess--essr-detach)
+      (ess--essr-remove-global-objs)
+      ;; inject environment and attach
+      (ess-r-load-ESSR)
+      ;; check for successful ESSR injection
+      (should (not (ess--essr-check-if-in-globalenv)))
+      (should (ess--essr-check-if-attached))
+      (should (ess--essr-check-if-in-essrenv)))
+    (kill-buffer)))
+
 (provide 'ess-test-r-utils)
 
 ;;; ess-test-r-utils.el ends here
