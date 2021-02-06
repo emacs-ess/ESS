@@ -827,7 +827,6 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
      (goto-char (point-min))
      (should (re-search-forward "my_rdired_variable" nil t)))))
 
-
 ;; help
 
 (ert-deftest ess-help-get-pkg-from-help-path-test ()
@@ -835,6 +834,23 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
   (should (string= (ess-r-help--get-pkg-from-help-path "~/library/4.0/data.table/help/data.table")
                    "data.table")))
 
+;; Utils for inferior R process
+
+(ert-deftest ess-r-load-ESSR-internet-unneeded ()
+  (ess--essr-load-or-throw-error "dummy-pkg/R/test.R")
+  (ess--essr-load-or-throw-error (ess-test-create-remote-path "dummy-pkg/R/test.R")))
+
+;; the following test doesn't ensure that ESSR is succesfully able to download
+;; ESSR.rds from GitHub as part of the `ess-r--fetch-ESSR-remote' routine since
+;; the function falls back on `ess-r--load-ESSR-remote' in that event. Such a
+;; failure is reported via a call to `message', so future improvements to
+;; this test could assert that no such errors were reported.
+(ert-deftest ess-r-load-ESSR-internet-fetch ()
+  (let ((envvar-travis (getenv "TRAVIS)")))
+    (skip-unless (not (and envvar-travis
+                           (string= envvar-travis "true")))))
+  (let ((ess-r-fetch-ESSR-on-remotes t))
+    (ess--essr-load-or-throw-error (ess-test-create-remote-path "dummy-pkg/R/test.R"))))
 
 (provide 'ess-test-r)
 
