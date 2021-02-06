@@ -1019,8 +1019,7 @@ PROC and STRING are as in `ess-command'."
       (funcall flush))
     ;; Restore user process buffer as soon as the process is ready
     (unless (process-get proc 'busy)
-      (when-let ((restore-alist (process-get proc 'process-restore-alist)))
-        (ess--command-proc-restore proc restore-alist)))))
+      (ess--command-proc-restore proc))))
 
 (defvar ess-presend-filter-functions nil
   "List of functions to call before sending the input string to the process.
@@ -1289,9 +1288,9 @@ wrapping the code into:
     (with-current-buffer (process-buffer proc)
       (let ((proc-forward-alist (ess--alist (ess-local-process-name
                                              inferior-ess-primary-prompt)))
-            (restore-alist (list (cons 'old-pb (process-buffer proc))
-                                 (cons 'old-pf (process-filter proc))
-                                 (cons 'old-pm (marker-position (process-mark proc)))))
+            (restore-plist (list :buffer (process-buffer proc)
+                                 :filter (process-filter proc)
+                                 :marker (marker-position (process-mark proc))))
             (use-delimiter (alist-get 'use-delimiter ess-format-command-alist))
             (rich-cmd (if-let ((cmd-fun (alist-get 'fun ess-format-command-alist)))
                           (funcall cmd-fun clean-cmd
@@ -1326,6 +1325,7 @@ wrapping the code into:
               (setq early-exit nil))
           ;; Protect the process restoration from further quits
           (let ((inhibit-quit t))
+            (process-put proc 'process-restore-plist restore-plist)
             (if early-exit
                 ;; In case of early exit we send an interrupt to the process.
                 ;; The process is restored in the
@@ -1350,21 +1350,20 @@ wrapping the code into:
                      "Disabling output delimiter because CMD failed to parse")
                     (process-put proc 'cmd-output-delimiter nil))
                   (goto-char (point-max))
-                  (ess--interrupt proc)
-                  (process-put proc 'process-restore-alist restore-alist))
+                  (ess--interrupt proc))
               ;; Restore the process buffer to its previous state
-              (ess--command-proc-restore proc restore-alist))))))
+              (ess--command-proc-restore proc))))))
     out-buffer))
 
-(defun ess--command-proc-restore (proc restore-alist)
+(defun ess--command-proc-restore (proc)
   (process-put proc 'cmd-output-delimiter nil)
-  (process-put proc 'process-restore-alist nil)
-  (let ((old-pb (alist-get 'old-pb restore-alist))
-        (old-pf (alist-get 'old-pf restore-alist))
-        (old-pm (alist-get 'old-pm restore-alist)))
-    (set-process-buffer proc old-pb)
-    (set-process-filter proc old-pf)
-    (set-marker (process-mark proc) old-pm old-pb)))
+  (when-let ((restore-plist (process-get proc 'process-restore-plist)))
+    (process-put proc 'process-restore-plist nil)
+    (set-process-buffer proc (plist-get restore-plist :buffer))
+    (set-process-filter proc (plist-get restore-plist :filter))
+    (set-marker (process-mark proc)
+                (plist-get restore-plist :marker)
+                (plist-get restore-plist :buffer))))
 
 ;; TODO: Needs some Julia tests as well
 (defun ess--foreground-command (cmd &optional out-buffer _sleep no-prompt-check wait proc)
