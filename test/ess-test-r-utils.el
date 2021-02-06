@@ -20,6 +20,7 @@
 (require 'ert)
 (require 'etest)
 (require 'ess-r-mode)
+(require 'tramp)
 
 (defvar ess-test-fixtures-directory
   (expand-file-name "fixtures"
@@ -93,7 +94,7 @@ inserted text."
        ,@body)))
 
 (defun run-ess-test-r-vanilla ()
-  "Start vanila R process and return the process object."
+  "Start vanilla R process and return the process object."
   (save-window-excursion
     (let ((inhibit-message ess-inhibit-message-in-tests)
           (ess-ask-for-ess-directory nil))
@@ -309,6 +310,26 @@ representative to the common interactive use with tracebug on."
               (eval . (ess-test-r-set-local-process)))
        ,@body)))
 
+;; Utilities for testing remote functionality
+
+;; Define a mock TRAMP method to use for testing. This code is taken from
+;; `tramp-tests.el'.
+(add-to-list
+ 'tramp-methods
+ '("mock"
+   (tramp-login-program        "sh")
+   (tramp-login-args           (("-i")))
+   (tramp-direct-async-args    (("-c")))
+   (tramp-remote-shell         "/bin/sh")
+   (tramp-remote-shell-args    ("-c"))
+   (tramp-connection-timeout   10)))
+
+(defun ess-test-create-remote-path (path)
+  "Construct a remote path using the 'mock' TRAMP method.
+Take a string PATH representing a local path, and construct a
+remote path that uses the 'mock' TRAMP method."
+  (let ((full-path (abbreviate-file-name (expand-file-name path))))
+    (concat "/mock::" full-path)))
 (provide 'ess-test-r-utils)
 
 ;;; ess-test-r-utils.el ends here
