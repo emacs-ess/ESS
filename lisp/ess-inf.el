@@ -420,7 +420,8 @@ Return non-nil if the process is in a ready (not busy) state."
           (when (re-search-forward (concat "^\\(" sentinel "-END[\n\r]+\\)") nil t)
             (delete-region (match-beginning 0) (match-end 0))
             (process-put proc 'busy nil)
-            (process-put proc 'ess-output-sentinel nil)))))))
+            (process-put proc 'cmd-output-delimiter nil)
+            t))))))
 
 (defun inferior-ess--sentinel-start-re (sentinel)
   (concat "^\\(" sentinel "-START$\\)"))
@@ -1002,16 +1003,24 @@ Returns nil if TIMEOUT was reached, non-nil otherwise."
     (< elapsed timeout)))
 
 (defun inferior-ess-ordinary-filter (proc string)
-  (let ((sentinel (process-get proc 'ess-output-sentinel)))
-    (unless sentinel
+  (ess--if-verbose-write-process-state proc string "ordinary-filter")
+  (let ((cmd-delim (process-get proc 'cmd-output-delimiter))
+        (cmd-async-restore-alist (process-get proc 'cmd-async-restore-alist))
+        (flush (lambda () (with-current-buffer (process-buffer proc)
+                       (insert string)))))
+    (if cmd-delim
+        (progn
+          (funcall flush)
+          (inferior-ess--set-status-sentinel proc (process-buffer proc) cmd-delim)
+          (inferior-ess-run-callback proc string))
       (inferior-ess--set-status proc string)
-      (inferior-ess-run-callback proc string))
-    (ess--if-verbose-write-process-state proc string "ordinary-filter")
-    (with-current-buffer (process-buffer proc)
-      (insert string))
-    (when sentinel
-      (inferior-ess--set-status-sentinel proc (process-buffer proc) sentinel)
-      (inferior-ess-run-callback proc string))))
+      (inferior-ess-run-callback proc string)
+      (funcall flush))
+    ;; Restore user process buffer asynchronously as soon as process
+    ;; is available
+    (when (and cmd-async-restore-alist
+               (not (process-get proc 'busy)))
+      (ess--command-proc-restore proc cmd-async-restore-alist))))
 
 (defvar ess-presend-filter-functions nil
   "List of functions to call before sending the input string to the process.
@@ -1226,15 +1235,17 @@ All elements are optional.
   argument is the background command to run. Must include a
   catch-all `&rest` parameter for extensibility.
 
-- `use-sentinel' : Whether to wait for an output sentinel. If
-  non-nil, `fun' should get the `output-sentinel' element of the
+- `use-delimiter' : Whether to wait for an output sentinel. If
+  non-nil, `fun' should get the `cmd-output-delimiter' element of the
   alist of parameters and ensure the sentinel is written to the
   process output at the end of the command.")
 
-(defvar inferior-ess--output-sentinel-count 0)
-(defun inferior-ess--output-sentinel ()
-  (setq inferior-ess--output-sentinel-count (1+ inferior-ess--output-sentinel-count))
-  (format "ess-output-sentinel%s" inferior-ess--output-sentinel-count))
+(defvar inferior-ess--output-delimiter-count 0)
+(defun inferior-ess--output-delimiter ()
+  (setq inferior-ess--output-delimiter-count (1+ inferior-ess--output-delimiter-count))
+  (format "ess-output-delimiter%s" inferior-ess--output-delimiter-count))
+
+(defvar ess--command-default-timeout 30)
 
 ;; NOTE: We might want to switch to somethig like `cl-defun' with
 ;; keyword arguments given the length of the signature. Would also
@@ -1254,8 +1265,8 @@ seconds should generally be considered a bug.
 
 SLEEP is deprecated and no longer has any effect. WAIT,
 FORCE-REDISPLAY, and TIMEOUT are as in `ess-wait-for-process' and
-are passed to `ess-wait-for-process'. The default timeout is 1
-second. The process is interrupted with `interrupt-process' when
+are passed to `ess-wait-for-process'. The default timeout is 30
+seconds. The process is interrupted with `interrupt-process' when
 the timeout is reached or when an error occurs.
 
 PROC should be a process, if nil the process name is taken from
@@ -1272,19 +1283,19 @@ wrapping the code into:
  })"
   (let ((out-buffer (or out-buffer (get-buffer-create " *ess-command-output*")))
         (proc (ess-command--get-proc proc no-prompt-check))
-        (sentinel (inferior-ess--output-sentinel))
-        (timeout (or timeout 1)))
+        (delim (inferior-ess--output-delimiter))
+        (timeout (or timeout ess--command-default-timeout)))
     (with-current-buffer (process-buffer proc)
-      (let ((proc-alist (ess--alist (ess-local-process-name
-                                     inferior-ess-primary-prompt)))
-            (oldpb (process-buffer proc))
-            (oldpf (process-filter proc))
-            (oldpm (marker-position (process-mark proc)))
-            (use-sentinel (alist-get 'use-sentinel ess-format-command-alist))
+      (let ((proc-forward-alist (ess--alist (ess-local-process-name
+                                             inferior-ess-primary-prompt)))
+            (cmd-restore-alist (list (cons 'old-pb (process-buffer proc))
+                                     (cons 'old-pf (process-filter proc))
+                                     (cons 'old-pm (marker-position (process-mark proc)))))
+            (use-delimiter (alist-get 'use-delimiter ess-format-command-alist))
             (rich-cmd (if-let ((cmd-fun (alist-get 'fun ess-format-command-alist)))
                           (funcall cmd-fun
                                    (ess--strip-final-newlines cmd)
-                                   (cons 'output-sentinel sentinel))
+                                   (cons 'output-delimiter delim))
                         cmd))
             (early-exit t))
         (ess-if-verbose-write (format "(ess-command %s ..)" cmd))
@@ -1292,12 +1303,12 @@ wrapping the code into:
         ;; sending the command
         (unwind-protect
             (progn
-              (when use-sentinel
-                (process-put proc 'ess-output-sentinel sentinel))
+              (when use-delimiter
+                (process-put proc 'cmd-output-delimiter delim))
               (set-process-buffer proc out-buffer)
               (set-process-filter proc 'inferior-ess-ordinary-filter)
               (with-current-buffer out-buffer
-                (ess-setq-vars-local proc-alist)
+                (ess-setq-vars-local proc-forward-alist)
                 (setq buffer-read-only nil)
                 (erase-buffer)
                 (set-marker (process-mark proc) (point-min))
@@ -1305,7 +1316,7 @@ wrapping the code into:
                 (process-send-string proc rich-cmd)
                 ;; Need time for ess-create-object-name-db on PC
                 (if no-prompt-check
-                    (sleep-for 0.02)   ; 0.1 is noticeable!
+                    (sleep-for 0.02) ; 0.1 is noticeable!
                   (unless (ess-wait-for-process proc nil wait force-redisplay timeout)
                     (error "Timeout during background ESS command `%s'"
                            (ess--strip-final-newlines cmd)))
@@ -1314,25 +1325,48 @@ wrapping the code into:
                   (goto-char (point-max))
                   (delete-region (point-at-bol) (point-max))))
               (setq early-exit nil))
-          ;; Restore the process buffer in its previous state
-          (when early-exit
-            (with-current-buffer out-buffer
-              (goto-char (point-min))
-              (when (and use-sentinel
-                         (not (re-search-forward
-                               (inferior-ess--sentinel-start-re sentinel)
-                               nil t)))
-                ;; CMD probably failed to parse if the start sentinel
-                ;; can't be found in the output. Disable the sentinel
-                ;; before interrupt to avoid a freeze.
-                (process-put proc 'ess-output-sentinel nil))
-              (goto-char (point-max))
-              (ess-interrupt)))
-          (process-put proc 'ess-output-sentinel nil)
-          (set-process-buffer proc oldpb)
-          (set-process-filter proc oldpf)
-          (set-marker (process-mark proc) oldpm))))
+          ;; Protect the process restoration from further quits
+          (let ((inhibit-quit t))
+            (if early-exit
+                ;; In case of early exit we send an interrupt to the
+                ;; process. The process is restored asynchronously
+                ;; once it's available again (i.e. a prompt is
+                ;; detected). We can't restore right away because the
+                ;; output of the background command would spill into
+                ;; the process buffer of the user when the process
+                ;; doesn't interrupt in time. We also can't wait for
+                ;; the interrupt because that would cause Emacs
+                ;; freezes when the user types code (`when-no-input'
+                ;; is a common cause of early exits of background
+                ;; commands). Hence the asynchronous restoration.
+                (with-current-buffer out-buffer
+                  (goto-char (point-min))
+                  (when (and use-delimiter
+                             (not (re-search-forward
+                                   (inferior-ess--sentinel-start-re delim)
+                                   nil t)))
+                    ;; CMD probably failed to parse if the start delimiter
+                    ;; can't be found in the output. Disable the delimiter
+                    ;; before interrupt to avoid a freeze.
+                    (ess-write-to-dribble-buffer
+                     "Disabling output delimiter because CMD failed to parse")
+                    (process-put proc 'cmd-output-delimiter nil))
+                  (goto-char (point-max))
+                  (ess--interrupt proc)
+                  (process-put proc 'cmd-async-restore-alist cmd-restore-alist))
+              ;; Restore the process buffer to its previous state
+              (ess--command-proc-restore proc cmd-restore-alist))))))
     out-buffer))
+
+(defun ess--command-proc-restore (proc restore-alist)
+  (process-put proc 'cmd-output-delimiter nil)
+  (process-put proc 'cmd-restore-alist nil)
+  (let ((old-pb (alist-get 'old-pb restore-alist))
+        (old-pf (alist-get 'old-pf restore-alist))
+        (old-pm (alist-get 'old-pm restore-alist)))
+    (set-process-buffer proc old-pb)
+    (set-process-filter proc old-pf)
+    (set-marker (process-mark proc) old-pm old-pb)))
 
 ;; TODO: Needs some Julia tests as well
 (defun ess--foreground-command (cmd &optional out-buffer _sleep no-prompt-check wait proc)
@@ -2253,23 +2287,27 @@ method, see `ess-quit--override'."
   (ess-make-buffer-current)
   (ess-quit--override arg))
 
+(defvar ess--interrupt-timeout 5)
+
 (defun ess-interrupt ()
   "Interrupt the inferior process.
 This sends an interrupt and quits a debugging session."
   (interactive)
   (inferior-ess-force)
-  (let ((proc (ess-get-process))
-        (timeout 1))
-    ;; Interrupt current task before reloading. Useful if the process is
-    ;; prompting for input, for instance in R in case of a crash
-    (interrupt-process proc comint-ptyp)
-    ;; Workaround for Windows terminals
-    (unless (memq system-type '(gnu/linux darwin))
-      (process-send-string nil "\n"))
-    (unless (ess-wait-for-process proc nil nil nil timeout)
+  (let ((proc (ess-get-process)))
+    (ess--interrupt proc)
+    (unless (ess-wait-for-process proc nil nil nil
+                                  ess--interrupt-timeout)
       (error "Timeout while interrupting process"))
     (with-current-buffer (process-buffer proc)
       (goto-char (process-mark proc)))))
+
+(defun ess--interrupt (proc)
+  (interrupt-process proc comint-ptyp)
+  ;; Workaround for Windows terminals. NOTE: Is this really needed
+  ;; for background commands? Or just for interactive interrupts?
+  (unless (memq system-type '(gnu/linux darwin))
+    (process-send-string nil "\n")))
 
 (defun ess-abort ()
   "Kill the ESS process, without executing .Last or terminating devices.

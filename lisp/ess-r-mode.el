@@ -426,12 +426,12 @@ fill=TRUE); try(traceback(), silent=TRUE)})\n")
 (defvar ess-r-call-stack-command "traceback(1)\n")
 
 (defun ess-r-format-command (cmd &rest args)
-  (let ((sentinel (alist-get 'output-sentinel args)))
+  (let ((sentinel (alist-get 'output-delimiter args)))
     (format ".ess.command(%s, '%s')\n" cmd sentinel)))
 
 (defvar ess-r-format-command-alist
-  '((fun          . ess-r-format-command)
-    (use-sentinel . t)))
+  '((fun           . ess-r-format-command)
+    (use-delimiter . t)))
 
 (defvar ess-r-dump-filename-template
   (replace-regexp-in-string
