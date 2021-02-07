@@ -51,6 +51,9 @@ julia:
 autoloads:
 	cd lisp; $(MAKE) ess-autoloads.el
 
+## Rebuild and publish ESSR package:
+# 1. Update ESSR-Version in lisp/ess.el
+# 2. make essr
 .PHONY: essr
 essr: VERSION
 	@echo "**********************************************************"
