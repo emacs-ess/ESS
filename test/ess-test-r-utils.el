@@ -21,6 +21,7 @@
 (require 'etest)
 (require 'ess-r-mode)
 (require 'tramp)
+(require 'seq)
 
 (defvar ess-test-fixtures-directory
   (expand-file-name "fixtures"
