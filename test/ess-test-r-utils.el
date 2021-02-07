@@ -333,9 +333,18 @@ remote path that uses the 'mock' TRAMP method."
 
 ;; Utilities for testing ESSR injection
 
+(defun ess--essr-remove ()
+  "Ensure that ESSR objects are removed.
+Note that if `ess--essr-detach' is successful then it is critical
+that we don't run `ess--essr-remove-global-objs' because
+.ess.command doesn't exist in the R runtime environment (and
+which is relied upon by `ess-command')."
+  (or (ess--essr-detach)
+      (ess--essr-remove-global-objs)))
+
 (defun ess--essr-detach ()
   "Ensure that ESSR is not attached."
-  (ess-command "try(detach('ESSR'), silent = TRUE)\n"))
+  (ess-boolean-command "tryCatch({detach('ESSR'); 'TRUE'}, error = function(e) 'FALSE')\n"))
 
 (defun ess--essr-remove-global-objs ()
   "Ensure that all ESSR objects are removed from the global env."
@@ -365,8 +374,7 @@ Throws an error if unsuccesful."
     (with-r-running (current-buffer)
       ;; ensure that there is no ESSR environment nor any ESSR objects in the
       ;; global environment
-      (ess--essr-detach)
-      (ess--essr-remove-global-objs)
+      (ess--essr-remove)
       ;; inject environment and attach
       (ess-r-load-ESSR)
       ;; check for successful ESSR injection
