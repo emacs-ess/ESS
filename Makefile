@@ -60,6 +60,8 @@ essr: VERSION
 	@git add etc/ESSR.rds lisp/ess.el etc/ESSR/R/.load.R
 	git commit -m"ESSR Version $(ESSR-VERSION)"
 	git tag "ESSRv"$(ESSR-VERSION)
+	git push
+	git push origin "ESSRv"$(ESSR-VERSION)
 
 install: all
 	mkdir -p $(ESSDESTDIR)
