@@ -62,11 +62,11 @@ use `ess-r-mode-hook' instead.")
 (add-hook 'ess-r-mode-hook (lambda () (run-hooks 'R-mode-hook)))
 
 (defcustom ess-r-fetch-ESSR-on-remotes nil
-  "If non-nil, fetch ESSR from the GitHub repository.
-Otherwise source from local ESS installation. When 'ess-remote,
-fetch only with `ess-remote'. When t, always fetch from remotes.
-Change this variable when loading ESSR code on remotes fails
-systematically.
+  "If non-nil, when loading ESSR, fetch it from the GitHub repository.
+Otherwise source from local ESS installation. When the value is
+'ess-remote, fetch only with ess-remote's and not with TRAMP
+connections. When t, always fetch from remotes. Change this
+variable when loading ESSR code on remotes fails for you.
 
 Fetching happens once per new ESSR version. The archive is stored
 in ~/.config/ESSR/ folder. You can download and place it there
@@ -1384,7 +1384,11 @@ documented, returns nil."
         (inferior-ess-input-sender proc string))))
 
 (defun ess-r-load-ESSR ()
-  "Load ESSR functionality."
+  "Load ESSR functionality into ESSR environment.
+On remotes, when `ess-r-fetch-ESSR-on-remotes' is non-nil we
+fetch ESSR environment from github to the remote machine.
+Otherwise (the default) we source ESSR files into the remote
+process."
   ;; `.ess.command()` is not defined until ESSR is loaded so disable
   ;; it temporarily. Would be helpful to implement an `inferior-ess-let'
   ;; macro .
@@ -1395,6 +1399,8 @@ documented, returns nil."
           (ess-r--fetch-ESSR-remote)
         (ess-r--load-ESSR-remote)))
      ((and (bound-and-true-p ess-remote))
+      ;; NB: With ess-remote we send by chunks because sending large sources is
+      ;; fragile
       (if ess-r-fetch-ESSR-on-remotes
           (ess-r--fetch-ESSR-remote)
         (ess-r--load-ESSR-remote t)))
