@@ -69,8 +69,9 @@ connections. When t, always fetch from remotes. Change this
 variable when loading ESSR code on remotes fails for you.
 
 Fetching happens once per new ESSR version. The archive is stored
-in ~/.config/ESSR/ folder. You can download and place it there
-manually if the remote has restricted network access."
+in ~/.config/ESSR/ESSRv[VERSION].rds file. You can download and
+place it there manually if the remote has restricted network
+access."
   :type '(choice (const nil :tag "Never")
                  (const 'ess-remote :tag "With ess-remote only")
                  (const t :tag "Always"))
@@ -1427,11 +1428,12 @@ process."
 
 (defun ess-r--fetch-ESSR-remote ()
   (let ((loader (ess-file-content (expand-file-name "ESSR/LOADREMOTE" ess-etc-directory))))
-    (unless (ess-boolean-command (format loader essr-version) nil 0.1)
+    (unless (with-temp-message "Loading ESSR on the remote ..."
+              (ess-boolean-command (format loader essr-version)))
       (let* ((errmsg (with-current-buffer " *ess-command-output*" (buffer-string)))
              (src-dir (expand-file-name "ESSR/R" ess-etc-directory))
              (files (directory-files src-dir t "\\.R\\'")))
-        (message (format "Couldn't load ESSR.rds. Injecting from local.\n Error: %s\n" errmsg))
+        (message (format "Couldn't load or download ESSR.rds on the remote.\n Error: %s\n Injecting local copy of ESSR." errmsg))
         (ess-r--load-ESSR-remote)))))
 
 (cl-defmethod ess-quit--override (arg &context (ess-dialect "R"))
