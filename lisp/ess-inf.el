@@ -1008,17 +1008,35 @@ Returns nil if TIMEOUT was reached, non-nil otherwise."
 (defun inferior-ess-ordinary-filter (proc string)
   (ess--if-verbose-write-process-state proc string "ordinary-filter")
   (let ((cmd-delim (process-get proc 'cmd-output-delimiter))
+        (cmd-delim-incoming (process-get proc 'cmd-output-delimiter-incoming))
         (cmd-async-restore-alist (process-get proc 'cmd-async-restore-alist))
         (flush (lambda () (with-current-buffer (process-buffer proc)
                        (insert string)))))
-    (if cmd-delim
-        (progn
-          (funcall flush)
-          (inferior-ess--set-status-sentinel proc (process-buffer proc) cmd-delim)
-          (inferior-ess-run-callback proc string))
-      (inferior-ess--set-status proc string)
-      (inferior-ess-run-callback proc string)
-      (funcall flush))
+    (cond (cmd-delim-incoming
+           (setq string (concat cmd-delim-incoming string))
+           (cond ((not (string-match-p "\n" string))
+                  ;; Accumulate output until a new line
+                  (process-put proc 'cmd-output-delimiter-incoming string))
+                 ((string-match-p (inferior-ess--sentinel-start-re cmd-delim) string)
+                  ;; We found the starting delimiter so we disable the
+                  ;; incoming delimiter check and recurse
+                  (process-put proc 'cmd-output-delimiter-incoming nil)
+                  (inferior-ess-ordinary-filter proc string))
+                 (t
+                  ;; The starting delimiter is missing so CMD probably
+                  ;; failed to parse. Disable the output delimiter and
+                  ;; recurse.
+                  (process-put proc 'cmd-output-delimiter nil)
+                  (process-put proc 'cmd-output-delimiter-incoming nil)
+                  (inferior-ess-ordinary-filter proc string))))
+          (cmd-delim
+           (funcall flush)
+           (inferior-ess--set-status-sentinel proc (process-buffer proc) cmd-delim)
+           (inferior-ess-run-callback proc string))
+          (t
+           (inferior-ess--set-status proc string)
+           (inferior-ess-run-callback proc string)
+           (funcall flush)))
     ;; Restore user process buffer asynchronously as soon as process
     ;; is available
     (when (and cmd-async-restore-alist
@@ -1307,7 +1325,8 @@ wrapping the code into:
         (unwind-protect
             (progn
               (when use-delimiter
-                (process-put proc 'cmd-output-delimiter delim))
+                (process-put proc 'cmd-output-delimiter delim)
+                (process-put proc 'cmd-output-delimiter-incoming ""))
               (set-process-buffer proc out-buffer)
               (set-process-filter proc 'inferior-ess-ordinary-filter)
               (with-current-buffer out-buffer
@@ -1342,19 +1361,7 @@ wrapping the code into:
                 ;; freezes when the user types code (`when-no-input'
                 ;; is a common cause of early exits of background
                 ;; commands). Hence the asynchronous restoration.
-                (with-current-buffer out-buffer
-                  (goto-char (point-min))
-                  (when (and use-delimiter
-                             (not (re-search-forward
-                                   (inferior-ess--sentinel-start-re delim)
-                                   nil t)))
-                    ;; CMD probably failed to parse if the start delimiter
-                    ;; can't be found in the output. Disable the delimiter
-                    ;; before interrupt to avoid a freeze.
-                    (ess-write-to-dribble-buffer
-                     "Disabling output delimiter because CMD failed to parse")
-                    (process-put proc 'cmd-output-delimiter nil))
-                  (goto-char (point-max))
+                (progn
                   (ess--interrupt proc)
                   (process-put proc 'cmd-async-restore-alist cmd-restore-alist))
               ;; Restore the process buffer to its previous state
