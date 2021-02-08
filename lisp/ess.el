@@ -20,7 +20,7 @@
 ;; Version: 18.10.3snapshot
 ;; URL: https://ess.r-project.org/
 ;; Package-Requires: ((emacs "25.1"))
-;; ESSR-Version: 1.6
+;; ESSR-Version: 1.7
 
 ;; This file is part of GNU Emacs.
 

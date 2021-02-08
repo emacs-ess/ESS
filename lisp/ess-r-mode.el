@@ -62,15 +62,16 @@ use `ess-r-mode-hook' instead.")
 (add-hook 'ess-r-mode-hook (lambda () (run-hooks 'R-mode-hook)))
 
 (defcustom ess-r-fetch-ESSR-on-remotes nil
-  "If non-nil, fetch ESSR from the GitHub repository.
-Otherwise source from local ESS installation. When 'ess-remote,
-fetch only with `ess-remote'. When t, always fetch from remotes.
-Change this variable when loading ESSR code on remotes fails
-systematically.
+  "If non-nil, when loading ESSR, fetch it from the GitHub repository.
+Otherwise source from local ESS installation. When the value is
+'ess-remote, fetch only with ess-remote's and not with TRAMP
+connections. When t, always fetch from remotes. Change this
+variable when loading ESSR code on remotes fails for you.
 
 Fetching happens once per new ESSR version. The archive is stored
-in ~/.config/ESSR/ folder. You can download and place it there
-manually if the remote has restricted network access."
+in ~/.config/ESSR/ESSRv[VERSION].rds file. You can download and
+place it there manually if the remote has restricted network
+access."
   :type '(choice (const nil :tag "Never")
                  (const 'ess-remote :tag "With ess-remote only")
                  (const t :tag "Always"))
@@ -1384,7 +1385,11 @@ documented, returns nil."
         (inferior-ess-input-sender proc string))))
 
 (defun ess-r-load-ESSR ()
-  "Load ESSR functionality."
+  "Load ESSR functionality into ESSR environment.
+On remotes, when `ess-r-fetch-ESSR-on-remotes' is non-nil we
+fetch ESSR environment from github to the remote machine.
+Otherwise (the default) we source ESSR files into the remote
+process."
   ;; `.ess.command()` is not defined until ESSR is loaded so disable
   ;; it temporarily. Would be helpful to implement an `inferior-ess-let'
   ;; macro .
@@ -1395,6 +1400,8 @@ documented, returns nil."
           (ess-r--fetch-ESSR-remote)
         (ess-r--load-ESSR-remote)))
      ((and (bound-and-true-p ess-remote))
+      ;; NB: With ess-remote we send by chunks because sending large sources is
+      ;; fragile
       (if ess-r-fetch-ESSR-on-remotes
           (ess-r--fetch-ESSR-remote)
         (ess-r--load-ESSR-remote t)))
@@ -1466,11 +1473,12 @@ to the search path."
 
 (defun ess-r--fetch-ESSR-remote ()
   (let ((loader (ess-file-content (expand-file-name "ESSR/LOADREMOTE" ess-etc-directory))))
-    (unless (ess-boolean-command (format loader essr-version) nil 0.1)
+    (unless (with-temp-message "Loading ESSR on the remote ..."
+              (ess-boolean-command (format loader essr-version)))
       (let* ((errmsg (with-current-buffer " *ess-command-output*" (buffer-string)))
              (src-dir (expand-file-name "ESSR/R" ess-etc-directory))
              (files (directory-files src-dir t "\\.R\\'")))
-        (message (format "Couldn't load ESSR.rds. Injecting from local.\n Error: %s\n" errmsg))
+        (message (format "Couldn't load or download ESSR.rds on the remote.\n Error: %s\n Injecting local copy of ESSR." errmsg))
         (ess-r--load-ESSR-remote)))))
 
 (cl-defmethod ess-quit--override (arg &context (ess-dialect "R"))

@@ -51,6 +51,9 @@ julia:
 autoloads:
 	cd lisp; $(MAKE) ess-autoloads.el
 
+## Rebuild and publish ESSR package:
+# 1. Update ESSR-Version in lisp/ess.el
+# 2. make essr
 .PHONY: essr
 essr: VERSION
 	@echo "**********************************************************"
@@ -60,6 +63,8 @@ essr: VERSION
 	@git add etc/ESSR.rds lisp/ess.el etc/ESSR/R/.load.R
 	git commit -m"ESSR Version $(ESSR-VERSION)"
 	git tag "ESSRv"$(ESSR-VERSION)
+	git push
+	git push origin "ESSRv"$(ESSR-VERSION)
 
 install: all
 	mkdir -p $(ESSDESTDIR)
