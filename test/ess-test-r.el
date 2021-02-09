@@ -835,22 +835,41 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
 
 ;; Utils for inferior R process
 
-(ert-deftest ess-r-load-ESSR-github-fetch-no ()
-  (ess--essr-load-or-throw-error "dummy-pkg/R/test.R")
-  (let ((ess-r-fetch-ESSR-on-remotes nil))
-    (ess--essr-load-or-throw-error (ess-test-create-remote-path "dummy-pkg/R/test.R"))))
+(ert-deftest ess-mock-remote-process ()
+  ;; Check that our test is doing what we think it should, namely that it is
+  ;; creating a mock remote process (i.e. a test of our test setup)
+  (with-ess-test-r-file (ess-test-create-remote-path "dummy-pkg/R/test.R")
+    (with-r-running (current-buffer)
+      (should (file-remote-p (ess-get-process-variable 'default-directory))))
+    (kill-buffer)))
 
-;; the following test doesn't ensure that ESSR is succesfully able to download
-;; ESSR.rds from GitHub as part of the `ess-r--fetch-ESSR-remote' routine since
-;; the function falls back on `ess-r--load-ESSR-remote' in that event. Such a
-;; failure is reported via a call to `message', so future improvements to
-;; this test could assert that no such errors were reported.
+;; The assertions in this test do NOT require an internet connection
+(ert-deftest ess-r-load-ESSR-github-fetch-no ()
+  ;; Local ESSR load
+  (ess--essr-load-or-throw-error "dummy-pkg/R/test.R"
+                                 #'ess-r--load-ESSR-local)
+  ;; Remote ESSR injection through process connection
+  (ess--essr-load-or-throw-error (ess-test-create-remote-path "dummy-pkg/R/test.R")
+                                 #'ess-r--load-ESSR-remote))
+
+;; The assertions in this test DO require an internet connection
 (ert-deftest ess-r-load-ESSR-github-fetch-yes ()
+  ;; Skip test when performing as part of the CI
   (let ((envvar-travis (getenv "TRAVIS)")))
     (skip-unless (not (and envvar-travis
                            (string= envvar-travis "true")))))
-  (let ((ess-r-fetch-ESSR-on-remotes t))
-    (ess--essr-load-or-throw-error (ess-test-create-remote-path "dummy-pkg/R/test.R"))))
+  (let* ((remote-file-path (ess-test-create-remote-path "dummy-pkg/R/test.R"))
+         (essr-nm (concat "ESSRv" essr-version ".rds"))
+         (essr-path (expand-file-name essr-nm "~/.config/ESSR")))
+    ;; Ensure that ESSR doesn't currently exist on the machine which in turn
+    ;; ensures that a GitHub fetch will be required to load ESSR
+    (delete-file essr-path)
+    ;; Remote ESSR load through GitHub fetch
+    (ess--essr-load-or-throw-error remote-file-path #'ess-r--fetch-ESSR-remote)
+    ;; ESSR has already been loaded on the remote machine, so this time the
+    ;; function doesn't make a GitHub fetch
+    (should (file-exists-p essr-path))
+    (ess--essr-load-or-throw-error remote-file-path #'ess-r--fetch-ESSR-remote)))
 
 (provide 'ess-test-r)
 
