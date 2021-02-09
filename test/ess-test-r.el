@@ -856,15 +856,16 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
 ;; The assertions in this test DO require an internet connection
 (ert-deftest ess-r-load-ESSR-github-fetch-yes ()
   ;; Skip test when performing as part of the CI
-  (let ((envvar-travis (getenv "TRAVIS)")))
+  (let ((envvar-travis (getenv "TRAVIS")))
     (skip-unless (not (and envvar-travis
                            (string= envvar-travis "true")))))
   (let* ((remote-file-path (ess-test-create-remote-path "dummy-pkg/R/test.R"))
          (essr-nm (concat "ESSRv" essr-version ".rds"))
          (essr-path (expand-file-name essr-nm "~/.config/ESSR")))
     ;; Ensure that ESSR doesn't currently exist on the machine which in turn
-    ;; ensures that a GitHub fetch will be required to load ESSR
-    (delete-file essr-path)
+    ;; ensures that a GitHub fetch will be required to load ESSR. Note that for
+    ;; Emacs <= 25 `delete-file' throws an error if the file doesn't exist.
+    (ignore-errors (delete-file essr-path))
     ;; Remote ESSR load through GitHub fetch
     (ess--essr-load-or-throw-error remote-file-path #'ess-r--fetch-ESSR-remote)
     ;; ESSR has already been loaded on the remote machine, so this time the
