@@ -368,7 +368,7 @@ which is relied upon by `ess-command')."
          (output-list (ess-get-words-from-vector r-input)))
     (> (length output-list) 0)))
 
-(defun ess--essr-load-or-throw-error (file)
+(defun ess--essr-load-or-throw-error (file ess-r--load-ESSR-fcn)
   "Attempt to attach the ESSR environment.
 Throws an error if unsuccesful."
   (with-ess-test-r-file file
@@ -377,7 +377,7 @@ Throws an error if unsuccesful."
       ;; global environment
       (ess--essr-remove)
       ;; inject environment and attach
-      (ess-r-load-ESSR)
+      (ess-r--without-format-command (funcall ess-r--load-ESSR-fcn))
       ;; check for successful ESSR injection
       (should (not (ess--essr-check-if-in-globalenv)))
       (should (ess--essr-check-if-attached))
