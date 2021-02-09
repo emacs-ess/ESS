@@ -1397,24 +1397,24 @@ process."
     (cond
      ((file-remote-p (ess-get-process-variable 'default-directory))
       (if (eq ess-r-fetch-ESSR-on-remotes t)
-          (ess-r--fetch-ESSR-remote)
+          (ess-r--fetch-ESSR-or-fallback-load-remote)
         (ess-r--load-ESSR-remote)))
      ((and (bound-and-true-p ess-remote))
       ;; NB: With ess-remote we send by chunks because sending large sources is
       ;; fragile
       (if ess-r-fetch-ESSR-on-remotes
-          (ess-r--fetch-ESSR-remote)
+          (ess-r--fetch-ESSR-or-fallback-load-remote t)
         (ess-r--load-ESSR-remote t)))
      (t (ess-r--load-ESSR-local)))))
 
 (defun ess-r--load-ESSR-local ()
-  "Load ESSR functionality onto a local process.
+  "Load ESSR functionality into a local process.
 Sources the .load.R file in the R process, the contents of which
 are a single function named .ess.load.ESSR function. The
-.ess.load.ESSR function is then invoked in the process which has
-the effect of sourcing all of the contents of the ESSR/R
-directory into the ESSR environment and attaching the environment
-to the search path."
+.ess.load.ESSR function is then invoked in the R runtime
+environment which has the effect of sourcing all of the contents
+of the ESSR/R directory into the ESSR environment and attaching
+the environment to the search path."
   (let* ((src-dir (expand-file-name "ESSR/R" ess-etc-directory))
          (cmd (format "local({
                           source('%s/.load.R', local=TRUE) #define load.ESSR
@@ -1441,14 +1441,26 @@ environment and attaches it to the search path."
       (ess-command ".ess.load.ESSR()\n" nil nil nil nil nil nil 5))))
 
 (defun ess-r--fetch-ESSR-remote ()
+  "Load ESSR functionality into a remote process through a GitHub download.
+Downloads a file with a serialized version of the R ESSR
+environment from GitHub and reads it into R and attaches the
+environment to the search path. If the file already exists on
+disk from a previous download then the download step is omitted.
+This function returns t if the ESSR load is successful, and nil
+otherwise."
   (let ((loader (ess-file-content (expand-file-name "ESSR/LOADREMOTE" ess-etc-directory))))
-    (unless (with-temp-message "Loading ESSR on the remote ..."
-              (ess-boolean-command (format loader essr-version)))
-      (let* ((errmsg (with-current-buffer " *ess-command-output*" (buffer-string)))
-             (src-dir (expand-file-name "ESSR/R" ess-etc-directory))
-             (files (directory-files src-dir t "\\.R\\'")))
-        (message (format "Couldn't load or download ESSR.rds on the remote.\n Error: %s\n Injecting local copy of ESSR." errmsg))
-        (ess-r--load-ESSR-remote)))))
+    (or (with-temp-message "Loading ESSR on the remote ..."
+          (ess-boolean-command (format loader essr-version)))
+        (let* ((errmsg (with-current-buffer " *ess-command-output*" (buffer-string)))
+               (src-dir (expand-file-name "ESSR/R" ess-etc-directory))
+               (files (directory-files src-dir t "\\.R\\'")))
+          (message (format "Couldn't load or download ESSR.rds on the remote.\n Error: %s\n Injecting local copy of ESSR." errmsg))
+          nil))))
+
+(defun ess-r--fetch-ESSR-or-fallback-load-remote (&optional chunked)
+  "First try ESSR GitHub fetch, otherwise use the process connection."
+  (or (ess-r--fetch-ESSR-remote)
+      (ess-r--load-ESSR-remote chunked)))
 
 (cl-defmethod ess-quit--override (arg &context (ess-dialect "R"))
   "With ARG, do not offer to save the workspace."
