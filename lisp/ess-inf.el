@@ -1008,14 +1008,7 @@ Returns nil if TIMEOUT was reached, non-nil otherwise."
 (defun inferior-ess-ordinary-filter (proc string)
   (ess--if-verbose-write-process-state proc string "ordinary-filter")
   (let ((cmd-delim (process-get proc 'cmd-output-delimiter))
-        (cmd-delim-incoming (process-get proc 'cmd-output-delimiter-incoming))
-        (flush (lambda ()
-                 (with-current-buffer (process-buffer proc)
-                   (save-excursion
-                     (let ((marker (process-mark proc)))
-                       (goto-char marker)
-                       (insert string)
-                       (set-marker marker (point))))))))
+        (cmd-delim-incoming (process-get proc 'cmd-output-delimiter-incoming)))
     (cond (cmd-delim-incoming
            (setq string (concat cmd-delim-incoming string))
            (cond ((not (string-match-p "\n" string))
@@ -1034,13 +1027,19 @@ Returns nil if TIMEOUT was reached, non-nil otherwise."
                   (process-put proc 'cmd-output-delimiter-incoming nil)
                   (inferior-ess-ordinary-filter proc string))))
           (cmd-delim
-           (funcall flush)
+           (with-current-buffer (process-buffer proc)
+             (save-excursion
+               (let ((marker (process-mark proc)))
+                 (goto-char marker)
+                 (insert string)
+                 (set-marker marker (point)))))
            (inferior-ess--set-status-sentinel proc (process-buffer proc) cmd-delim)
            (inferior-ess-run-callback proc string))
           (t
            (inferior-ess--set-status proc string)
            (inferior-ess-run-callback proc string)
-           (funcall flush)))
+           (with-current-buffer (process-buffer proc)
+             (insert string))))
     ;; Restore user process buffer asynchronously as soon as process
     ;; is available
     (when (and (process-get proc 'cmd-async-restore-alist)
@@ -1321,55 +1320,33 @@ wrapping the code into:
                           (funcall cmd-fun
                                    (ess--strip-final-newlines cmd)
                                    (cons 'output-delimiter delim))
-                        cmd))
-            (early-exit t))
+                        cmd)))
         (ess-if-verbose-write (format "(ess-command %s ..)" cmd))
         ;; Swap the process buffer with the output buffer before
         ;; sending the command
-        (unwind-protect
-            (progn
-              (process-put proc 'cmd-async-restore-alist cmd-restore-alist)
-              (when use-delimiter
-                (process-put proc 'cmd-output-delimiter delim)
-                (process-put proc 'cmd-output-delimiter-incoming ""))
-              (set-process-buffer proc out-buffer)
-              (set-process-filter proc 'inferior-ess-ordinary-filter)
-              (with-current-buffer out-buffer
-                (ess-setq-vars-local proc-forward-alist)
-                (setq buffer-read-only nil)
-                (erase-buffer)
-                (set-marker (process-mark proc) (point-min))
-                (inferior-ess-mark-as-busy proc)
-                (process-send-string proc rich-cmd)
-                ;; Need time for ess-create-object-name-db on PC
-                (if no-prompt-check
-                    (sleep-for 0.02) ; 0.1 is noticeable!
-                  (unless (ess-wait-for-process proc nil wait force-redisplay timeout)
-                    (error "Timeout during background ESS command `%s'"
-                           (ess--strip-final-newlines cmd)))
-                  ;; Remove prompt. If output is cat(..)ed without a
-                  ;; final newline, this deletes the last line of output.
-                  (goto-char (point-max))
-                  (delete-region (point-at-bol) (point-max))))
-              (setq early-exit nil))
-          ;; Protect the process restoration from further quits
-          (let ((inhibit-quit t))
-            ;; (if early-exit
-            ;;     ;; In case of early exit we send an interrupt to the
-            ;;     ;; process. The process is restored asynchronously
-            ;;     ;; once it's available again (i.e. a prompt is
-            ;;     ;; detected). We can't restore right away because the
-            ;;     ;; output of the background command would spill into
-            ;;     ;; the process buffer of the user when the process
-            ;;     ;; doesn't interrupt in time. We also can't wait for
-            ;;     ;; the interrupt because that would cause Emacs
-            ;;     ;; freezes when the user types code (`when-no-input'
-            ;;     ;; is a common cause of early exits of background
-            ;;     ;; commands). Hence the asynchronous restoration.
-            ;;     (ess--interrupt proc)
-            ;;   ;; Restore the process buffer to its previous state
-            ;;   (ess--command-proc-restore proc))
-            ))))
+        (process-put proc 'cmd-async-restore-alist cmd-restore-alist)
+        (when use-delimiter
+          (process-put proc 'cmd-output-delimiter delim)
+          (process-put proc 'cmd-output-delimiter-incoming ""))
+        (set-process-buffer proc out-buffer)
+        (set-process-filter proc 'inferior-ess-ordinary-filter)
+        (with-current-buffer out-buffer
+          (ess-setq-vars-local proc-forward-alist)
+          (setq buffer-read-only nil)
+          (erase-buffer)
+          (set-marker (process-mark proc) (point-min))
+          (inferior-ess-mark-as-busy proc)
+          (process-send-string proc rich-cmd)
+          ;; Need time for ess-create-object-name-db on PC
+          (if no-prompt-check
+              (sleep-for 0.02) ; 0.1 is noticeable!
+            (unless (ess-wait-for-process proc nil wait force-redisplay timeout)
+              (error "Timeout during background ESS command `%s'"
+                     (ess--strip-final-newlines cmd)))
+            ;; Remove prompt. If output is cat(..)ed without a
+            ;; final newline, this deletes the last line of output.
+            (goto-char (point-max))
+            (delete-region (point-at-bol) (point-max))))))
     out-buffer))
 
 (defun ess--command-proc-restore (proc)
