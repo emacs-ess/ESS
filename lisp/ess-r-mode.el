@@ -1439,7 +1439,7 @@ environment and attaches it to the search path."
     (let ((src-dir (expand-file-name "ESSR/R" ess-etc-directory)))
       (dolist (file (directory-files src-dir t "\\.R\\'"))
         (ess--inject-code-from-file file chunked))
-      (ess-command ".ess.load.ESSR()\n" nil nil nil nil nil nil 5))))
+      (ess-command ".ess.collect.ESSR.objects()\n" nil nil nil nil nil nil 5))))
 
 (defun ess-r--fetch-ESSR-remote ()
   "Load ESSR functionality into a remote process through a GitHub download.
