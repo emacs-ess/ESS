@@ -3,7 +3,7 @@
 ## Do not use _ in names, nor :: as they cannot be parsed in old R versions
 
 ## load .base.R and all other files into ESSR environment; then attach ESSR
-.ess.load.ESSR <- function(dir = NULL) {
+.ess.load.ESSR <- function(dir) {
     .source <-
         if(any("keep.source" == names(formals(sys.source))))
             sys.source
@@ -30,25 +30,14 @@
     VERSION <- "1.7"
     assign(".ess.ESSRversion", VERSION, envir = ESSR)
 
-    ## either source the ESSR files if a directory is provided, or otherwise try
-    ## to move any existing R objects into the ESSR environment
-    if(!is.null(dir)) {
 
-        ## .basic.R:
-        try(.source(paste(dir,'/.basic.R', sep = ""), envir = ESSR, keep.source = FALSE))
+    ## .basic.R:
+    try(.source(paste(dir,'/.basic.R', sep = ""), envir = ESSR, keep.source = FALSE))
 
-        ## all others try(*) as it will fail in old R
-        if(!oldR) # no sense if(oldR)
-            for( f in dir(dir, pattern='\\.R$', full.names=TRUE) )
-                try(.source(f, envir = ESSR, keep.source = FALSE))
-    }
-    else {
-        essr.nms <- grep('\\.(ess|ESS)', ls(.GlobalEnv, all.names = TRUE), value = TRUE)
-        for (nm in essr.nms) {
-            ESSR[[nm]] <- get(nm, pos = .GlobalEnv)
-        }
-        rm(list = essr.nms, pos = .GlobalEnv)
-    }
+    ## all others try(*) as it will fail in old R
+    if(!oldR) # no sense if(oldR)
+        for( f in dir(dir, pattern='\\.R$', full.names=TRUE) )
+            try(.source(f, envir = ESSR, keep.source = FALSE))
 
     if(Rver >= "2.4.0")
         attach(ESSR)
