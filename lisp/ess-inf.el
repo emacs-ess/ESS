@@ -1009,36 +1009,35 @@ Returns nil if TIMEOUT was reached, non-nil otherwise."
   (ess--if-verbose-write-process-state proc string "ordinary-filter")
   (let ((cmd-delim (process-get proc 'cmd-output-delimiter))
         (cmd-delim-incoming (process-get proc 'cmd-output-delimiter-incoming))
-        (flush (lambda () (with-current-buffer (process-buffer proc)
-                       (insert string)))))
+        (flush (lambda ()
+                 (with-current-buffer (process-buffer proc)
+                   (save-excursion
+                     (let ((marker (process-mark proc)))
+                       (goto-char marker)
+                       (insert string)
+                       (set-marker marker (point))))))))
     (cond (cmd-delim-incoming
-           (message "cmd-delim-incoming")
            (setq string (concat cmd-delim-incoming string))
            (cond ((not (string-match-p "\n" string))
                   ;; Accumulate output until a new line
-                  (message "accumulate incoming")
                   (process-put proc 'cmd-output-delimiter-incoming string))
                  ((string-match-p (inferior-ess--sentinel-start-re cmd-delim) string)
                   ;; We found the starting delimiter so we disable the
                   ;; incoming delimiter check and recurse
-                  (message "disable incoming")
                   (process-put proc 'cmd-output-delimiter-incoming nil)
                   (inferior-ess-ordinary-filter proc string))
                  (t
                   ;; The starting delimiter is missing so CMD probably
                   ;; failed to parse. Disable the output delimiter and
                   ;; recurse.
-                  (message "fail incoming")
                   (process-put proc 'cmd-output-delimiter nil)
                   (process-put proc 'cmd-output-delimiter-incoming nil)
                   (inferior-ess-ordinary-filter proc string))))
           (cmd-delim
-           (message "flush delim")
            (funcall flush)
            (inferior-ess--set-status-sentinel proc (process-buffer proc) cmd-delim)
            (inferior-ess-run-callback proc string))
           (t
-           (message "flush normal")
            (inferior-ess--set-status proc string)
            (inferior-ess-run-callback proc string)
            (funcall flush)))
@@ -1046,7 +1045,6 @@ Returns nil if TIMEOUT was reached, non-nil otherwise."
     ;; is available
     (when (and (process-get proc 'cmd-async-restore-alist)
                (not (process-get proc 'busy)))
-      (message "restore")
       (ess--command-proc-restore proc))))
 
 (defvar ess-presend-filter-functions nil
