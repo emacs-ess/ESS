@@ -87,5 +87,21 @@
     } else { ## if(oldR), use as in that old library():
         .Internal(lib.fixup(ESSR, .GlobalEnv))
     }
+}
 
+
+## copy any ESSR R objects in the global environment into a newly created ESSR
+## environment; then remove the original objects and attach ESSR
+.ess.collect.ESSR.objects <- function() {
+
+    Rver <- .ess.load.ESSR.get.rver()
+    oldR <- .ess.load.ESSR.check.oldr(Rver)
+
+    ESSR <- .ess.load.ESSR.create.env(Rver, oldR)
+    essr.nms <- grep('\\.(ess|ESS)', ls(.GlobalEnv, all.names = TRUE), value = TRUE)
+    for (nm in essr.nms) {
+        assign(nm, get(nm, pos = .GlobalEnv), envir = ESSR)
+    }
+    .ess.load.ESSR.attach.env(ESSR, Rver, oldR)
+    rm(list = essr.nms, pos = .GlobalEnv)
 }
