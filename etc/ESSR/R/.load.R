@@ -4,15 +4,35 @@
 
 ## load .base.R and all other files into ESSR environment; then attach ESSR
 .ess.load.ESSR <- function(dir) {
-    .source <-
-        if(any("keep.source" == names(formals(sys.source))))
-            sys.source
-        else
-            function(..., keep.source) sys.source(...)
 
-    Rver <- if(exists("getRversion", mode="function")) getRversion()
-            else paste(R.version$major, R.version$minor, sep=".")
-    oldR <- Rver <= "1.3.0"
+    Rver <- .ess.load.ESSR.get.rver()
+    oldR <- .ess.load.ESSR.check.oldr(Rver)
+
+    ESSR <- .ess.load.ESSR.create.env(Rver, oldR)
+    ESSR <- .ess.load.ESSR.source.files(ESSR, dir, oldR)
+    .ess.load.ESSR.attach.env(ESSR, Rver, oldR)
+
+    ## BUILDESSR needs this:
+    invisible(ESSR)
+}
+
+
+## obtain the R version number as a string
+.ess.load.ESSR.get.rver <- function() {
+    if(exists("getRversion", mode="function")) getRversion()
+    else paste(R.version$major, R.version$minor, sep=".")
+}
+
+
+## check whether R is on or before an old version (certain functions that are
+## relevant to the ESSR load process change after this version)
+.ess.load.ESSR.check.oldr <- function(Rver) {
+    Rver <= "1.3.0"
+}
+
+
+## create the ESSR evironment and add R and ESSR version information to it
+.ess.load.ESSR.create.env <- function(Rver, oldR) {
 
     ESSR <-
         if(oldR) ## really old library() revert order a bit
@@ -30,6 +50,20 @@
     VERSION <- "1.7"
     assign(".ess.ESSRversion", VERSION, envir = ESSR)
 
+    ESSR
+}
+
+
+## attempt to source the files in the ESSR directory and place the resulting R
+## objects into ESSR environment; the updated version of the environment is
+## returned
+.ess.load.ESSR.source.files <- function(ESSR, dir, oldR) {
+
+    .source <-
+        if(any("keep.source" == names(formals(sys.source))))
+            sys.source
+        else
+            function(..., keep.source) sys.source(...)
 
     ## .basic.R:
     try(.source(paste(dir,'/.basic.R', sep = ""), envir = ESSR, keep.source = FALSE))
@@ -39,6 +73,12 @@
         for( f in dir(dir, pattern='\\.R$', full.names=TRUE) )
             try(.source(f, envir = ESSR, keep.source = FALSE))
 
+    ESSR
+}
+
+
+## attach the ESSR environment to the search path
+.ess.load.ESSR.attach.env <- function(ESSR, Rver, oldR) {
     if(Rver >= "2.4.0")
         attach(ESSR)
     else if(!oldR) { ## borrow from older library()
@@ -48,6 +88,4 @@
         .Internal(lib.fixup(ESSR, .GlobalEnv))
     }
 
-    ## BUILDESSR needs this:
-    invisible(ESSR)
 }
