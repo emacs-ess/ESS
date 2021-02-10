@@ -1024,7 +1024,7 @@ nil and not t, query for each instance."
     nil))
 
 (defun ess--strip-final-newlines (string)
-  (replace-regexp-in-string "\n+" "" string))
+  (replace-regexp-in-string "\n+$" "" string))
 
 
 ;;*;; Debugging tools

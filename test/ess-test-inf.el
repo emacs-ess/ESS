@@ -201,6 +201,13 @@ Needed with slow-responding processes."
 
   ;; There should be no output after the early exit or async restoration
   :inf-result "")
+
+(etest-deftest-r ess-command-newlines-test ()
+  "`ess-command' doesn't garble new lines (#1110)."
+  :eval ((should (string= (ess--strip-final-newlines "1\n2")
+                          "1\n2"))
+         (should (equal (ess-get-words-from-vector "{ 'foo'\n'bar'\n }\n")
+                        (list "bar")))))
 
 ;;*;; Inferior interaction
 
