@@ -126,12 +126,9 @@ efficiency reasons."
     (let* ((path (ess-r-package--find-package-path (or dir default-directory)))
            (name (when path
                    (ess-r-package--find-package-name path)))
-           (local (if (and path (file-remote-p path))
-                      (tramp-file-name-localname (tramp-dissect-file-name path))
-                    path))
            (info (if name
                      (list :name name
-                           :root local)
+                           :root path)
                    '(nil))))
       ;; If DIR was supplied we cannot cache in the current buffer.
       (if dir
@@ -219,9 +216,11 @@ DIR defaults to the current buffer's file name (if non-nil) or
   "Set process directory to current package directory."
   (interactive)
   (let ((pkg-root (plist-get (ess-r-package-info) :root)))
-    (if pkg-root
-        (ess-set-working-directory (abbreviate-file-name pkg-root))
-      (user-error "Not in a project"))))
+    (unless pkg-root
+      (user-error "Not in a project"))
+    (let* ((lpath (ess--path-get-local-portion pkg-root))
+           (lpath-abbreviated (abbreviate-file-name lpath)))
+      (ess-set-working-directory lpath-abbreviated))))
 
 
 ;;;*;;; Evaluation
@@ -262,7 +261,8 @@ arguments, or expressions which return R arguments."
     (ess-project-save-buffers)
     (message msg (plist-get pkg-info :name))
     (display-buffer (ess-get-process-buffer))
-    (let ((pkg-path (concat "'" (abbreviate-file-name (plist-get pkg-info :root)) "'")))
+    (let* ((lpath (ess--path-get-local-portion (plist-get pkg-info :root)))
+           (pkg-path (concat "'" (abbreviate-file-name lpath) "'")))
       (ess-eval-linewise (format command (concat pkg-path args))))))
 
 (defun ess-r-command--build-args (ix &optional actions)

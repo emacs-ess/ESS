@@ -19,6 +19,7 @@
 (require 'ert)
 (require 'ess-r-mode)
 (require 'ess-r-package)
+(require 'ess-r-flymake)
 (require 'ess-test-r-utils)
 
 ;;; Code:
@@ -102,11 +103,149 @@
         (should (string= (plist-get pkg-info :name) "foo"))
         (should (string-match-p "dummy-pkg$" (plist-get pkg-info :root)))
         (kill-buffer)))
+    (with-ess-test-r-file (ess-test-create-remote-path "dummy-pkg/R/test.R")
+      (let ((pkg-info (ess-r-package-info)))
+        (should (string= (plist-get pkg-info :name) "foo"))
+        (should (string-match-p "^/mock:.*dummy-pkg$" (plist-get pkg-info :root)))
+        (kill-buffer)))
     (with-ess-test-c-file "dummy-pkg/src/test.c"
       (let ((pkg-info (ess-r-package-info)))
         (should (string= (plist-get pkg-info :name) "foo"))
         (should (string-match-p "dummy-pkg$" (plist-get pkg-info :root)))
         (kill-buffer)))))
+
+(ert-deftest ess-r-package-project-test ()
+  (with-ess-test-r-file "dummy-pkg/R/test.R"
+    (let ((project-info (ess-r-package-project)))
+      (should (equal 'ess-r-package (car project-info)))
+      (should (string-match-p "dummy-pkg$" (cdr project-info)))
+      (kill-buffer)))
+  (with-ess-test-r-file (ess-test-create-remote-path "dummy-pkg/R/test.R")
+    (let ((project-info (ess-r-package-project)))
+      (should (equal 'ess-r-package (car project-info)))
+      (should (string-match-p "^/mock:.*dummy-pkg$" (cdr project-info)))
+      (kill-buffer))))
+
+(ert-deftest ess-r-package-use-dir-test ()
+  (with-ess-test-r-file "dummy-pkg/R/test.R"
+    (with-r-running (current-buffer)
+      (ess-set-working-directory "/")
+      (ess-wait-for-process)
+      (should (string= (ess-get-working-directory) "/"))
+      (ess-r-package-use-dir)
+      (ess-wait-for-process)
+      (should (string-match-p "dummy-pkg$" (ess-get-working-directory))))
+    (kill-buffer))
+  (with-ess-test-r-file (ess-test-create-remote-path "dummy-pkg/R/test.R")
+    (with-r-running (current-buffer)
+     (should (string-match-p "/mock:.*/dummy-pkg/R/test.R" buffer-file-name))
+     (ess-set-working-directory "/")
+     (ess-wait-for-process)
+     (should (string= (ess-get-working-directory) "/"))
+     (ess-r-package-use-dir)
+     (ess-wait-for-process)
+     (should (string-match-p "dummy-pkg$" (ess-get-working-directory)))
+     (kill-buffer))))
+
+;; Return DIR unless both (i) DIR is the path of package root directory and (ii)
+;; the buffer file name is in the tests/ package directory. When both (i) and
+;; (ii) hold then return the path corresponding to tests/.
+(ert-deftest inferior-ess-r--adjust-startup-directory-test ()
+  (with-ess-test-r-file (ess-test-create-remote-path "dummy-pkg/tests/example.R")
+    (let* ((pkg-dir (plist-get (ess-r-package-info) :root))
+           (inst-dir (expand-file-name "inst" pkg-dir))) ;; arbitrary non-package root directory choice
+      (should (string-match-p "^/mock:.*/dummy-pkg/tests/$" default-directory))
+      (should (string-match-p "^/mock:.*/dummy-pkg$" pkg-dir))
+      (should (string= inst-dir
+                       (inferior-ess-r--adjust-startup-directory inst-dir "R")))
+      (should (string= default-directory
+                       (inferior-ess-r--adjust-startup-directory pkg-dir "R"))))
+    (kill-buffer)))
+
+(ert-deftest ess-r-package-source-dirs-test ()
+  (with-ess-test-r-file "dummy-pkg/R/test.R"
+    (let ((source-dirs (ess-r-package-source-dirs)))
+      (should (string-match-p ".*/dummy-pkg/R$" (car source-dirs)))
+      (should (string-match-p ".*/dummy-pkg/src$" (car (cdr source-dirs))))
+      (should (null (cdr (cdr source-dirs))))
+      (kill-buffer)))
+  (with-ess-test-r-file (ess-test-create-remote-path "dummy-pkg/R/test.R")
+    (let ((source-dirs (ess-r-package-source-dirs)))
+      (should (string-match-p "^/mock:.*/dummy-pkg/R$" (car source-dirs)))
+      (should (string-match-p "^/mock:.*/dummy-pkg/src$" (car (cdr source-dirs))))
+      (should (null (cdr (cdr source-dirs))))
+      (kill-buffer))))
+
+(ert-deftest ess-r-package-save-buffers-test ()
+  ;; modify a file within an R package and try to save it
+  (with-ess-test-r-file "dummy-pkg/R/test.R"
+    (let ((new-path (expand-file-name "tmp.R")))
+      (write-region "" nil new-path)
+      (find-file new-path)
+      (should (string-match-p ".*/dummy-pkg/R/tmp.R$" buffer-file-name))
+      (should (not (buffer-modified-p)))
+      (insert "# buffer update")
+      (should (buffer-modified-p))
+      (let ((ess-save-silently t))
+        (ess-project-save-buffers)
+        (should (string-match-p ".*/dummy-pkg/R/tmp.R$" buffer-file-name))
+        (should (not (buffer-modified-p))))
+      (kill-buffer "test.R")
+      (kill-buffer "tmp.R")
+      (delete-file new-path)))
+  ;; modify a file within an R package with a remote path and try to save it
+  (with-ess-test-r-file (ess-test-create-remote-path "dummy-pkg/R/test.R")
+    (let ((new-path (expand-file-name "tmp.R")))
+      (write-region "" nil new-path)
+      (find-file new-path)
+      (should (string-match-p "^/mock:.*/dummy-pkg/R/tmp.R$" buffer-file-name))
+      (should (not (buffer-modified-p)))
+      (insert "# buffer update")
+      (should (buffer-modified-p))
+      (let ((ess-save-silently t))
+        (ess-project-save-buffers)
+        (should (string-match-p "^/mock:.*/dummy-pkg/R/tmp.R$" buffer-file-name))
+        (should (not (buffer-modified-p))))
+      (kill-buffer "test.R")
+      (kill-buffer "tmp.R")
+      (delete-file new-path))))
+
+(ert-deftest ess-r-package-eval-linewise-test ()
+  (let ((output-regex "^# '.*/dummy-pkg'$"))
+    ;; Test with an R package on a local filesystem
+    (with-ess-test-r-file "dummy-pkg/R/test.R"
+      (with-r-running (current-buffer)
+        (let ((actual (output (ess-r-package-eval-linewise "# %s"))))
+          (should (string-match-p output-regex actual))))
+      (kill-buffer))
+    ;; Test with an R package on a remote filesystem. The remote prefix portion
+    ;; of the package location should be stripped from the command.
+    (with-ess-test-r-file (ess-test-create-remote-path "dummy-pkg/R/test.R")
+      (with-r-running (current-buffer)
+        (should (string-match-p "^/mock:.*/dummy-pkg/R/test.R$" buffer-file-name))
+        (let ((actual (output (ess-r-package-eval-linewise "# %s"))))
+          (should (string-match-p output-regex actual))
+          (should (not (string-match-p "/mock:" actual)))))
+      (kill-buffer))))
+
+(ert-deftest ess-r--flymake-parse-output-test ()
+  (with-ess-test-r-file (ess-test-create-remote-path "dummy-pkg/R/test.R")
+    (let ((ess-proj-file (expand-file-name "../.lintr"))
+          (cur-dir-file (expand-file-name ".lintr")))
+      ;; no .lintr file
+      (should (null (ess-r--find-lintr-file)))
+      ;; .lintr file in the package directory
+      (write-region "" nil ess-proj-file)
+      (let ((actual (ess-r--find-lintr-file)))
+        (should (string-match-p "^/mock:.*/dummy-pkg/\\.lintr$" actual)))
+      ;; .lintr file in the current directory takes precedence over any other
+      ;; locations
+      (write-region "" nil cur-dir-file)
+      (let ((actual (ess-r--find-lintr-file)))
+        (should (string-match-p "^/mock:.*/dummy-pkg/R/\\.lintr$" actual)))
+      ;; clean up created files
+      (delete-file ess-proj-file)
+      (delete-file cur-dir-file))))
 
 (provide 'ess-test-r-package)
 
