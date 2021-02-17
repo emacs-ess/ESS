@@ -416,7 +416,7 @@ Return non-nil if the process is in a ready (not busy) state."
         (when (looking-at inferior-ess-primary-prompt)
           (goto-char (point-min))
           (when (re-search-forward (inferior-ess--sentinel-start-re sentinel) nil t)
-            (delete-region (match-beginning 0) (1+ (match-end 0))))
+            (delete-region (point-min) (1+ (match-end 0))))
           (when (re-search-forward (concat "^\\(" sentinel "-END[\n\r]+\\)") nil t)
             (delete-region (match-beginning 0) (match-end 0))
             (process-put proc 'busy nil)
@@ -424,7 +424,7 @@ Return non-nil if the process is in a ready (not busy) state."
             t))))))
 
 (defun inferior-ess--sentinel-start-re (sentinel)
-  (concat "^\\(" sentinel "-START$\\)"))
+  (concat "\\(" sentinel "-START$\\)"))
 
 (defun inferior-ess-mark-as-busy (proc)
   "Put PROC's busy value to t."

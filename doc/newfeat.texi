@@ -36,7 +36,8 @@ The help summary for the argument is no longer displayed in the
 echo area. This fixes delays and hangs (#1062).
 
 @item ESS[R]: @code{ess-command} is now more robust and resilient to hangs
-and custom prompts (#1043).
+and custom prompts (#1043). It also strips continuation prompts (@code{+}
+prompts) automatically and reliably (#1116).
 
 @item ESS[R]: @code{ess-command} now handles sinked consoles correctly.
 

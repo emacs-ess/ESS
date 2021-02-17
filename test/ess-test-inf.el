@@ -208,6 +208,14 @@ Needed with slow-responding processes."
                           "1\n2"))
          (should (equal (ess-get-words-from-vector "{ 'foo'\n'bar'\n }\n")
                         (list "bar")))))
+
+(etest-deftest-r ess-command-multiline-test ()
+  "`ess-command' output doesn't include continuation prompts (#1116)."
+  :eval ((let ((buf (generate-new-buffer "ess-command-multiline-test")))
+           (ess-command "{ 1\n 2 }\n" buf)
+           (should (string= (with-current-buffer buf
+                              (buffer-string))
+                            "[1] 2\n")))))
 
 ;;*;; Inferior interaction
 
