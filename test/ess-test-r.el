@@ -109,11 +109,10 @@
     (insert "1 + \n1")
     (let (ess-eval-visibly)
       (should (output= (ess-eval-region (point-min) (point-max) nil)
-                       ;; We seem to be emitting an extra + here:
                        "+ [1] 2")))
     (let ((ess-eval-visibly t))
       (should (output= (ess-eval-region (point-min) (point-max) nil)
-                       "1 + \n1\n[1] 2")))))
+                       "1 + \n+ 1\n[1] 2")))))
 
 (ert-deftest ess-eval-function ()
   (with-r-running nil

@@ -217,7 +217,7 @@ representative to the common interactive use with tracebug on."
                (let ((inhibit-read-only t))
                  (with-current-buffer ess-r-tests-current-output-buffer
                    (erase-buffer)))
-               (set-process-filter *proc* 'inferior-ess-ordinary-filter)
+               (set-process-filter *proc* 'inferior-ess-output-filter)
                (prog1 (progn ,@body)
                  (ess-wait-for-process *proc*)))
            (setq ess-r-tests-current-output-buffer nil))))))
