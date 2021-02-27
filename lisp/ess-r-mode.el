@@ -466,8 +466,9 @@ fill=TRUE); try(traceback(), silent=TRUE)})\n")
 
 (dolist (l '(;; Takes precedence over R1 below in English locales, and allows spaces in file path
              (R "\\(\\(?: at \\|(@\\)\\([^#()\n]+\\)[#:]\\([0-9]+\\)\\)"  2 3 nil 2 1)
-             ;; valgrind style (stl_numeric.h:183)
-             (R1 "(\\([^ ):\n]+\\):\\([0-9]+\\)?)" 1 2 nil 2)
+             ;; valgrind, testthat, rlang/shiny style
+             ;; e.g. (stl_numeric.h:183), (test-parsers.R:238:3) [.../R/file.R#158]
+             (R1 "[([]\\([:alpha:][^ ):\n]+\\)[#:]\\([0-9]+\\)[#:]?\\([0-9]+\\)?[])]" 1 2 nil 2)
              (R2 "(\\(\\w+ \\([^())\n]+\\)#\\([0-9]+\\)\\))"  2 3 nil 2 1)
              ;; Precedes R4 and allows spaces in file path, Starts at bol or with ": " (patterns 3,4,5,6,9)
              (R3 "\\(?:^ *\\|: ?\\)\\([^-+[:digit:] \t\n]:?[^: \t\n]*\\):\\([0-9]+\\):\\(?:\\([0-9]+\\):\\)?"  1 2 3 2 1)
