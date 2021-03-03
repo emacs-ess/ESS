@@ -64,7 +64,8 @@
 
 (defconst essr-version (eval-when-compile
                          (require 'lisp-mnt)
-                         (save-excursion (lm-header "ESSR-Version")))
+                         (lm-with-file (or load-file-name buffer-file-name)
+                           (lm-header "ESSR-Version")))
   "Version of ESSR package.")
 
 (defvar ess-revision nil
