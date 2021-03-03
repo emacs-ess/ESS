@@ -856,9 +856,8 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
 ;; The assertions in this test DO require an internet connection
 (ert-deftest ess-r-load-ESSR-github-fetch-yes ()
   ;; Skip test when performing as part of the CI
-  (let ((envvar-travis (getenv "TRAVIS")))
-    (skip-unless (not (and envvar-travis
-                           (string= envvar-travis "true")))))
+  (when (equal (getenv "TRAVIS") "true")
+    (ert-skip "Running on TRAVIS"))
   (let* ((remote-file-path (ess-test-create-remote-path "dummy-pkg/R/test.R"))
          (essr-nm (concat "ESSRv" essr-version ".rds"))
          (essr-path (expand-file-name essr-nm "~/.config/ESSR")))
