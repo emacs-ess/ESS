@@ -406,24 +406,57 @@ Return non-nil if the process is in a ready (not busy) state."
                    (string-match (concat "\\(" inferior-ess-secondary-prompt "\\)\\'") string)))
     ready))
 
-(defun inferior-ess--set-status-sentinel (proc output-buf sentinel)
-  (with-current-buffer output-buf
+(defun ess--delimited-output-info (buf delim)
+  "Detect positions of accumulated output.
+Return positions after START, before END, after prompt. If any is
+not found, returns nil. The last position marks the start of new
+output, if any."
+  (with-current-buffer buf
     (save-excursion
       (save-match-data
-        ;; The only assumption is that the prompt finishes with "> "
-        (goto-char (- (point-max) 2))
-        (when (looking-at inferior-ess-primary-prompt)
-          (goto-char (point-min))
-          (when (re-search-forward (inferior-ess--sentinel-start-re sentinel) nil t)
-            (delete-region (point-min) (1+ (match-end 0))))
-          (when (re-search-forward (concat "^\\(" sentinel "-END[\n\r]+\\)") nil t)
-            (delete-region (match-beginning 0) (match-end 0))
-            (process-put proc 'busy nil)
-            (process-put proc 'cmd-output-delimiter nil)
-            t))))))
+        (goto-char (point-min))
+        (when (re-search-forward (ess--delimiter-start-re delim) nil t)
+          (let ((start (1+ (match-end 0))))
+            (when (re-search-forward (ess--delimiter-end-re delim) nil t)
+              (let ((end (max (1- (match-beginning 0))
+                              start)))
+                (goto-char (match-end 0))
+                (goto-char (- (line-end-position) 2))
+                (when (looking-at "> ")
+                  (let ((new (when (> (point-max) (line-end-position))
+                               (1+ (line-end-position)))))
+                    (list start end new)))))))))))
 
-(defun inferior-ess--sentinel-start-re (sentinel)
-  (concat "\\(" sentinel "-START$\\)"))
+;; Be careful that new output might come in after the closing
+;; delimiter. This could happen when a background command is
+;; interrupted asynchronously and the user has sent new inputs before
+;; the process has finished interrupting.
+(defun ess--delimited-command-set-status (proc buf sentinel)
+  (with-current-buffer buf
+    (when-let ((info (ess--delimited-output-info buf sentinel)))
+      (unwind-protect
+          (progn
+            (let* ((beg (nth 0 info))
+                   (end (nth 1 info))
+                   (new (nth 2 info))
+                   (output (buffer-substring beg end))
+                   (new-output (when new
+                                 (buffer-substring new (point-max)))))
+              ;; Delete the start delimiter and anything before it.
+              ;; This takes care of `+` continuation lines that occur
+              ;; with multi-line commands. Delete anything after the
+              ;; end delimiter, including the prompt and new output
+              (delete-region (point-min) (point-max))
+              (insert output)
+              new-output))
+        (process-put proc 'busy nil)
+        (process-put proc 'cmd-output-delimiter nil)))))
+
+(defun ess--delimiter-start-re (delim)
+  (concat "\\(" delim "-START$\\)"))
+
+(defun ess--delimiter-end-re (delim)
+  (concat "^\\(" delim "-END[\n\r]+\\)"))
 
 (defun inferior-ess-mark-as-busy (proc)
   "Put PROC's busy value to t."
@@ -1018,7 +1051,7 @@ Returns nil if TIMEOUT was reached, non-nil otherwise."
     (if cmd-delim
         (progn
           (funcall flush)
-          (inferior-ess--set-status-sentinel proc cmd-buf cmd-delim)
+          (ess--delimited-command-set-status proc cmd-buf cmd-delim)
           (inferior-ess-run-callback proc string))
       (inferior-ess--set-status proc string)
       (inferior-ess-run-callback proc string)
@@ -1323,11 +1356,7 @@ wrapping the code into:
                     (sleep-for 0.02) ; 0.1 is noticeable!
                   (unless (ess-wait-for-process proc nil wait force-redisplay timeout)
                     (error "Timeout during background ESS command `%s'"
-                           (ess--strip-final-newlines cmd)))
-                  ;; Remove prompt. If output is cat(..)ed without a
-                  ;; final newline, this deletes the last line of output.
-                  (goto-char (point-max))
-                  (delete-region (point-at-bol) (point-max))))
+                           (ess--strip-final-newlines cmd)))))
               (setq early-exit nil))
           ;; Protect the process restoration from further quits
           (let ((inhibit-quit t))
@@ -1346,9 +1375,7 @@ wrapping the code into:
                 (with-current-buffer out-buffer
                   (goto-char (point-min))
                   (when (and use-delimiter
-                             (not (re-search-forward
-                                   (inferior-ess--sentinel-start-re delim)
-                                   nil t)))
+                             (not (re-search-forward (ess--delimiter-start-re delim) nil t)))
                     ;; CMD probably failed to parse if the start delimiter
                     ;; can't be found in the output. Disable the delimiter
                     ;; before interrupt to avoid a freeze.
