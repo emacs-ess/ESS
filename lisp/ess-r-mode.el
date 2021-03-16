@@ -1422,7 +1422,7 @@ environment to the search path."
                           .ess.ESSR.load('%s')
                       })\n"
                       src-dir src-dir)))
-    (with-current-buffer (ess-command cmd nil nil nil nil nil nil 5)
+    (with-current-buffer (ess-command cmd)
       (let ((msg (buffer-string)))
         (when (> (length msg) 1)
           (message (format "Messages while loading ESSR: %s" msg)))))))
@@ -1439,7 +1439,7 @@ separators and send chunk by chunk."
     (let ((src-dir (expand-file-name "ESSR/R" ess-etc-directory)))
       (dolist (file (directory-files src-dir t "\\.R\\'"))
         (ess--inject-code-from-file file chunked))
-      (ess-command ".ess.collect.ESSR.objects()\n" nil nil nil nil nil nil 5))))
+      (ess-command ".ess.collect.ESSR.objects()\n"))))
 
 (defun ess-r--fetch-ESSR-remote ()
   "Load ESSR into a remote process through a GitHub download.
