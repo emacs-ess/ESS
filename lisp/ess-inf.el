@@ -2938,7 +2938,8 @@ To be used in `ess-idle-timer-functions'."
       (ess-if-verbose-write "\n(ess-synchronize-dirs)\n")
       (let ((lpath (car (ess-get-words-from-vector ess-getwd-command))))
         (setq default-directory
-              (ess--derive-connection-path default-directory lpath)))
+              (file-name-as-directory
+               (ess--derive-connection-path default-directory lpath))))
       default-directory)))
 
 (defun ess-dirs ()
