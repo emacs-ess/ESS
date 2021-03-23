@@ -1009,14 +1009,16 @@ Returns nil if TIMEOUT was reached, non-nil otherwise."
 
 (defun inferior-ess-ordinary-filter (proc string)
   (ess--if-verbose-write-process-state proc string "ordinary-filter")
-  (let ((cmd-delim (process-get proc 'cmd-output-delimiter))
-        (cmd-async-restore-alist (process-get proc 'cmd-async-restore-alist))
-        (flush (lambda () (with-current-buffer (process-buffer proc)
-                       (insert string)))))
+  (let* ((cmd-buf (process-get proc 'cmd-buffer))
+         (cmd-delim (process-get proc 'cmd-output-delimiter))
+         (cmd-async-restore-alist (process-get proc 'cmd-async-restore-alist))
+         (flush (lambda () (with-current-buffer cmd-buf
+                        (goto-char (point-max))
+                        (insert string)))))
     (if cmd-delim
         (progn
           (funcall flush)
-          (inferior-ess--set-status-sentinel proc (process-buffer proc) cmd-delim)
+          (inferior-ess--set-status-sentinel proc cmd-buf cmd-delim)
           (inferior-ess-run-callback proc string))
       (inferior-ess--set-status proc string)
       (inferior-ess-run-callback proc string)
@@ -1293,9 +1295,7 @@ wrapping the code into:
     (with-current-buffer (process-buffer proc)
       (let ((proc-forward-alist (ess--alist (ess-local-process-name
                                              inferior-ess-primary-prompt)))
-            (cmd-restore-alist (list (cons 'old-pb (process-buffer proc))
-                                     (cons 'old-pf (process-filter proc))
-                                     (cons 'old-pm (marker-position (process-mark proc)))))
+            (cmd-restore-alist (list (cons 'old-pf (process-filter proc))))
             (use-delimiter (alist-get 'use-delimiter ess-format-command-alist))
             (rich-cmd (if-let ((cmd-fun (alist-get 'fun ess-format-command-alist)))
                           (funcall cmd-fun
@@ -1310,13 +1310,12 @@ wrapping the code into:
             (progn
               (when use-delimiter
                 (process-put proc 'cmd-output-delimiter delim))
-              (set-process-buffer proc out-buffer)
+              (process-put proc 'cmd-buffer out-buffer)
               (set-process-filter proc 'inferior-ess-ordinary-filter)
               (with-current-buffer out-buffer
                 (ess-setq-vars-local proc-forward-alist)
                 (setq buffer-read-only nil)
                 (erase-buffer)
-                (set-marker (process-mark proc) (point-min))
                 (inferior-ess-mark-as-busy proc)
                 (process-send-string proc rich-cmd)
                 ;; Need time for ess-create-object-name-db on PC
@@ -1366,12 +1365,9 @@ wrapping the code into:
 (defun ess--command-proc-restore (proc restore-alist)
   (process-put proc 'cmd-output-delimiter nil)
   (process-put proc 'cmd-restore-alist nil)
-  (let ((old-pb (alist-get 'old-pb restore-alist))
-        (old-pf (alist-get 'old-pf restore-alist))
-        (old-pm (alist-get 'old-pm restore-alist)))
-    (set-process-buffer proc old-pb)
-    (set-process-filter proc old-pf)
-    (set-marker (process-mark proc) old-pm old-pb)))
+  (process-put proc 'cmd-buffer nil)
+  (let ((old-pf (alist-get 'old-pf restore-alist)))
+    (set-process-filter proc old-pf)))
 
 ;; TODO: Needs some Julia tests as well
 (defun ess--foreground-command (cmd &optional out-buffer _sleep no-prompt-check wait proc)
