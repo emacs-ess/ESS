@@ -94,7 +94,7 @@
   (with-r-running nil
     (let ((inf-proc *proc*)
           semaphore)
-      (ess-async-command "{cat(1:5);Sys.sleep(0.5);cat(2:6)}\n"
+      (ess-async-command "{cat(1:5);Sys.sleep(0.5);cat(2:6, '\n')}\n"
                          (get-buffer-create " *ess-async-text-command-output*")
                          inf-proc
                          (lambda (&rest args) (setq semaphore t)))
