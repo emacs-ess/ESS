@@ -273,6 +273,18 @@ baz>
 new output")
     (should (equal (ess--command-delimited-output-info (current-buffer) "my-sentinel")
                    (list 20 27 50)))))
+
+(etest-deftest-r command-without-trailing-newline-test ()
+  "It is a bug when a command doesn't output a trailing newline.
+With delimiters it might be possible to figure out the output.
+However if they are not available then the output is
+indistinguishable from the prompt."
+  :eval ((should-error (ess-command "cat(1)\n"))
+         (ess-wait-for-process))
+  ;; Leaks output after the error but that seems fine since errors in
+  ;; filters are bugs
+  :inf-result "
+> ")
 
 ;;*;; Inferior interaction
 

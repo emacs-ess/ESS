@@ -418,9 +418,12 @@ output, if any."
         (when (re-search-forward (ess--delimiter-start-re delim) nil t)
           (let ((start (1+ (match-end 0))))
             (when (re-search-forward (ess--delimiter-end-re delim) nil t)
+              (when (not (equal (line-beginning-position)
+                                (match-beginning 0)))
+                (error "Missing newline in command output"))
               (let ((end (max (1- (match-beginning 0))
                               start)))
-                (goto-char (match-end 0))
+                (goto-char (1+ (match-end 0)))
                 (goto-char (- (line-end-position) 2))
                 (when (looking-at "> ")
                   (let ((new (when (> (point-max) (line-end-position))
@@ -475,7 +478,7 @@ buffer instead of the command buffer."
   (concat "\\(" delim "-START$\\)"))
 
 (defun ess--delimiter-end-re (delim)
-  (concat "^\\(" delim "-END[\n\r]+\\)"))
+  (concat "\\(" delim "-END\\)"))
 
 (defun inferior-ess-mark-as-busy (proc)
   "Put PROC's busy value to t."
@@ -1062,23 +1065,31 @@ Returns nil if TIMEOUT was reached, non-nil otherwise."
 (defun inferior-ess-ordinary-filter (proc string)
   (ess--if-verbose-write-process-state proc string "ordinary-filter")
   (let* ((cmd-buf (process-get proc 'cmd-buffer))
-         (cmd-delim (process-get proc 'cmd-output-delimiter)))
-    (with-current-buffer cmd-buf
-      (goto-char (point-max))
-      (insert string))
-    (when-let ((info (if cmd-delim
-                         (ess--command-delimited-output-info cmd-buf cmd-delim)
-                       (ess--command-output-info cmd-buf))))
-      (ess--command-set-status proc cmd-buf info)
-      (when (not (process-get proc 'busy))
-        ;; Restore the user's process filter as soon as process is
-        ;; available
-        (when-let ((cmd-restore-function (process-get proc 'cmd-restore-function)))
-          (funcall cmd-restore-function))
-        ;; Run callback with command output
-        (when-let ((cb (process-get proc 'callbacks)))
-          (inferior-ess-run-callback proc (with-current-buffer cmd-buf
-                                            (buffer-string))))))))
+         (cmd-delim (process-get proc 'cmd-output-delimiter))
+         (early-exit t))
+    (unwind-protect
+        (progn
+          (with-current-buffer cmd-buf
+            (goto-char (point-max))
+            (insert string))
+          (when-let ((info (if cmd-delim
+                               (ess--command-delimited-output-info cmd-buf cmd-delim)
+                             (ess--command-output-info cmd-buf))))
+            (ess--command-set-status proc cmd-buf info)
+            (when (not (process-get proc 'busy))
+              ;; Restore the user's process filter as soon as process is
+              ;; available
+              (funcall (process-get proc 'cmd-restore-function))
+              ;; Run callback with command output
+              (when (process-get proc 'callbacks)
+                (inferior-ess-run-callback proc (with-current-buffer cmd-buf
+                                                  (buffer-string))))))
+          (setq early-exit nil))
+      ;; Be defensive when something goes wrong. Restore process to a
+      ;; usable state.
+      (when early-exit
+        (process-put proc 'busy nil)
+        (funcall (process-get proc 'cmd-restore-function))))))
 
 (defvar ess-presend-filter-functions nil
   "List of functions to call before sending the input string to the process.
