@@ -217,16 +217,39 @@ Needed with slow-responding processes."
                               (buffer-string))
                             "[1] 2")))))
 
-(ert-deftest ess--delimited-output-info-test ()
+(ert-deftest ess--command-output-info-test ()
+  ;; No output
+  (with-temp-buffer
+    (insert "baz> ")
+    (should (equal (ess--command-output-info (current-buffer))
+                   (list 1 1 nil))))
+  ;; Command output and no new output
+  (with-temp-buffer
+    (insert "
+foo
+bar
+baz> ")
+    (should (equal (ess--command-output-info (current-buffer))
+                   (list 1 9 nil))))
+  ;; Command output and new output
+  (with-temp-buffer
+    (insert "
+foo
+bar
+baz> 
+
+new output")
+    (should (equal (ess--command-output-info (current-buffer))
+                   (list 1 9 16)))))
+
+(ert-deftest ess--command-delimited-output-info-test ()
   ;; No output
   (with-temp-buffer
     (insert "
 my-sentinel-START
 my-sentinel-END
 baz> ")
-    (display-buffer (current-buffer))
-    (ess--delimited-output-info (current-buffer) "my-sentinel")
-    (should (equal (ess--delimited-output-info (current-buffer) "my-sentinel")
+    (should (equal (ess--command-delimited-output-info (current-buffer) "my-sentinel")
                    (list 20 20 nil))))
   ;; Command output and no new output
   (with-temp-buffer
@@ -236,8 +259,7 @@ foo
 bar
 my-sentinel-END
 baz> ")
-    (ess--delimited-output-info (current-buffer) "my-sentinel")
-    (should (equal (ess--delimited-output-info (current-buffer) "my-sentinel")
+    (should (equal (ess--command-delimited-output-info (current-buffer) "my-sentinel")
                    (list 20 27 nil))))
   ;; Command output and new output
   (with-temp-buffer
@@ -249,7 +271,7 @@ my-sentinel-END
 baz> 
 
 new output")
-    (should (equal (ess--delimited-output-info (current-buffer) "my-sentinel")
+    (should (equal (ess--command-delimited-output-info (current-buffer) "my-sentinel")
                    (list 20 27 50)))))
 
 ;;*;; Inferior interaction
