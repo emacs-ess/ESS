@@ -424,10 +424,10 @@ output, if any."
               (let ((end (max (1- (match-beginning 0))
                               start)))
                 (goto-char (1+ (match-end 0)))
-                (goto-char (- (line-end-position) 2))
-                (when (looking-at "> ")
-                  (let ((new (when (> (point-max) (line-end-position))
-                               (1+ (line-end-position)))))
+                (when (re-search-forward "> " nil t)
+                  (let* ((prompt-end (match-end 0))
+                         (new (when (> (point-max) prompt-end)
+                                prompt-end)))
                     (list start end new)))))))))))
 
 (defun ess--command-output-info (buf)
@@ -435,10 +435,12 @@ output, if any."
 Like `ess--command-delimited-output-info' but detects prompts
 without the benefit of output delimiters. This is much less
 robust. This might leave parasite output at the start of BUF
-(e.g. `+' prompts with multiline commands). The output might be
-incomplete if the output includes a line that ends with `> '. In
-that case the rest of the output will be inserted in the process
-buffer instead of the command buffer."
+(e.g. `+' prompts with multiline commands). The result might be
+incomplete if the command output includes a line that ends with
+`> ' and which happens to be the last characters in a partial
+output (process output passed to filters is split in batches at
+arbitrary locations). In that case the rest of the output will be
+inserted in the process buffer instead of the command buffer."
   (with-current-buffer buf
     (save-excursion
       (save-match-data
@@ -1075,15 +1077,18 @@ Returns nil if TIMEOUT was reached, non-nil otherwise."
           (when-let ((info (if cmd-delim
                                (ess--command-delimited-output-info cmd-buf cmd-delim)
                              (ess--command-output-info cmd-buf))))
-            (ess--command-set-status proc cmd-buf info)
-            (when (not (process-get proc 'busy))
-              ;; Restore the user's process filter as soon as process is
-              ;; available
-              (funcall (process-get proc 'cmd-restore-function))
-              ;; Run callback with command output
-              (when (process-get proc 'callbacks)
-                (inferior-ess-run-callback proc (with-current-buffer cmd-buf
-                                                  (buffer-string))))))
+            (let ((new-output (ess--command-set-status proc cmd-buf info)))
+              (when (not (process-get proc 'busy))
+                ;; Store new output until restoration
+                (when new-output
+                  (process-put proc 'pending-output new-output))
+                ;; Restore the user's process filter as soon as process is
+                ;; available
+                (funcall (process-get proc 'cmd-restore-function))
+                ;; Run callback with command output
+                (when (process-get proc 'callbacks)
+                  (inferior-ess-run-callback proc (with-current-buffer cmd-buf
+                                                    (buffer-string)))))))
           (setq early-exit nil))
       ;; Be defensive when something goes wrong. Restore process to a
       ;; usable state.
@@ -1423,9 +1428,12 @@ wrapping the code into:
 (defun ess--command-make-restore-function (proc)
   (let ((old-pf (process-filter proc)))
     (lambda ()
+      (set-process-filter proc old-pf)
       (process-put proc 'cmd-output-delimiter nil)
       (process-put proc 'cmd-buffer nil)
-      (set-process-filter proc old-pf))))
+      (when-let ((pending (process-get proc 'pending-output)))
+        (process-put proc 'pending nil)
+        (funcall old-pf proc pending)))))
 
 ;; TODO: Needs some Julia tests as well
 (defun ess--foreground-command (cmd &optional out-buffer _sleep no-prompt-check wait proc)

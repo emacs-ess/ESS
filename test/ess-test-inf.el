@@ -272,7 +272,7 @@ baz>
 
 new output")
     (should (equal (ess--command-delimited-output-info (current-buffer) "my-sentinel")
-                   (list 20 27 50)))))
+                   (list 20 27 49)))))
 
 (etest-deftest-r command-without-trailing-newline-test ()
   "It is a bug when a command doesn't output a trailing newline.
@@ -284,6 +284,32 @@ indistinguishable from the prompt."
   ;; Leaks output after the error but that seems fine since errors in
   ;; filters are bugs
   :inf-result "
+> ")
+
+(etest-deftest-r ess-command-intervening-input-test ()
+  "Test that user can send input while command is interrupting (#1119)."
+  :eval
+  (progn
+    (run-at-time 0.1 nil (lambda () (throw 'my-quit 'thrown)))
+    (should (eq (catch 'my-quit
+                  (ess-command "{
+                                cat('output\n')
+                                withCallingHandlers(
+                                  interrupt = function(...) Sys.sleep(0.2),
+                                  Sys.sleep(10)
+                                )
+                              }
+                              "
+                               nil nil nil nil nil nil 0.5))
+                'thrown))
+    ;; Send intervening input right away. Since we wait on the R side
+    ;; on interrupt, the process hasn't been restored yet
+    (ess-send-string (ess-get-process) "cat('foobar\\n')\n")
+    ;; Wait for the async interrupt
+    (should (ess-wait-for-process nil nil nil 0.5)))
+  ;; The output for the intervening input should be shown in the
+  ;; process buffer
+  :inf-result "foobar
 > ")
 
 ;;*;; Inferior interaction
