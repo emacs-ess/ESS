@@ -263,8 +263,7 @@ If RESET-STATE is non-nil, `last-command' and
       (unless cursors-start
         (setq cursors-start (list (point-min))))
       ;; Fontification must take place after removing "¶"
-      ;; FIXME Emacs 25: Use `font-lock-ensure'
-      (font-lock-default-fontify-buffer)
+      (font-lock-ensure)
       (let ((current-lc last-command)
             (current-cpa current-prefix-arg))
         (dolist (cursor cursors-start)
