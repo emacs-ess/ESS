@@ -611,17 +611,17 @@ this. Note that the order matters; @code{*R Dired*} would match
 
 @example
 (setq display-buffer-alist
-      `(("*R Dired"
+      `(("^\\*R Dired"
          (display-buffer-reuse-window display-buffer-in-side-window)
          (side . right)
          (slot . -1)
          (window-width . 0.33)
          (reusable-frames . nil))
-        ("*R"
+        ("^\\*R"
          (display-buffer-reuse-window display-buffer-at-bottom)
          (window-width . 0.5)
          (reusable-frames . nil))
-        ("*Help"
+        ("^\\*Help"
          (display-buffer-reuse-window display-buffer-in-side-window)
          (side . right)
          (slot . 1)
@@ -636,7 +636,7 @@ this, use this example.  For a detailed description of
 
 @example
 (setq display-buffer-alist
-      '(("*R"
+      '(("^\\*R"
          (display-buffer-reuse-window display-buffer-pop-up-frame)
          (reusable-frames . 0))))
 @end example
@@ -649,7 +649,7 @@ process.
 
 @example
 (setq display-buffer-alist
-      '(("*R"
+      '(("^\\*R"
          nil
          (dedicated . t))))
 @end example
@@ -662,7 +662,7 @@ so like this:
 
 @example
 (setq display-buffer-alist
-      '(("*R" . ((display-buffer-same-window) (inhibit-same-window . nil)))
+      '(("^\\*R" . ((display-buffer-same-window) (inhibit-same-window . nil)))
         ("\\.R$" . ((display-buffer-same-window) (inhibit-same-window . nil)))))
 @end example
 
