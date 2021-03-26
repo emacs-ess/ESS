@@ -1073,7 +1073,7 @@ VARS must be a list of symbols."
 (define-obsolete-function-alias 'ess-end-of-function 'end-of-defun "ESS 19.04")
 
 (with-no-warnings
-  (defalias 'ess-project-root
+  (defalias 'ess--project-root
     ;; TODO: Remove once we drop support for Emacs 27
     (if (and (fboundp 'project-root)
              ;; Issues caused unless we confirm `project-roots' is obsolete, see bug#1052

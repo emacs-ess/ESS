@@ -331,13 +331,12 @@ name. Abbreviation is performed by `abbreviate-file-name'. See
 
 (defun ess-gen-proc-buffer-name:project-or-simple (proc-name)
   "Function to generate buffer name in the form *PROC-NAME:PROJECT-ROOT*.
-PROC-NAME is a string representing an internal process name.
-PROJECT-ROOT is directory name returned by `ess-project-root'. If no
-project directory has been found use
+PROC-NAME is a string representing an internal process name. If
+no project directory has been found use
 `ess-gen-proc-buffer-name:simple'. See
 `ess-gen-proc-buffer-name-function'."
   (if-let ((p (project-current))
-           (proj (ess-project-root p)))
+           (proj (ess--project-root p)))
       (format "*%s:%s*" proc-name (file-name-nondirectory
                                    (directory-file-name proj)))
     (ess-gen-proc-buffer-name:simple proc-name)))
@@ -345,12 +344,12 @@ project directory has been found use
 (defun ess-gen-proc-buffer-name:project-or-directory (proc-name)
   "Function to generate buffer name in the form *PROC-NAME:PROJECT-ROOT*.
 PROC-NAME is a string representing an internal process name.
-PROJECT-ROOT is directory name returned by `ess-project-root' if
+PROJECT-ROOT is directory name returned by `ess--project-root' if
 defined. If no project directory has been found, use
 `ess-gen-proc-buffer-name:directory'. See
 `ess-gen-proc-buffer-name-function'."
   (if-let ((p (project-current))
-           (proj (ess-project-root p)))
+           (proj (ess--project-root p)))
       (format "*%s:%s*" proc-name (file-name-nondirectory
                                    (directory-file-name proj)))
     (ess-gen-proc-buffer-name:directory proc-name)))
