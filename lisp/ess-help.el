@@ -206,36 +206,12 @@ ignored."
 (defun ess-display-help-in-browser ()
   "Displaying HTML help where available, using \\[browse-url]."
   (interactive)
-  ;; Three ways to find HTML help, 1) ask sub-process 2) get URL/file from subprocess
-  ;; 3) call elisp function to get the file path
-  ;; For 2 and 3 call browse-url on the output
-  (let (com-html-help                   ;1) command for sub-process to trigger
-                                        ;help, must contain %s for help obj
-        com-get-file-path               ;2) command for sub-process to return a
-                                        ; location for the help page, must
-                                        ; contain %s for help obj
-        fun-get-file-path               ;3) elisp function to return the
-                                        ;location, gets one argument, help topic
-        not-implemented
-        )
-    (cond
-     ((string-match "^R" ess-dialect)
-      (setq com-html-help "help('%s', help_type='html')\n"))
-     (t (setq not-implemented t))
-     )
-    (if not-implemented
-        (message "Sorry, not implemented for %s " ess-dialect)
-      (if (or (not ess-help-object)
-              (not (eq ess-help-type 'help)))
-          (message "No help topic found")
-        (if com-html-help
-            (ess-command (format com-html-help  ess-help-object))
-          (require 'browse-url)
-          (if com-get-file-path
-              (browse-url (car (ess-get-words-from-vector
-                                (format com-get-file-path ess-help-object))))
-            (when (functionp fun-get-file-path)
-              (browse-url (funcall fun-get-file-path ess-help-object)))))))))
+  (unless (string-match "^R" ess-dialect)
+    (user-error "Sorry, not implemented for %s " ess-dialect))
+  (if (or (not ess-help-object)
+          (not (eq ess-help-type 'help)))
+      (message "No help topic found")
+    (ess-command (format "help('%s', help_type='html')\n" ess-help-object))))
 
 (defun ess--button-action (&optional button)
   "Provide help on object at the beginning of line.
