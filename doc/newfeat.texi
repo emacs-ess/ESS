@@ -4,6 +4,9 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item ESS[R]: Added support for new syntax in R 4.0 and R 4.1.
+This concerns raw strings, lambda functions, and the pipe operator.
+
 @item ESS[R]: Fixed issue that caused ESS-help to hang when usage blocks
 include R comments (#1025). Fix contributed by Bill Evans.
 
