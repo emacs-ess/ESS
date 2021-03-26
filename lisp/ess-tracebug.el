@@ -362,47 +362,6 @@ by `ess-inject-source' variable."
   "Like `ess-tracebug-send-region' but with tweaks for functions."
   (ess-tracebug-send-region proc start end visibly message 'function))
 
-(defvar ess-tracebug-help nil
-  "ess-dev-map prefix: \\[ess-dev-map]
-
-* Breakpoints (`ess-dev-map'):
-
- b   . Set BP (repeat to cycle BP type) . `ess-bp-set'
- B   . Set conditional BP               . `ess-bp-set-conditional'
- k   . Kill BP                          . `ess-bp-kill'
- K   . Kill all BPs                     . `ess-bp-kill-all'
- o   . Toggle BP state                  . `ess-bp-toggle-state'
- l   . Set logger BP                    . `ess-bp-set-logger'
- n   . Goto next BP                     . `ess-bp-next'
- p   . Goto previous BP                 . `ess-bp-previous'
-
-  (C- prefixed equivalents are also defined)
-
-* Debugging (`ess-dev-map'):
- `   . Show traceback                       . `ess-show-traceback' (also on C-c `)
- ~   . Show callstack                       . `ess-show-call-stack' (also on C-c ~)
- e   . Toggle error action (repeat to cycle). `ess-debug-toggle-error-action'
- d   . Flag for debugging                   . `ess-debug-flag-for-debugging'
- u   . Unflag for debugging                 . `ess-debug-unflag-for-debugging'
- w   . Watch window                         . `ess-watch'
-
-  (C- prefixed equivalents are also defined)
-
-* Interactive Debugging (`ess-debug-minor-mode-map'):
-
- M-C   . Continue                  . `ess-debug-command-continue'
- M-C-C . Continue multi            . `ess-debug-command-continue-multi'
- M-N   . Next step                 . `ess-debug-command-next'
- M-C-N . Next step multi           . `ess-debug-command-next-multi'
- M-U   . Up frame                  . `ess-debug-command-up'
- M-Q   . Quit debugging            . `ess-debug-command-quit'
-
-* Navigation to errors (general Emacs functionality):
-
- C-x `, M-g n   . `next-error'
- M-g p          . `previous-error'")
-
-
 ;; * Input Ring:
 
 ;; i   . Goto input event marker forwards     . `ess-debug-goto-input-event-marker'
@@ -412,7 +371,9 @@ by `ess-inject-source' variable."
 (defun ess-tracebug-show-help ()
   "Show help for `ess-tracebug'."
   (interactive)
-  (describe-variable 'ess-tracebug-help))
+  (if (fboundp 'describe-keymap)
+      (describe-keymap 'ess-tracebug-map)
+    (info "(ess) ESS tracebug")))
 
 (defun ess-tracebug--propertize (dummy bitmap face &optional string )
   "If `window-system' propertize DUMMY with fringe BITMAP and FACE.
