@@ -175,7 +175,7 @@ Better logic needed!  (see 2 uses, in this file).")
 
 
 (defvar SAS-customize-alist
-  '((ess-local-customize-alist     . 'SAS-customize-alist)
+  '((ess-local-customize-alist     . SAS-customize-alist)
     (ess-language                  . "SAS")
     (ess-dialect                   . "SAS")
     (inferior-ess-program          . inferior-SAS-program)

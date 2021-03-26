@@ -67,7 +67,7 @@
 (defvaralias 'S+6-customize-alist 'S+-customize-alist)
 (defvar S+-customize-alist
   (append
-   '((ess-local-customize-alist        . 'S+-customize-alist)
+   '((ess-local-customize-alist        . S+-customize-alist)
      (ess-dialect                      . S+-dialect-name)
      (ess-function-pattern             . ess-r-function-pattern)
 

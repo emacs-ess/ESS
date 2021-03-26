@@ -51,7 +51,7 @@ The default value is nil."
 
 (defvar S+elsewhere-customize-alist
   (append
-   '((ess-local-customize-alist         . 'S+elsewhere-customize-alist)
+   '((ess-local-customize-alist         . S+elsewhere-customize-alist)
      (ess-dialect                       . S+elsewhere-dialect-name)
      (ess-object-name-db-file           . "ess-spelsewhere-namedb.el" )
      (inferior-ess-program              . inferior-S-elsewhere-program)
