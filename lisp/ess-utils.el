@@ -762,7 +762,10 @@ Copied almost verbatim from gnus-utils.el (but with test for mac added)."
                   space "function\\s-*(" ; whitespace, function keyword, parenthesis
                   )))
     `(,part-1 ,part-2))
-  "Placeholder for use in constructing `ess-r-function-pattern' and `ess-s-function-pattern'.")
+  "Partial regex for matching functions.
+
+Placeholder for use in constructing `ess-r-function-pattern' and
+`ess-s-function-pattern'.")
 
 (defvar ess-r-function-pattern
   (concat (car ess--r-s-function-pattern)

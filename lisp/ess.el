@@ -159,7 +159,7 @@ Is set  by \\[ess-version-string].")
 ;;; Timer
 
 (defcustom ess-idle-timer-interval 1
-  "Number of idle seconds to wait before running function in `ess-idle-timer-functions'."
+  "Number of seconds to wait before running function in `ess-idle-timer-functions'."
   :type '(integer)
   :group 'ess)
 

@@ -118,7 +118,7 @@
   :group 'tools)
 
 (defgroup ess-extras nil
-  "Extra utilities for ESS"
+  "Extra utilities for ESS."
   :group 'ess
   :prefix "ess-")
 
@@ -1441,7 +1441,7 @@ syntactically correct roxygen entries)"
   :type '(alist :key-type string :value-type string))
 
 (defcustom ess-roxy-fill-param-p nil
-  "Non-nil causes parameter descriptions to be filled (word-wrapped) upon `ess-roxy-update-entry'."
+  "When non-nil `ess-roxy-update-entry' fills (wraps) parameters."
   :group 'ess-roxy
   :type '(choice (const :tag "Off" nil)
                  (const :tag "On" t)))
@@ -1466,7 +1466,7 @@ point"
   :type 'string)
 
 (defvar ess-roxy-insert-prefix-on-newline t
-  "When non-nil, `ess-roxy-newline-and-indent' makes newlines start with the roxy prefix.")
+  "When non-nil, `ess-roxy-newline-and-indent' inserts the roxy prefix on newlines.")
 
  ; System variables
 
@@ -1478,7 +1478,7 @@ point"
 (put 'ess-local-process-name 'permanent-local t)
 
 (defcustom ess-switch-to-end-of-proc-buffer t
-  "If non-nil, `ess-switch-to-inferior-or-script-buffer' goes to the end of the process buffer."
+  "If non-nil, \\<ess-mode-map>\\[ess-switch-to-inferior-or-script-buffer] goes to the end of the process buffer."
   :group 'ess
   :type 'boolean)
 
@@ -1531,13 +1531,12 @@ there is no project root in the current directory."
 
 ;;*;; Regular expressions
 
-;; -- Note: Some variables not-to-customize moved to ./ess-mode.el :
-;; ess-r-set-function-start
-
-;; Fixme: the following is just for S dialects :
 (defcustom ess-dumped-missing-re
   "\\(<-\nDumped\n\\'\\)\\|\\(<-\\(\\s \\|\n\\)*\\'\\)"
-  "If a dumped object's buffer matches this re, then it is replaced by `ess-function-template'."
+  "Regex determines if dumped objects are replaced by `ess-function-template'.
+
+If a dumped object's buffer matches this re, then it is replaced
+by `ess-function-template'."
   :group 'ess
   :type 'regexp)
 
@@ -1621,14 +1620,20 @@ path (as in 'setwd(%s)\\n'.")
           (w32-short-file-name (getenv "ProgramFiles(x86)"));; always 32 on 64 bit OS
         (w32-short-file-name (getenv "ProgramFiles")))      ;; always 32 on 32 bit OS
     nil)
-  "Safe (no embedded blanks) 8.3 name for 32-bit programs that works across internationalization."
+  "Name for 32-bit programs.
+
+Safe (no embedded blanks) 8.3 name for 32-bit programs that works
+across internationalization."
   :group 'ess
   :type '(choice (string) (const nil)))
 
 (defcustom ess-program-files-64 ;; 64 bit version
   (when (and ess-microsoft-p (fboundp 'w32-short-file-name) (getenv "ProgramW6432"))
     (w32-short-file-name (getenv "ProgramW6432")))
-  "Safe (no embedded blanks) 8.3 name for 64-bit programs that works across internationalization."
+  "Name for 64-bit programs.
+
+Safe (no embedded blanks) 8.3 name for 64-bit programs that works
+across internationalization."
   :group 'ess
   :type '(choice (string) (const nil)))
 
@@ -1753,7 +1758,9 @@ ask - ask the user whether the S buffers should be killed."
   :type 'string)
 
 (defvar-local ess-editor nil
-  "Editor by which the process sends information to an Emacs buffer
+  "Editor command.
+
+Editor by which the process sends information to an Emacs buffer
 for editing and then to be returned to the process.")
 
 (defvar-local ess-pager nil
@@ -1785,7 +1792,7 @@ If you wish to pass arguments to a process, see e.g. `inferior-R-args'.")
   "Regular expression used by `ess-mode' to detect the primary prompt.")
 
 (defvar-local inferior-ess-secondary-prompt nil
-  "Regular expression used by ess-mode to detect the secondary prompt.
+  "Regular expression used by `ess-mode' to detect the secondary prompt.
 This is issued by S to continue an incomplete expression.
 Set to nil if language doesn't support secondary prompt.")
 
@@ -1868,8 +1875,7 @@ properties are not displayed.
 
 External utilities such as `ess-tracebug' and `ess-developer'
 customize this variable to indicate changes in the process
-status.
-")
+status.")
 (put 'ess--mode-line-process-indicator 'risky-local-variable t)
 
 (defvar-local ess--local-mode-line-process-indicator '("")
@@ -1975,7 +1981,9 @@ from `inferior-ess-primary-prompt' and `inferior-ess-secondary-prompt'.")
   "Alist of modification times for all ess directories accessed this session.")
 
 (defvar-local ess-prev-load-dir/file nil
-  "This symbol saves the (directory . file) pair used in the last
+  "Cached value for `ess-load-file'.
+
+This symbol saves the (directory . file) pair used in the last
 `ess-load-file' command.  Used for determining the default in the next one.")
 
 (defvar-local ess-object-list nil
@@ -2304,7 +2312,7 @@ the variable `ess-help-own-frame' is non-nil."
 (defconst ess-numbers-face 'ess-numbers-face)
 (defface ess-numbers-face
   '((default (:slant normal :inherit font-lock-type-face)))
-  "Font Lock face used to highlight numbers in ess-mode buffers."
+  "Font Lock face used to highlight numbers in `ess-mode' buffers."
   :group 'ess-faces)
 
 (defconst ess-operator-face 'ess-operator-face)
@@ -2316,7 +2324,7 @@ the variable `ess-help-own-frame' is non-nil."
 (defconst ess-%op%-face 'ess-%op%-face)
 (defface ess-%op%-face
   '((default (:inherit ess-operator-face)))
-  "Font Lock face used to highlight %op% operators in ess-mode buffers."
+  "Font Lock face used to highlight %op% operators in `ess-mode' buffers."
   :group 'ess-faces)
 
 (defconst ess-assignment-face 'ess-assignment-face)

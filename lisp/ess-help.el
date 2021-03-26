@@ -248,12 +248,15 @@ if necessary.  It is bound to RET and C-m in R-index pages."
 (cl-defgeneric ess-help-commands ()
   "Return an alist of dialect specific retriever commands.
 Currently understood commands:
- - package-for-object - command to get the package of current help object
- - packages - command to get a list of available packages (REQUIRED)
- - package-index - command to get the package index (REQUIRED)
- - index-keyword-reg - regexp used to find keywords for linking in index listing
-                 only (1st subexpression is used)
- - index-start-reg - regexp from where to start searching for keywords in index listing"
+- package-for-object - command to get the package of current
+  help object
+- packages - command to get a list of available
+  packages (REQUIRED)
+- package-index - command to get the package index (REQUIRED)
+- index-keyword-reg - regexp used to find keywords for linking in
+  index listing only (1st subexpression is used)
+- index-start-reg - regexp from where to start searching for
+   keywords in index listing"
   (user-error "Not implemented for %s " ess-dialect))
 
 (cl-defmethod ess-help-commands (&context (ess-dialect "R"))

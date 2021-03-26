@@ -674,8 +674,9 @@ debugger or traceback events are initiated. It is used in
 `ess--dbg-goto-input-point'.")
 
 (defvar ess--dbg-backward-ring (make-ring 10)
-  "Ring of markers to the positions from which `ess--dbg-goto-input-point' is called.
-See the also `ess--dbg-goto-debug-point'")
+  "Ring of markers for the positions from `ess--dbg-goto-input-point'.
+Marks the position from which it was called. See also
+`ess--dbg-goto-debug-point'")
 
 ;; (setq ess-R--tb-regexp-alist '(R R2 R3 R-recover))
 ;;(pop compilation-error-regexp-alist-alist)
@@ -1950,7 +1951,8 @@ Each sublist  has five elements:
 3- string to be displayed instead of the expression
 4- fringe bitmap to use
 5- face for fringe and displayed string
-6- optional, a function which should return nil if this BP doesn't apply to current context."
+6- optional, a function which should return nil if this BP
+   doesn't apply to current context."
   :group 'ess-debug
   :type '(alist :key-type symbol
                 :value-type (group string string symbol face)))
