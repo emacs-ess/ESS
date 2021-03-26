@@ -45,3 +45,48 @@
   :case "a ¶|> b"
   :eval (should (token= "|>"))
   :result "a |>¶ b")
+
+(etest-deftest-r ess-r-raw-strings-test ()
+  :case "
+r¶\"(foo\"bar))¶\"
+r¶\"(foo}\"bar))¶\"
+r¶\"(foo)'bar))¶\"
+r¶\"---[foo\"bar]---¶\"
+r¶\"---[foo\"bar]--\"baz]---¶\"
+r¶'{foo'bar}¶'
+r¶\"---{foobar}-\\--\"
+"
+  :eval (should (equal (syntax-after (point))
+                       (string-to-syntax "|")))
+
+  :case "
+r\"¶(foo\"¶bar))¶\"
+r\"¶(foo}\"¶bar))¶\"
+r\"¶(foo)'¶bar))¶\"
+r\"¶---[foo\"¶bar]---¶\"
+r\"¶---[foo\"¶bar]--\"¶baz]---¶\"
+r'¶{foo'¶bar}¶'
+r\"¶---{foobar}¶-\\--\"¶
+"
+  :eval (should (ess-inside-string-p))
+
+  :case "
+¶r\"(foo\"bar))\"¶,
+¶r\"(foo}\"bar))\"¶,
+¶r\"(foo)'bar))\"¶,
+¶r\"---[foo\"bar]---\"¶,
+¶r\"---[foo\"bar]--\"baz]---\"¶,
+¶r'{foo'bar}'¶,
+¶r\"---{foobar}-\\--\"
+"
+  :eval (should (not (ess-inside-string-p)))
+
+  :case "r\"(foor\"()\"ba¶r))\""
+  :eval (should (not (ess-inside-string-p)))
+
+  :case "
+r\"(foor¶'()¶'bar))\"
+# r¶\"{foo}¶\"
+"
+  :eval (should (not (equal (syntax-after (point))
+                            (string-to-syntax "|")))))

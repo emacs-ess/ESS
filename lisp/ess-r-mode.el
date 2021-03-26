@@ -311,11 +311,55 @@ namespace.")
 ;; The syntax class for '\' is punctuation character to handle R 4.1
 ;; lambdas. Inside strings it should be treated as an escape
 ;; character which we ensure here.
+(defun ess-r--syntax-propertize-backslash ()
+  (when (nth 3 (save-excursion (syntax-ppss (1- (point)))))
+    (string-to-syntax "\\")))
+
+;; Adapted from `python-syntax-stringify'
+(defun ess-r--syntax-propertize-raw-string-opening ()
+  (let* ((raw-beg (match-beginning 0))
+         (quote-beg (1+ raw-beg))
+         (ppss (save-excursion (goto-char raw-beg) (syntax-ppss)))
+         (string-start (and (eq t (nth 3 ppss)) (nth 8 ppss))))
+    (cond
+     ;; Inside a comment
+     ((nth 4 ppss)
+      nil)
+     ;; This set of quotes delimits the start of a string
+     ((null string-start)
+      (put-text-property quote-beg (1+ quote-beg)
+                         'syntax-table (string-to-syntax "|"))))))
+
+(defun ess-r--syntax-propertize-raw-string-closing ()
+  (let* ((quote-end (match-end 0))
+         (quote-chr (aref (match-string 3) 0))
+         (dashes (match-string 2))
+         (matching-delim (pcase (match-string 1)
+                           (`")" ?\() (`"}" ?{) (`"]" ?\[)))
+         (ppss (save-excursion (goto-char quote-end) (syntax-ppss)))
+         (string-start (and (eq t (nth 3 ppss)) (nth 8 ppss))))
+    (when string-start
+      (save-match-data
+        (save-excursion
+          (goto-char string-start)
+          (when (equal (char-after) quote-chr)
+            (forward-char)
+            (re-search-forward "-*" nil t)
+            (let ((matching-dashes (match-string 0)))
+              (when (or (not matching-dashes)
+                        (string= matching-dashes dashes))
+                (when (equal (char-after) matching-delim)
+                  (put-text-property (1- quote-end) quote-end
+                                     'syntax-table (string-to-syntax "|")))))))))))
+
 (defconst ess-r--syntax-propertize-function
   (syntax-propertize-rules
+   ("[rR]\\([\"']\\)\\(-*\\)\\([([{]\\)"
+    (0 (ignore (ess-r--syntax-propertize-raw-string-opening))))
+   ("\\([])}]\\)\\(-*\\)\\([\"']\\)"
+    (0 (ignore (ess-r--syntax-propertize-raw-string-closing))))
    ("\\\\"
-    (0 (when (nth 3 (save-excursion (syntax-ppss (1- (point)))))
-         (string-to-syntax "\\"))))))
+    (0 (ess-r--syntax-propertize-backslash)))))
 
 (defun ess-r-font-lock-syntactic-face-function (state)
   (if (nth 3 state)
@@ -2339,6 +2383,7 @@ state.")
   (setq-local ess-font-lock-keywords 'inferior-ess-r-font-lock-keywords)
   (setq-local comint-process-echoes (eql ess-eval-visibly t))
   (setq-local comint-prompt-regexp inferior-S-prompt)
+  (setq-local syntax-propertize-function ess-r--syntax-propertize-function)
   (setq comint-input-sender 'inferior-ess-r-input-sender)
   (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
   (add-hook 'completion-at-point-functions 'ess-r-object-completion nil 'local)
