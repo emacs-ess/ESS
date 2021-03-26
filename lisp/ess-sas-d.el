@@ -109,26 +109,26 @@ Better logic needed!  (see 2 uses, in this file).")
     ;; Construct the LST buffer for output
     (if (get-buffer ess-sas-lst-bufname)
         nil
-      (shell)
-      (accept-process-output (get-buffer-process (current-buffer)))
-      (sleep-for 2) ; need to wait, else working too fast!
-      (setq ess-sas-lst (ess-insert-accept "tty"))
-      (SAS-listing-mode)
-      (shell-mode)
-      (ess-listing-minor-mode t)
-      (rename-buffer ess-sas-lst-bufname t))
+      (with-current-buffer (shell)
+        (accept-process-output (get-buffer-process (current-buffer)) 0.2)
+        (sleep-for 2)           ; need to wait, else working too fast!
+        (setq ess-sas-lst (ess-insert-accept "tty"))
+        (SAS-listing-mode)
+        (shell-mode)
+        (ess-listing-minor-mode t)
+        (rename-buffer ess-sas-lst-bufname t)))
 
     ;; Construct the LOG buffer for output
     (if (get-buffer  ess-sas-log-bufname)
         nil
-      (shell)
-      (accept-process-output (get-buffer-process (current-buffer)))
-      (sleep-for 2) ; need to wait, else working too fast!
-      (setq ess-sas-log (ess-insert-accept "tty"))
+      (with-current-buffer (shell)
+        (accept-process-output (get-buffer-process (current-buffer)) 0.2)
+        (sleep-for 2)           ; need to wait, else working too fast!
+        (setq ess-sas-log (ess-insert-accept "tty"))
                                         ;(SAS-log-mode)
-      (shell-mode)
-      (ess-transcript-minor-mode t)
-      (rename-buffer ess-sas-log-bufname t))
+        (shell-mode)
+        (ess-transcript-minor-mode t)
+        (rename-buffer ess-sas-log-bufname t)))
 
     (setq inferior-SAS-redirect-args (concat " "
                                              ess-sas-lst
@@ -166,7 +166,7 @@ Better logic needed!  (see 2 uses, in this file).")
   (goto-char (point-max))
   (insert command)
   (comint-send-input)
-  (accept-process-output (get-buffer-process (current-buffer)))
+  (accept-process-output (get-buffer-process (current-buffer)) 0.2)
   (forward-line -1)
   (let* ((beg (point))
          (ess-tty-name (progn (end-of-line) (buffer-substring beg (point)))))
