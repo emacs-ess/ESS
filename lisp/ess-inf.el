@@ -818,11 +818,13 @@ to `ess-completing-read'."
                   (ess--with-no-pop-to-buffer
                     (ess-start-process-specific ess-language ess-dialect))
                   (caar ess-process-name-list))))))
-    (let ((proc-buff (ess-get-process-buffer proc)))
-      (when auto-started?
-        (display-buffer proc-buff))
-      (unless noswitch
-        (pop-to-buffer proc-buff)))
+    ;; Always display buffer if auto-started but do not select it if
+    ;; NOSWITCH is set
+    (when (or auto-started? (not noswitch))
+      (let ((proc-buf (ess-get-process-buffer proc)))
+        (if noswitch
+            (display-buffer proc-buf)
+          (pop-to-buffer proc-buf))))
     proc))
 
 (defun ess-force-buffer-current (&optional prompt force no-autostart ask-if-1)
