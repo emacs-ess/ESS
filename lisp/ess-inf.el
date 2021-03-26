@@ -546,7 +546,8 @@ process-less buffer because it was created with
                  proc-name
                  inferior-ess-program
                  nil
-                 (split-string switches)))
+                 (when switches
+                   (split-string switches))))
   (let ((proc (get-buffer-process buf)))
     ;; Set the process hooks
     (set-process-sentinel proc 'ess-process-sentinel)
