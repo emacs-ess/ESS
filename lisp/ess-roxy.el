@@ -88,8 +88,8 @@
     (define-key map (kbd "C-c C-o C-t")   #'ess-roxy-preview-text)
     (define-key map (kbd "C-c C-o C-c") #'ess-roxy-toggle-roxy-region)
     (define-key map [remap back-to-indentation] #'ess-roxy-goto-end-of-roxy-comment)
-    (define-key map [remap newline] #'ess-roxy-newline-and-indent)
-    (define-key map [remap newline-and-indent] #'ess-roxy-newline-and-indent)
+    (define-key map [remap newline] #'ess-roxy-newline)
+    (define-key map [remap newline-and-indent] #'ess-roxy-newline)
     (define-key map [remap ess-indent-command] #'ess-roxy-ess-indent-command)
     (define-key map [remap move-beginning-of-line] #'ess-roxy-move-beginning-of-line)
     (define-key map [remap beginning-of-visual-line] #'ess-roxy-move-beginning-of-line)
@@ -974,7 +974,8 @@ If not in a roxygen entry, call `back-to-indentation'."
       (indent-new-comment-line)
     (ess-roxy-indent-on-newline)))
 
-(defun ess-roxy-newline-and-indent ()
+(define-obsolete-function-alias 'ess-roxy-newline-and-indent 'ess-roxy-newline "ESS 19.04")
+(defun ess-roxy-newline ()
   "Start a newline and insert the roxygen prefix.
 Only do this if in a roxygen block and
 `ess-roxy-insert-prefix-on-newline' is non-nil."
@@ -982,7 +983,7 @@ Only do this if in a roxygen block and
   (if (and (ess-roxy-entry-p)
            ess-roxy-insert-prefix-on-newline)
       (ess-roxy-indent-on-newline)
-    (newline-and-indent)))
+    (newline nil t)))
 
 (defun ess-roxy-indent-on-newline ()
   "Insert a newline in a roxygen field."

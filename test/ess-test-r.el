@@ -435,12 +435,12 @@ fun2 <- function(x) x"
   (should (string=
            "//'\n//' "
            (ess-cpp-test-with-temp-text "//' ¶"
-             (ess-roxy-newline-and-indent)
+             (ess-roxy-newline)
              (buffer-substring-no-properties (point-min) (point-max)))))
   (should (string=
            "//\n"
            (ess-cpp-test-with-temp-text "//¶"
-             (ess-roxy-newline-and-indent)
+             (ess-roxy-newline)
              (buffer-substring-no-properties (point-min) (point-max))))))
 
 ;; Navigation

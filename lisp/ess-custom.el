@@ -1466,7 +1466,7 @@ point"
   :type 'string)
 
 (defvar ess-roxy-insert-prefix-on-newline t
-  "When non-nil, `ess-roxy-newline-and-indent' inserts the roxy prefix on newlines.")
+  "When non-nil, `ess-roxy-newline' inserts the roxy prefix on newlines.")
 
  ; System variables
 
