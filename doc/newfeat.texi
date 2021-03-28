@@ -185,6 +185,8 @@ This includes old versions of S+, ARC, OMG, VST, and XLS.
 
 @item ess-r-runner-prefixes was modified to find R-4 and later.
 
+@item ESS no longer activates eldoc if the user has disabled global-eldoc-mode.
+
 @end itemize
 
 The following have been made obsolete or removed, see their

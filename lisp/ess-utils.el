@@ -473,6 +473,23 @@ specifies inferior buffers."
                 (cl-copy-list (append sources company-backends)))
     (delq 'company-capf company-backends)))
 
+(defun ess--setup-eldoc (fun)
+  "Setup support for eldoc.
+FUN is the function to return data for eldoc."
+  (when ess-use-eldoc
+    (if (not (boundp 'eldoc-documentation-functions))
+        ;; older versions of Eldoc included in Emacs 27 and previous
+        (add-function :before-until (local 'eldoc-documentation-function)
+                      fun)
+      ;; new eldoc, in Emacs 28+
+      (add-hook 'eldoc-documentation-functions fun nil t)
+      ;; Eldoc is on GNU ELPA so you can have new eldoc + Emacs 27.1
+      ;; or older, see bug#1130 and Emacs bug # 47388 for why we have
+      ;; to do this
+      (when (and (fboundp 'eldoc-documentation-default)
+                 (function-equal #'ignore eldoc-documentation-function))
+        (setq-local eldoc-documentation-function #'eldoc-documentation-default)))))
+
 (defmacro ess--execute-electric-command (map &optional prompt wait exit-form &rest args)
   "Execute single-key commands defined in MAP till a key is pressed which is not part of map.
 Single-key input commands are those that once executed do not

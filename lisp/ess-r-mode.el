@@ -729,11 +729,7 @@ top level functions only."
   ;; indentation
   (add-hook 'hack-local-variables-hook #'ess-set-style nil t)
   ;; eldoc
-  (if (boundp 'eldoc-documentation-functions)
-      (add-hook 'eldoc-documentation-functions #'ess-r-eldoc-function nil t)
-    (add-function :before-until (local 'eldoc-documentation-function)
-                  #'ess-r-eldoc-function))
-  (when ess-use-eldoc (eldoc-mode))
+  (ess--setup-eldoc #'ess-r-eldoc-function)
   ;; auto-complete
   (ess--setup-auto-complete ess-r-ac-sources)
   ;; company
@@ -2338,11 +2334,7 @@ state.")
   (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
   (add-hook 'xref-backend-functions #'ess-r-xref-backend nil 'local)
   ;; eldoc
-  (if (boundp 'eldoc-documentation-functions)
-      (add-hook 'eldoc-documentation-functions #'ess-r-eldoc-function nil t)
-    (add-function :before-until (local 'eldoc-documentation-function)
-                  #'ess-r-eldoc-function))
-  (when ess-use-eldoc (eldoc-mode))
+  (ess--setup-eldoc #'ess-r-eldoc-function)
   ;; auto-complete
   (ess--setup-auto-complete ess-r-ac-sources t)
   ;; company

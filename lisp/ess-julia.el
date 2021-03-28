@@ -360,11 +360,7 @@ It makes underscores and dots word constituent chars.")
   (setq ess-dialect "julia")
   (ess-setq-vars-local ess-julia-customize-alist)
   ;; eldoc
-  (if (boundp 'eldoc-documentation-functions)
-      (add-hook 'eldoc-documentation-functions #'ess-julia-eldoc-function nil t)
-    (add-function :before-until (local 'eldoc-documentation-function)
-                  #'ess-julia-eldoc-function))
-  (when ess-use-eldoc (eldoc-mode))
+  (ess--setup-eldoc #'ess-julia-eldoc-function)
   ;; auto-complete
   (ess--setup-auto-complete '(ac-source-ess-julia-objects))
   ;; company
@@ -389,11 +385,7 @@ It makes underscores and dots word constituent chars.")
   (setq comint-prompt-regexp (concat "^" inferior-ess-prompt))
   (setq ess-dialect "julia")
   ;; eldoc
-  (if (boundp 'eldoc-documentation-functions)
-      (add-hook 'eldoc-documentation-functions #'ess-julia-eldoc-function nil t)
-    (add-function :before-until (local 'eldoc-documentation-function)
-                  #'ess-julia-eldoc-function))
-  (when ess-use-eldoc (eldoc-mode))
+  (ess--setup-eldoc #'ess-julia-eldoc-function)
   ;; auto-complete
   (ess--setup-auto-complete '(ac-source-ess-julia-objects) t)
   ;; company
