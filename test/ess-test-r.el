@@ -316,8 +316,7 @@ add(x, y)
 }
 \\description{
 Add together two numbers. add(10, 1)
-} 
-"
+} "
                     (with-current-buffer buf
                       (R-mode)
                       (ess-roxy-mode)

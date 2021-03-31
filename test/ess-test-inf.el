@@ -94,7 +94,7 @@
   (with-r-running nil
     (let ((inf-proc *proc*)
           semaphore)
-      (ess-async-command "{cat(1:5);Sys.sleep(0.5);cat(2:6)}\n"
+      (ess-async-command "{cat(1:5);Sys.sleep(0.5);cat(2:6, '\n')}\n"
                          (get-buffer-create " *ess-async-text-command-output*")
                          inf-proc
                          (lambda (&rest args) (setq semaphore t)))
@@ -215,7 +215,102 @@ Needed with slow-responding processes."
            (ess-command "{ 1\n 2 }\n" buf)
            (should (string= (with-current-buffer buf
                               (buffer-string))
-                            "[1] 2\n")))))
+                            "[1] 2")))))
+
+(ert-deftest ess--command-output-info-test ()
+  ;; No output
+  (with-temp-buffer
+    (insert "baz> ")
+    (should (equal (ess--command-output-info (current-buffer))
+                   (list 1 1 nil))))
+  ;; Command output and no new output
+  (with-temp-buffer
+    (insert "
+foo
+bar
+baz> ")
+    (should (equal (ess--command-output-info (current-buffer))
+                   (list 1 9 nil))))
+  ;; Command output and new output
+  (with-temp-buffer
+    (insert "
+foo
+bar
+baz> 
+
+new output")
+    (should (equal (ess--command-output-info (current-buffer))
+                   (list 1 9 16)))))
+
+(ert-deftest ess--command-delimited-output-info-test ()
+  ;; No output
+  (with-temp-buffer
+    (insert "
+my-sentinel-START
+my-sentinel-END
+baz> ")
+    (should (equal (ess--command-delimited-output-info (current-buffer) "my-sentinel")
+                   (list 20 20 nil))))
+  ;; Command output and no new output
+  (with-temp-buffer
+    (insert "
+my-sentinel-START
+foo
+bar
+my-sentinel-END
+baz> ")
+    (should (equal (ess--command-delimited-output-info (current-buffer) "my-sentinel")
+                   (list 20 27 nil))))
+  ;; Command output and new output
+  (with-temp-buffer
+    (insert "
+my-sentinel-START
+foo
+bar
+my-sentinel-END
+baz> 
+
+new output")
+    (should (equal (ess--command-delimited-output-info (current-buffer) "my-sentinel")
+                   (list 20 27 49)))))
+
+(etest-deftest-r command-without-trailing-newline-test ()
+  "It is a bug when a command doesn't output a trailing newline.
+With delimiters it might be possible to figure out the output.
+However if they are not available then the output is
+indistinguishable from the prompt."
+  :eval ((should-error (ess-command "cat(1)\n"))
+         (ess-wait-for-process))
+  ;; Leaks output after the error but that seems fine since errors in
+  ;; filters are bugs
+  :inf-result "
+> ")
+
+(etest-deftest-r ess-command-intervening-input-test ()
+  "Test that user can send input while command is interrupting (#1119)."
+  :eval
+  (progn
+    (run-at-time 0.1 nil (lambda () (throw 'my-quit 'thrown)))
+    (should (eq (catch 'my-quit
+                  (ess-command "{
+                                cat('output\n')
+                                withCallingHandlers(
+                                  interrupt = function(...) Sys.sleep(0.2),
+                                  Sys.sleep(10)
+                                )
+                              }
+                              "
+                               nil nil nil nil nil nil 0.5))
+                'thrown))
+    ;; Send intervening input right away. Since we wait on the R side
+    ;; on interrupt, the process hasn't been restored yet
+    (ess-send-string (ess-get-process) "cat('foobar\\n')\n")
+    ;; Wait for the async interrupt
+    (should (ess-wait-for-process nil nil nil 0.5)))
+  ;; The output for the intervening input should be shown in the
+  ;; process buffer
+  :inf-result "foobar
+> ")
 
 ;;*;; Inferior interaction
 
