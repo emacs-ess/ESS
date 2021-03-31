@@ -4,10 +4,12 @@
 (let ((current-directory (file-name-directory load-file-name)))
   (setq ess-test-path (expand-file-name "." current-directory))
   (setq ess-styles-path (expand-file-name "./styles/" current-directory))
-  (setq ess-root-path (expand-file-name "../lisp/" current-directory)))
+  (setq ess-root-path (expand-file-name "../lisp/" current-directory))
+  (setq etest-path (expand-file-name "etest/" ess-test-path)))
 
 (add-to-list 'load-path ess-root-path)
 (add-to-list 'load-path ess-test-path)
+(add-to-list 'load-path etest-path)
 
 (require 'ess-r-mode)
 (load (expand-file-name "ess-test-indentation.el" ess-test-path) nil t)
