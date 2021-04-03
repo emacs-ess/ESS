@@ -424,7 +424,7 @@ output, if any."
               (let ((end (max (1- (match-beginning 0))
                               start)))
                 (goto-char (1+ (match-end 0)))
-                (when (re-search-forward "> " nil t)
+                (when (re-search-forward inferior-ess-primary-prompt nil t)
                   (let* ((prompt-end (match-end 0))
                          (new (when (> (point-max) prompt-end)
                                 prompt-end)))
@@ -445,7 +445,9 @@ inserted in the process buffer instead of the command buffer."
     (save-excursion
       (save-match-data
         (goto-char (point-min))
-        (when (re-search-forward "> \\(\n\\|\\'\\)" nil t)
+        (when (re-search-forward (concat inferior-ess-primary-prompt
+                                         "\\(\n\\|\\'\\)")
+                                 nil t)
           (goto-char (match-beginning 0))
           (let ((end (max (1- (line-beginning-position))
                           (point-min)))
