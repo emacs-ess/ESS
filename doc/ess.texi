@@ -1006,7 +1006,7 @@ Manual}, for a more detailed discussion of the history mechanism,
 and do experiment with the @code{In/Out} menu to explore the possibilities.
 
 Many ESS users like to have even easier access to these, and recommend
-to add something like
+adding something like
 @example
   (eval-after-load "comint"
    '(progn
