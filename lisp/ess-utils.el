@@ -368,7 +368,7 @@ ess-[dialect]-font-lock-keywords variable."
 (defvar ess--is-tracing nil)
 
 ;;;###autoload
-(define-minor-mode ess-elisp-trace-mode ()
+(define-minor-mode ess-elisp-trace-mode
   "Toggle tracing of ess-prefixed functions.
 Tracing is useful for debugging background ESS behaviour. When
 enabled, all functions prefixed in `ess-' and `inferior-ess' are
