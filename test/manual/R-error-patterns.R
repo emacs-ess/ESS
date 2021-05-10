@@ -1,3 +1,12 @@
+## TODO: automate this Somehow.
+##
+## For now manually
+## 
+## (progn
+##     (setq-local compilation-error-regexp-alist ess-error-regexp-alist)
+##     (compilation-minor-mode))
+##
+## and check if everything is highlighted as expected
 
 ## 1
 Error:  chunk 7 (label = OP4)
@@ -69,3 +78,12 @@ no 'dimnames' attribute for array
 2: quasi_label(enquo(object), label) at /tmp/Rtmp6McxD6/R.INSTALL70c948e315c6/testthat/R/expect-equality.R:51
 3: eval_bare(get_expr(quo), get_env(quo)) at /tmp/Rtmp6McxD6/R.INSTALL70c948e315c6/testthat/R/expectation.R:90
 
+# 10 rlang backtrace
+Backtrace:
+    █
+ 1. ├─global::update_orders(self, mm())
+ 2. │ └─self$orders(name) ~/dev/foo/bla.R:157:2
+ 3. │   └─purrr::keep(...) ~/dev/foo/bla.R:85:14
+ 4. │     └─purrr:::probe(.x, .p, ...)
+ 5. │       └─purrr::map_lgl(.x, .p, ...)
+ 6. └─purrr:::stop_bad_type(...)

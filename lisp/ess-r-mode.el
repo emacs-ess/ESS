@@ -514,7 +514,7 @@ fill=TRUE); try(traceback(), silent=TRUE)})\n")
     )
   "Alist of (key . string) pairs for use in help section searching.")
 
-(defvar ess-r-error-regexp-alist '(R R1 R2 R3 R4 R-recover)
+(defvar ess-r-error-regexp-alist '(R R1 R2 R3 R4 R-rlang R-recover)
   "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
 
 (dolist (l '(;; Takes precedence over R1 below in English locales, and allows spaces in file path
@@ -527,6 +527,7 @@ fill=TRUE); try(traceback(), silent=TRUE)})\n")
              (R3 "\\(?:^ *\\|: ?\\)\\([^-+[:digit:] \t\n]:?[^: \t\n]*\\):\\([0-9]+\\):\\(?:\\([0-9]+\\):\\)?"  1 2 3 2 1)
              ;; Don't start with digit; no spaces
              (R4 "\\([^-+ [:digit:]][^: \t\n]+\\):\\([0-9]+\\):\\([0-9]+\\):"  1 2 3 2 1)
+             (R-rlang "^ *[0-9]+\\..* \\(\\([^ :]+\\):\\([0-9]+\\):\\([0-9]+\\)\\)$" 2 3 4 nil 1)
              (R-recover " *[0-9]+: +\\([^:\n\t]+?\\)#\\([0-9]+:\\)"  1 2 nil 2 1)))
   (cl-pushnew l compilation-error-regexp-alist-alist))
 
