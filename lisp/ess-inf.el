@@ -1264,8 +1264,7 @@ type of the region."
     (if source-buffer
         (with-current-buffer source-buffer
           (when (buffer-modified-p) (save-buffer))
-          (ess-force-buffer-current "Process to load into: ")
-          (ess-check-modifications))
+          (ess-force-buffer-current "Process to load into: "))
       (ess-force-buffer-current "Process to load into: "))))
 
 ;;;###autoload
@@ -3087,9 +3086,7 @@ bol) and load each chunk separately."
   "Check whether loading this file would overwrite some ESS objects
 which have been modified more recently than this file, and confirm
 if this is the case."
-  ;; FIXME: this should really cycle through all top-level assignments in
-  ;; the buffer
-  ;;VS[02-04-2012|ESS 12.03]: this is sooo ugly
+  (declare (obsolete "Do not use" "21.04"))
   (when (> (length ess-change-sp-regexp) 0)
     (and (buffer-file-name) ess-filenames-map
          (let ((sourcemod (nth 5 (file-attributes (buffer-file-name))))
