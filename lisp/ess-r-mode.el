@@ -1362,8 +1362,13 @@ selected (see `ess-r-set-evaluation-env')."
 If there are multiple packages attached to the search path, the
 user is prompted for a package location. If OBJECT is not
 documented, returns nil."
-  (let ((paths (ess-get-words-from-vector
-                (format "as.character(utils::help('%s'))\n" object))))
+  (let* ((paths (ess-get-words-from-vector
+                 (format "as.character(utils::help('%s'))\n" object)))
+         (paths (if (> (length paths) 1)
+                    (cl-delete-if
+                     (lambda (x) (string-match-p "reexports$" x))
+                     paths)
+                  paths)))
     (cond ((not paths)
            nil)
           ((and (> (length paths) 1)
