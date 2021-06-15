@@ -844,7 +844,7 @@ Intended for completion."
     (and bounds
          (not (save-excursion
                 (goto-char (car bounds))
-                (looking-at "/\\|.[0-9]")))
+                (looking-at "/\\|[.0-9]")))
          bounds)))
 
 (defun ess-symbol-start ()
