@@ -400,6 +400,7 @@ keypress to repeat it, so if it is bound to \"C-c C-=\" pressing
                     (not (and (re-search-backward str
                                                   (- (point) (length str)) t)
                               (not (replace-match (car slist))))))))
+    (delete-horizontal-space)
     (insert (car ess-assign-list)))
   (set-transient-map
    (let ((map (make-sparse-keymap))

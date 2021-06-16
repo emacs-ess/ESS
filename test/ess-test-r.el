@@ -237,6 +237,17 @@
   :eval "C-c C-=" :result "foo <- ¶"
   :eval "C-c C-=" :result "foo <<- ¶")
 
+(etest-deftest ess-cycle-assign-whitespace-test ()
+  "Whitespace is cleaned up before insertion"
+  :init ((mode . r))
+  :case "foo ¶"
+  :eval "C-c C-=" :result "foo <- ¶"
+  :eval "C-c C-=" :result "foo <<- ¶"
+
+  :case "foo  ¶"
+  :eval "C-c C-=" :result "foo <- ¶"
+  :eval "C-c C-=" :result "foo <<- ¶")
+
 (ert-deftest ess-skip-thing-test ()
   (should (eql 18
                (ess-r-test-with-temp-text "x <- function(x){\n mean(x)\n }\n \n \n x(3)\n "

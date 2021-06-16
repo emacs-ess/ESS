@@ -103,6 +103,7 @@ and are processed with DO-RESULT."
                                      etest--cleanup))
                 (`:case (progn
                           (erase-buffer)
+                          (setq last-command nil)
                           (insert etest--value)))
                 (`:eval (etest-run (current-buffer) (etest--wrap-test etest--value)))
                 (`:result (funcall do-result
