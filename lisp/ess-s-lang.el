@@ -424,7 +424,8 @@ If `ess-language' is not \"S\", call `self-insert-command' with ARG."
                (if (and char (numberp event))
                    (replace-match char t t)
                  (replace-match "")))
-              (t (insert assign))))
+              (t (delete-horizontal-space) 
+                 (insert assign))))
     (funcall #'self-insert-command arg)))
 
 ;; In case people had this in their config don't cause errors:
