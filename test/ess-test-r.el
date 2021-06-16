@@ -202,16 +202,28 @@
                                          ("2005-12-30" . "R-2.0")))
                  "R-dev")))
 
+(defun ess-test-init-insert-assign ()
+  (let ((map (make-sparse-keymap)))
+    (define-key map "_" 'ess-insert-assign)
+    (use-local-map map)))
+
 (etest-deftest ess-insert-assign-test ()
   "Repeated calls cycle between assignment and self-insert."
   :init ((mode . r)
-         (eval . (let ((map (make-sparse-keymap)))
-                   (define-key map "_" 'ess-insert-assign)
-                   (use-local-map map))))
+         (eval . (ess-test-init-insert-assign)))
   :case "foo¶"
   :eval "_" :result "foo <- ¶"
   :eval "_" :result "foo_¶"
   :eval "_" :result "foo_ <- ¶")
+
+(etest-deftest ess-insert-assign-whitespace-test ()
+  "Whitespace is cleaned up before insertion."
+  :init ((mode . r)
+         (eval . (ess-test-init-insert-assign)))
+  :case "foo ¶"
+  :eval "_" :result "foo <- ¶"
+  :case "foo  ¶"
+  :eval "_" :result "foo <- ¶")
 
 (etest-deftest ess-cycle-assign-test ()
   "Repeated calls cycle trough assignment operators."
