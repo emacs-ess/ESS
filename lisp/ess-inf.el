@@ -1320,7 +1320,7 @@ All elements are optional.
   (setq inferior-ess--output-delimiter-count (1+ inferior-ess--output-delimiter-count))
   (format "ess-output-delimiter%s" inferior-ess--output-delimiter-count))
 
-(defvar ess--command-default-timeout 30)
+(defvar ess--command-default-timeout most-positive-fixnum)
 
 ;; NOTE: We might want to switch to somethig like `cl-defun' with
 ;; keyword arguments given the length of the signature. Would also
