@@ -3195,8 +3195,8 @@ in @code{ess-rutils-mode}, providing useful key bindings in this mode
 
 Org-mode (@uref{https://orgmode.org}) now supports reproducible research
 and literate programming in many languages (including R) -- see chapter
-14 of the Org manual
-(@uref{https://orgmode.org/org.html#Working-With-Source-Code}).  For ESS
+15 of the Org manual
+(@uref{https://orgmode.org/org.html#Working-with-Source-Code}).  For ESS
 users, this offers a document-based work environment within which to
 embed ESS usage.  R code lives in code blocks of an Org document, from
 which it can be edited in ess-mode, evaluated, extracted ("tangled") to
