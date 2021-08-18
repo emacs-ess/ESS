@@ -1,4 +1,4 @@
-## TODO: automate this Somehow.
+## TODO: automate this somehow.
 ##
 ## For now manually
 ## 
@@ -64,8 +64,8 @@ Error in source("basicModel.R") : basicModel.R:95:1: unexpected symbol
 ## 8 valgrind errors
 ==25269== Invalid read of size 8
 ==25269==    at 0x9EC363C: inner_product<double const*, double const*, double> (stl_numeric.h:183)
-==25269==    by 0x9EC363C: distance(RcppParallel::RMatrix<double> const&, unsigned long, unsigned long, DistType) (rwmd.cpp:21)
-==25269==    by 0x9EC90C9: RelaxedWordMoverDistanceSparse::operator()(unsigned long, unsigned long) (rwmd.cpp:137)
+==25269==    by 0x9EC363C: distance (rwmd.cpp:21)
+==25269==    by 0x9EC90C9: operator()(unsigned long, unsigned long) (rwmd.cpp:137)
 
 ## 9 testhat new patterns
 test_embeddings.R:20: failure: average embedding works
@@ -87,3 +87,8 @@ Backtrace:
  4. │     └─purrr:::probe(.x, .p, ...)
  5. │       └─purrr::map_lgl(.x, .p, ...)
  6. └─purrr:::stop_bad_type(...)
+
+# 11 testhat failure
+Failure (test-kmeans.R:430:3): predict_KMeans returns the correct output if the input is a data frame AND
+
+
