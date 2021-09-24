@@ -518,7 +518,7 @@ fill=TRUE); try(traceback(), silent=TRUE)})\n")
   "List of symbols which are looked up in `compilation-error-regexp-alist-alist'.")
 
 (dolist (l '(;; Takes precedence over R1 below in English locales, and allows spaces in file path
-             (R "\\(\\(?: at \\|(@\\)\\([^#()\n]+\\)[#:]\\([0-9]+\\)\\)"  2 3 nil 2 1)
+             (R "\\(\\(?: at \\|(@\\)\\([^#()\n:]+\\)[#:]\\([0-9]+\\)\\)"  2 3 nil 2 1)
              ;; valgrind, testthat, rlang/shiny style
              ;; e.g. (stl_numeric.h:183), (test-parsers.R:238:3) [.../R/file.R#158]
              (R1 "\\s(\\(\\sw[^ ):\n]+\\)[#:]\\([0-9]+\\)[#:]?\\([0-9]+\\)?\\s)" 1 2 nil 2)

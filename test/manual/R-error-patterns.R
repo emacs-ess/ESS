@@ -88,7 +88,13 @@ Backtrace:
  5. │       └─purrr::map_lgl(.x, .p, ...)
  6. └─purrr:::stop_bad_type(...)
 
-# 11 testhat failure
+# 11 "at" rlang backtrace
+ 10. └─shapvis::shiny_xdeps_ui(shads, name = "SHAP TS", per_page = per_page) at shiny/R/bootstrap.R:761:2
+ 11.   └─shapvis:::shiny_ui(...) at shapvis/R/app.R:72:2
+ 12.     └─shapvis:::var_groups(shad, exclude_regexp) at shapvis/R/app.R:106:2
+ 13.       ├─base::unique(...) at shapvis/R/app.R:33:2
+ 14.       └─base::colnames(shad$extra) at shapvis/R/app.R:33:2
+ 15.         └─base::is.data.frame(x)
+
+# 12 testhat failure
 Failure (test-kmeans.R:430:3): predict_KMeans returns the correct output if the input is a data frame AND
-
-
