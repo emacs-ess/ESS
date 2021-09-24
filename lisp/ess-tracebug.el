@@ -1645,9 +1645,7 @@ If FILENAME is not found at all, ask the user where to find it if
     (cl-dolist (bf (buffer-list))
       (with-current-buffer  bf
         (when (and buffer-file-name
-                   (or (and (file-name-absolute-p filename)
-                            (string-match (format "%s\\'" filename) buffer-file-name))
-                       (equal filename (file-name-nondirectory buffer-file-name))))
+                   (string-match (format "%s\\'" filename) buffer-file-name))
           (setq buffer bf)
           (cl-return))))
     ;; 2. The file name is absolute.  Use its explicit directory as
