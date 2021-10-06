@@ -35,7 +35,7 @@
 @uref{mailto:henning.red@@googlemail.com, Henning Redestig}
 @c --------
 @item
-@c @uref{http://vitalie.spinu.info/, Vitalie Spinu}
+@c @uref{http://github.com/vspinu, Vitalie Spinu}
 @uref{mailto:spinuvit@@gmail.com, Vitalie Spinu}
 @c --------
 @item
