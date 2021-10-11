@@ -1508,7 +1508,7 @@ the output into *ess.dbg* buffer."
         ;; no source reference, simply show the inferior
         (display-buffer pbuf)))
 
-    (when match-selection ;(and (not was-in-recover) match-selection)
+    (when (and match-selection (not is-iess)) ;(and (not was-in-recover) match-selection)
       (ess-electric-selection t))))
 
 
