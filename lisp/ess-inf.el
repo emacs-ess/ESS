@@ -1456,14 +1456,8 @@ Example (ess-boolean-command \"2>1\n\")"
 
 (defun ess-string-command (com &optional buf wait)
   "Returns the output of COM as a string."
-  (let ((prompt inferior-ess-prompt))
-    (with-current-buffer (ess-command com buf nil nil wait)
-      (goto-char (point-min))
-      ;; remove leading prompt
-      (when (and prompt (re-search-forward (concat "^" prompt) (point-at-eol) t))
-        (delete-region (point-min) (match-end 0)))
-      (ess-kill-last-line)
-      (buffer-substring (point-min) (point-max)))))
+  (with-current-buffer (ess-command com buf nil nil wait)
+    (buffer-substring (point-min) (point-max))))
 
 (defun ess-async-command (com &optional buf proc callback interrupt-callback)
   "Asynchronous version of `ess-command'.
