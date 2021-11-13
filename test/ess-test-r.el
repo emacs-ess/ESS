@@ -838,10 +838,10 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
   :inf-cleanup
   (progn
     (kill-buffer ess-rdired-buffer)
-    (ess-command "rm(my_rdired_variable)\n"))
-  
+    (ess-command "rm(my_rdired_variable, envir = globalenv())\n"))
+
   :eval
-  ((ess-command "my_rdired_variable <- TRUE\n")
+  ((ess-command "assign('my_rdired_variable', TRUE, envir = globalenv())\n")
    (save-window-excursion
      (ess-rdired))
    (with-current-buffer ess-rdired-buffer

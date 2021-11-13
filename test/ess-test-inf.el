@@ -160,6 +160,24 @@ Browse[1]> "
   :inf-result "NULL
 Browse[1]> ")
 
+(etest-deftest-r ess-command-browser-curly-braces ()
+  "`{` expressions when debugger is active do not interrupt command."
+  :cleanup (progn
+             (ess-debug-command-quit)
+             (ess-wait-for-process)
+             (etest-clear-inferior-buffer))
+  :eval (progn
+          (ess-send-string (ess-get-process) "{ browser(); NULL }\n")
+          (ess-wait-for-process))
+  :inf-result "Called from: top level 
+Browse[1]> debug at #1: NULL
+Browse[1]> "
+
+  :eval (should (string= (ess-string-command "{ 1; 2 }\n")
+                         "[1] 2"))
+  :inf-result ""
+  :eval (should (inferior-ess-available-p)))
+
 (etest-deftest-r ess-command-quit-test ()
   "`ess-command' does not leak output on quit (#794, #842).
 This is especially important within `while-no-input' used by
