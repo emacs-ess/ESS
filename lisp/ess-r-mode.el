@@ -2687,10 +2687,12 @@ from all installed packages, which can be very slow."
 Use the repositories as listed by getOptions(\"repos\") in the
 current R session."
   (interactive)
-  (ess-r-package--list-packages (concat ".ess.rutils.ops <- options(width = 10000);"
-                                        "print(available.packages(fields=c(\"Title\"))[, c(\"Title\", \"Version\")]);"
-                                        "options(.ess.rutils.ops); rm(.ess.rutils.ops);"
-                                        "\n")))
+  (ess-r-package--list-packages
+   "{
+       .ess.rutils.ops <- options(width = 10000)
+       print(available.packages(fields=c(\"Title\"))[, c(\"Title\", \"Version\")])
+       options(.ess.rutils.ops); rm(.ess.rutils.ops)
+    }\n"))
 
 (define-obsolete-function-alias 'ess-rutils-mark-install #'ess-r-package-mark-install "ESS 19.04")
 (defun ess-r-package-mark-install ()
