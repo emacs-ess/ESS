@@ -5,7 +5,7 @@ Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
 @item ESS[R]: @code{ess-command} now runs R code in a sandboxed environment.
-Use @code{parent.env(environment())} to inspect the current environment.
+Use @code{.ess.environment()} to inspect the current environment.
 
 @item ESS[R]: Added support for new syntax in R 4.0 and R 4.1.
 This concerns raw strings, lambda functions, and the pipe operator.

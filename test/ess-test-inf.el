@@ -134,15 +134,19 @@
   :inf-result ""
   :eval (should (inferior-ess-available-p)))
 
+(defun ess-test--browser ()
+  (ess-send-string (ess-get-process) "{ browser(); NULL }\n")
+  (ess-wait-for-process))
+
+(defun ess-test--browser-cleanup ()
+  (ess-debug-command-quit)
+  (ess-wait-for-process)
+  (etest-clear-inferior-buffer))
+
 (etest-deftest-r ess--command-browser-timeout-test ()
   "`ess-command' fails with hanging command within browser (#1081)."
-  :cleanup (progn
-             (ess-debug-command-quit)
-             (ess-wait-for-process)
-             (etest-clear-inferior-buffer))
-  :eval (progn
-          (ess-send-string (ess-get-process) "{ browser(); NULL }\n")
-          (ess-wait-for-process))
+  :cleanup (ess-test--browser-cleanup)
+  :eval (ess-test--browser)
   :inf-result "Called from: top level 
 Browse[1]> debug at #1: NULL
 Browse[1]> "
@@ -162,13 +166,8 @@ Browse[1]> ")
 
 (etest-deftest-r ess-command-browser-curly-braces ()
   "`{` expressions when debugger is active do not interrupt command."
-  :cleanup (progn
-             (ess-debug-command-quit)
-             (ess-wait-for-process)
-             (etest-clear-inferior-buffer))
-  :eval (progn
-          (ess-send-string (ess-get-process) "{ browser(); NULL }\n")
-          (ess-wait-for-process))
+  :cleanup (ess-test--browser-cleanup)
+  :eval (ess-test--browser)
   :inf-result "Called from: top level 
 Browse[1]> debug at #1: NULL
 Browse[1]> "
@@ -177,6 +176,16 @@ Browse[1]> "
                          "[1] 2"))
   :inf-result ""
   :eval (should (inferior-ess-available-p)))
+
+(etest-deftest-r ess-command-environment ()
+  "Can access current env with `.ess.environment()`"
+  :cleanup (ess-test--browser-cleanup)
+  :eval (progn
+          (ess-send-string (ess-get-process)
+                           "local({ foo <- 1; browser(); NULL })\n")
+          (ess-wait-for-process))
+  :eval (should (string= (ess-string-command "ls(envir = .ess.environment())\n")
+                         "[1] \"foo\"")))
 
 (etest-deftest-r ess-command-quit-test ()
   "`ess-command' does not leak output on quit (#794, #842).
