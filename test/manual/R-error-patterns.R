@@ -103,3 +103,9 @@ Failure (test-kmeans.R:430:3): predict_KMeans returns the correct output if the 
 Warning: Error in *: non-numeric argument to binary operator
   173: plot_shap_deps_internal [/home/joe/proj/R/plot.R#219]
   172: fn [/home/joe/proj/R/plot.R#184]
+
+## but not these ranges:
+> str(list(1:3))
+List of 1
+ $ : int [1:3] 1 2 3
+>

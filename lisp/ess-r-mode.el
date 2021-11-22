@@ -521,7 +521,7 @@ fill=TRUE); try(traceback(), silent=TRUE)})\n")
              (R "\\(\\(?: at \\|(@\\)\\([^#()\n:]+\\)[#:]\\([0-9]+\\)\\)"  2 3 nil 2 1)
              ;; valgrind, testthat, rlang/shiny style
              ;; e.g. (stl_numeric.h:183), (test-parsers.R:238:3) [.../R/file.R#158]
-             (R1 "\\s(\\([^ ):\n]+\\)[#:]\\([0-9]+\\)[#:]?\\([0-9]+\\)?\\s)" 1 2 nil 2)
+             (R1 "\\s(\\([^0-9][^ ():\n]+\\)[#:]\\([0-9]+\\)[#:]?\\([0-9]+\\)?\\s)" 1 2 nil 2)
              (R2 "(\\(\\w+ \\([^())\n]+\\)#\\([0-9]+\\)\\))"  2 3 nil 2 1)
              ;; Precedes R4 and allows spaces in file path, Starts at bol or with ": " (patterns 3,4,5,6,9)
              (R3 "\\(?:^ *\\|: ?\\)\\([^-+[:digit:] \t\n]:?[^: \t\n]*\\):\\([0-9]+\\):\\(?:\\([0-9]+\\):\\)?"  1 2 3 2 1)
