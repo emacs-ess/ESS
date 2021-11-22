@@ -98,3 +98,8 @@ Backtrace:
 
 # 12 testhat failure
 Failure (test-kmeans.R:430:3): predict_KMeans returns the correct output if the input is a data frame AND
+
+# 13 shiny pattern
+Warning: Error in *: non-numeric argument to binary operator
+  173: plot_shap_deps_internal [/home/joe/proj/R/plot.R#219]
+  172: fn [/home/joe/proj/R/plot.R#184]
