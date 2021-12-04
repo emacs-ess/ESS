@@ -222,6 +222,10 @@ if(.ess.Rversion < "1.8")
 
     writeLines(paste0(sentinel, "-START"))
 
+    .ess.environment.state$env <- parent.frame()
+    on.exit(.ess.environment.state$env <- NULL, add = TRUE)
+
+
     ## Don't interrupt `browser()` sessions (#1081)
     restart <- function(...) {
         if (!is.null(findRestart("browser")))
@@ -240,4 +244,10 @@ if(.ess.Rversion < "1.8")
 
     ## Keep `.Last.value` stable
     invisible(.Last.value)
+}
+
+.ess.environment.state <- new.env(parent = emptyenv())
+
+.ess.environment <- function() {
+    .ess.environment.state$env
 }
