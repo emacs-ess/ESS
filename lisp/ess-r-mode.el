@@ -375,7 +375,7 @@ namespace.")
                 'ess-operator-face)
             (if (cdr (assq 'ess-R-fl-keyword:%op% ess-R-font-lock-keywords))
                 'ess-%op%-face
-              'default)))
+              nil)))
          ((save-excursion
             (and (cdr (assq 'ess-R-fl-keyword:fun-defs ess-R-font-lock-keywords))
                  (ess-goto-char string-end)
@@ -389,9 +389,17 @@ namespace.")
                  (ess-looking-at "(")))
           ess-function-call-face)
          ((eq (nth 3 state) ?`)
-          'default)
+          nil)
          (t
           font-lock-string-face)))
+    font-lock-comment-face))
+
+;; Don't fontify backquoted symbols as strings
+(defun inferior-ess-r-font-lock-syntactic-face-function (state)
+  (if (nth 3 state)
+      (if (eq (nth 3 state) ?`)
+          nil
+        font-lock-string-face)
     font-lock-comment-face))
 
 (defvar ess-r--non-fn-kwds
@@ -2387,6 +2395,7 @@ state.")
   :group 'ess-proc
   (ess-setq-vars-local ess-r-customize-alist)
   (setq-local ess-font-lock-keywords 'inferior-ess-r-font-lock-keywords)
+  (setq-local font-lock-syntactic-face-function #'ess-r-font-lock-syntactic-face-function)
   (setq-local comint-process-echoes (eql ess-eval-visibly t))
   (setq-local comint-prompt-regexp inferior-S-prompt)
   (setq-local syntax-propertize-function ess-r--syntax-propertize-function)

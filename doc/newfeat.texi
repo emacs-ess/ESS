@@ -4,6 +4,9 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item ESS[R]: Backticked symbols in the process buffer are no
+longer fontified as strings.
+
 @item ESS[R]: @code{ess-command} now runs R code in a sandboxed environment.
 Use @code{.ess.environment()} to inspect the current environment.
 
