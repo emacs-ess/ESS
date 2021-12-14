@@ -37,6 +37,7 @@
 (require 'ess-utils)
 (require 'ess)
 (require 'ess-tracebug)
+(require 'ess-sesman)
 
 (require 'ansi-color)
 (require 'comint)
