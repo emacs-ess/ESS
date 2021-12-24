@@ -29,11 +29,18 @@
 Use the `:inf-result' to flush this buffer and test its
 contents.")
 
+(defvar-local etest-local-config nil
+  "Local configuration for `etest-deftest'.
+List of etest keywords and commands, e.g. an `:init' spec to set
+up a particular mode.")
+
 (cl-defmacro etest-deftest (name args &body body)
   (declare (doc-string 3)
            (indent 2))
   (let ((etest--docstring (when (stringp (car body))
                             (list (pop body)))))
+    ;; Record this at compile time because ert doesn't run tests locally
+    (etest--push-local-config body)
     `(ert-deftest ,name ,args
        ,@etest--docstring
        (etest--run-test (quote ,body)
@@ -46,6 +53,17 @@ contents.")
        (pop ,place)
        (setq local (append local (pop ,place))))
      local))
+
+;; Evaluate symbols to make it easier to set local variables
+(defmacro etest--push-local-config (place)
+  `(let ((etest--config (cond ((not etest-local-config)
+                               nil)
+                              ((symbolp etest-local-config)
+                               (eval etest-local-config))
+                              (t
+                               etest-local-config))))
+     (when etest--config
+       (setq ,place (append etest--config ,place)))))
 
 (defmacro etest--with-test-buffer (init &rest body)
   (declare (indent 1)
@@ -189,6 +207,7 @@ keywords."
           (pop body))
         (when (stringp (car body))
           (pop body))
+        (etest--push-local-config body)
         (let ((results (etest--read-results body)))
           (goto-char beg)
           (forward-char 1)

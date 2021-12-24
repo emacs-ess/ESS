@@ -23,6 +23,10 @@
 (require 'tramp)
 (require 'seq)
 
+(defvar etest-r-config
+  '(:init ((mode . r)
+           (eval . (ess-test-r-set-local-process)))))
+
 (defvar ess-test-fixtures-directory
   (expand-file-name "fixtures"
                     (file-name-directory (or load-file-name
@@ -300,17 +304,6 @@ representative to the common interactive use with tracebug on."
     (setq ess-local-process-name (process-name (get-buffer-process proc-buf)))
     (setq etest-local-inferior-buffer proc-buf)))
 
-(cl-defmacro etest-deftest-r (name args &body body)
-  (declare (doc-string 3)
-           (indent 2))
-  (let ((etest--docstring (when (stringp (car body))
-                            (list (pop body)))))
-    `(etest-deftest ,name ,args
-       ,@etest--docstring
-       :init ((mode . r)
-              (eval . (ess-test-r-set-local-process)))
-       ,@body)))
-
 ;; Utilities for testing remote functionality
 
 ;; Define a mock TRAMP method to use for testing. This code is taken from
@@ -422,5 +415,10 @@ token."
   `(ess-with-toggled-font-lock-keyword t ,keywords ,@body))
 
 (provide 'ess-test-r-utils)
+
+
+;; Local Variables:
+;; etest-local-config: etest-r-config
+;; End:
 
 ;;; ess-test-r-utils.el ends here

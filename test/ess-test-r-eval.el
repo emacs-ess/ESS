@@ -254,11 +254,16 @@ TODO: Install company-mode dependency in CI."
          "C-c C-r")
   :inf-result "+ + + + + + > ")
 
-(etest-deftest-r ess-string-command-test ()
+(etest-deftest ess-string-command-test ()
   "`ess-string-command` handles multiline outputs (#922)"
   :eval ((should (string= (ess-string-command "quote({ 1 })\n")
                           "{\n    1\n}"))
          (should (string= (ess-string-command "list(1)\n")
                           "[[1]]\n[1] 1\n"))))
+
+
+;; Local Variables:
+;; etest-local-config: etest-r-config
+;; End:
 
 ;;; ess-test-r-eval.el ends here

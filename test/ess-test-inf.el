@@ -72,7 +72,7 @@
 
 ;;*;; Evaluation
 
-(etest-deftest-r ess-command-test ()
+(etest-deftest ess-command-test ()
   "`ess-command' saves output in specified buffer."
   :eval (let ((output-buffer (get-buffer-create " *ess-test-command-output*")))
           (ess-command "identity(TRUE)\n" output-buffer)
@@ -115,7 +115,7 @@
     (should (string-match "^\\[1\\] \"foo\"\nSourced file"
                           (output nil (ess-load-file (expand-file-name "file.R" ess-test-fixtures-directory)))))))
 
-(etest-deftest-r ess-command-incomplete-test ()
+(etest-deftest ess-command-incomplete-test ()
   "`ess-command' fails with incomplete input."
   :eval (should-error (ess-command "list(" nil nil nil nil nil nil 0.01))
 
@@ -128,7 +128,7 @@
          (should-error (ess-command "list(" nil nil nil nil nil nil 0.01)))
   :inf-result "")
 
-(etest-deftest-r ess-command-hanging-test ()
+(etest-deftest ess-command-hanging-test ()
   "`ess-command' fails with hanging command."
   :eval (should-error (ess-command "Sys.sleep(2)\n" nil nil nil nil nil nil 0.01))
   :inf-result ""
@@ -143,7 +143,7 @@
   (ess-wait-for-process)
   (etest-clear-inferior-buffer))
 
-(etest-deftest-r ess--command-browser-timeout-test ()
+(etest-deftest ess--command-browser-timeout-test ()
   "`ess-command' fails with hanging command within browser (#1081)."
   :cleanup (ess-test--browser-cleanup)
   :eval (ess-test--browser)
@@ -164,7 +164,7 @@ Browse[1]> "
   :inf-result "NULL
 Browse[1]> ")
 
-(etest-deftest-r ess-command-browser-curly-braces ()
+(etest-deftest ess-command-browser-curly-braces ()
   "`{` expressions when debugger is active do not interrupt command."
   :cleanup (ess-test--browser-cleanup)
   :eval (ess-test--browser)
@@ -177,7 +177,7 @@ Browse[1]> "
   :inf-result ""
   :eval (should (inferior-ess-available-p)))
 
-(etest-deftest-r ess-command-environment ()
+(etest-deftest ess-command-environment ()
   "Can access current env with `.ess.environment()`"
   :cleanup (ess-test--browser-cleanup)
   :eval (progn
@@ -187,7 +187,7 @@ Browse[1]> "
   :eval (should (string= (ess-string-command "ls(envir = .ess.environment())\n")
                          "[1] \"foo\"")))
 
-(etest-deftest-r ess-command-quit-test ()
+(etest-deftest ess-command-quit-test ()
   "`ess-command' does not leak output on quit (#794, #842).
 This is especially important within `while-no-input' used by
 packages like eldoc and company-quickhelp. `throw-on-input' sets
@@ -201,7 +201,7 @@ packages like eldoc and company-quickhelp. `throw-on-input' sets
   :inf-result ""
   :eval (should (inferior-ess-available-p)))
 
-(etest-deftest-r ess-command-quit-async-interrupt-test ()
+(etest-deftest ess-command-quit-async-interrupt-test ()
   "`ess-command' interrupts asynchronously on quits (#1091, #1102).
 Needed with slow-responding processes."
   :eval
@@ -229,14 +229,14 @@ Needed with slow-responding processes."
   ;; There should be no output after the early exit or async restoration
   :inf-result "")
 
-(etest-deftest-r ess-command-newlines-test ()
+(etest-deftest ess-command-newlines-test ()
   "`ess-command' doesn't garble new lines (#1110)."
   :eval ((should (string= (ess--strip-final-newlines "1\n2")
                           "1\n2"))
          (should (equal (ess-get-words-from-vector "{ 'foo'\n'bar'\n }\n")
                         (list "bar")))))
 
-(etest-deftest-r ess-command-multiline-test ()
+(etest-deftest ess-command-multiline-test ()
   "`ess-command' output doesn't include continuation prompts (#1116)."
   :eval ((let ((buf (generate-new-buffer "ess-command-multiline-test")))
            (ess-command "{ 1\n 2 }\n" buf)
@@ -301,7 +301,7 @@ new output")
     (should (equal (ess--command-delimited-output-info (current-buffer) "my-sentinel")
                    (list 20 27 49)))))
 
-(etest-deftest-r command-without-trailing-newline-test ()
+(etest-deftest command-without-trailing-newline-test ()
   "It is a bug when a command doesn't output a trailing newline.
 With delimiters it might be possible to figure out the output.
 However if they are not available then the output is
@@ -313,7 +313,7 @@ indistinguishable from the prompt."
   :inf-result "
 > ")
 
-(etest-deftest-r ess-command-intervening-input-test ()
+(etest-deftest ess-command-intervening-input-test ()
   "Test that user can send input while command is interrupting (#1119)."
   :eval
   (progn
@@ -527,7 +527,7 @@ some. text
 
 ;;*;; Help
 
-(etest-deftest-r ess-help-aliases-test ()
+(etest-deftest ess-help-aliases-test ()
   :eval (let ((aliases (ess-get-help-aliases-list)))
           (should (member "list" aliases)))
   :inf-result ""
@@ -624,6 +624,11 @@ some. text
     (ess-switch-to-inferior-or-script-buffer nil)
     (should (derived-mode-p 'inferior-ess-mode))))
 
+
 (provide 'ess-test-inf)
+
+;; Local Variables:
+;; etest-local-config: etest-r-config
+;; End:
 
 ;;; ess-test-inf.el ends here

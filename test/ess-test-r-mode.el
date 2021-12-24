@@ -16,7 +16,7 @@
 ;;; Commentary:
 ;;
 
-(etest-deftest-r test-ess-inferior-r-backticked ()
+(etest-deftest test-ess-inferior-r-backticked ()
   "Backticked symbols are not fontified as strings."
   :case "¶`f¶oo¶`"
   :eval (progn
@@ -24,3 +24,8 @@
                       'inferior-ess-r-font-lock-syntactic-face-function)
           (font-lock-ensure)
           (should (not (face-at-point)))))
+
+
+;; Local Variables:
+;; etest-local-config: etest-r-config
+;; End:

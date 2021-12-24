@@ -807,7 +807,7 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
   (should (commandp 'R))
   (should (commandp 'R-newest)))
 
-(etest-deftest-r ess-command-last-value-test ()
+(etest-deftest ess-command-last-value-test ()
   "`ess-command` preserves `.Last.value (#1058)"
   :case "100¶"
   :eval "C-c C-c"
@@ -826,7 +826,7 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
 [1] 100
 > ")
 
-(etest-deftest-r ess-r-pager-test ()
+(etest-deftest ess-r-pager-test ()
   :eval ((should (string= (car (ess-get-words-from-vector "getOption('pager')\n"))
                           "cat"))))
 
@@ -834,7 +834,7 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
 
 (require 'ess-rdired)
 
-(etest-deftest-r ess-rdired-test ()
+(etest-deftest ess-rdired-test ()
   :inf-cleanup
   (progn
     (kill-buffer ess-rdired-buffer)
@@ -894,5 +894,10 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
     (ess--essr-load-or-throw-error remote-file-path #'ess-r--fetch-ESSR-remote)))
 
 (provide 'ess-test-r)
+
+
+;; Local Variables:
+;; etest-local-config: etest-r-config
+;; End:
 
 ;;; ess-test-r.el ends here

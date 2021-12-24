@@ -21,7 +21,7 @@
 (require 'ess-r-mode)
 (require 'ess-test-r-utils)
 
-(etest-deftest-r ess-r-syntax-backslash-test ()
+(etest-deftest ess-r-syntax-backslash-test ()
   :case "sapply(x, ¶\\(y) y"
   :eval (should (equal (syntax-after (point))
                        (string-to-syntax ".")))
@@ -29,24 +29,24 @@
   :eval (should (equal (syntax-after (point))
                        (string-to-syntax "\\"))))
 
-(etest-deftest-r ess-r-font-lock-boolean-operator-test ()
+(etest-deftest ess-r-font-lock-boolean-operator-test ()
   :case "foo ¶| foo ¶|¶| foo ¶& foo ¶&¶& foo"
   :eval (ess-with-enabled-font-lock-keyword 'ess-fl-keyword:operators
           (font-lock-ensure)
           (should (eq (face-at-point) 'ess-operator-face))))
 
-(etest-deftest-r ess-r-font-lock-pipe-operator-test ()
+(etest-deftest ess-r-font-lock-pipe-operator-test ()
   :case "a ¶|¶> b"
   :eval (ess-with-enabled-font-lock-keyword 'ess-fl-keyword:operators
           (font-lock-ensure)
           (should (eq (face-at-point) 'ess-operator-face))))
 
-(etest-deftest-r ess-r-tokens-pipe-operator-test ()
+(etest-deftest ess-r-tokens-pipe-operator-test ()
   :case "a ¶|> b"
   :eval (should (token= "|>"))
   :result "a |>¶ b")
 
-(etest-deftest-r ess-r-raw-strings-test ()
+(etest-deftest ess-r-raw-strings-test ()
   :case "
 r¶\"(foo\"bar))¶\"
 r¶\"(foo}\"bar))¶\"
@@ -90,3 +90,8 @@ r\"(foor¶'()¶'bar))\"
 "
   :eval (should (not (equal (syntax-after (point))
                             (string-to-syntax "|")))))
+
+
+;; Local Variables:
+;; etest-local-config: etest-r-config
+;; End:

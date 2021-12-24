@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t -*-
 
 (require 'ert)
 (require 'etest)
@@ -234,3 +235,18 @@ bar"
   :result "f¶oo×"
   :eval "<right>"
   :result "fo¶o×")
+
+;; `let' doesn't seem to work here, perhaps an interaction between
+;; scoping in macros and file-local variables
+(setq etest-local-config '(:init ((mode . text))))
+
+(etest-deftest etest-local-config-test ()
+  "Local configuration is picked up"
+  :eval (should (eq major-mode 'text-mode)))
+
+(setq etest-local-config nil)
+
+(etest-deftest etest-default-mode ()
+  "Default mode is fundamental.
+Also tests local config test is cleaned up properly."
+  :eval (should (eq major-mode 'fundamental-mode)))
