@@ -117,29 +117,31 @@ and are processed with DO-RESULT."
           etest--cleanup)
       (unwind-protect
           (while body
-            (let ((etest--key (pop body))
-                  (etest--value (pop body)))
-              (pcase etest--key
-                (`:inf-buffer (setq etest-local-inferior-buffer (eval etest--value)))
-                (`:cleanup (push etest--value etest--cleanup))
-                (`:inf-cleanup (push `(progn
-                                        ,etest--value
-                                        (etest--wait-for-inferior)
-                                        (etest-clear-inferior-buffer))
-                                     etest--cleanup))
-                (`:case (progn
-                          (erase-buffer)
-                          (setq last-command nil)
-                          (insert etest--value)))
-                (`:eval (etest-run (current-buffer) (etest--wrap-test etest--value)))
-                (`:result (funcall do-result
-                                   (etest--result (current-buffer))
-                                   etest--value))
-                (`:inf-result (etest--flush-inferior-buffer do-result etest--value))
-                (`:messages (progn
-                              (etest--flush-messages etest--msg-sentinel do-result etest--value)
-                              (setq etest--msg-sentinel (etest--make-message-sentinel))))
-                (_ (error (format "Expected an etest keyword, not `%s`" etest--key))))))
+            (if (keywordp (car body))
+                (let ((etest--key (pop body))
+                      (etest--value (pop body)))
+                  (pcase etest--key
+                    (`:inf-buffer (setq etest-local-inferior-buffer (eval etest--value)))
+                    (`:cleanup (push etest--value etest--cleanup))
+                    (`:inf-cleanup (push `(progn
+                                            ,etest--value
+                                            (etest--wait-for-inferior)
+                                            (etest-clear-inferior-buffer))
+                                         etest--cleanup))
+                    (`:case (progn
+                              (erase-buffer)
+                              (setq last-command nil)
+                              (insert etest--value)))
+                    (`:eval (etest-run (current-buffer) (etest--wrap-test etest--value)))
+                    (`:result (funcall do-result
+                                       (etest--result (current-buffer))
+                                       etest--value))
+                    (`:inf-result (etest--flush-inferior-buffer do-result etest--value))
+                    (`:messages (progn
+                                  (etest--flush-messages etest--msg-sentinel do-result etest--value)
+                                  (setq etest--msg-sentinel (etest--make-message-sentinel))))
+                    (_ (error (format "Expected an etest keyword, not `%s`" etest--key)))))
+              (etest-run (current-buffer) (etest--wrap-test (pop body)))))
         (mapc #'eval etest--cleanup)))))
 
 (defun etest--wrap-test (x)

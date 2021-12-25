@@ -23,27 +23,27 @@
 
 (etest-deftest ess-r-syntax-backslash-test ()
   :case "sapply(x, ¶\\(y) y"
-  :eval (should (equal (syntax-after (point))
-                       (string-to-syntax ".")))
+  (should (equal (syntax-after (point))
+                 (string-to-syntax ".")))
   :case "c(\"¶\\\"\")"
-  :eval (should (equal (syntax-after (point))
-                       (string-to-syntax "\\"))))
+  (should (equal (syntax-after (point))
+                 (string-to-syntax "\\"))))
 
 (etest-deftest ess-r-font-lock-boolean-operator-test ()
   :case "foo ¶| foo ¶|¶| foo ¶& foo ¶&¶& foo"
-  :eval (ess-with-enabled-font-lock-keyword 'ess-fl-keyword:operators
-          (font-lock-ensure)
-          (should (eq (face-at-point) 'ess-operator-face))))
+  (ess-with-enabled-font-lock-keyword 'ess-fl-keyword:operators
+    (font-lock-ensure)
+    (should (eq (face-at-point) 'ess-operator-face))))
 
 (etest-deftest ess-r-font-lock-pipe-operator-test ()
   :case "a ¶|¶> b"
-  :eval (ess-with-enabled-font-lock-keyword 'ess-fl-keyword:operators
-          (font-lock-ensure)
-          (should (eq (face-at-point) 'ess-operator-face))))
+  (ess-with-enabled-font-lock-keyword 'ess-fl-keyword:operators
+    (font-lock-ensure)
+    (should (eq (face-at-point) 'ess-operator-face))))
 
 (etest-deftest ess-r-tokens-pipe-operator-test ()
   :case "a ¶|> b"
-  :eval (should (token= "|>"))
+  (should (token= "|>"))
   :result "a |>¶ b")
 
 (etest-deftest ess-r-raw-strings-test ()
@@ -56,8 +56,8 @@ r¶\"---[foo\"bar]--\"baz]---¶\"
 r¶'{foo'bar}¶'
 r¶\"---{foobar}-\\--\"
 "
-  :eval (should (equal (syntax-after (point))
-                       (string-to-syntax "|")))
+  (should (equal (syntax-after (point))
+                 (string-to-syntax "|")))
 
   :case "
 r\"¶(foo\"¶bar))¶\"
@@ -68,7 +68,7 @@ r\"¶---[foo\"¶bar]--\"¶baz]---¶\"
 r'¶{foo'¶bar}¶'
 r\"¶---{foobar}¶-\\--\"¶
 "
-  :eval (should (ess-inside-string-p))
+  (should (ess-inside-string-p))
 
   :case "
 ¶r\"(foo\"bar))\"¶,
@@ -79,17 +79,17 @@ r\"¶---{foobar}¶-\\--\"¶
 ¶r'{foo'bar}'¶,
 ¶r\"---{foobar}-\\--\"
 "
-  :eval (should (not (ess-inside-string-p)))
+  (should (not (ess-inside-string-p)))
 
   :case "r\"(foor\"()\"ba¶r))\""
-  :eval (should (not (ess-inside-string-p)))
+  (should (not (ess-inside-string-p)))
 
   :case "
 r\"(foor¶'()¶'bar))\"
 # r¶\"{foo}¶\"
 "
-  :eval (should (not (equal (syntax-after (point))
-                            (string-to-syntax "|")))))
+  (should (not (equal (syntax-after (point))
+                      (string-to-syntax "|")))))
 
 
 ;; Local Variables:

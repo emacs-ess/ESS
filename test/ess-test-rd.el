@@ -40,8 +40,8 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
 }
 "
 
-  :eval ((setq-local ess-eval-visibly-p 'nowait)
-         "C-c C-n")
+  (setq-local ess-eval-visibly-p 'nowait)
+  "C-c C-n"
   :result "
 \\examples{
 1
@@ -53,8 +53,8 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
 [1] 1
 > "
 
-  :eval ((setq-local ess-eval-visibly-p nil)
-         "C-c C-n")
+  (setq-local ess-eval-visibly-p nil)
+  "C-c C-n"
   :result "
 \\examples{
 1

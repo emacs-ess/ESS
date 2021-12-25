@@ -24,7 +24,7 @@ This macro wraps around `ert-deftest` so these tests can be run with the usual E
 
 ## Defining test cases
 
-At its heart, the `etest-deftest` macro is an interpreter of keywords command. The main keywords to know about are `:case`, `:eval`, and `:result`.
+At its heart, the `etest-deftest` macro is an interpreter of lisp forms and keywords command. The main keywords to know about are `:case` and `:result`.
 
 
 ### `:case`
@@ -39,32 +39,32 @@ All etest tests are run in a dedicated buffer. The `:case` takes a string that d
 The mark cursor `×` is optional. When the point cursor `¶` is omitted, the cursor is set at `(point-min)`.
 
 
-### `:eval`
+### Lisp forms and commands
 
-To define a behavior test, add a `:eval` keyword. This keyword handles lisp code to be evaluated:
+Any lisp form that isn't prefixed with a keyword is evaluated as lisp. These forms may contain ert code such as `should` or may cause side effects in the test buffer.
 
 ```elisp
 (etest-deftest my-test ()
   :case "¶Initial text in the test buffer."
-  :eval (forward-word)
+  (forward-word)
 ```
 
-A key description (the sort that you would pass to `kbd`). The key is looked up in the active keymaps of the test buffer:
+These free forms may also be commands described in strings as key descriptions (the sort that you would pass to `kbd`). The key is looked up in the active keymaps of the test buffer:
 
 ```elisp
 (etest-deftest my-test ()
   :case "¶Initial text in the test buffer."
-  :eval "M-f"
+  "M-f"
 ```
 
-Or a list of code and key descriptions:
+These can be freely mixed:
 
 ```elisp
 (etest-deftest my-test ()
   :case "¶Initial text in the test buffer."
-  :eval ("M-f"
-         (forward-word)
-         "M-f")
+  "M-f"
+  (forward-word)
+  "M-f"
 ```
 
 
@@ -75,7 +75,7 @@ You can test how these commands affect the test buffer with the `:result` keywor
 ```elisp
 (etest-deftest my-test ()
   :case "¶Initial text in the test buffer."
-  :eval "M-f"
+  "M-f"
   :result "")
 ```
 
@@ -84,18 +84,18 @@ Then move the point inside the `etest-deftest` block and call `M-x etest-update`
 ```elisp
 (etest-deftest my-test ()
   :case "¶Initial text in the test buffer."
-  :eval "M-f"
+  "M-f"
   :result "Initial¶ text in the test buffer.")
 ```
 
 This block has now become a unit test for the behavior of the `"M-f"` keybinding. When ERT runs the test, the contents of the buffer as well as the position of the cursor after typin `"M-f"` must correspond to the comparison case recorded in `:result`, otherwise the test fails.
 
-Note that you don't need a `:result` keyword to perform tests. You can also use `should` statement or any other ERT testing device in the `:eval` forms:
+Note that you don't need a `:result` keyword to perform tests. You can also use `should` statement or any other ERT testing device in keyword-free forms:
 
 ```elisp
 (etest-deftest my-test ()
   :case "¶Initial text in the test buffer."
-  :eval (should (looking-at "Initial")))
+  (should (looking-at "Initial")))
 ```
 
 
@@ -210,7 +210,7 @@ We'll test the result of calling `C-c C-c` in a buffer containing `1 + 1`. The `
   :cleanup (my-inferior-cleanup)
   :inf-buffer inf-buf
   :case "1 + 1"
-  :eval "C-c C-c"
+  "C-c C-c"
   :inf-result "")
 ```
 
@@ -223,7 +223,7 @@ After calling `etest-update` we get:
   :cleanup (my-inferior-cleanup)
   :inf-buffer inf-buf
   :case "1 + 1"
-  :eval "C-c C-c"
+  "C-c C-c"
   :inf-result "> 1 + 1
 [1] 2
 > ")
@@ -234,12 +234,12 @@ After calling `etest-update` we get:
 
 ### Using multiple cursors
 
-Use multiple `¶` characters to define multiple cursors. The `:eval` code is run once for each cursor. This is useful for testing motions on many keywords at a time for instance:
+Use multiple `¶` characters to define multiple cursors. Lisp code and commands are run once for each cursor. This is useful for testing motions on many keywords at a time for instance:
 
 ```elisp
 (etest-deftest my-test ()
   :case "¶if ¶while ¶for"
-  :eval "M-f"
+  "M-f"
   :result "if¶ while¶ for¶")
 ```
 
@@ -252,10 +252,10 @@ followed by an open parenthesis."
   :init ((mode . r))
 
   :case "¶if ¶while ¶for"
-  :eval (should (not (face-at-point)))
+  (should (not (face-at-point)))
 
   :case "¶if () ¶while () ¶for ()"
-  :eval (should (eq (face-at-point) 'ess-keyword-face)))
+  (should (eq (face-at-point) 'ess-keyword-face)))
 ```
 
 
@@ -267,8 +267,8 @@ Messages are normally inhibited during the duration of the test. If you want to 
 
 ```elisp
 (etest-deftest my-test ()
-  :eval (message "foo")
-  :eval (message "bar")
+  (message "foo")
+  (message "bar")
   :messages "")
 ```
 
@@ -276,8 +276,8 @@ And call `etest-update` to define a comparison case:
 
 ```elisp
 (etest-deftest my-test ()
-  :eval (message "foo")
-  :eval (message "bar")
+  (message "foo")
+  (message "bar")
   :messages "foo
 bar")
 ```

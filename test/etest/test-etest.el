@@ -8,9 +8,9 @@
   :init ((mode . text)
          (foo . t))
   :init ((bar . t))
-  :eval ((should (eq major-mode 'text-mode))
-         (should foo)
-         (should bar)))
+  (should (eq major-mode 'text-mode))
+  (should foo)
+  (should bar))
 
 (etest-deftest etest-test-result-test ()
   "`:eval' causes side effects in test buffer and `:result' checks output."
@@ -29,23 +29,23 @@
   ;; Within parentheses
   :case "
 (etest-deftest name ()
-  :eval (foo (bar¶))
+  (foo (bar¶))
 "
-  :eval ((etest--climb-deftest))
+  (etest--climb-deftest)
   :result "
 ¶(etest-deftest name ()
-  :eval (foo (bar))
+  (foo (bar))
 "
 
   ;; Within a string
   :case "
 (etest-deftest name ()
-  :eval (foo \"bar¶\")
+  (foo \"bar¶\")
 "
-  :eval ((etest--climb-deftest))
+  (etest--climb-deftest)
   :result "
 ¶(etest-deftest name ()
-  :eval (foo \"bar\")
+  (foo \"bar\")
 "
 
   ;; Behind deftest
@@ -53,7 +53,7 @@
 ¶(etest-deftest name ()
   :foo)
 "
-  :eval ((etest--climb-deftest))
+  (etest--climb-deftest)
   :result "
 ¶(etest-deftest name ()
   :foo)
@@ -64,7 +64,7 @@
 (etest-deftest name ()
   :foo)¶
 "
-  :eval ((etest--climb-deftest))
+  (etest--climb-deftest)
   :result "
 ¶(etest-deftest name ()
   :foo)
@@ -75,24 +75,24 @@
   :case "
   (etest-deftest test-etest-update ()
     :case \"¶foo bar\"
-    :eval ((forward-word))
+    (forward-word)
     :result \"\"
-    :eval ((forward-char)
-           (forward-char))
-    :eval ((forward-char)
-           \"RET\")
+    (forward-char)
+    (forward-char)
+    (forward-char)
+    \"RET\"
     :result \"\")
 "
-  :eval ((etest-update))
+  (etest-update)
   :result "
   (etest-deftest test-etest-update ()
     :case \"¶foo bar\"
-    :eval ((forward-word))
+    (forward-word)
     :result \"foo¶ bar\"
-    :eval ((forward-char)
-           (forward-char))
-    :eval ((forward-char)
-           \"RET\")
+    (forward-char)
+    (forward-char)
+    (forward-char)
+    \"RET\"
     :result \"foo ba
 ¶r\")
 ")
@@ -102,15 +102,15 @@
   :case "
   (etest-deftest test-etest-update ()
     :case \"¶foo bar\"
-    :eval ((forward-word)) :result \"\"
-    :eval ((forward-word)) :result \"\")
+    (forward-word) :result \"\"
+    (forward-word) :result \"\")
 "
-  :eval ((etest-update))
+  (etest-update)
   :result "
   (etest-deftest test-etest-update ()
     :case \"¶foo bar\"
-    :eval ((forward-word)) :result \"foo¶ bar\"
-    :eval ((forward-word)) :result \"foo bar¶\")
+    (forward-word) :result \"foo¶ bar\"
+    (forward-word) :result \"foo bar¶\")
 ")
 
 (etest-deftest etest-keep-state-test ()
@@ -118,14 +118,14 @@
 Using multiple cursors in the test to make sure Emacs state is
 reset after a cursor has finished evaluating."
   :case "¶foo ¶bar"
-  :eval ("M-f"
-         (should (eq last-command 'forward-word))
-         ;; Ideally we'd test `this-command` at the time "M-f" is
-         ;; called but for simplicity we do it here
-         (should (eq this-command 'forward-word))
-         "M-b"
-         (should (eq last-command 'backward-word))
-         (should (eq this-command 'backward-word)))
+  "M-f"
+  (should (eq last-command 'forward-word))
+  ;; Ideally we'd test `this-command` at the time "M-f" is
+  ;; called but for simplicity we do it here
+  (should (eq this-command 'forward-word))
+  "M-b"
+  (should (eq last-command 'backward-word))
+  (should (eq this-command 'backward-word))
   :result "¶foo ¶bar")
 
 (ert-deftest etest-wrap-test-keyword-test ()
@@ -158,20 +158,20 @@ reset after a cursor has finished evaluating."
 (etest-deftest etest-inferior-buffer-test ()
   "Inferior buffer is flushed and tested."
   :inf-buffer (get-buffer-create "aux-buffer")
-  :eval (with-current-buffer etest-local-inferior-buffer
-          (insert "foo"))
+  (with-current-buffer etest-local-inferior-buffer
+    (insert "foo"))
   :inf-result "foo"
   :inf-result ""
-  :eval (with-current-buffer etest-local-inferior-buffer
-          (insert "foobar"))
+  (with-current-buffer etest-local-inferior-buffer
+    (insert "foobar"))
   :inf-result "foobar"
   :inf-result "")
 
 (etest-deftest etest-messages-test ()
   "Can retrieve messages with `:messages'."
   :messages ""
-  :eval (message "foo")
-  :eval (message "bar")
+  (message "foo")
+  (message "bar")
   :messages "foo
 bar"
   :messages "")
@@ -191,15 +191,15 @@ bar"
   :case "
 (etest-deftest etest-multiple-results-test ()
   :case \"¶1\"
-  :eval \"<right>\"
+  \"<right>\"
   :result \"\"
   :result \"\")
 "
-  :eval (etest-update)
+  (etest-update)
   :result "
 (etest-deftest etest-multiple-results-test ()
   :case \"¶1\"
-  :eval \"<right>\"
+  \"<right>\"
   :result \"1¶\"
   :result \"1¶\")
 ")
@@ -209,18 +209,18 @@ bar"
   :case "
 (etest-deftest test ()
   :case \"¶1\"
-  :eval \"<right>\"
+  \"<right>\"
   ;; Comment
   ;; Comment
 
   ;; Comment
   :result \"\")
 "
-  :eval (etest-update)
+  (etest-update)
   :result "
 (etest-deftest test ()
   :case \"¶1\"
-  :eval \"<right>\"
+  \"<right>\"
   ;; Comment
   ;; Comment
 
@@ -231,9 +231,9 @@ bar"
 (etest-deftest etest-mark-test ()
   "Mark is properly handled."
   :case "¶foo×"
-  :eval "<right>"
+  "<right>"
   :result "f¶oo×"
-  :eval "<right>"
+  "<right>"
   :result "fo¶o×")
 
 
@@ -243,7 +243,7 @@ bar"
 (etest-deftest etest-config-fun-test ()
   "Configuration is picked up from function."
   :config (etest-make-config)
-  :eval (should (eq major-mode 'text-mode)))
+  (should (eq major-mode 'text-mode)))
 
 
 (defvar etest-some-config '(:init ((mode . text))))
@@ -251,7 +251,7 @@ bar"
 (etest-deftest etest-config-var-test ()
   "Configuration is picked up from variable."
   :config etest-some-config
-  :eval (should (eq major-mode 'text-mode)))
+  (should (eq major-mode 'text-mode)))
 
 
 ;; `let' doesn't seem to work here, perhaps an interaction between
@@ -260,16 +260,16 @@ bar"
 
 (etest-deftest etest-config-local-test ()
   "Local configuration is picked up."
-  :eval (should (eq major-mode 'text-mode)))
+  (should (eq major-mode 'text-mode)))
 
 (etest-deftest etest-config-keyword-test ()
   "Keyword config has precedence over local config."
   :config nil
-  :eval (should (eq major-mode 'fundamental-mode)))
+  (should (eq major-mode 'fundamental-mode)))
 
 (setq etest-local-config nil)
 
 (etest-deftest etest-default-mode ()
   "Default mode is fundamental.
 Also tests local config test is cleaned up properly."
-  :eval (should (eq major-mode 'fundamental-mode)))
+  (should (eq major-mode 'fundamental-mode)))

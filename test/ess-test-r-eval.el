@@ -43,8 +43,9 @@ Standard filter."
 5; 6×
 "
 
-  :eval ((setq-local ess-eval-visibly t)
-         "C-c C-r")
+  (setq-local ess-eval-visibly t)
+  "C-c C-r"
+
   :inf-result "1
 [1] 1
 > 2
@@ -59,8 +60,9 @@ Standard filter."
 [1] 6
 > "
 
-  :eval ((setq-local ess-eval-visibly 'nowait)
-         "C-c C-r")
+  (setq-local ess-eval-visibly 'nowait)
+  "C-c C-r"
+
   :inf-result "1
 + 2
 + {
@@ -75,8 +77,9 @@ Standard filter."
 [1] 6
 > "
 
-  :eval ((setq-local ess-eval-visibly nil)
-         "C-c C-r")
+  (setq-local ess-eval-visibly nil)
+  "C-c C-r"
+
   :inf-result "[1] 1
 > [1] 2
 > + + + [1] 4
@@ -107,8 +110,8 @@ Default filter"
   ;; process. Probably because of the special `nowait` handling in the
   ;; tracebug filter.
 
-  ;;   :eval ((setq-local ess-eval-visibly 'nowait)
-  ;;          "C-c C-r")
+  ;; (setq-local ess-eval-visibly 'nowait)
+  ;; "C-c C-r"
   ;;   :inf-result "1
   ;; + 2
   ;; + {
@@ -123,8 +126,9 @@ Default filter"
   ;; [1] 6
   ;; > "
 
-  :eval ((setq-local ess-eval-visibly t)
-         "C-c C-r")
+  (setq-local ess-eval-visibly t)
+  "C-c C-r"
+
   :inf-result "1
 [1] 1
 > 2
@@ -139,8 +143,9 @@ Default filter"
 [1] 6
 > "
 
-  :eval ((setq-local ess-eval-visibly nil)
-         "C-c C-r")
+  (setq-local ess-eval-visibly nil)
+  "C-c C-r"
+
   :inf-result "[1] 1
 > [1] 2
 > + + + [1] 4
@@ -156,7 +161,8 @@ Standard filter."
          (eval . (ess-test-r-set-local-process 'output)))
 
   :case "#' ¶identical(environment(), globalenv())"
-  :eval "C-c C-j"
+
+  "C-c C-j"
   :inf-result "identical(environment(), globalenv())
 [1] TRUE
 > "
@@ -168,7 +174,7 @@ Loading line: #' identical(environment(), globalenv())"
 #' ¶identical(environment(), globalenv())
 NULL×"
 
-  :eval "C-c C-r"
+  "C-c C-r"
   :inf-result "+ > identical(environment(), globalenv())
 [1] FALSE
 > NULL
@@ -186,7 +192,8 @@ Tracebug filter."
          (ess-r-evaluation-env . "base")
          (ess-eval-visibly . nil))
   :case "#' ¶identical(environment(), globalenv())"
-  :eval "C-c C-j"
+
+  "C-c C-j"
   :inf-result "[1] TRUE
 > "
   ;; Shouldn't mention "[base]"
@@ -197,7 +204,7 @@ Loading line: #' identical(environment(), globalenv())"
 #' ¶identical(environment(), globalenv())
 NULL×"
 
-  :eval "C-c C-r"
+  "C-c C-r"
   :inf-result "+ [1] FALSE
 NULL
 > "
@@ -227,19 +234,19 @@ TODO: Install company-mode dependency in CI."
   ¶file <- tempfile()
   sink(file)×"
 
-  :eval ((setq-local ess-eval-visibly t)
-         "C-c C-r")
+  (setq-local ess-eval-visibly t)
+  "C-c C-r"
   :inf-result "file <- tempfile()
 >   sink(file)
 > "
 
-  :eval (should (equal (ess-get-words-from-vector "letters[1:3]\n")
-                       '("a" "b" "c")))
+  (should (equal (ess-get-words-from-vector "letters[1:3]\n")
+                 '("a" "b" "c")))
   :inf-result ""
 
   :case "si¶"
-  :eval (when (require 'company nil 'noerror)
-          (company-complete-common))
+  (when (require 'company nil 'noerror)
+    (company-complete-common))
   :inf-result ""
 
   :case "¶{
@@ -250,20 +257,18 @@ TODO: Install company-mode dependency in CI."
   rm(file)
 }×"
 
-  :eval ((setq-local ess-eval-visibly nil)
-         "C-c C-r")
+  (setq-local ess-eval-visibly nil)
+  "C-c C-r"
   :inf-result "+ + + + + + > ")
 
 (etest-deftest ess-string-command-test ()
-  "`ess-string-command` handles multiline outputs (#922)"
-  :eval ((should (string= (ess-string-command "quote({ 1 })\n")
-                          "{\n    1\n}"))
-         (should (string= (ess-string-command "list(1)\n")
-                          "[[1]]\n[1] 1\n"))))
+  "`ess-string-command` handles multiline outputs (#922)."
+  (should (string= (ess-string-command "quote({ 1 })\n")
+                   "{\n    1\n}"))
+  (should (string= (ess-string-command "list(1)\n")
+                   "[[1]]\n[1] 1\n")))
 
 
 ;; Local Variables:
 ;; etest-local-config: etest-r-config
 ;; End:
-
-;;; ess-test-r-eval.el ends here

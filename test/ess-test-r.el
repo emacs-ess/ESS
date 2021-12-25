@@ -212,41 +212,39 @@
   :init ((mode . r)
          (eval . (ess-test-init-insert-assign)))
   :case "foo¶"
-  :eval "_" :result "foo <- ¶"
-  :eval "_" :result "foo_¶"
-  :eval "_" :result "foo_ <- ¶")
+  "_" :result "foo <- ¶"
+  "_" :result "foo_¶"
+  "_" :result "foo_ <- ¶")
 
 (etest-deftest ess-insert-assign-whitespace-test ()
   "Whitespace is cleaned up before insertion."
   :init ((mode . r)
          (eval . (ess-test-init-insert-assign)))
-  :case "foo ¶"
-  :eval "_" :result "foo <- ¶"
-  :case "foo  ¶"
-  :eval "_" :result "foo <- ¶")
+  :case "foo ¶"  "_" :result "foo <- ¶"
+  :case "foo  ¶" "_" :result "foo <- ¶")
 
 (etest-deftest ess-cycle-assign-test ()
   "Repeated calls cycle trough assignment operators."
   :init ((mode . r))
   :case "foo¶"
-  :eval "C-c C-=" :result "foo <- ¶"
-  :eval "C-c C-=" :result "foo <<- ¶"
-  :eval "C-c C-=" :result "foo = ¶"
-  :eval "C-c C-=" :result "foo -> ¶"
-  :eval "C-c C-=" :result "foo ->> ¶"
-  :eval "C-c C-=" :result "foo <- ¶"
-  :eval "C-c C-=" :result "foo <<- ¶")
+  "C-c C-=" :result "foo <- ¶"
+  "C-c C-=" :result "foo <<- ¶"
+  "C-c C-=" :result "foo = ¶"
+  "C-c C-=" :result "foo -> ¶"
+  "C-c C-=" :result "foo ->> ¶"
+  "C-c C-=" :result "foo <- ¶"
+  "C-c C-=" :result "foo <<- ¶")
 
 (etest-deftest ess-cycle-assign-whitespace-test ()
   "Whitespace is cleaned up before insertion"
   :init ((mode . r))
   :case "foo ¶"
-  :eval "C-c C-=" :result "foo <- ¶"
-  :eval "C-c C-=" :result "foo <<- ¶"
+  "C-c C-=" :result "foo <- ¶"
+  "C-c C-=" :result "foo <<- ¶"
 
   :case "foo  ¶"
-  :eval "C-c C-=" :result "foo <- ¶"
-  :eval "C-c C-=" :result "foo <<- ¶")
+  "C-c C-=" :result "foo <- ¶"
+  "C-c C-=" :result "foo <<- ¶")
 
 (ert-deftest ess-skip-thing-test ()
   (should (eql 18
@@ -731,7 +729,7 @@ x <- function(x){
 You are welcome to redistribute it under certain conditions.
 Type 'license()' or 'licence()' for distribution details.
 "
-  :eval "RET"
+  "RET"
   :result "
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -751,7 +749,7 @@ Type 'license()' or 'licence()' for distribution details.
 [1] 2
 [1] 3
 "
-  :eval "RET"
+  "RET"
   :result "
 > for(i in 1:3) {
 +   print(i)
@@ -780,8 +778,8 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
 3
 "
 
-  :eval ((setq-local ess-eval-visibly-p 'nowait)
-         "C-c C-n")
+  (setq-local ess-eval-visibly-p 'nowait)
+  "C-c C-n"
   :result "
 1
 ¶2
@@ -791,8 +789,8 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
 [1] 1
 > "
 
-  :eval ((setq-local ess-eval-visibly-p nil)
-         "C-c C-n")
+  (setq-local ess-eval-visibly-p nil)
+  "C-c C-n"
   :result "
 1
 2
@@ -810,25 +808,25 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
 (etest-deftest ess-command-last-value-test ()
   "`ess-command` preserves `.Last.value (#1058)"
   :case "100¶"
-  :eval "C-c C-c"
+  "C-c C-c"
   :inf-result "100
 [1] 100
 > "
   :case ".Last.value¶"
-  :eval "C-c C-c"
+  "C-c C-c"
   :inf-result ".Last.value
 [1] 100
 > "
-  :eval (ess-command "-1\n")
+  (ess-command "-1\n")
   :case ".Last.value¶"
-  :eval "C-c C-c"
+  "C-c C-c"
   :inf-result ".Last.value
 [1] 100
 > ")
 
 (etest-deftest ess-r-pager-test ()
-  :eval ((should (string= (car (ess-get-words-from-vector "getOption('pager')\n"))
-                          "cat"))))
+  (should (string= (car (ess-get-words-from-vector "getOption('pager')\n"))
+                   "cat")))
 
 ;; rdired
 
@@ -840,13 +838,12 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
     (kill-buffer ess-rdired-buffer)
     (ess-command "rm(my_rdired_variable, envir = globalenv())\n"))
 
-  :eval
-  ((ess-command "assign('my_rdired_variable', TRUE, envir = globalenv())\n")
-   (save-window-excursion
-     (ess-rdired))
-   (with-current-buffer ess-rdired-buffer
-     (goto-char (point-min))
-     (should (re-search-forward "my_rdired_variable" nil t)))))
+  (ess-command "assign('my_rdired_variable', TRUE, envir = globalenv())\n")
+  (save-window-excursion
+    (ess-rdired))
+  (with-current-buffer ess-rdired-buffer
+    (goto-char (point-min))
+    (should (re-search-forward "my_rdired_variable" nil t))))
 
 ;; help
 

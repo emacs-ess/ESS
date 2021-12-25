@@ -74,12 +74,12 @@
 
 (etest-deftest ess-command-test ()
   "`ess-command' saves output in specified buffer."
-  :eval (let ((output-buffer (get-buffer-create " *ess-test-command-output*")))
-          (ess-command "identity(TRUE)\n" output-buffer)
-          (should (string= (with-current-buffer output-buffer
-                             (ess-kill-last-line)
-                             (buffer-string))
-                           "[1] TRUE")))
+  (let ((output-buffer (get-buffer-create " *ess-test-command-output*")))
+    (ess-command "identity(TRUE)\n" output-buffer)
+    (should (string= (with-current-buffer output-buffer
+                       (ess-kill-last-line)
+                       (buffer-string))
+                     "[1] TRUE")))
   ;; No impact on inferior output
   :inf-result "")
 
@@ -117,22 +117,22 @@
 
 (etest-deftest ess-command-incomplete-test ()
   "`ess-command' fails with incomplete input."
-  :eval (should-error (ess-command "list(" nil nil nil nil nil nil 0.01))
+  (should-error (ess-command "list(" nil nil nil nil nil nil 0.01))
 
   ;; No impact on inferior output
   :inf-result ""
 
   ;; Process has been interrupted, is no longer busy, and we can run a
   ;; command again
-  :eval ((should (inferior-ess-available-p)) 
-         (should-error (ess-command "list(" nil nil nil nil nil nil 0.01)))
+  (should (inferior-ess-available-p)) 
+  (should-error (ess-command "list(" nil nil nil nil nil nil 0.01))
   :inf-result "")
 
 (etest-deftest ess-command-hanging-test ()
   "`ess-command' fails with hanging command."
-  :eval (should-error (ess-command "Sys.sleep(2)\n" nil nil nil nil nil nil 0.01))
+  (should-error (ess-command "Sys.sleep(2)\n" nil nil nil nil nil nil 0.01))
   :inf-result ""
-  :eval (should (inferior-ess-available-p)))
+  (should (inferior-ess-available-p)))
 
 (defun ess-test--browser ()
   (ess-send-string (ess-get-process) "{ browser(); NULL }\n")
@@ -146,46 +146,44 @@
 (etest-deftest ess--command-browser-timeout-test ()
   "`ess-command' fails with hanging command within browser (#1081)."
   :cleanup (ess-test--browser-cleanup)
-  :eval (ess-test--browser)
+  (ess-test--browser)
   :inf-result "Called from: top level 
 Browse[1]> debug at #1: NULL
 Browse[1]> "
 
-  :eval (should-error (ess-command "Sys.sleep(2)\n" nil nil nil nil nil nil 0.01))
+  (should-error (ess-command "Sys.sleep(2)\n" nil nil nil nil nil nil 0.01))
 
   ;; No impact on inferior
   :inf-result ""
-  :eval (should (inferior-ess-available-p))
+  (should (inferior-ess-available-p))
 
   ;; We're still in the browser
-  :eval (progn
-          (ess-send-string (ess-get-process) "NULL\n")
-          (ess-wait-for-process))
+  (ess-send-string (ess-get-process) "NULL\n")
+  (ess-wait-for-process)
   :inf-result "NULL
 Browse[1]> ")
 
 (etest-deftest ess-command-browser-curly-braces ()
   "`{` expressions when debugger is active do not interrupt command."
   :cleanup (ess-test--browser-cleanup)
-  :eval (ess-test--browser)
+  (ess-test--browser)
   :inf-result "Called from: top level 
 Browse[1]> debug at #1: NULL
 Browse[1]> "
 
-  :eval (should (string= (ess-string-command "{ 1; 2 }\n")
-                         "[1] 2"))
+  (should (string= (ess-string-command "{ 1; 2 }\n")
+                   "[1] 2"))
   :inf-result ""
-  :eval (should (inferior-ess-available-p)))
+  (should (inferior-ess-available-p)))
 
 (etest-deftest ess-command-environment ()
   "Can access current env with `.ess.environment()`"
   :cleanup (ess-test--browser-cleanup)
-  :eval (progn
-          (ess-send-string (ess-get-process)
-                           "local({ foo <- 1; browser(); NULL })\n")
-          (ess-wait-for-process))
-  :eval (should (string= (ess-string-command "ls(envir = .ess.environment())\n")
-                         "[1] \"foo\"")))
+  (ess-send-string (ess-get-process)
+                   "local({ foo <- 1; browser(); NULL })\n")
+  (ess-wait-for-process)
+  (should (string= (ess-string-command "ls(envir = .ess.environment())\n")
+                   "[1] \"foo\"")))
 
 (etest-deftest ess-command-quit-test ()
   "`ess-command' does not leak output on quit (#794, #842).
@@ -193,24 +191,22 @@ This is especially important within `while-no-input' used by
 packages like eldoc and company-quickhelp. `throw-on-input' sets
 `quit-flag'."
   ;; Simulate a quit by throwing from a timer
-  :eval ((run-at-time 0.1 nil (lambda () (throw 'my-quit 'thrown)))
-         (should (eq (catch 'my-quit
-                       (ess-command "{ cat('output\n'); Sys.sleep(10) }\n" nil nil nil nil nil nil 0.5))
-                     'thrown)))
+  (run-at-time 0.1 nil (lambda () (throw 'my-quit 'thrown)))
+  (should (eq (catch 'my-quit
+                (ess-command "{ cat('output\n'); Sys.sleep(10) }\n" nil nil nil nil nil nil 0.5))
+              'thrown))
   ;; There should be no output after the early exit
   :inf-result ""
-  :eval (should (inferior-ess-available-p)))
+  (should (inferior-ess-available-p)))
 
 (etest-deftest ess-command-quit-async-interrupt-test ()
   "`ess-command' interrupts asynchronously on quits (#1091, #1102).
 Needed with slow-responding processes."
-  :eval
-  (progn
-    (should (eq (identity (marker-buffer (process-mark (ess-get-process))))
-                (ess-get-process-buffer)))
-    (run-at-time 0.1 nil (lambda () (throw 'my-quit 'thrown)))
-    (should (eq (catch 'my-quit
-                  (ess-command "{
+  (should (eq (identity (marker-buffer (process-mark (ess-get-process))))
+              (ess-get-process-buffer)))
+  (run-at-time 0.1 nil (lambda () (throw 'my-quit 'thrown)))
+  (should (eq (catch 'my-quit
+                (ess-command "{
                                        cat('output\n')
                                        withCallingHandlers(
                                          interrupt = function(...) Sys.sleep(0.2),
@@ -218,31 +214,31 @@ Needed with slow-responding processes."
                                        )
                                      }
                                      "
-                               nil nil nil nil nil nil 0.5))
-                'thrown))
-    ;; Wait for the async interrupt
-    (should (ess-wait-for-process (ess-get-process) nil nil 0.5))
-    ;; Check that marker buffer was properly restored
-    (should (eq (marker-buffer (process-mark (ess-get-process)))
-                (ess-get-process-buffer))))
+                             nil nil nil nil nil nil 0.5))
+              'thrown))
+  ;; Wait for the async interrupt
+  (should (ess-wait-for-process (ess-get-process) nil nil 0.5))
+  ;; Check that marker buffer was properly restored
+  (should (eq (marker-buffer (process-mark (ess-get-process)))
+              (ess-get-process-buffer)))
 
   ;; There should be no output after the early exit or async restoration
   :inf-result "")
 
 (etest-deftest ess-command-newlines-test ()
   "`ess-command' doesn't garble new lines (#1110)."
-  :eval ((should (string= (ess--strip-final-newlines "1\n2")
-                          "1\n2"))
-         (should (equal (ess-get-words-from-vector "{ 'foo'\n'bar'\n }\n")
-                        (list "bar")))))
+  (should (string= (ess--strip-final-newlines "1\n2")
+                   "1\n2"))
+  (should (equal (ess-get-words-from-vector "{ 'foo'\n'bar'\n }\n")
+                 (list "bar"))))
 
 (etest-deftest ess-command-multiline-test ()
   "`ess-command' output doesn't include continuation prompts (#1116)."
-  :eval ((let ((buf (generate-new-buffer "ess-command-multiline-test")))
-           (ess-command "{ 1\n 2 }\n" buf)
-           (should (string= (with-current-buffer buf
-                              (buffer-string))
-                            "[1] 2")))))
+  (let ((buf (generate-new-buffer "ess-command-multiline-test")))
+    (ess-command "{ 1\n 2 }\n" buf)
+    (should (string= (with-current-buffer buf
+                       (buffer-string))
+                     "[1] 2"))))
 
 (ert-deftest ess--command-output-info-test ()
   ;; No output
@@ -306,8 +302,8 @@ new output")
 With delimiters it might be possible to figure out the output.
 However if they are not available then the output is
 indistinguishable from the prompt."
-  :eval ((should-error (ess-command "cat(1)\n"))
-         (ess-wait-for-process))
+  (should-error (ess-command "cat(1)\n"))
+  (ess-wait-for-process)
   ;; Leaks output after the error but that seems fine since errors in
   ;; filters are bugs
   :inf-result "
@@ -315,11 +311,9 @@ indistinguishable from the prompt."
 
 (etest-deftest ess-command-intervening-input-test ()
   "Test that user can send input while command is interrupting (#1119)."
-  :eval
-  (progn
-    (run-at-time 0.1 nil (lambda () (throw 'my-quit 'thrown)))
-    (should (eq (catch 'my-quit
-                  (ess-command "{
+  (run-at-time 0.1 nil (lambda () (throw 'my-quit 'thrown)))
+  (should (eq (catch 'my-quit
+                (ess-command "{
                                 cat('output\n')
                                 withCallingHandlers(
                                   interrupt = function(...) Sys.sleep(0.2),
@@ -327,13 +321,13 @@ indistinguishable from the prompt."
                                 )
                               }
                               "
-                               nil nil nil nil nil nil 0.5))
-                'thrown))
-    ;; Send intervening input right away. Since we wait on the R side
-    ;; on interrupt, the process hasn't been restored yet
-    (ess-send-string (ess-get-process) "cat('foobar\\n')\n")
-    ;; Wait for the async interrupt
-    (should (ess-wait-for-process nil nil nil 0.5)))
+                             nil nil nil nil nil nil 0.5))
+              'thrown))
+  ;; Send intervening input right away. Since we wait on the R side
+  ;; on interrupt, the process hasn't been restored yet
+  (ess-send-string (ess-get-process) "cat('foobar\\n')\n")
+  ;; Wait for the async interrupt
+  (should (ess-wait-for-process nil nil nil 0.5))
   ;; The output for the intervening input should be shown in the
   ;; process buffer
   :inf-result "foobar
@@ -528,13 +522,13 @@ some. text
 ;;*;; Help
 
 (etest-deftest ess-help-aliases-test ()
-  :eval (let ((aliases (ess-get-help-aliases-list)))
-          (should (member "list" aliases)))
+  (let ((aliases (ess-get-help-aliases-list)))
+    (should (member "list" aliases)))
   :inf-result ""
 
-  :eval ((ess-help--reset-cache)
-         (let ((aliases (ess-get-help-aliases-list)))
-           (should (member "list" aliases)))))
+  (ess-help--reset-cache)
+  (let ((aliases (ess-get-help-aliases-list)))
+    (should (member "list" aliases))))
 
 
 ;;*;; Inferior utils
