@@ -47,6 +47,13 @@ up a particular mode.")
                         (lambda (actual expected)
                           (should (string= actual expected)))))))
 
+(defmacro etest--setup-body (place)
+  `(progn
+     (when (eq (car ,place) :config)
+       (pop ,place)
+       (setq ,place (append (eval (pop ,place)) ,place)))
+     (etest--pop-init ,place)))
+
 (defmacro etest--pop-init (place)
   `(let (local)
      (while (eq (car ,place) :init)
@@ -56,14 +63,15 @@ up a particular mode.")
 
 ;; Evaluate symbols to make it easier to set local variables
 (defmacro etest--push-local-config (place)
-  `(let ((etest--config (cond ((not etest-local-config)
-                               nil)
-                              ((symbolp etest-local-config)
-                               (eval etest-local-config))
-                              (t
-                               etest-local-config))))
-     (when etest--config
-       (setq ,place (append etest--config ,place)))))
+  `(unless (eq (car ,place) :config)
+     (let ((etest--config (cond ((not etest-local-config)
+                                 nil)
+                                ((symbolp etest-local-config)
+                                 (eval etest-local-config))
+                                (t
+                                 etest-local-config))))
+       (when etest--config
+         (setq ,place (append etest--config ,place))))))
 
 (defmacro etest--with-test-buffer (init &rest body)
   (declare (indent 1)
@@ -104,7 +112,7 @@ buffer-local variable `etest-local-inferior-buffer'.
 
 `:messages' keywords check the contents of the messages buffers
 and are processed with DO-RESULT."
-  (etest--with-test-buffer (etest--pop-init body)
+  (etest--with-test-buffer (etest--setup-body body)
     (let ((etest--msg-sentinel (etest--make-message-sentinel))
           etest--cleanup)
       (unwind-protect

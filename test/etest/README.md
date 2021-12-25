@@ -137,6 +137,34 @@ The `:cleanup` takes lisp expressions evaluated in LIFO order with unwind protec
 ```
 
 
+## Reusing mode-specific configuration
+
+Mode-specific configuration can be stored in a variable or created with a function. This typically includes an `:init` keyword that sets up the major-mode for the test buffer:
+
+```elisp
+(defvar my-config '(:init ((mode . text))))
+```
+
+The configuration may contain any valid etest code and is registered with the `:config` keyword. This keyword must appear before any other keywords:
+
+```elisp
+(etest-deftest my-test ()
+  :config my-config))
+```
+
+You can also set it with the buffer-local variable `etest-local-config`. It is convenient to set it as a file-local variable, this way `etest-update` is automatically aware of the configuration relevant to the test file.
+
+```elisp
+(etest-deftest my-test ())
+
+;; Local Variables:
+;; etest-local-config: my-config
+;; End:
+```
+
+If supplied, the `:config` keyword has precedence over the configuration stored in `etest-local-config` and completely replaces it.
+
+
 ## Checking the contents of an inferior buffer
 
 In addition to checking the side effects in the test buffer, it is often useful to check the side effects in an auxiliary buffer. For instance, checking the output in an inferior process buffer.

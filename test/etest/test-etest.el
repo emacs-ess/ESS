@@ -236,13 +236,36 @@ bar"
   :eval "<right>"
   :result "fo¶o×")
 
+
+(defun etest-make-config ()
+  '(:init ((mode . text))))
+
+(etest-deftest etest-config-fun-test ()
+  "Configuration is picked up from function."
+  :config (etest-make-config)
+  :eval (should (eq major-mode 'text-mode)))
+
+
+(defvar etest-some-config '(:init ((mode . text))))
+
+(etest-deftest etest-config-var-test ()
+  "Configuration is picked up from variable."
+  :config etest-some-config
+  :eval (should (eq major-mode 'text-mode)))
+
+
 ;; `let' doesn't seem to work here, perhaps an interaction between
 ;; scoping in macros and file-local variables
 (setq etest-local-config '(:init ((mode . text))))
 
-(etest-deftest etest-local-config-test ()
-  "Local configuration is picked up"
+(etest-deftest etest-config-local-test ()
+  "Local configuration is picked up."
   :eval (should (eq major-mode 'text-mode)))
+
+(etest-deftest etest-config-keyword-test ()
+  "Keyword config has precedence over local config."
+  :config nil
+  :eval (should (eq major-mode 'fundamental-mode)))
 
 (setq etest-local-config nil)
 
