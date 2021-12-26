@@ -273,3 +273,18 @@ bar"
   "Default mode is fundamental.
 Also tests local config test is cleaned up properly."
   (should (eq major-mode 'fundamental-mode)))
+
+
+(etest-deftest etest-truncation-test ()
+  "`backward-up-list' isn't confused by syntax in strings."
+  :case "
+(etest-deftest test ()
+  :result \"\")
+\")\"
+"
+  (etest-update)
+  :result "¶
+(etest-deftest test ()
+  :result \"\")
+\")\"
+")

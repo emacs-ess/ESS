@@ -230,7 +230,10 @@ keywords."
               (error "Can't find any result keyword"))
             (re-search-forward etest--result-re end t)
             (let ((result-beg (1- (point)))
-                  (result-end (progn (backward-up-list -1 t) (point)))
+                  (result-end (progn
+                                (etest--backward-up-strings)
+                                (etest--forward-sexp)
+                                (point)))
                   (result-str (prin1-to-string (pop results))))
               (goto-char result-beg)
               (delete-region result-beg result-end)
@@ -251,17 +254,24 @@ keywords."
                        (buffer-end N))))
     (error nil)))
 
+(defun etest--backward-up-strings ()
+  (let ((syntax (syntax-ppss (point))))
+    (while (nth 3 syntax)
+      (goto-char (nth 8 syntax))
+      (setq syntax (syntax-ppss (point))))))
+
 (defun etest--climb-deftest ()
   ;; Climb one character when point is in front of a parenthesis.
   ;; This puts the cursor inside the `etest-deftest` when it is in
   ;; front.
+  (etest--backward-up-strings)
   (unless (looking-at "(")
-    (backward-char 1)
+    (ignore-errors (backward-char 1))
     (unless (looking-at ")")
-      (forward-char 1)))
+      (ignore-errors (forward-char 1))))
   ;; Climb enclosing lists until we find the `test-deftest`
   (while (and (not (looking-at "(etest-deftest"))
-              (ignore-errors (prog1 t (backward-up-list nil t)))))
+              (ignore-errors (prog1 t (backward-up-list nil t t)))))
   (point))
 
 
