@@ -1618,7 +1618,8 @@ they might throw off the debugger."
       (ess-blink-region start end))
     (goto-char end)
     (skip-chars-backward "\n\t ")
-    (setq end (point))))
+    (setq end (point))
+    (cons start end)))
 
 (defun ess-eval-region (start end vis &optional message type)
   "Send the region from START to END to the inferior ESS process.
@@ -1645,15 +1646,17 @@ the lines of the rectangle separately to the inferior process."
 (defun ess--eval-region (start end vis &optional message type)
   "Helper function for `ess-eval-region', which see.
 START, END, VIS, MESSAGE, and TYPE described there."
-  (ess-eval-region--normalise-region start end)
-  (let ((visibly (if vis (not ess-eval-visibly) ess-eval-visibly))
-        (message (or message "Eval region"))
-        (proc (ess-get-process)))
-    (save-excursion
-      (ess-send-region proc start end visibly message type)))
-  (when ess-eval-deactivate-mark
-    (ess-deactivate-mark))
-  (list start end))
+  (let* ((se (ess-eval-region--normalise-region start end))
+         (start (car se))
+         (end (cdr se)))
+    (let ((visibly (if vis (not ess-eval-visibly) ess-eval-visibly))
+          (message (or message "Eval region"))
+          (proc (ess-get-process)))
+      (save-excursion
+        (ess-send-region proc start end visibly message type)))
+    (when ess-eval-deactivate-mark
+      (ess-deactivate-mark))
+    (list start end)))
 
 (defun ess-eval-buffer (&optional vis)
   "Send the current buffer to the inferior ESS process.
