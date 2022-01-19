@@ -605,6 +605,11 @@ process-less buffer because it was created with
          (nconc
           (list "STATATERM=emacs"
                 (format "PAGER=%s" inferior-ess-pager))
+          ;; This lets R code know whether Emacs was running with a
+          ;; light or dark background at startup time
+          (let ((bg-mode (frame-parameter nil 'background-mode)))
+            (when (memq bg-mode '(light dark))
+              (list (format "ESS_BACKGROUND_MODE=%s" (symbol-name bg-mode)))))
           process-environment))
         (tramp-remote-process-environment
          (nconc ;; it contains a pager already, so append
