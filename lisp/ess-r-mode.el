@@ -796,6 +796,7 @@ top level functions only."
   (add-hook 'completion-at-point-functions #'ess-r-package-completion nil 'local)
   (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
   (add-hook 'xref-backend-functions #'ess-r-xref-backend nil 'local)
+  (add-hook 'project-find-functions #'ess-r-project -90 'local)
 
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
   ;; imenu is needed for `which-function'
@@ -821,6 +822,64 @@ top level functions only."
 (add-to-list 'auto-mode-alist '("NAMESPACE\\'" . ess-r-mode))
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("CITATION\\'" . ess-r-mode))
+
+
+;;;*;;; Project detection
+
+(defvar-local ess-r-project--info-cache nil
+  "Current package info cache.
+See `ess-r-project-info' for its structure.")
+
+(defun ess-r-project (&optional dir)
+  "Return the current project as an Emacs project instance.
+R project is a directory XYZ containing either .Rprofile,
+DESCRIPTION or XYZ.Rproj file. Return a list of the form (:name
+\"XYZ\" :root \"/path/to/project\"). If DIR is provided, the
+project is searched from that directory instead of
+`default-directory'."
+  (let ((info (ess-r-project-info dir)))
+    (when (car info)
+      (cons 'ess-r-project (plist-get info :root)))))
+
+;; FIXME: remove when emacs 27 is dropped
+(unless (eval-when-compile
+          (get 'project-roots 'byte-obsolete-info))
+  (cl-defmethod project-roots ((project (head ess-r-project)))
+    "Return the project root for ESS R projects."
+    (list (cdr project))))
+
+(cl-defmethod project-root ((project (head ess-r-project)))
+  "Return the project root for ESS R projects."
+  (cdr project))
+
+(defun ess-r-project-info (&optional dir)
+  "Get the description of the R project in directory DIR.
+Return an plist with the keys :name and :root. When not in a
+project return '(nil). This value is cached buffer-locally for
+efficiency reasons."
+  (let ((do-cache (null dir)))
+    (if (and do-cache ess-r-project--info-cache)
+        ess-r-project--info-cache
+      (setq dir (or dir (buffer-file-name) default-directory))
+      (let ((out (or
+                  (unless (file-remote-p dir)
+                    (let ((dir (locate-dominating-file
+                                dir
+                                (lambda (dir)
+                                  (or (file-exists-p (expand-file-name ".Rprofile" dir))
+                                      (file-exists-p (expand-file-name "DESCRIPTION" dir))
+                                      (let ((nm (file-name-nondirectory (directory-file-name dir))))
+                                        (file-exists-p (expand-file-name (concat nm ".Rproj") dir))))))))
+                      (when dir 
+                        (let ((dir (directory-file-name dir)))
+                          (unless (member dir (list "~" (getenv "HOME")))
+                            (list :name (file-name-nondirectory dir)
+                                  :root (expand-file-name dir)))))))
+                  '())))
+        (when do-cache
+          (setq ess-r-project--info-cache out))
+        out))))
+
 
 
 ;;*;; Miscellaneous
@@ -2405,6 +2464,7 @@ state.")
   (add-hook 'completion-at-point-functions 'ess-r-object-completion nil 'local)
   (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
   (add-hook 'xref-backend-functions #'ess-r-xref-backend nil 'local)
+  (add-hook 'project-find-functions #'ess-r-project -90 'local)
   ;; eldoc
   (ess--setup-eldoc #'ess-r-eldoc-function)
   ;; auto-complete
