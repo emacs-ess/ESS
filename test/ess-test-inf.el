@@ -353,9 +353,9 @@ OUT-STRING is the content of the region captured by
 
 (ert-deftest ess-eval-paragraph-test ()
   (let ((inhibit-message ess-inhibit-message-in-tests))
-    (let ((output "\nlibrary(bbb)\n"))
+    (let ((output "library(bbb)"))
       (ess-test-interactive-eval output
-        (insert (format "## a comment\n%s\nmore_code4" output))
+        (insert (format "## a comment\n\n%s\n\nmore_code4" output))
         (goto-char (point-min))
         (search-forward "lib")
         (ess-eval-paragraph)
@@ -366,51 +366,51 @@ OUT-STRING is the content of the region captured by
 (ert-deftest ess-eval-and-step-test ()
   (let ((inhibit-message ess-inhibit-message-in-tests))
 
-    (let ((output "\nreal <- code\n"))
+    (let ((output "real <- code"))
       (ess-test-interactive-eval output
-        (insert (format "## comment\n%s" output))
+        (insert (format "## comment\n\n%s" output))
         (forward-line -1)
         (ess-eval-region-or-function-or-paragraph-and-step)))
 
-    (let ((output "xyz <- function () {\n}\n"))
+    (let ((output "xyz <- function () {\n}"))
       (ess-test-interactive-eval output
         (insert (format "## comment\n\n%s" output))
         (goto-char (point-min))
         (forward-line 1)
         (ess-eval-region-or-function-or-paragraph-and-step)))
 
-    (let ((output "xyz <- function () {\n}\n"))
+    (let ((output "xyz <- function () {\n}"))
       (ess-test-interactive-eval output
-        (insert (format "## comment\n%ssome_code\n\nmore_code" output))
+        (insert (format "## comment\n%s\nsome_code\n\nmore_code" output))
         (goto-char (point-min))
         (forward-line 1)
         (ess-eval-region-or-function-or-paragraph-and-step)
         (should (looking-at-p "some_code"))))
 
-    (let ((output "a <- 1\nb <- 2\n"))
+    (let ((output "a <- 1\nb <- 2"))
       (ess-test-interactive-eval output
-        (insert (format "%s\nmore_code1()" output))
+        (insert (format "%s\n\nmore_code1()" output))
         (goto-char (point-min))
         (ess-eval-region-or-function-or-paragraph-and-step)
         (should (looking-at-p "more_code1"))))
 
-    (let ((output "a <- 1\nb <- 2\n"))
+    (let ((output "a <- 1\nb <- 2"))
       (ess-test-interactive-eval output
-        (insert (format "%s\nmore_code2()" output))
+        (insert (format "%s\n\nmore_code2()" output))
         (goto-char (point-min))
         (ess-eval-region-or-function-or-paragraph-and-step)
         (should (looking-at-p "more_code2"))))
 
-    (let ((output "library(aaaa)\n"))
+    (let ((output "library(aaaa)"))
       (ess-test-interactive-eval output
-        (insert (format "%s\nmore_code3\n" output))
+        (insert (format "%s\n\nmore_code3\n" output))
         (goto-char (point-min))
         (ess-eval-region-or-function-or-paragraph-and-step)
         (should (looking-at-p "more_code3"))))
 
-    (let ((output "\nlibrary(bbb)\n"))
+    (let ((output "library(bbb)"))
       (ess-test-interactive-eval output
-        (insert (format "## a comment\n%s\nmore_code4" output))
+        (insert (format "## a comment\n\n%s\n\nmore_code4" output))
         (goto-char (point-min))
         (ess-eval-region-or-function-or-paragraph-and-step)
         (should (looking-at-p "more_code4"))))
