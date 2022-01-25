@@ -949,7 +949,8 @@ The action list is in `ess-debug-error-action-alist'."
   (move-marker ess--dbg-current-debug-position (point-at-bol)))
 
 (defun ess--dbg-deactivate-overlays ()
-  "Deletes markers and overlays. Overlay arrow remains to indicate the last debug position."
+  "Delete debugger markers and overlays.
+Overlay arrow remains to indicate the last debug position."
   (delete-overlay ess--dbg-current-debug-overlay)
   (set-marker ess--dbg-current-debug-position nil))
 
@@ -1533,7 +1534,7 @@ the output into *ess.dbg* buffer."
   :keymap ess-debug-minor-mode-map)
 
 (defun ess--dbg-goto-last-ref-and-mark (dbuff &optional other-window)
-  "Open the most recent debug reference, and set all the necessary marks and overlays.
+  "Open the most recent debug reference and set the necessary marks and overlays.
 It's called from `inferior-ess-tracebug-output-filter'. DBUFF
 must be the *ess.dbg* buffer associated with the process. If
 OTHER-WINDOW is non nil, attempt to open the location in a
@@ -2467,8 +2468,10 @@ string giving the actual R expression."
       wal)))
 
 (defun ess-watch--parse-assoc (al)
-  "Return a string of the form 'assign(\".ess_watch_expressions\", list(a = parse(expr_a), b= parse(expr_b)), envir = .GlobalEnv)'
-ready to be send to R process. AL is an association list as return by `ess-watch--make-alist'"
+  "Return a string command ready to be passed to R process.
+The command is of the form 'assign(\".ess_watch_expressions\",
+list(a = parse(expr_a), b= parse(expr_b)), envir = .GlobalEnv)'.
+AL is an association list as return by `ess-watch--make-alist'"
   (concat ".ess_watch_assign_expressions(list("
           (mapconcat (lambda (el)
                        (if (> (length  (cadr el) ) 0)
@@ -2574,7 +2577,7 @@ Optional N if supplied gives the number of backward steps."
     (ess-watch-refresh-buffer-visibly (current-buffer))))
 
 (defun ess-watch-add ()
-  "Ask for new R expression and name and append it to the end of the list of watch expressions."
+  "Ask for new R expression and append to the current list of watch expressions."
   (interactive)
   (let (nr expr name)
     (goto-char (point-max))

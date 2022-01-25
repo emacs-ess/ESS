@@ -262,7 +262,8 @@ Optional argument VERBOSE gives more verbose output."
 
 (defun ess-fix-dot (before-chars &optional dont-query verbose)
   "Remove trailing decimal '.' (\"dot\"), before BEFORE-CHARS.
-Optional argument DONT-QUERY and VERBOSE get passed to `ess-replace-regexp-dump-to-src'."
+Optional argument DONT-QUERY and VERBOSE get passed to
+`ess-replace-regexp-dump-to-src'."
   ;; typically, before-chars =  "]:" or more
   (ess-replace-regexp-dump-to-src
    (concat "\\([0-9]\\)\\.\\( *[" before-chars "]\\)")

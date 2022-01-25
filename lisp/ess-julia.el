@@ -118,14 +118,14 @@ See `comint-input-sender'."
 
 ;;; COMPLETION
 (defun ess-julia-latexsub-completion ()
-  "Complete latex input, and return format required by `completion-at-point-functions'."
+  "Complete latex input in format required by `completion-at-point-functions'."
   (if (julia-latexsub) ; julia-latexsub returns nil if it performed a completion, the point otherwise
       nil
     (lambda () t) ;; bypass other completion methods
     ))
 
 (defun ess-julia-object-completion ()
-  "Return completions at point in a format required by `completion-at-point-functions'."
+  "Return completions in format required by `completion-at-point-functions'."
   (let ((proc (ess-get-next-available-process ess-dialect t))
         (beg (ess-symbol-start)))
     (if proc

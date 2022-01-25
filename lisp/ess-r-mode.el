@@ -839,8 +839,8 @@ Returns either Name, a string, or a (Name . Path) cons, such as
 (\"R-2.12.1-64bit\"  .  \"C:/Program Files/R/R-2.12.1/bin/x64/Rterm.exe\")
 
 \"R-x.y.z/bin/Rterm.exe\" will return \"R-x.y.z\", for R-2.11.x and older.
-\"R-x.y.z/bin/i386/Rterm.exe\" will return \"R-x.y.z-32bit\", for R-2.12.x and newer.
-\"R-x.y.z/bin/x64/Rterm.exe\"  will return \"R-x.y.z-64bit\", for R-2.12.x and newer."
+\"R-x.y.z/bin/i386/Rterm.exe\" return \"R-x.y.z-32bit\", for R-2.12.x and newer.
+\"R-x.y.z/bin/x64/Rterm.exe\"  return \"R-x.y.z-64bit\", for R-2.12.x and newer."
   (let* ((dir  (directory-file-name (file-name-directory long-path)))
          (dir2 (directory-file-name (file-name-directory dir)))
          (v-1up (file-name-nondirectory dir));; one level up
@@ -896,7 +896,8 @@ as `ess-r-created-runners' upon ESS initialization."
 
 (defun ess-r-redefine-runners (&optional verbose)
   "Regenerate runners, i.e. `M-x R-*` possibilities.
- Call `fmakunbound' on all elements of `ess-r-created-runners', then define new runners."
+ Call `fmakunbound' on all elements of `ess-r-created-runners',
+ then define new runners."
   (interactive "P")
   (dolist (f ess-r-created-runners)
     (fmakunbound (intern f)))
@@ -2112,14 +2113,12 @@ Returns nil if line starts inside a string, t if in a comment."
 ;; Unroll arguments to a single line until closing marker is found.
 (defun ess-fill--unroll-lines (bounds &optional jump-cont)
   (let* ((last-pos (point-min))
-         (containing-sexp (ess-containing-sexp-position))
-         prefix-break)
+         (containing-sexp (ess-containing-sexp-position)))
     (goto-char (car bounds))
     (goto-char (ess-code-end-position))
     (while (and (/= (point) last-pos)
                 (< (line-end-position)
-                   (cadr bounds))
-                (not prefix-break))
+                   (cadr bounds)))
       (setq last-pos (point))
       ;; Check whether we ended up in a sub call. In this case, jump
       ;; over it, otherwise, join lines.
@@ -2415,8 +2414,8 @@ state.")
   (setq comint-get-old-input #'inferior-ess-get-old-input)
   (add-hook 'comint-input-filter-functions 'ess-search-path-tracker nil 'local))
 
-
 
+
 ;;;*;;; R Help mode
 
 (defvar ess-r-help-mode-map

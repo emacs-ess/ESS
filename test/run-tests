@@ -28,8 +28,9 @@
 ;; Enable file-local variables while loading
 (defun ess-test-load-locally (name &optional dir)
   (let ((file (expand-file-name name dir)))
-    (with-current-buffer (find-file-noselect file)
-      (load file nil t))))
+    (unless (assoc file load-history)
+      (with-current-buffer (find-file-noselect file)
+        (load file nil t)))))
 
 (put 'etest-local-config 'safe-local-variable #'symbolp)
 
@@ -60,7 +61,7 @@
   (elt-deftest test-ess-r-syntax () "syntax.R")
   (elt-deftest test-ess-r-tokens () "tokens.R")
   (elt-deftest test-ess-r-fontification () "fontification.R")
-  (elt-deftest test-ess-r-fontification () "keybindings.R"))
+  (elt-deftest test-ess-r-keybindings () "keybindings.R"))
 
 ;; run tests
 (ert-run-tests-batch-and-exit t)

@@ -2209,8 +2209,8 @@ A negative prefix argument gets the objects for that position
     (ess-execute the-command invert "S objects" the-message)))
 
 (defun ess-execute-search (invert)
-  "Send the `inferior-ess-search-list-command' command to the `ess-language' process.
-[search(..) in S]"
+  "Send the `inferior-ess-search-list-command' command.
+INVERT is as in `ess-execute'. E.g. search(..) in S."
   (interactive "P")
   (ess-execute inferior-ess-search-list-command  invert "S search list"))
 
@@ -2246,7 +2246,8 @@ in `ess-r-post-run-hook' or `ess-S+-post-run-hook'."
 (defun ess-calculate-width (opt)
   "Calculate width command given OPT.
 OPT can be 'window, 'frame, or an integer. Return a command
-suitable to send to the inferior process (e.g. \"options(width=80, length=999999)\")."
+suitable to send to the inferior process (e.g.
+\"options(width=80, length=999999)\")."
   (when (null ess-execute-screen-options-command)
     (error "Not implemented for %s" ess-dialect))
   (let (command)
@@ -2716,7 +2717,7 @@ directory in the `load-path'."
     (setq ess-object-name-db temp-object-name-db)))
 
 (defun ess-resynch nil
-  "Reread all directories/objects in variable `ess-search-list' to form completions."
+  "Reread all directories and objects in `ess-search-list' for completions."
   (interactive)
   (if (ess-make-buffer-current) nil
     (error "Not an ESS process buffer"))

@@ -87,7 +87,7 @@ srcrefs point to temporary locations."
           (read (current-buffer)))))))
 
 (defun ess-r-xref--pkg-srcfile (symbol src-file &optional default-pkg)
-  "Look in the source directory of the R package containing symbol SYMBOL for SRC-FILE.
+  "Search the R package containing symbol SYMBOL for file SRC-FILE.
 DEFAULT-PKG is the name of the package where presumably SYMBOL is located."
   (let* ((pkgs (delq nil
                      (delete-dups

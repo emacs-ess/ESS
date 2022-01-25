@@ -104,9 +104,13 @@ is searched from that directory instead of `default-directory'."
     (when (car pkg-info)
       (cons 'ess-r-package (plist-get pkg-info :root)))))
 
-(cl-defmethod project-roots ((project (head ess-r-package)))
-  "Return the project root for ESS R packages"
-  (list (cdr project)))
+
+;; FIXME: remove when emacs 27 is dropped
+(unless (eval-when-compile
+          (get 'project-roots 'byte-obsolete-info))
+  (cl-defmethod project-roots ((project (head ess-r-package)))
+    "Return the project root for ESS R packages"
+    (list (cdr project))))
 
 (cl-defmethod project-root ((project (head ess-r-package)))
   "Return the project root for ESS R packages"

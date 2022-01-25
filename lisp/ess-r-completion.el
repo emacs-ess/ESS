@@ -145,7 +145,7 @@ to look up any doc strings."
 ;;;*;;; OBJECTS
 
 (defun ess-r-object-completion ()
-  "Return completions at point in a format required by `completion-at-point-functions'."
+  "Return completions at point as required in `completion-at-point-functions'."
   (if (ess-make-buffer-current)
       (let* ((funstart (cdr (ess--fn-name-start)))
              (completions (ess-r-get-rcompletions funstart))

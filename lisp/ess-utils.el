@@ -491,7 +491,7 @@ FUN is the function to return data for eldoc."
         (setq-local eldoc-documentation-function #'eldoc-documentation-default)))))
 
 (defmacro ess--execute-electric-command (map &optional prompt wait exit-form &rest args)
-  "Execute single-key commands defined in MAP till a key is pressed which is not part of map.
+  "Execute keys defined in MAP till a key is pressed which is not in MAP.
 Single-key input commands are those that once executed do not
 require the prefix command for subsequent invocation. Return the
 value of the lastly executed command. PROMPT is passed to

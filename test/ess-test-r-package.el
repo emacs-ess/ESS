@@ -108,6 +108,19 @@
         (should (string-match-p "dummy-pkg$" (plist-get pkg-info :root)))
         (kill-buffer)))))
 
+
+;;; Project Tests
+(ert-deftest ess-r-project-auto-activation-test ()
+  (let ((inhibit-message ess-inhibit-message-in-tests)
+        (root (expand-file-name "dummy-pkg")))
+    (with-ess-test-r-file "dummy-pkg/R/test.R"
+      (should (equal (ess-r-project-info)
+                     (list :name "dummy-pkg" :root root)))
+      (should (equal (cdr (ess-r-project)) root)))
+    (should (not (ess-r-project-info "~")))
+    (should (not (ess-r-project "~")))))
+
+
 (provide 'ess-test-r-package)
 
 ;;; ess-test-r-package.el ends here
