@@ -97,26 +97,22 @@ each element is passed as argument to 'lintr::with_defaults'."
 (defun ess-r--find-lintr-file ()
   "Return the absolute path to the .lintr file.
 Check first the current directory, then the project root, then
-the user's home directory.  Return nil if we couldn't find a .lintr file."
-  (let ((cur-dir-file (expand-file-name ".lintr" default-directory))
-        (ess-proj-file (and (fboundp 'ess-r-package-project)
-                            (ess-r-package-project)
-                            (expand-file-name ".lintr" (cdr (ess-r-package-project)))))
-        (proj-file (and (project-current)
-                        (ess--project-root (project-current))
-                        (expand-file-name ".lintr" (ess--project-root (project-current)))))
-        (home-file (expand-file-name ".lintr" (getenv "HOME"))))
-    (cond (;; current directory
-           (file-readable-p cur-dir-file)
-           cur-dir-file)
-          ;; Project root according to `ess-r-package-project'
-          ((and ess-proj-file
-                (file-readable-p ess-proj-file))
-           ess-proj-file)
-          ;; Project root according to `ess--project-root'
-          ((and proj-file
-                (file-readable-p proj-file)))
-          ;; Home directory
+the package root, then the user's home directory. Return nil if
+we couldn't find a .lintr file."
+  ;; VS[2022-01-26]: Can't this entire thing be replaced by
+  ;; `(locate-dominating-file ".lintr")`?
+  (let* ((cur-file (expand-file-name ".lintr" default-directory))
+         (pkg (cdr (ess-r-package-project)))
+         (pkg-file (and proj (expand-file-name ".lintr" pkg)))
+         (proj (ess-r-project))
+         (proj-file (and proj (expand-file-name ".lintr" proj)))
+         (home-file (expand-file-name ".lintr" (getenv "HOME"))))
+    (cond ((file-readable-p cur-file)
+           cur-file)
+          ((and proj-file (file-readable-p proj-file))
+           proj-file)
+          ((and pkg-file (file-readable-p pkg-file))
+           pkg-file)
           ((file-readable-p home-file)
            home-file))))
 
