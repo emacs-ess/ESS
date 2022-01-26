@@ -621,29 +621,22 @@ process-less buffer because it was created with
 
 
 ;;*;; Requester functions called at startup
-
-;; FIXME EMACS 25.1:
-;; Deprecate `ess-directory-function' in favor of `project-find-functions'?
 (defun inferior-ess--get-startup-directory ()
   "Return a startup directory."
-  (let ((dir (or (and ess--enable-experimental-projects
-                      (fboundp 'project-current)
-                      (cdr (project-current)))
-                 (and ess-directory-function
+  (let ((dir (or (and ess-directory-function
                       (funcall ess-directory-function))
+                 (when-let ((proj (project-current)))
+                   (ess--project-root proj))
                  ess-startup-directory
                  default-directory)))
     (directory-file-name dir)))
 
-(defun inferior-ess--maybe-prompt-startup-directory (procname dialect)
+(defun inferior-ess--maybe-prompt-startup-directory (procname _dialect)
   "Possibly prompt for a startup directory.
 When `ess-ask-for-ess-directory' is non-nil, prompt.  PROCNAME is
 the name of the inferior process (e.g. \"R:1\"), and DIALECT is
 the language dialect (e.g. \"R\")."
-  (let ((default-dir (if (fboundp 'inferior-ess-r--adjust-startup-directory)
-                         (inferior-ess-r--adjust-startup-directory
-                          (inferior-ess--get-startup-directory) dialect)
-                       (inferior-ess--get-startup-directory))))
+  (let ((default-dir (inferior-ess--get-startup-directory)))
     (if ess-ask-for-ess-directory
         (let ((prompt (format "%s starting project directory? " procname)))
           (ess-prompt-for-directory default-dir prompt))

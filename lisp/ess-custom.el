@@ -311,7 +311,8 @@ This, plus `ess-language', should be able to determine the exact
 version of the statistical package being executed in the particular
 buffer.")
 
-(defcustom ess-directory-function nil
+(defvaralias 'ess-directory-function 'ess-startup-directory-function)
+(defcustom ess-startup-directory-function nil
   "Function to return the directory that ESS is run from.
 If nil or if the function returns nil then you get `ess-startup-directory'."
   :group 'ess
@@ -2464,9 +2465,6 @@ Used to store the values for passing on to newly created buffers.")
 
 (defvar-local ess-listing-minor-mode nil
   "Non-nil if using `ess-listing-minor-mode'.")
-
-(defvar ess--enable-experimental-projects nil
-  "Enable experimental project support in ESS.")
 
 (defvar ess-STERM nil
   "Placeholder for dialect-specific STERM.")

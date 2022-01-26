@@ -588,6 +588,9 @@ will be prompted to enter arguments interactively."
                   inferior-R-args " "   ; add space just in case
                   start-args))
          (debug (string-match-p " -d \\| --debugger=" r-start-args))
+         (project-find-functions (if (memq 'ess-r-project project-find-functions)
+                                     project-find-functions
+                                   (cons 'ess-r-project project-find-functions)))
          use-dialog-box)
     (when (or ess-microsoft-p
               (eq system-type 'cygwin))
@@ -617,21 +620,6 @@ will be prompted to enter arguments interactively."
   (interactive "P")
   ;; FIXME: Current ob-R expects current buffer set to process buffer
   (set-buffer (run-ess-r start-args)))
-
-(defun inferior-ess-r--adjust-startup-directory (dir dialect)
-  "Adjust startup directory DIR if DIALECT is R.
-If in a package project, prefer the tests directory but only if
-the package directory was selected in the first place."
-  (if (string= dialect "R")
-      (let* ((project-dir (cdr (ess-r-package-project)))
-             (tests-dir (expand-file-name (file-name-as-directory "tests")
-                                          project-dir)))
-        (if (and project-dir
-                 (string= project-dir dir)
-                 (string= default-directory tests-dir))
-            tests-dir
-          dir))
-    dir))
 
 (defun inferior-ess-r--init-callback (_proc _name)
   (R-initialize-on-start))
@@ -870,7 +858,7 @@ efficiency reasons."
                                       (file-exists-p (expand-file-name "DESCRIPTION" dir))
                                       (let ((nm (file-name-nondirectory (directory-file-name dir))))
                                         (file-exists-p (expand-file-name (concat nm ".Rproj") dir))))))))
-                      (when dir 
+                      (when dir
                         (let ((dir (directory-file-name dir)))
                           (unless (member dir (list "~" (getenv "HOME")))
                             (list :name (file-name-nondirectory dir)

@@ -36,6 +36,7 @@
 ;; Silence the byte compiler, OK because this file is only loaded by
 ;; ess-r-mode and has no autoloads.
 (defvar ess-r-customize-alist)
+(declare-function ess-r-project "ess-r-mode")
 (declare-function inferior-ess-r-force "ess-r-mode")
 (declare-function ess-r-get-evaluation-env "ess-r-mode")
 (declare-function ess-r-set-evaluation-env "ess-r-mode")
@@ -526,9 +527,9 @@ Set this variable to nil to disable the mode line entirely."
                   (set (make-local-variable var)
                        (eval (cdr (assq var ess-r-customize-alist)))))
                 vars))
-        (add-hook 'project-find-functions #'ess-r-package-project)
+        (add-hook 'project-find-functions #'ess-r-project)
         (run-hooks 'ess-r-package-enter-hook))
-    (remove-hook 'project-find-functions #'ess-r-package-project)
+    (remove-hook 'project-find-functions #'ess-r-project)
     (run-hooks 'ess-r-package-exit-hook)))
 
 (add-hook 'after-change-major-mode-hook 'ess-r-package-auto-activate)

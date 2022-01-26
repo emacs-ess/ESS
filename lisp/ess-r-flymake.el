@@ -40,6 +40,8 @@
 (declare-function flymake-diag-region "flymake")
 (declare-function flymake-make-diagnostic "flymake")
 (declare-function flymake--overlays "flymake")
+(declare-function ess-r-project "ess-r-mode")
+(declare-function ess-r-package-project "ess-r-package")
 
 (defcustom ess-r-flymake-linters
   '("closed_curly_linter = NULL"
@@ -103,7 +105,7 @@ we couldn't find a .lintr file."
   ;; `(locate-dominating-file ".lintr")`?
   (let* ((cur-file (expand-file-name ".lintr" default-directory))
          (pkg (cdr (ess-r-package-project)))
-         (pkg-file (and proj (expand-file-name ".lintr" pkg)))
+         (pkg-file (and pkg (expand-file-name ".lintr" pkg)))
          (proj (ess-r-project))
          (proj-file (and proj (expand-file-name ".lintr" proj)))
          (home-file (expand-file-name ".lintr" (getenv "HOME"))))
