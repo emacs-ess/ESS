@@ -7,7 +7,7 @@
         else as.character(el)
     })
     payload <- paste(dots, collapse = "")
-    cat(sprintf("_%s%s\\", head, payload))
+    cat(sprintf("\033_%s036%s\033\\", head, payload))
 }
 
 .ess_mpi_message <- function(msg){
