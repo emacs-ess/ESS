@@ -1257,7 +1257,8 @@ ends with an incomplete message."
                           (apply handler payload))
                       (error "No handler defined for MPI message '%s" head))
                   (goto-char mbeg0)
-                  (delete-region mbeg0 mend0)))
+                  (let ((inhibit-read-only t))
+                    (delete-region mbeg0 mend0))))
             (setq out :incomplete))))
       out)))
 
