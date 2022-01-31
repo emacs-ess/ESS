@@ -51,19 +51,17 @@
 
 (require 'ess-utils)
 (require 'cl-generic)
-
+(require 'lisp-mnt)
 (defvar reporter-prompt-for-summary-p)
 
 
 ;; Versions
 
 (defconst ess-version (eval-when-compile
-                        (require 'lisp-mnt)
                         (lm-version (or load-file-name buffer-file-name)))
   "Version of ESS currently loaded.")
 
 (defconst essr-version (eval-when-compile
-                         (require 'lisp-mnt)
                          (lm-with-file (or load-file-name buffer-file-name)
                            (lm-header "ESSR-Version")))
   "Version of ESSR package.")

@@ -1554,7 +1554,12 @@ download step is omitted. This function returns t if the ESSR
 load is successful, and nil otherwise."
   (let ((loader (ess-file-content (expand-file-name "ESSR/LOADREMOTE" ess-etc-directory))))
     (or (with-temp-message "Fetching and loading ESSR into the remote ..."
-          (ess-boolean-command (format loader essr-version)))
+          (let ((essr (or essr-version
+                          ;; FIXME: Hack: on MELPA essr-version is not set
+                          (lm-with-file (expand-file-name "ess.el" ess-lisp-directory)
+                            (lm-header "ESSR-Version"))
+                          (error "`essr-version' could not be automatically inferred from ess.el file"))))
+            (ess-boolean-command (format loader essr-version))))
         (let ((errmsg (with-current-buffer " *ess-command-output*" (buffer-string))))
           (message (format "Couldn't load or download ESSR.rds on the remote.\n Error: %s\n Injecting local copy of ESSR." errmsg))
           nil))))
