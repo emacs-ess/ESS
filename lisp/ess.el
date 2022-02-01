@@ -58,11 +58,17 @@
 ;; Versions
 
 (defconst ess-version (eval-when-compile
-                        (lm-version (or load-file-name buffer-file-name)))
+                        (lm-version (or (and (boundp 'load-true-file-name)
+                                             load-true-file-name)
+                                        load-file-name
+                                        buffer-file-name)))
   "Version of ESS currently loaded.")
 
 (defconst essr-version (eval-when-compile
-                         (lm-with-file (or load-file-name buffer-file-name)
+                         (lm-with-file (or (and (boundp 'load-true-file-name)
+                                                load-true-file-name)
+                                           load-file-name
+                                           buffer-file-name)
                            (lm-header "ESSR-Version")))
   "Version of ESSR package.")
 
