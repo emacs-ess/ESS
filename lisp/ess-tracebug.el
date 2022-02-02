@@ -1182,10 +1182,10 @@ Kill the *ess.dbg.[R_name]* buffer."
 ;;; MPI
 
 ;; http://jkorpela.fi/chars/c0.html
-;; https://en.wikipedia.org/wiki/ANSI_escape_code#Escape_sequences
-(defvar ess--mpi-message-start-delimiter "\001")
-(defvar ess--mpi-message-field-separator "\002")
-(defvar ess--mpi-message-end-delimiter "\003")
+;; https://en.wikipedia.org/wiki/C0_and_C1_control_codes
+(defvar ess--mpi-message-start-delimiter "\001") ; SOH control code
+(defvar ess--mpi-message-field-separator "\002") ; STX control code
+(defvar ess--mpi-message-end-delimiter "\003")   ; ETX control code
 
 (define-obsolete-variable-alias 'ess-mpi-alist 'ess-mpi-handlers "ESS 19.04")
 (defvar ess-mpi-handlers
@@ -1229,10 +1229,12 @@ value from EXPR and then sent to the subprocess."
 
 (defun ess--mpi-handle-messages (buf)
   "Handle all mpi messages in BUF and delete them.
-The MPI message has the form TYPEFIELD... where TYPE is the
-type of the messages on which handlers in `ess-mpi-handlers' are
-dispatched. And FIELDs are strings. Return :incomplete if BUF
-ends with an incomplete message."
+The MPI message has the form \001TYPE\002FIELD...\003 where TYPE
+is the type of the messages on which handlers in
+`ess-mpi-handlers' are dispatched. And FIELDs are strings. Note
+that the MPI message contains literal ASCII control codes as
+delimiters. Return :incomplete if BUF ends with an incomplete
+message."
   (let ((obuf (current-buffer))
         (out nil))
     (with-current-buffer buf
