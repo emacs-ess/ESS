@@ -1183,9 +1183,9 @@ Kill the *ess.dbg.[R_name]* buffer."
 
 ;; http://jkorpela.fi/chars/c0.html
 ;; https://en.wikipedia.org/wiki/ANSI_escape_code#Escape_sequences
-(defvar ess-mpi-message-start-delimiter "\001")
-(defvar ess-mpi-message-field-separator "\002")
-(defvar ess-mpi-message-end-delimiter "\003")
+(defvar ess--mpi-message-start-delimiter "\001")
+(defvar ess--mpi-message-field-separator "\002")
+(defvar ess--mpi-message-end-delimiter "\003")
 
 (define-obsolete-variable-alias 'ess-mpi-alist 'ess-mpi-handlers "ESS 19.04")
 (defvar ess-mpi-handlers
@@ -1227,7 +1227,7 @@ value from EXPR and then sent to the subprocess."
    ((string= el "t") t)
    (t el)))
 
-(defun ess-mpi-handle-messages (buf)
+(defun ess--mpi-handle-messages (buf)
   "Handle all mpi messages in BUF and delete them.
 The MPI message has the form TYPEFIELD... where TYPE is the
 type of the messages on which handlers in `ess-mpi-handlers' are
@@ -1240,15 +1240,15 @@ ends with an incomplete message."
       ;; This should be smarter because Emacs might cut it in the middle of the
       ;; message. In practice this almost never happen because we are
       ;; accumulating output into the cache buffer.
-      (while (search-forward ess-mpi-message-start-delimiter nil t)
+      (while (search-forward ess--mpi-message-start-delimiter nil t)
         (let ((mbeg0 (match-beginning 0))
               (mbeg (match-end 0)))
-          (if (search-forward ess-mpi-message-end-delimiter nil t)
+          (if (search-forward ess--mpi-message-end-delimiter nil t)
               (let* ((mend (match-beginning 0))
                      (mend0 (match-end 0))
                      (msg (buffer-substring mbeg mend))
                      (payload (mapcar #'ess-mpi-convert
-                                      (split-string msg ess-mpi-message-field-separator)))
+                                      (split-string msg ess--mpi-message-field-separator)))
                      (head (pop payload))
                      (handler (cdr (assoc head ess-mpi-handlers))))
                 (unwind-protect
@@ -1325,7 +1325,7 @@ prompts."
         ;; Incomplete mpi should hardly happen. Only on those rare occasions
         ;; when an mpi is issued after a long task and split by the Emacs input
         ;; handler, or mpi printing itself takes very long.
-        (unless (eq :incomplete (ess-mpi-handle-messages abuf))
+        (unless (eq :incomplete (ess--mpi-handle-messages abuf))
           (with-current-buffer abuf
             ;; Uncomment this line when debugging. This pops up the
             ;; accumulation buffer and causes point to follow
