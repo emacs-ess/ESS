@@ -588,9 +588,6 @@ will be prompted to enter arguments interactively."
                   inferior-R-args " "   ; add space just in case
                   start-args))
          (debug (string-match-p " -d \\| --debugger=" r-start-args))
-         (project-find-functions (if (memq 'ess-r-project project-find-functions)
-                                     project-find-functions
-                                   (cons 'ess-r-project project-find-functions)))
          use-dialog-box)
     (when (or ess-microsoft-p
               (eq system-type 'cygwin))

@@ -169,9 +169,7 @@ This may be useful for debugging."
                              dialect)
                          dialect))
          (inf-buf (inferior-ess--get-proc-buffer-create temp-dialect))
-         (proc-name (buffer-local-value 'ess-local-process-name inf-buf))
-         (cur-dir (inferior-ess--maybe-prompt-startup-directory proc-name temp-dialect))
-         (default-directory cur-dir))
+         (proc-name (buffer-local-value 'ess-local-process-name inf-buf)))
     (with-current-buffer inf-buf
       ;; TODO: Get rid of this, we should rely on modes to set the
       ;; variables they need.
@@ -179,7 +177,8 @@ This may be useful for debugging."
       (inferior-ess--set-major-mode ess-dialect)
       ;; Set local variables after changing mode because they might
       ;; not be permanent
-      (setq default-directory cur-dir)
+      (setq default-directory
+            (inferior-ess--maybe-prompt-startup-directory proc-name temp-dialect))
       (setq inferior-ess--local-data (cons inferior-ess-program start-args))
       ;; Read the history file
       (when ess-history-file
@@ -204,7 +203,7 @@ This may be useful for debugging."
         (unless (and proc (eq (process-status proc) 'run))
           (error "Process %s failed to start" proc-name))
         (when ess-setwd-command
-          (ess-set-working-directory cur-dir))
+          (ess-set-working-directory default-directory))
         (setq-local font-lock-fontify-region-function #'inferior-ess-fontify-region)
         (setq-local ess-sl-modtime-alist nil)
         (run-hooks 'ess-post-run-hook)
