@@ -1227,7 +1227,7 @@ value from EXPR and then sent to the subprocess."
    ((string= el "t") t)
    (t el)))
 
-(defun ess--mpi-handle-messages (buf)
+(defun ess-mpi-handle-messages (buf)
   "Handle all mpi messages in BUF and delete them.
 The MPI message has the form \001TYPE\002FIELD...\003 where TYPE
 is the type of the messages on which handlers in
@@ -1327,7 +1327,7 @@ prompts."
         ;; Incomplete mpi should hardly happen. Only on those rare occasions
         ;; when an mpi is issued after a long task and split by the Emacs input
         ;; handler, or mpi printing itself takes very long.
-        (unless (eq :incomplete (ess--mpi-handle-messages abuf))
+        (unless (eq :incomplete (ess-mpi-handle-messages abuf))
           (with-current-buffer abuf
             ;; Uncomment this line when debugging. This pops up the
             ;; accumulation buffer and causes point to follow
