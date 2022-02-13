@@ -558,8 +558,10 @@ will be prompted to enter arguments interactively."
     "\n(R): ess-dialect=%s, buf=%s, start-arg=%s\n current-prefix-arg=%s\n"
     ess-dialect (current-buffer) start-args current-prefix-arg))
   (unless (or (file-remote-p default-directory)
-              (and ess-startup-directory
-                   (file-remote-p ess-startup-directory))
+              (when ess-startup-directory
+                (file-remote-p (if (symbolp ess-startup-directory)
+                                   (symbol-value ess-startup-directory)
+                                 ess-startup-directory)))
               ;; TODO: Once we drop Emacs 26 support, can probably
               ;; just use the REMOTE argument of `executable-find'.
               (executable-find inferior-ess-r-program))
