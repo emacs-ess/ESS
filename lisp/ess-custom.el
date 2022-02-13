@@ -314,24 +314,24 @@ buffer.")
 (defvaralias 'ess-directory-function 'ess-startup-directory-function)
 (defcustom ess-startup-directory-function nil
   "Function to return the directory that ESS is run from.
-If nil or if the function returns nil then you get `ess-startup-directory'."
-  :group 'ess
-  :type '(choice (const nil) function))
-
-(defcustom ess-setup-directory-function nil
-  "Function to setup the directory that ESS is run from.
-This function can be called to set environment variables or to create
-a workspace."
+Value of `ess-startup-directory' has precedence over this function."
   :group 'ess
   :type '(choice (const nil) function))
 
 (defvaralias 'ess-directory 'ess-startup-directory)
 (defcustom ess-startup-directory nil
-  "The directory ESS is run from.  It must end in a slash.
-Provided as a default if `ess-ask-for-ess-directory' is non-nil.
-A nil value means use the current buffer's default directory."
+  "The directory ESS is run from (string or a symbol).
+Provided a default (especially useful if
+`ess-ask-for-ess-directory' is non-nil). A nil value means use
+the value returned by `ess-startup-directory-function'. If nil,
+use current project directory, otherwise use to the
+`default-directory'.
+
+When this variable is a symbol, use its value. Set this variable
+to `'default-directory' in order to always start in the current
+directory."
   :group 'ess
-  :type '(choice (const nil) directory))
+  :type '(choice (const nil) directory symbol))
 
 
 (defcustom ess-history-directory nil

@@ -76,8 +76,7 @@
      (inferior-ess-help-command        . "help(\"%s\", pager=\"slynx -dump\", window=FALSE)\n")
      (inferior-ess-search-list-command . "searchPaths()\n")
 
-     (ess-directory-function           . S+-directory-function)
-     (ess-setup-directory-function     . S+-setup-directory-function)
+     (ess-startup-directory-function   . S+-directory-function)
      (ess-STERM                        . "iESS"))
    S+common-cust-alist)
 

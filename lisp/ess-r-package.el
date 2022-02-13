@@ -527,7 +527,7 @@ Set this variable to nil to disable the mode line entirely."
                   (set (make-local-variable var)
                        (eval (cdr (assq var ess-r-customize-alist)))))
                 vars))
-        (add-hook 'project-find-functions #'ess-r-project)
+        (add-hook 'project-find-functions #'ess-r-project nil 'local)
         (run-hooks 'ess-r-package-enter-hook))
     (remove-hook 'project-find-functions #'ess-r-project)
     (run-hooks 'ess-r-package-exit-hook)))
