@@ -687,8 +687,21 @@ x <- function(x){
   (comint-next-prompt 1)
   (should (equal (line-number-at-pos) 3)))
 
+(ert-deftest ess-test-r-startup-directory ()
+  (let ((proj-dir (expand-file-name ".."))
+        (cur-dir (directory-file-name (expand-file-name default-directory))))
+    (let ((ess-startup-directory nil))
+      (with-r-running nil
+        (with-current-buffer (ess-get-process-buffer)
+          (should (string= proj-dir (directory-file-name (expand-file-name default-directory)))))))
+    (let ((ess-startup-directory 'default-directory))
+      (with-r-running nil
+        (with-current-buffer (ess-get-process-buffer)
+          (should (string= cur-dir (directory-file-name (expand-file-name default-directory)))))))))
+
 (ert-deftest ess-test-r-comint-input-ring-file-name ()
   (let ((ess-history-file t)
+        (ess-startup-directory 'default-directory) ; don't start in the project
         ess-history-directory)
     (with-r-running nil
       (should (string= (expand-file-name ".Rhistory" default-directory)
