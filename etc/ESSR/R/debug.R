@@ -160,10 +160,13 @@
         .essWEnames <- allNames(exps)
         len0p <- !nzchar(.essWEnames)
         .essWEnames[len0p] <- seq_along(len0p)[len0p]
+        oo <- options(width = 10000)
+        on.exit(options(oo))
         for(i in seq_along(exps)) {
             cat('\n@---- ', .essWEnames[[i]], ' ',
                 rep.int('-', max(0, 35 - nchar(.essWEnames[[i]]))), '-@\n', sep = '')
-            cat(paste('@---:', deparse(exps[[i]][[1]])), ' \n', sep = '')
+            expr <- gsub(" +", " ", paste(deparse(exps[[i]][[1]]), collapse = " "))
+            cat(paste('@---:', expr), ' \n', sep = '')
             tryCatch(print(eval(exps[[i]],
                                 envir = .parent_frame)),
                      error = function(e) cat('Error:', e$message, '\n' ),
