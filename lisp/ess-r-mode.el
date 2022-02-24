@@ -2457,6 +2457,8 @@ state.")
   (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
   (add-hook 'xref-backend-functions #'ess-r-xref-backend nil 'local)
   (add-hook 'project-find-functions #'ess-r-project -90 'local)
+  ;; project
+  (ess-r-project-info)
   ;; eldoc
   (ess--setup-eldoc #'ess-r-eldoc-function)
   ;; auto-complete

@@ -74,11 +74,14 @@ Session will be named after the LANG inferior repl."
   "With ARG, do not offer to save the workspace.
 Additionally, remove sesman object."
   (let ((cmd (format "base::q('%s')\n" (if arg "no" "default")))
-        (sprocess (ess-get-process ess-current-process-name)))
+        (sprocess (ess-get-process ess-current-process-name))
+        (buf (process-buffer sprocess)))
     (when (not sprocess) (error "No ESS process running"))
-    (sesman-remove-object 'ESS nil (current-buffer) arg t)
+    (sesman-remove-object 'ESS nil buf arg t)
     (ess-cleanup)
-    (ess-send-string sprocess cmd)))
+    (with-current-buffer buf
+      (setq-local ess-r-project--info-cache nil))
+    (ess-send-string sprocess cmd t)))
 
 (cl-defgeneric ess-quit--override (arg &context (ess-dialect "julia"))
   "Stop the inferior process.
@@ -122,8 +125,8 @@ Additionally, remove sesman object."
 
 
 ;; ensure sesman set for script buffers
-(add-hook 'ess-r-mode-hook #'ess--sesman-ensure-process-name)
-(add-hook 'ess-julia-mode-hook #'ess--sesman-ensure-process-name)
+(add-hook 'ess-r-mode-hook #'ess--sesman-ensure-process-name 95)
+(add-hook 'ess-julia-mode-hook #'ess--sesman-ensure-process-name 95)
 
 ;; ensure sesman set for repl buffers
 (advice-add #'inferior-ess--set-major-mode :after #'ess--sesman-init-repl)
