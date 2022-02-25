@@ -531,7 +531,7 @@ return it.  Otherwise, return `ess-help-topics-list'."
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.[Ss]t\\'" . S-transcript-mode))
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("\\.Sout" . S-transcript-mode))
+(add-to-list 'auto-mode-alist '("\\.Sout\\'" . S-transcript-mode))
 
 (provide 'ess-s-lang)
 

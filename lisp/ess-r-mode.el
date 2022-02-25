@@ -1129,7 +1129,7 @@ use \"bin/Rterm.exe\"."
 (fset 'r-transcript-mode 'ess-r-transcript-mode)
 
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("\\.[Rr]out" . ess-r-transcript-mode))
+(add-to-list 'auto-mode-alist '("\\.[Rr]out\\'" . ess-r-transcript-mode))
 ;;;###autoload
 (add-to-list 'interpreter-mode-alist '("Rscript" . ess-r-mode))
 ;;;###autoload
