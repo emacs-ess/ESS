@@ -1,6 +1,6 @@
 ;;; ess-inf.el --- Support for running S as an inferior Emacs process  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1989-2020 Free Software Foundation, Inc.
+;; Copyright (C) 1989-2022 Free Software Foundation, Inc.
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
@@ -1428,7 +1428,7 @@ wrapping the code into:
       (process-put proc 'cmd-output-delimiter nil)
       (process-put proc 'cmd-buffer nil)
       (when-let ((pending (process-get proc 'pending-output)))
-        (process-put proc 'pending nil)
+        (process-put proc 'pending-output nil)
         (funcall old-pf proc pending)))))
 
 ;; TODO: Needs some Julia tests as well
