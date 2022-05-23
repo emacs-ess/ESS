@@ -152,7 +152,9 @@ to look up any doc strings."
              (token (pop completions)))
         (when completions
           (list (- (point) (length token)) (point)
-                completions)))
+                completions
+                :annotation-function
+                (lambda (_) " <obj>"))))
     (when (string-match "complete" (symbol-name last-command))
       (message "No ESS process associated with current buffer")
       nil)))

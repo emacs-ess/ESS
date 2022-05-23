@@ -37,6 +37,7 @@
 (require 'ess-utils)
 (require 'ess)
 (require 'ess-tracebug)
+(require 'ess-sesman)
 
 (require 'ansi-color)
 (require 'comint)
@@ -857,6 +858,11 @@ to `ess-completing-read'."
             (if (or auto-started?
                     (and (not ask-if-1)
                          (= 1 num-processes)
+                         (equal  (plist-get (ess-r-project-info) :name)
+                                 (plist-get (with-current-buffer
+                                                (get-buffer (car proc-buffers))
+                                              ess-r-project--info-cache)
+                                            :name))
                          (message "Using process `%s'" (car proc-buffers))))
                 (car pname-list)
               (unless (and ess-current-process-name
