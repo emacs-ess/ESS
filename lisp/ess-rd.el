@@ -175,6 +175,7 @@ All Rd mode abbrevs start with a grave accent (`)."
     (define-key map "\C-c\C-p" #'Rd-preview-help)
     (define-key map "\C-c\C-j" #'Rd-mode-insert-item)
     (define-key map "\C-c\C-e" #'Rd-mode-insert-skeleton)
+    (define-key map "\C-c\C-d" #'Rd-mode-insert-data-skeleton)
     (define-key map "\C-c\C-f" #'Rd-font)
     (define-key map "\C-c\C-s" #'Rd-mode-insert-section)
     (define-key map "\C-c\C-n" #'ess-eval-line-visibly-and-step)
@@ -194,6 +195,7 @@ All Rd mode abbrevs start with a grave accent (`)."
         ["Insert Item"                  Rd-mode-insert-item t]
         ["Insert Section"               Rd-mode-insert-section t]
         ["Insert Skeleton"              Rd-mode-insert-skeleton t]
+        ["Insert Data Skeleton"         Rd-mode-insert-data-skeleton t]
         "-"
         ["Preview"                      Rd-preview-help t]
         "-"
@@ -367,6 +369,23 @@ the following to your Emacs configuration file:
   (insert "\\examples{\n}\n")
   (insert "\\author{}\n")
   (insert "\\keyword{}\n"))
+
+(defun Rd-mode-insert-data-skeleton ()
+  "Insert several empty Rd fields."
+  (interactive)
+  ;; Hmm: in theory this should be kept in sync with prompt()
+  ;; ---  maybe using prompt() [or promptClass()...] would be better anyway?!
+  (insert "\\name{}\n")
+  (insert "\\docType{}\n")
+  (insert "\\alias{}\n")
+  (insert "\\title{}\n")
+  (insert "\\description{\n}\n")
+  (insert "\\usage{\n}\n")
+  (insert "\\format{}\n")
+  (insert "\\source{}\n")
+  (insert "\\references{\n}\n")
+  (insert "\\keyword{datasets}\n"))
+
 
 ;; This is an `easy' version of (defun TeX-font ..) in AUCtex's  tex.el ;
 ;;  see TeX-font-list and also LaTeX-font-list in latex.el
