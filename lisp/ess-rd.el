@@ -381,9 +381,11 @@ the following to your Emacs configuration file:
   (insert "\\title{}\n")
   (insert "\\description{\n}\n")
   (insert "\\usage{\n}\n")
-  (insert "\\format{}\n")
+  (insert "\\format{\n}\n")
+  (insert "\\details{\n}\n")
   (insert "\\source{}\n")
   (insert "\\references{\n}\n")
+  (insert "\\examples{\n}\n")
   (insert "\\keyword{datasets}\n"))
 
 
