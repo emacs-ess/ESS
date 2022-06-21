@@ -783,7 +783,7 @@ top level functions only."
   (add-hook 'completion-at-point-functions #'ess-r-package-completion nil 'local)
   (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
   (add-hook 'xref-backend-functions #'ess-r-xref-backend nil 'local)
-  (add-hook 'project-find-functions #'ess-r-project -90 'local)
+  (add-hook 'project-find-functions #'ess-r-project nil 'local)
 
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar))
   ;; imenu is needed for `which-function'
@@ -2456,7 +2456,7 @@ state.")
   (add-hook 'completion-at-point-functions 'ess-r-object-completion nil 'local)
   (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
   (add-hook 'xref-backend-functions #'ess-r-xref-backend nil 'local)
-  (add-hook 'project-find-functions #'ess-r-project -90 'local)
+  (add-hook 'project-find-functions #'ess-r-project nil 'local)
   ;; eldoc
   (ess--setup-eldoc #'ess-r-eldoc-function)
   ;; auto-complete
