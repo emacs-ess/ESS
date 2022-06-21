@@ -552,7 +552,7 @@ If 'strip, remove all such instances.  Otherwise, if non-nil, '+
 This variable can be process-local but not buffer-local."
   :group 'ess-tracebug
   :type '(choice (const nil :tag "No replacement")
-                 (const 'strip :tag "Replace all")
+                 (const strip :tag "Replace all")
                  (const t :tag "Replace 3 or more +")))
 
 (defvar ess-long+replacement ". + "

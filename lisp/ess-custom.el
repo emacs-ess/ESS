@@ -588,10 +588,10 @@ Anything else, never delete.  This variable only affects the behavior
 of `ess-load-file'.  Dump files are never deleted if an error occurs
 during the load."
   :group 'ess-edit
-  :type '(choice (const :tag "Check" :value  'check)
-                 (const :tag "Ask"   :value  'ask)
-                 (const :tag "Always keep"   :value t)
-                 (const :tag "Always delete"   :value nil)))
+  :type '(choice (const :tag "Check" :value check)
+                 (const :tag "Ask" :value ask)
+                 (const :tag "Always keep" :value t)
+                 (const :tag "Always delete" :value nil)))
 
 (defcustom ess-delete-dump-files nil
   "Non-nil means delete dump files after they are created.

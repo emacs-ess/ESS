@@ -73,7 +73,7 @@ in ~/.config/ESSR/ESSRv[VERSION].rds file. You can download and
 place it there manually if the remote has restricted network
 access."
   :type '(choice (const nil :tag "Never")
-                 (const 'ess-remote :tag "With ess-remote only")
+                 (const ess-remote :tag "With ess-remote only")
                  (const t :tag "Always"))
   :group 'ess-R)
 
