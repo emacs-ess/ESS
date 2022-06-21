@@ -90,6 +90,8 @@
 (declare-function ess-r-package-name "ess-r-package")
 (declare-function ess-r-package-source-dirs "ess-r-package")
 (declare-function ess-roxy--region-p "ess-roxy")
+(declare-function with-ess-process-buffer "ess-inf")
+
 
 ;; Do not require tramp at runtime. It is expensive to load. Instead,
 ;; guard calls with (require 'tramp) and silence the byte compiler
@@ -1642,50 +1644,54 @@ If FILENAME is not found at all, ask the user where to find it if
                (ess-r-package-source-dirs)
                (cl-loop for d in ess-tracebug-search-path
                         append (ess-r-package--all-source-dirs d))))
+        (filematch (format "%s\\'" filename))
         buffer name)
-    (setq dirs (cons default-directory dirs)) ;; TODO: should be R working dir
-    ;; 1. search already open buffers for match (associated file might not even exist yet)
-    (cl-dolist (bf (buffer-list))
-      (with-current-buffer  bf
-        (when (and buffer-file-name
-                   (string-match (format "%s\\'" filename) buffer-file-name))
-          (setq buffer bf)
-          (cl-return))))
-    ;; 2. The file name is absolute.  Use its explicit directory as
+    (setq dirs (delq nil (cons (with-ess-process-buffer t default-directory) dirs)))
+    ;; 1. The file name is absolute.  Use its explicit directory as
     ;; the first in the search path, and strip it from FILENAME.
     (when (and (null  buffer)
                (file-name-absolute-p filename))
       (setq filename (abbreviate-file-name (expand-file-name filename))
             dirs (cons (file-name-directory filename) dirs)
             filename (file-name-nondirectory filename)))
-    ;; 3. Now search the path.
-    (while (and (null buffer) dirs)
-      (let ((thisdir (pop dirs)))
-        (setq name (expand-file-name filename thisdir)
-              buffer (and (file-exists-p name)
-                          (find-file-noselect name)))))
-    ;; 4. Ask for file if not found (tothink: maybe remove this part?)
-    (if (and (null buffer)
-             ess-debug-ask-for-file)
-        (save-excursion            ;This save-excursion is probably not right.
-          (let* ((pop-up-windows t)
-                 (name (read-file-name
-                        (format "Find next line in (default %s): "  filename)
-                        nil filename t nil))
-                 (origname name))
-            (cond
-             ((not (file-exists-p name))
-              (message "Cannot find file `%s'" name)
-              (ding) (sit-for 2))
-             ((and (file-directory-p name)
-                   (not (file-exists-p
-                         (setq name (expand-file-name filename name)))))
-              (message "No `%s' in directory %s" filename origname)
-              (ding) (sit-for 2))
-             (t
-              (setq buffer (find-file-noselect name)))))))
-    ;; nil if not found
-    buffer))
+    (or
+     ;; 2. Search the path.
+     (while (and (null buffer) dirs)
+       (let ((thisdir (pop dirs)))
+         (setq name (expand-file-name filename thisdir)
+               buffer (and (file-exists-p name)
+                           (find-file-noselect name)))))
+     buffer
+
+     ;; 3. search already open buffers for match (associated file might not even exist yet)
+     (cl-dolist (bf (buffer-list))
+       (with-current-buffer  bf
+         (when (and buffer-file-name
+                    (string-match filematch buffer-file-name))
+           (setq buffer bf)
+           (cl-return))))
+     buffer
+
+     ;; 4. Ask for file if not found (tothink: maybe remove this part?)
+     (when ess-debug-ask-for-file
+       (save-excursion            ;This save-excursion is probably not right.
+         (let* ((pop-up-windows t)
+                (name (read-file-name
+                       (format "Find next line in (default %s): "  filename)
+                       nil filename t nil))
+                (origname name))
+           (cond
+            ((not (file-exists-p name))
+             (message "Cannot find file `%s'" name)
+             (ding) (sit-for 2))
+            ((and (file-directory-p name)
+                  (not (file-exists-p
+                        (setq name (expand-file-name filename name)))))
+             (message "No `%s' in directory %s" filename origname)
+             (ding) (sit-for 2))
+            (t
+             (setq buffer (find-file-noselect name)))))))
+     buffer)))
 
 (defun ess--dbg-get-next-ref (n &optional pt BOUND REG nF nL nC)
   "Move point to the next reference in the *ess.dbg* buffer.
