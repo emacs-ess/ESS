@@ -1066,32 +1066,33 @@ Returns nil if TIMEOUT was reached, non-nil otherwise."
   (let* ((cmd-buf (process-get proc 'cmd-buffer))
          (cmd-delim (process-get proc 'cmd-output-delimiter))
          (early-exit t))
-    (unwind-protect
-        (progn
-          (with-current-buffer cmd-buf
-            (goto-char (point-max))
-            (insert string))
-          (when-let ((info (if cmd-delim
-                               (ess--command-delimited-output-info cmd-buf cmd-delim)
-                             (ess--command-output-info cmd-buf))))
-            (let ((new-output (ess--command-set-status proc cmd-buf info)))
-              (when (not (process-get proc 'busy))
-                ;; Store new output until restoration
-                (when new-output
-                  (process-put proc 'pending-output new-output))
-                ;; Restore the user's process filter as soon as process is
-                ;; available
-                (funcall (process-get proc 'cmd-restore-function))
-                ;; Run callback with command output
-                (when (process-get proc 'callbacks)
-                  (inferior-ess-run-callback proc (with-current-buffer cmd-buf
-                                                    (buffer-string)))))))
-          (setq early-exit nil))
-      ;; Be defensive when something goes wrong. Restore process to a
-      ;; usable state.
-      (when early-exit
-        (process-put proc 'busy nil)
-        (funcall (process-get proc 'cmd-restore-function))))))
+    (when (buffer-live-p cmd-buf)
+      (unwind-protect
+          (progn
+            (with-current-buffer cmd-buf
+              (goto-char (point-max))
+              (insert string))
+            (when-let ((info (if cmd-delim
+                                 (ess--command-delimited-output-info cmd-buf cmd-delim)
+                               (ess--command-output-info cmd-buf))))
+              (let ((new-output (ess--command-set-status proc cmd-buf info)))
+                (when (not (process-get proc 'busy))
+                  ;; Store new output until restoration
+                  (when new-output
+                    (process-put proc 'pending-output new-output))
+                  ;; Restore the user's process filter as soon as process is
+                  ;; available
+                  (funcall (process-get proc 'cmd-restore-function))
+                  ;; Run callback with command output
+                  (when (process-get proc 'callbacks)
+                    (inferior-ess-run-callback proc (with-current-buffer cmd-buf
+                                                      (buffer-string)))))))
+            (setq early-exit nil))
+        ;; Be defensive when something goes wrong. Restore process to a
+        ;; usable state.
+        (when early-exit
+          (process-put proc 'busy nil)
+          (funcall (process-get proc 'cmd-restore-function)))))))
 
 (defvar ess-presend-filter-functions nil
   "List of functions to call before sending the input string to the process.
