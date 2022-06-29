@@ -39,16 +39,17 @@
 
 ;;; Code:
 
-(eval-when-compile
+(eval-and-compile
   (when (< emacs-major-version 26)
     (require 'cl))
   (require 'cl-lib)
   (require 'tramp)
-  (require 'subr-x))
+  (require 'subr-x)
+  (require 'ess-utils))
 (require 'comint)
 (require 'compile)
 (require 'ring)
-(require 'ess-utils)
+
 
 (defvar text-scale-mode-amount)
 (autoload 'text-scale-mode              "face-remap" "[autoload]" nil)
@@ -90,7 +91,6 @@
 (declare-function ess-r-package-name "ess-r-package")
 (declare-function ess-r-package-source-dirs "ess-r-package")
 (declare-function ess-roxy--region-p "ess-roxy")
-(declare-function with-ess-process-buffer "ess-inf")
 
 
 ;; Do not require tramp at runtime. It is expensive to load. Instead,

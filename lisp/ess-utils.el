@@ -266,6 +266,19 @@ process to avoid excessive requests."
            (process-put *proc* ',time-var (current-time))
            out)))))
 
+(defmacro with-ess-process-buffer (no-error &rest body)
+  "Execute BODY in the process buffer of `ess-current-process-name'.
+If NO-ERROR is t don't trigger error when there is not current
+process. Symbol *proc* is bound to the current process during the
+evaluation of BODY."
+  (declare (indent 1) (debug t))
+  `(let ((*proc* (and ess-local-process-name (get-process ess-local-process-name))))
+     (if *proc*
+         (with-current-buffer (process-buffer *proc*)
+           ,@body)
+       (unless ,no-error
+         (error "No current ESS process")))))
+
 
 ;;*;; Emacs Integration
 
