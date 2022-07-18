@@ -1034,7 +1034,7 @@ returned."
                                rver)
                              " --version"))))
     (when (string-match
-           "R \\(version \\)?[1-9][^\n]+ (\\(2[0-9-]+\\)\\( r[0-9]+\\)?)"
+           "R \\(version \\)?[1-9][^\n]+ (\\(2[0-9-]+\\)\\( r[0-9]+\\)?"
            ver-string)
       (setq date (match-string 2 ver-string)))
     (cons date rver)))
