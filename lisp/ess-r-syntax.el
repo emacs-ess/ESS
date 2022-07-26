@@ -209,6 +209,7 @@ Cons cell containing the token type and string representation."
           (`?>
            (prog1 (ess-backward-char)
              (or (ess-climb-token--char ?|)
+                 (ess-climb-token--char ?=)
                  (ess-climb-token--char ?-)
                  (and (looking-back "->" (- (point) 2))
                       (goto-char (- (point) 2))))))
@@ -313,7 +314,7 @@ content. Return nil when the end of the buffer is reached."
     "==" "!=" "<" "<=" ">=" ">"
     "=" "<-" "<<-" "->" "->>"
     "$" "@" ":" "::" ":::" ":="
-    "|>"))
+    "|>" "=>"))
 
 (defvar ess-r-keywords-re
   (concat (regexp-opt ess-r-keywords-list) "\\_>"))

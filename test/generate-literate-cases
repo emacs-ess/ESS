@@ -3,11 +3,13 @@
 
 (let ((current-directory (file-name-directory load-file-name)))
   (setq ess-test-path (expand-file-name "." current-directory))
+  (setq ess-etest-path (expand-file-name "./etest/" current-directory))
   (setq ess-literate-path (expand-file-name "./literate/" current-directory))
   (setq ess-root-path (expand-file-name "../lisp/" current-directory)))
 
 (add-to-list 'load-path ess-root-path)
 (add-to-list 'load-path ess-test-path)
+(add-to-list 'load-path ess-etest-path)
 
 (require 'ert)
 (require 'ess-r-mode)

@@ -1282,9 +1282,14 @@ any(condition1 |
 
 ### Specific situations and overrides
 
-## 1
+## 10
 fun_call(
          ifelse(condition1, argument1,
          ifelse(condition2, argument2,
               ifelse))
          )
+
+## 11
+1:10 |>
+   x => 2 ** x %>%
+      sum()
