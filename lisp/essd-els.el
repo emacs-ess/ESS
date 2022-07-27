@@ -37,7 +37,7 @@
 
 ;; Easily changeable in a user's .emacs
 (defvar S+elsewhere-dialect-name "S+6"
-  "Name of 'dialect' for S-PLUS at another location.")
+  "Name of `dialect' for S-PLUS at another location.")
 
 (defvar S+elsewhere-start-args "-i"
   "Arguments for `S+elsewhere-dialect-name'.")

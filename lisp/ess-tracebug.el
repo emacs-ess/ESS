@@ -546,7 +546,7 @@ can use `ess--busy-slash', `ess--busy-B',`ess--busy-stars',
 
 (defcustom inferior-ess-replace-long+ t
   "Determines if ESS replaces long + sequences in output.
-If 'strip, remove all such instances.  Otherwise, if non-nil, '+
+If \\='strip, remove all such instances.  Otherwise, if non-nil, `+
 + + + ' containing 3 or more + is replaced by
 `ess-long+replacement'.
 This variable can be process-local but not buffer-local."
@@ -652,7 +652,7 @@ Pop up a compilation/grep/occur like buffer. Usual global key
 bindings are available (\\[next-error] and \\[previous-error])
 for `next-error' and `previous-error' respectively.
 
-You can bind 'no-select' versions of this commands:
+You can bind `no-select' versions of this commands:
 \(define-key compilation-minor-mode-map [(?n)] #'next-error-no-select)
 \(define-key compilation-minor-mode-map [(?p)] #'previous-error-no-select)"
   (interactive)
@@ -779,12 +779,12 @@ This is the value of `next-error-function' in iESS buffers."
   '(( ""   "NONE"       "NULL" )
     ( " r" "RECOVER"    "utils::recover")
     ( " t" "TRACEBACK"  "base::traceback"))
-  "Alist of 'on-error' actions.
+  "Alist of `on-error' actions.
 Toggled with `ess-debug-toggle-error-action'.  Each element must
 have the form (DISP SYMB ACTION) where DISP is the string to be
 displayed in the mode line when the action is in place. SYMB is
 the symbolic name of an action. ACTION is the string giving the
-actual expression to be assigned to 'error' user option. See R's
+actual expression to be assigned to `error' user option. See R's
 help ?options for more details."
   :type '(alist :key-type string
                 :value-type (group string string))
@@ -834,7 +834,7 @@ In no-windowed Emacs an `overlay-arrow' is displayed at this position.")
 
 (defcustom ess-debug-blink-interval .2
   "Time in seconds to blink the background of the debug line.
-Currently two events are defined 'ref-not-found' and 'same-ref'.
+Currently two events are defined `ref-not-found' and `same-ref'.
 Blinking colors for these events can be customized by
 corresponding faces."
   :group 'ess-debug
@@ -916,7 +916,7 @@ The SPEC should be one of the components of
       (error "Unknown action"))))
 
 (defun ess-debug-toggle-error-action ()
-  "Toggle the 'on-error' action.
+  "Toggle the `on-error' action.
 The action list is in `ess-debug-error-action-alist'."
   (interactive)
   (ess-force-buffer-current)
@@ -1703,9 +1703,9 @@ to move forwards (or backwards, if negative).  Optional arg PT,
 if non-nil, specifies the value of point to start looking for the
 next message, default to (point).  BOUND is the limiting position
 of the search.  REG is the regular expression to search with.  nF
-- sub-expression of REG giving the 'file'; defaults to 1.  nL -
-giving the 'line'; defaults to 2.  nC - sub-expr giving the
-'column'; defaults to 3."
+- sub-expression of REG giving the `file'; defaults to 1.  nL -
+giving the `line'; defaults to 2.  nC - sub-expr giving the
+`column'; defaults to 3."
   (unless ess--dbg-buf-p
     (error "Not in *ess.dbg* buffer"))
   (setq nF (or nF 1)
@@ -1774,7 +1774,7 @@ If supplied, EV must be a proper key event or a string representing the digit."
 
 (defun ess-debug-command-next ()
   "Step next in debug mode.
-Equivalent to 'n' at the R prompt."
+Equivalent to `n' at the R prompt."
   (interactive)
   (ess-force-buffer-current)
   (unless (ess--dbg-is-active-p)
@@ -1888,7 +1888,7 @@ ARGS are ignored to allow using this function in process hooks."
     (((class color) (background dark) (min-colors 88))  (:foreground "deep sky blue"))
     (((background light) (min-colors 8))  (:foreground "blue"))
     (((background dark) (min-colors 8))  (:foreground "cyan")))
-  "Face used to highlight 'browser' breakpoints."
+  "Face used to highlight `browser' breakpoints."
   :group 'ess-debug)
 
 (defface ess-bp-fringe-recover-face
@@ -1896,7 +1896,7 @@ ARGS are ignored to allow using this function in process hooks."
     (((class color) (background dark) (min-colors 88))  (:foreground "magenta"))
     (((background light) (min-colors 8))  (:foreground "magenta"))
     (((background dark) (min-colors 8))  (:foreground "magenta")))
-  "Face used to highlight 'recover' breakpoints fringe."
+  "Face used to highlight `recover' breakpoints fringe."
   :group 'ess-debug)
 
 (defun ess--bp-pipe-block-p ()
@@ -2475,7 +2475,7 @@ string giving the actual R expression."
 
 (defun ess-watch--parse-assoc (al)
   "Return a string command ready to be passed to R process.
-The command is of the form 'assign(\".ess_watch_expressions\",
+The command is of the form `assign(\".ess_watch_expressions\",
 list(a = parse(expr_a), b= parse(expr_b)), envir = .GlobalEnv)'.
 AL is an association list as return by `ess-watch--make-alist'"
   (concat ".ess_watch_assign_expressions(list("

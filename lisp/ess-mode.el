@@ -513,7 +513,7 @@ instead of indenting."
 
 (defun ess-indent-or-complete ()
   "When region is selected indent the region.
-Otherwise, if `tab-always-indent' is 'complete, try to indent, if
+Otherwise, if `tab-always-indent' is \\='complete, try to indent, if
 code is already indented, complete instead. Also see
 `ess-first-tab-never-complete'."
   (interactive)

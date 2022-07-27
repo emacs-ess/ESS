@@ -124,7 +124,7 @@ is searched from that directory instead of `default-directory'."
 (defun ess-r-package-info (&optional dir)
   "Get the description of the R project in directory DIR.
 Return an plist with the keys :name and :root. When not in a
-package return '(nil). This value is cached buffer-locally for
+package return \\='(nil). This value is cached buffer-locally for
 efficiency reasons."
   (if (and (null dir) (car ess-r-package--info-cache))
       ess-r-package--info-cache
@@ -345,7 +345,7 @@ With prefix ARG allow for editing of the `rhub::check_for_cran()' arguments."
 
 (defun ess-r-devtools-build (&optional arg)
   "Interface for `devtools::build()'.
-With prefix ARG, build with 'vignettes = FALSE'."
+With prefix ARG, build with `vignettes = FALSE'."
   (interactive "P")
   (ess-r-package-eval-linewise
    "devtools::build(%s)\n" "Building %s" arg
@@ -468,7 +468,7 @@ When called with prefix ARG asks for additional arguments."
 
 (defcustom ess-r-package-auto-activate t
   "If non-nil, `ess-r-package-mode' is turned on within R packages.
-If 't' the minor mode auto-activates in R packages. See
+If `t' the minor mode auto-activates in R packages. See
 `ess-r-package-exclude-modes' if you wish to inhibit
 `ess-r-package-mode' in specific buffers."
   :group 'ess-r-package

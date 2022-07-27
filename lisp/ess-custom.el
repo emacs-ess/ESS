@@ -196,11 +196,11 @@ lot."
 
 (defcustom ess-auto-width nil
   "When non-nil, set the width option when the window configuration changes.
-When 'frame, set the width to the frame width. When 'window, set
+When \\='frame, set the width to the frame width. When \\='window, set
 the width to the window width. If an integer, set the width to
 that integer. If it's a negative integer, set the width to the
 window's width minus that number. Anything else is treated as
-'window."
+\\='window."
   :group 'ess
   :type '(choice (const :tag "Do nothing" :value nil)
                  (const :tag "Frame width" :value frame)
@@ -232,7 +232,7 @@ These are available for call by function `ess-handy-commands' and
 
 (defcustom ess-describe-at-point-method nil
   "Whether `ess-describe-object-at-point' should use a tooltip.
-If nil display in an electric buffer. If 'tooltip display in
+If nil display in an electric buffer. If \\='tooltip display in
 a tooltip.
 
 See also `tooltip-hide-delay' and variable `tooltip-delay'."
@@ -395,16 +395,16 @@ See also `ess-first-tab-never-complete'."
   'ess-first-tab-never-complete "ESS 19.04")
 (defcustom ess-first-tab-never-complete 'symbol
   "If t, first TAB never tries to complete in `ess-mode'.
-If 'symbol first TAB doesn't try to complete if next char is a
+If \\='symbol first TAB doesn't try to complete if next char is a
 valid symbol constituent.
 
-If 'symbol-or-paren  don't complete if next char is closed paren
+If \\='symbol-or-paren  don't complete if next char is closed paren
 )}] or symbol character.
 
-If 'symbol-or-paren-or-punct don't complete if next char is
+If \\='symbol-or-paren-or-punct don't complete if next char is
 punctuation +-=% etc, or closed paren or symbol.
 
-If 'unless-eol - first TAB completes only at end of line.
+If \\='unless-eol - first TAB completes only at end of line.
 
 If nil first TAB always tries to complete (this might be too
 aggressive and dangerous)."
@@ -418,7 +418,7 @@ aggressive and dangerous)."
 
 (defcustom ess-use-eldoc t
   "If t, activate eldoc in `ess-mode' and `inferior-ess-mode' buffers.
-If 'script-only activate in `ess-mode' buffers only.
+If \\='script-only activate in `ess-mode' buffers only.
 
 See also `ess-eldoc-show-on-symbol'."
   :group 'ess-extras
@@ -445,7 +445,7 @@ A symbol which can be
 - aggressive (or t): Try strong + truncate the doc string to fit
   into minibuffer.
 
-The default style is 'normal.
+The default style is \\='normal.
 
 Ess-eldoc also honors the value of
 `eldoc-echo-area-use-multiline-p'. If this variable is not t (the
@@ -457,7 +457,7 @@ truncation."
 
 (defcustom ess-use-flymake t
   "If non-nil activate flymake in `ess-mode' buffers.
-If 'process, only check if the buffer has an inferior process."
+If \\='process, only check if the buffer has an inferior process."
   :group 'ess
   :type '(choice (const :tag "Always" t)
                  (const :tag "With running inferior process" process)
@@ -467,7 +467,7 @@ If 'process, only check if the buffer has an inferior process."
 (defcustom ess-use-auto-complete t
   "If non-nil, activate auto-complete support.
 If t, activate auto-complete support in `ess-mode' and
-`inferior-ess-mode' buffers. If 'script-only activate in `ess-mode'
+`inferior-ess-mode' buffers. If \\='script-only activate in `ess-mode'
 buffers only.
 
 If non-nil add `ac-source-R' and `ac-source-filename' to the
@@ -485,7 +485,7 @@ to install your custom sources."
 (defcustom ess-use-company t
   "If t, activate company support in `ess-mode' and `inferior-ess-mode' buffers.
 If non-nil add `company-R-args' and `company-R-objects' to the
-`company-backends'. If 'script-only activate in `ess-mode' buffers
+`company-backends'. If \\='script-only activate in `ess-mode' buffers
 only."
   :group 'ess-extras
   :type '(choice (const t) (const script-only) (const nil)))
@@ -727,7 +727,7 @@ set refill styles."
 (define-obsolete-variable-alias 'ess-mode-silently-save 'ess-save-silently "ESS 19.04")
 (defcustom ess-save-silently 'auto
   "If non-nil, possibly save buffers without asking.
-If t, save without asking. If 'auto, save without asking if
+If t, save without asking. If \\='auto, save without asking if
 either `compilation-ask-about-save' or variable `auto-save-visited-mode'
 is non-nil. Affects `ess-save-file'."
   :group 'ess-edit
@@ -892,21 +892,21 @@ for other offsets controlling indentation.")
   "This setting controls indentation of continued statements.
 That is, consecutive statements separated by operators.
 
-When set to 'straight, continued statements are indented as follows:
+When set to \\='straight, continued statements are indented as follows:
 
   object %>%
       some_function() %>%
       other_function()
 
-When set to 'cascade:
+When set to \\='cascade:
 
   object %>%
       some_function() %>%
           other_function()
 
-The 'straight and 'cascade settings are actually equivalent to
-'(straight . t) and '(cascade . t), where t represents the
-base indent size. More generally, you can supply '(straight . N)
+The \\='straight and \\='cascade settings are actually equivalent to
+\\='(straight . t) and \\='(cascade . t), where t represents the
+base indent size. More generally, you can supply \\='(straight . N)
 to control the size of indentation.
 
 See `ess-style-alist' for for an overview of ESS indentation.")
@@ -1557,8 +1557,8 @@ This variable is deprecated.
 please add an entry to `display-buffer-alist' instead. See Info
 node `(ess)Customizing startup'. For example:
 
-\(add-to-list 'display-buffer-alist
-             '(\"*R\"
+\(add-to-list \\='display-buffer-alist
+             \\='(\"*R\"
   (display-buffer-reuse-window display-buffer-pop-up-frame)))")
 (make-obsolete-variable 'inferior-ess-own-frame 'display-buffer-alist "ESS 19.04")
 (make-obsolete-variable 'inferior-ess-frame-alist "It is ignored. Use `display-buffer-alist' and `pop-up-frame-alist' instead." "ESS 19.04")
@@ -1612,7 +1612,7 @@ Used in e.g., \\[ess-execute-objects] or \\[ess-display-help-on-object]."
 (defvar ess-setwd-command nil
   "Command string to set working directory.
 Should contain a formatting %s to be replaced by a
-path (as in 'setwd(%s)\\n'.")
+path (as in `setwd(%s)\\n'.")
 
 (defcustom ess-program-files ;; 32 bit version
   (if (and ess-microsoft-p
@@ -1683,7 +1683,7 @@ file."
 
 (defvaralias 'S+6-dialect-name 'S+-dialect-name)
 (defcustom S+-dialect-name "S+"
-  "Name of 'dialect' for S-PLUS 6.x and later.
+  "Name of `dialect' for S-PLUS 6.x and later.
 Easily changeable in a user's `.emacs'."
   :group 'ess-SPLUS
   :type 'string)
@@ -1737,24 +1737,24 @@ ask - ask the user whether the S buffers should be killed."
 
 (defvaralias 'R-editor 'ess-r-editor)
 (defcustom ess-r-editor "emacsclient"
-  "Editor called by R process with 'edit()' command."
+  "Editor called by R process with `edit()' command."
   :group 'ess
   :type 'string)
 
 (defvaralias 'R-pager 'ess-r-pager)
 (defcustom ess-r-pager 'nil ; Usually nil is correct as ESS and page() cooperate.
-  "Pager called by R process with 'page()' command."
+  "Pager called by R process with `page()' command."
   :group 'ess
   :type '(choice (const nil) string))
 
 (defcustom S-editor "emacsclient"
-  "Editor called by S process with 'edit()' command."
+  "Editor called by S process with `edit()' command."
   :group 'ess
   :type 'string)
 
 (defcustom S-pager
   (if ess-microsoft-p "emacsclientw.exe" "emacsclient")
-  "Pager called by S process with 'page()' command."
+  "Pager called by S process with `page()' command."
   :group 'ess
   :type 'string)
 
@@ -1823,7 +1823,7 @@ Otherwise, they get their own temporary buffer."
 
 (defcustom ess-eval-visibly 'nowait
   "Non-nil means ess-eval- commands display commands in the process buffer.
-If 'nowait, ESS shows input commands in the process buffer, but
+If \\='nowait, ESS shows input commands in the process buffer, but
 doesn't wait for the process. Thus all the output is printed
 after the input lines.
 
@@ -1871,7 +1871,7 @@ Each symbol must evaluate to one of the standard mode line
 objects. See info node `(elisp)Mode Line Data').  Add a symbol
 with `add-to-list' and remove with `delq'. Note that the symbols
 which are part of this list should better have
-'risky-local-variable property set to t, otherwise the text
+\\='risky-local-variable property set to t, otherwise the text
 properties are not displayed.
 
 External utilities such as `ess-tracebug' and `ess-developer'
@@ -1949,7 +1949,7 @@ Really set in <ess-lang>-customize-alist in ess[dl]-*.el")
   "Format string for ESS command to extract names from an object *safely*.
 
 %s is replaced by an \"object name\" -- usually a list or data
-frame, but in R also e.g., 'package:stats'."
+frame, but in R also e.g., `package:stats'."
   :group 'ess-command
   :type 'string)
 
@@ -2274,7 +2274,7 @@ the help window."
 
 Possible values are:
    nil: Display help in current frame.
-  'one: All help buffers are shown in one dedicated frame.
+  \\='one: All help buffers are shown in one dedicated frame.
      t: Each help buffer gets its own frame.
 
 If this is non-nil,`ess-help-reuse-window' is ignored. The

@@ -1016,7 +1016,7 @@ and `ess-load-command', in that order."
        (format ess-load-command file)))
 
 (defun ess-wait-for-process (&optional proc sec-prompt wait force-redisplay timeout)
-  "Wait for 'busy property of the process to become nil.
+  "Wait for \\='busy property of the process to become nil.
 If SEC-PROMPT is non-nil return if secondary prompt is detected
 regardless of whether primary prompt was detected or not. If WAIT
 is non-nil wait for WAIT seconds for process output before the
@@ -1173,8 +1173,8 @@ Hide all the junk output in temporary buffer."
   "ESS wrapper for `process-send-string'.
 Run `comint-input-filter-functions' and current buffer's and
 PROCESS' `ess-presend-filter-functions' hooks on the input
-STRING. VISIBLY can be nil, t, 'nowait or a string.  If string
-the behavior is as with 'nowait with the differences that
+STRING. VISIBLY can be nil, t, \\='nowait or a string.  If string
+the behavior is as with \\='nowait with the differences that
 inserted string is VISIBLY instead of STRING (evaluated command
 is still STRING).  In all other cases the behavior is as
 described in `ess-eval-visibly'. STRING need not end with
@@ -1329,7 +1329,7 @@ seconds. The process is interrupted with `interrupt-process' when
 the timeout is reached or when an error occurs.
 
 PROC should be a process, if nil the process name is taken from
-`ess-local-process-name'.  This command doesn't set 'last-eval
+`ess-local-process-name'.  This command doesn't set \\='last-eval
 process variable.
 
 Note: for critical, or error prone code you should consider
@@ -1499,7 +1499,7 @@ of `ess-async-command' with an explicit interrupt-callback."
 
 (defun ess-load-library ()
   "Prompt and load dialect specific library/package/module.
-Note that in R these are called 'packages' and the name of this
+Note that in R these are called `packages' and the name of this
 function has nothing to do with R package mechanism, but it
 rather serves a generic, dialect independent purpose. It is also
 similar to `load-library' Emacs function."
@@ -1531,7 +1531,7 @@ arg EOB is non-nil, display ESS process buffer after evaluation.
 If optional 4th arg EVEN-EMPTY is non-nil, also send empty
 text (e.g. an empty line). If 5th arg WAIT-LAST-PROMPT is
 non-nil, also wait for the prompt after the last line; if 6th arg
-SLEEP-SEC is a number, ESS will call '(\\[sleep-for] SLEEP-SEC)
+SLEEP-SEC is a number, ESS will call `(\\[sleep-for] SLEEP-SEC)'
 at the end of this function. If the 7th arg WAIT-SEC is set, it
 will be used instead of the default .001s and be passed to
 \\[ess-wait-for-process].
@@ -1712,8 +1712,8 @@ Prefix arg VIS toggles visibility of ess-code as for `ess-eval-region'."
   "Send the current function if \\[point] is inside one.
 Otherwise send the current paragraph to the inferior ESS process.
 Prefix arg VIS toggles visibility of ess-code as for
-`ess-eval-region'. Returns 'function if a function was evaluated
-or 'paragraph if a paragraph."
+`ess-eval-region'. Returns \\='function if a function was evaluated
+or \\='paragraph if a paragraph."
   (interactive "P")
   (condition-case nil
       (progn (ess-eval-function vis)
@@ -2229,7 +2229,7 @@ in `ess-r-post-run-hook' or `ess-S+-post-run-hook'."
 
 (defun ess-calculate-width (opt)
   "Calculate width command given OPT.
-OPT can be 'window, 'frame, or an integer. Return a command
+OPT can be \\='window, \\='frame, or an integer. Return a command
 suitable to send to the inferior process (e.g.
 \"options(width=80, length=999999)\")."
   (when (null ess-execute-screen-options-command)
@@ -2281,7 +2281,7 @@ buffers."
   "Send a command to the ESS process.
 A newline is automatically added to COMMAND.  Prefix arg (or second arg
 INVERT) means invert the meaning of
-`ess-execute-in-process-buffer'.  If INVERT is 'buffer, output is
+`ess-execute-in-process-buffer'.  If INVERT is \\='buffer, output is
 forced to go to the process buffer.  If the output is going to a
 buffer, name it *BUFF*.  This buffer is erased before use.  Optional
 fourth arg MESSAGE is text to print at the top of the buffer (defaults
@@ -2526,7 +2526,7 @@ Return the elements of the result of COMMAND as an alist of
 strings. COMMAND should have a terminating newline.
 NO-PROMPT-CHECK, WAIT, PROC, and TIMEOUT are passed to `ess-command'.
 
-FILTER may be the keyword 'non-... or nil. To avoid truncation of
+FILTER may be the keyword \\='non-... or nil. To avoid truncation of
 long vectors, wrap your command (%s) like this, or a version with
 explicit options(max.print=1e6): \"local({ out <- try({%s});
 print(out, max=1e6) })\n\"."
@@ -2842,7 +2842,7 @@ don't recompile first object in the search list."
 (defun ess-search-path-tracker (str)
   "Check if input STR changed the search path.
 This function monitors user input to the inferior ESS process so
-that Emacs can keep the process variable 'search-list' up to
+that Emacs can keep the process variable `search-list' up to
 date. `ess-completing-read' in \\[ess-read-object-name] uses this
 list indirectly when it prompts for help or for an object to
 dump. From ESS 12.09 this is not necessary anymore, as the search

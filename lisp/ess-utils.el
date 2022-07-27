@@ -94,7 +94,7 @@ Otherwise go as far as possible and return -1."
 
 (defun ess-skip-thing (thing)
   "Leave point at the end of THING.
-THING can be 'function, 'paragraph, or 'line."
+THING can be \\='function, \\='paragraph, or \\='line."
   (cond
    ((eql thing 'line) (goto-char (line-end-position)))
    ((eql thing 'paragraph) (forward-paragraph))
@@ -163,7 +163,7 @@ This function will work even if LIST is unsorted.  See also `delete-dups'."
       'flatten-tree
     (lambda (list)
       "Take the arguments and flatten them into one long LIST.
-Drops 'nil' entries."
+Drops `nil' entries."
       ;; Taken from lpr.el
       ;; `lpr-flatten-list' is defined here (copied from "message.el" and
       ;; enhanced to handle dotted pairs as well) until we can get some
@@ -587,7 +587,7 @@ With double prefix ARG (\\[universal-argument]
 If the current language defines `ess-build-tags-command' use it
 and ask the subprocess to build the tags. Otherwise use imenu
 regexp and call find .. | etags .. in a shell command. You must
-have 'find' and 'etags' programs installed.
+have `find' and `etags' programs installed.
 
 Use M-. to navigate to a tag. \\[visit-tags-table] to
 append/replace the currently used tag table.

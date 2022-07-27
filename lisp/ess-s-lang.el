@@ -284,7 +284,7 @@ than `ess-fix-dot-1'."
   (ess-fix-dot ",)" dont-query verbose))
 
 (defun ess-fix-EQ-assign (&optional dont-query verbose not-all)
-  "Replace \"=\" by \"<-\" in places where it 'might make sense', e.g.,
+  "Replace \"=\" by \"<-\" in places where it `might make sense', e.g.,
 for function assignments and lines not ending in \",\".
 Be *careful* for list()s of functions and when argument not-all is
 nil (as by default) !"
@@ -449,8 +449,8 @@ Currently, this needs to:
    2. format the statement,
    3. c/function/Sfunc/
 and I need to relearn Emacs lisp (but I had to, anyway."
-  (interactive "sFunction ? ")
   (declare (obsolete 'ess-execute "ESS 19.04"))
+  (interactive "sFunction ? ")
   (let* ((buffname "ess-complete.R"))
     (ess-execute (format "args(%s)" Sfunc) t buffname)
     (pop-to-buffer (concat "*" buffname "*"))
@@ -493,7 +493,7 @@ ARG is ignored."
 
 (cl-defmethod ess-help-get-topics (proc &context (ess-dialect "R"))
   "Return a list of current S help topics associated with process PROC.
-If 'sp-for-help-changed?' process variable is non-nil or
+If `sp-for-help-changed?' process variable is non-nil or
 `ess-help-topics-list' is nil, (re)-populate the latter and
 return it.  Otherwise, return `ess-help-topics-list'."
   (with-ess-process-buffer nil

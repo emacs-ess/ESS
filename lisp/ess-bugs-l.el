@@ -52,17 +52,17 @@
   "Method used by `ess-bugs-batch'.
 The default is based on the value of the Emacs variable `system-type'
 and, on Windows machines, the function `w32-shell-dos-semantics'.
-'sh           if *shell* runs a Bourne-like or a C-like Unix shell
-'dos          if *shell* runs a DOS-like Windows shell
+\\='sh           if *shell* runs a Bourne-like or a C-like Unix shell
+\\='dos          if *shell* runs a DOS-like Windows shell
 
-Unix users will get 'sh by default.
+Unix users will get \\='sh by default.
 
-Windows users running a DOS-like *shell* will get 'dos by default,
-while those running a Unix-like *shell* will get 'sh by default.
+Windows users running a DOS-like *shell* will get \\='dos by default,
+while those running a Unix-like *shell* will get \\='sh by default.
 
-Users whose default is not 'sh, but are accessing a remote machine with
+Users whose default is not \\='sh, but are accessing a remote machine with
 `telnet' or `ssh', should have the following in their init file:
-   (setq-default ess-bugs-batch-method 'sh)"
+   (setq-default ess-bugs-batch-method \\='sh)"
   :group 'ess-bugs
   :type '(choice (const sh :tag "Bourne/C-like Unix Shell")
                  (const dos :tag "DOS-like Windows shell")))

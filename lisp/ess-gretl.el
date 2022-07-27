@@ -522,7 +522,7 @@ end keywords as associated values.")
 
 ;;;###autoload
 (defun gretl (&optional start-args)
-  "Call 'gretl',
+  "Call `gretl',
 Optional prefix (C-u) allows to set command line arguments, such as
 --vsize.  This should be OS agnostic.
 If you have certain command line arguments that should always be passed

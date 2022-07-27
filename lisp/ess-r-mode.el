@@ -64,7 +64,7 @@ use `ess-r-mode-hook' instead.")
 (defcustom ess-r-fetch-ESSR-on-remotes nil
   "If non-nil, when loading ESSR, fetch it from the GitHub repository.
 Otherwise source from local ESS installation. When the value is
-'ess-remote, fetch only with ess-remote's and not with TRAMP
+\\='ess-remote, fetch only with ess-remote's and not with TRAMP
 connections. When t, always fetch from remotes. Change this
 variable when loading ESSR code on remotes fails for you.
 
@@ -842,7 +842,7 @@ project is searched from that directory instead of
 (defun ess-r-project-info (&optional dir)
   "Get the description of the R project in directory DIR.
 Return an plist with the keys :name and :root. When not in a
-project return '(nil). This value is cached buffer-locally for
+project return \\='(nil). This value is cached buffer-locally for
 efficiency reasons."
   (let ((do-cache (null dir)))
     (if (and do-cache ess-r-project--info-cache)
@@ -872,7 +872,7 @@ efficiency reasons."
 ;;*;; Miscellaneous
 
 (defun ess-R-arch-2-bit (arch)
-  "Translate R's architecture shortcuts/directory names to 'bits'.
+  "Translate R's architecture shortcuts/directory names to `bits'.
 ARCH \"32\" or \"64\" (for now)."
   (if (string= arch "i386")  "32"
     ;; else:

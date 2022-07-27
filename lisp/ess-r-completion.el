@@ -255,7 +255,7 @@ token.  Needs version of R >= 2.7.0."
     (ess-get-words-from-vector cmd)))
 
 (defun ess-r-complete-object-name ()
-  "Completion in R via R's completion utilities (formerly 'rcompgen').
+  "Completion in R via R's completion utilities (formerly `rcompgen').
 To be used instead of ESS' completion engine for R versions >= 2.7.0."
   (let ((possible-completions (ess-r-get-rcompletions))
         token-string)

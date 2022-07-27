@@ -188,18 +188,18 @@ Virtual PC emulator on your Mac; buffer-local."
   "Method used by `ess-sas-submit'.
 The default is based on the value of the emacs variable `system-type'
 and, on Windows, the function `w32-shell-dos-semantics'.
-'sh               if *shell* runs sh, ksh, csh, tcsh or bash
-'ms-dos           if *shell* follows MS-DOS semantics
+\\='sh               if *shell* runs sh, ksh, csh, tcsh or bash
+\\='ms-dos           if *shell* follows MS-DOS semantics
 
-Unix users will get 'sh by default.
+Unix users will get \\='sh by default.
 
-Windows users running bash in *shell* will get 'sh by default.
+Windows users running bash in *shell* will get \\='sh by default.
 
-Windows users running MS-DOS in *shell* will get 'ms-dos by default.
+Windows users running MS-DOS in *shell* will get \\='ms-dos by default.
 
 Users accessing a remote machine with `telnet', `rlogin', `ssh', etc.,
-should set this variable to 'sh regardless of their local shell
-(since their remote shell is 'sh).")
+should set this variable to \\='sh regardless of their local shell
+(since their remote shell is \\='sh).")
 
 (defcustom ess-sas-graph-view-viewer-default
   (if ess-microsoft-p "explorer"

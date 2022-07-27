@@ -740,11 +740,11 @@ If region is active use it instead of the object at point.
 This is an electric command (`ess--execute-electric-command'),
 which means that you can use the last key to cycle through the
 action set (in this case `C-e'). After invocation of this command
-all standard Emacs commands, except those containing 'window' in
+all standard Emacs commands, except those containing `window' in
 their names, remove the electric *ess-describe* buffer. Use
 `other-window' to switch to *ess-describe* window.
 
-Customize `ess-describe-at-point-method' if you wan to display
+Customize `ess-describe-at-point-method' if you want to display
 the description in a tooltip. See also
 `ess-r-describe-object-at-point-commands' (and similar option for
 other dialects)."

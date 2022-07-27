@@ -61,8 +61,8 @@
     "trailing_whitespace_linter = NULL")
   "Default linters to use.
 Can be either a string with R expression to be used as
-is (e.g. 'lintr::default_linters').  Or a list of strings where
-each element is passed as argument to 'lintr::with_defaults'."
+is (e.g. `lintr::default_linters').  Or a list of strings where
+each element is passed as argument to `lintr::with_defaults'."
   :group 'ess-R
   :type '(choice string (repeat string))
   :package-version '(ess . "18.10"))
