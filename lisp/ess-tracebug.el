@@ -1907,9 +1907,18 @@ ARGS are ignored to allow using this function in process hooks."
       (end-of-line)
       (looking-back "%>%[ \t]*" (point-at-bol)))))
 
+(defun ess--bp-pipe-native-block-p ()
+  (save-excursion
+    (let ((inhibit-point-motion-hooks t)
+          (inhibit-field-text-motion t))
+      (forward-line -1)
+      (end-of-line)
+      (looking-back "|>[ \t]*" (point-at-bol)))))
+
 (defvar ess--bp-identifier 1)
 (defcustom ess-bp-type-spec-alist
   '((pipe    ".ess_pipe_browser() %%>%%" "B %>%\n" filled-square ess-bp-fringe-browser-face ess--bp-pipe-block-p)
+    (pipe-native ".ess_pipe_browser() |>" "B |>\n" filled-square ess-bp-fringe-browser-face ess--bp-pipe-native-block-p)
     (browser "browser(expr=is.null(.ESSBP.[[%s]]));" "B>\n" filled-square  ess-bp-fringe-browser-face)
     (recover "recover()" "R>\n"   filled-square  ess-bp-fringe-recover-face))
   "List of lists of breakpoint types.
