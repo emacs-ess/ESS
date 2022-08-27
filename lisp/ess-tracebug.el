@@ -726,7 +726,7 @@ This is the value of `next-error-function' in iESS buffers."
          (at-error t)
          (msg
           (condition-case nil
-              (compilation-next-error n  nil beg-pos)
+              (compilation-next-error n nil beg-pos)
             (error
              (when pbuff-p
                (ess--tb-next-error-goto-process-marker))
@@ -1635,14 +1635,16 @@ nil, or TB-INDEX is not found return nil."
                 (org-babel-tangle-jump-to-org))
               (list (point-marker) (copy-marker (point-at-eol))))))))))
 
+(defvar ess-r-package-library-paths)
 (defun ess--dbg-find-buffer (filename)
   "Find a buffer for file FILENAME.
 If FILENAME is not found at all, ask the user where to find it if
 `ess--dbg-ask-for-file' is non-nil.  Search the directories in
-`ess-tracebug-search-path'."
+`ess-tracebug-search-path' and `ess-r-package-library-paths'."
   (let ((dirs (append
                (ess-r-package-source-dirs)
-               (cl-loop for d in ess-tracebug-search-path
+               ess-r-package-library-paths
+               (cl-loop for d in (append ess-tracebug-search-path)
                         append (ess-r-package--all-source-dirs d))))
         (filematch (format "%s\\'" filename))
         buffer name)
