@@ -607,7 +607,7 @@ will be prompted to enter arguments interactively."
               ;; Trigger the callback
               (process-send-string (get-buffer-process inf-buf) "r\n"))
           (ess-wait-for-process)
-          (R-initialize-on-start)
+          (ess-r-initialize-on-start)
           (comint-goto-process-mark))
         (ess-write-to-dribble-buffer
          (format "(R): inferior-ess-language-start=%s\n"
@@ -621,7 +621,7 @@ will be prompted to enter arguments interactively."
   (set-buffer (run-ess-r start-args)))
 
 (defun inferior-ess-r--init-callback (_proc _name)
-  (R-initialize-on-start))
+  (ess-r-initialize-on-start))
 
 (defmacro ess-r--without-format-command (&rest body)
   (declare (indent 0)
@@ -634,9 +634,11 @@ will be prompted to enter arguments interactively."
              ,@body)
          (setq ess-format-command-alist old-alist)))))
 
-(defun R-initialize-on-start ()
+(define-obsolete-function-alias 'R-initialize-on-start 'ess-r-initialize-on-start "ESS 19.04")
+(defun ess-r-initialize-on-start ()
   "This function is run after the first R prompt.
 Executed in process buffer."
+  (interactive)
   (ess-r--without-format-command
     (ess-command (format
                   "if (identical(getOption('pager'), file.path(R.home(), 'bin', 'pager')))
@@ -1494,6 +1496,7 @@ On remotes, when `ess-r-fetch-ESSR-on-remotes' is non-nil we
 fetch ESSR environment from github to the remote machine.
 Otherwise (the default) we source ESSR files into the remote
 process."
+  (interactive)
   ;; `.ess.command()` is not defined until ESSR is loaded so disable
   ;; it temporarily. Would be helpful to implement an `inferior-ess-let'
   ;; macro .
