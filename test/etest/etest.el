@@ -1,7 +1,6 @@
 ;;; etest.el --- Emacs behavioural test framework  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2020 Free Software Foundation, Inc.
-;; Copyright (C) 2014-2015 Oleh Krehel
+;; Copyright (C) 2014-2022  Free Software Foundation, Inc.
 
 ;; Author:
 ;;     Lionel Henry <lionel.hry@gmail.com>
@@ -34,6 +33,18 @@ contents.")
 List of etest keywords and commands, e.g. an `:init' spec to set
 up a particular mode.")
 
+;; Evaluate symbols to make it easier to set local variables
+(defmacro etest--push-local-config (place)
+  `(unless (eq (car ,place) :config)
+     (let ((etest--config (cond ((not etest-local-config)
+                                 nil)
+                                ((symbolp etest-local-config)
+                                 (eval etest-local-config t))
+                                (t
+                                 etest-local-config))))
+       (when etest--config
+         (setq ,place (append etest--config ,place))))))
+
 (cl-defmacro etest-deftest (name args &body body)
   (declare (doc-string 3)
            (indent 2))
@@ -51,7 +62,7 @@ up a particular mode.")
   `(progn
      (when (eq (car ,place) :config)
        (pop ,place)
-       (setq ,place (append (eval (pop ,place)) ,place)))
+       (setq ,place (append (eval (pop ,place) t) ,place)))
      (etest--pop-init ,place)))
 
 (defmacro etest--pop-init (place)
@@ -60,18 +71,6 @@ up a particular mode.")
        (pop ,place)
        (setq local (append local (pop ,place))))
      local))
-
-;; Evaluate symbols to make it easier to set local variables
-(defmacro etest--push-local-config (place)
-  `(unless (eq (car ,place) :config)
-     (let ((etest--config (cond ((not etest-local-config)
-                                 nil)
-                                ((symbolp etest-local-config)
-                                 (eval etest-local-config))
-                                (t
-                                 etest-local-config))))
-       (when etest--config
-         (setq ,place (append etest--config ,place))))))
 
 (defmacro etest--with-test-buffer (init &rest body)
   (declare (indent 1)
@@ -121,7 +120,7 @@ and are processed with DO-RESULT."
                 (let ((etest--key (pop body))
                       (etest--value (pop body)))
                   (pcase etest--key
-                    (`:inf-buffer (setq etest-local-inferior-buffer (eval etest--value)))
+                    (`:inf-buffer (setq etest-local-inferior-buffer (eval etest--value t)))
                     (`:cleanup (push etest--value etest--cleanup))
                     (`:inf-cleanup (push `(progn
                                             ,etest--value
@@ -281,10 +280,11 @@ keywords."
 ;; Krehel in <https://github.com/abo-abo/lispy/blob/master/lispy-test.el>.
 ;; The main difference is support for multiple cursors.
 
-(defun etest-run (buf cmds &optional reset-state)
+(defun etest-run (buf cmds &optional _reset-state)
   "Run CMDS in BUF.
 If RESET-STATE is non-nil, `last-command' and
 `current-prefix-arg' are set to nil for all cursors."
+  ;; FIXME: `reset-state' is not used!
   (with-current-buffer buf
     (goto-char (point-min))
     (when (search-forward "×" nil t)
@@ -322,7 +322,7 @@ If RESET-STATE is non-nil, `last-command' and
                               (eq (car x) 'kbd))
                          (etest--unalias x))
                         (t (let ((inhibit-message t))
-                             (eval x)))))
+                             (eval x t)))))
                 cmds)
           (let ((marker (point-marker)))
             (set-marker-insertion-type marker t)
@@ -379,7 +379,7 @@ Insert KEY if there's no command."
          (setq last-command cmd))))
 
 (defun etest--decode-keysequence (str)
-  "Decode STR from e.g. \"23ab5c\" to '(23 \"a\" \"b\" 5 \"c\")"
+  "Decode STR from e.g. \"23ab5c\" to ='(23 \"a\" \"b\" 5 \"c\")"
   (let ((table (copy-sequence (syntax-table))))
     (cl-loop for i from ?0 to ?9 do
              (modify-syntax-entry i "." table))

@@ -57,7 +57,7 @@ ESS version
 @top ESS: Emacs Speaks Statistics
 
 ESS version
-@include ../VERSION
+@ESSVER
 
 @display
 by  A.J. Rossini,

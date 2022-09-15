@@ -1,7 +1,6 @@
 ;;; ess-font-lock.el --- font-lock color options
 
-;; Copyright (C) 2000--2006 A.J. Rossini, Richard M. Heiberger, Martin
-;;      Maechler, Kurt Hornik, Rodney Sparapani, and Stephen Eglen.
+;; Copyright (C) 2000-2022  Free Software Foundation, Inc.
 
 ;; Author: Richard M. Heiberger <rmh@temple.edu>
 ;; Created: 06 Feb 2000

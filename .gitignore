@@ -33,3 +33,7 @@ tmp*
 .dependencies
 NEWS
 ONEWS
+
+# ELPA-generated files
+/ess-autoloads.el
+/ess-pkg.el

@@ -1,5 +1,7 @@
 ;;; create-pkg-file.el --- Create ess-pkg.el  -*- lexical-binding: t; -*-
 
+;; Copyright (C) 2018-2022  Free Software Foundation, Inc.
+
 ;;; Commentary:
 ;; Creates ess-pkg.el
 

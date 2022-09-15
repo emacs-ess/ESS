@@ -1,5 +1,7 @@
 ;;; travis-install-package.el  -*- lexical-binding: t; -*-
 
+;; Copyright (C) 2018-2022  Free Software Foundation, Inc.
+
 ;;; Commentary:
 ;; This file simulates a user installing the ess-$VERSION.tar file and
 ;; then loading ess. It's meant to be used for testing purposes only.
