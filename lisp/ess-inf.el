@@ -365,8 +365,7 @@ defined. If no project directory has been found, use
   (when-let ((proc (or proc (and ess-local-process-name
                                  (get-process ess-local-process-name)))))
     (unless (process-get proc 'busy)
-      (or (ess-debug-active-p proc) ; don't send empty lines in debugger
-          (when-let ((last-check (process-get proc 'last-availability-check)))
+      (or (when-let ((last-check (process-get proc 'last-availability-check)))
             (time-less-p (process-get proc 'last-eval) last-check))
           (progn
             ;; Send an empty string and waiting a bit to make sure we are not busy.
@@ -392,9 +391,7 @@ Return non-nil if the process is in a ready (not busy) state."
   (let ((ready (string-match-p (concat "\\(" inferior-ess-primary-prompt "\\)\\'") string)))
     (process-put proc 'busy-end? (and ready (process-get proc 'busy)))
     ;; When "\n" inserted from inferior-ess-available-p, delete the prompt.
-    (when (and ready
-               (process-get proc 'availability-check)
-               (string-match-p (concat "^" inferior-ess-primary-prompt "\\'") string))
+    (when (and ready (process-get proc 'availability-check))
       (process-put proc 'suppress-next-output? t))
     (process-put proc 'availability-check nil)
     (when ready
