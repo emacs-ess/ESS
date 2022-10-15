@@ -25,6 +25,7 @@ readme.pdf : $(TEXISRC); $(TEXI2PDF) readme.texi
 distclean clean:
 	@rm -f *.aux *.cp *.cps *.fn *.fns *.ky *.kys *.log *.out \
 	        *.pg *.pgs *.tmp *.toc *.tp *.vr *.vrs
+	@rm -f refcard/*.aux refcard/*.log
 	@rm -f $(TXTs) $(PDFs) info/*.info* \
 		html/*  *.info dir
 
