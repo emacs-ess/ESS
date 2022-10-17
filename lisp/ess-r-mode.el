@@ -1225,7 +1225,7 @@ Placed into `ess-presend-filter-functions' for R dialects."
 
 (cl-defmethod ess-installed-packages (&context (ess-dialect "R"))
   ;;; FIXME? .packages() does not cache; installed.packages() does but is slower first time
-  (ess-get-words-from-vector--foreground "print(.packages(T), max=1e6)\n"))
+  (ess-get-words-from-vector--foreground "print(.packages(TRUE), max=1e6)\n"))
 
 (cl-defmethod ess-load-library--override (pack &context (ess-dialect "R"))
   "Load an R package."
