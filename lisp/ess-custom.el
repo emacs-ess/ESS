@@ -286,7 +286,9 @@ See also `ess-blink-delay'"
   :type 'number)
 
 (defcustom ess-ask-for-ess-directory t
-  "Non-nil means request the process directory each time S is run."
+  "When non-nil ask the process directory when ESS process starts.
+When set to nil, and the process is invoked with an universal
+argument, the directory is prompted for."
   :group 'ess
   :type 'boolean)
 
@@ -320,16 +322,30 @@ Value of `ess-startup-directory' has precedence over this function."
 
 (defvaralias 'ess-directory 'ess-startup-directory)
 (defcustom ess-startup-directory nil
-  "The directory ESS is run from (string or a symbol).
-Provided a default (especially useful if
-`ess-ask-for-ess-directory' is non-nil). A nil value means use
-the value returned by `ess-startup-directory-function'. If nil,
-use current project directory, otherwise use to the
-`default-directory'.
+  "The directory to run ESS processes from.
+If a string it should bi a directory from which to start the
+process. If a symbol, the symbol's value should be a directory.
 
-When this variable is a symbol, use its value. Set this variable
-to `'default-directory' in order to always start in the current
-directory."
+For example, the following setting would always start the process
+in the directory of the current file:
+
+   (setq ess-startup-directory 'default-directory)
+
+If `ess-startup-directory' is nil (the default) and
+`ess-startup-directory-function' is non-nil, the value returned
+by `ess-startup-directory-function' is used as a directory.
+
+If `ess-startup-directory-function' is nil, then the current
+project as returned by `project-current' is used. For files which
+mark an R project see `ess-r-project'. For example you can add
+.Rprofile to a sub-directory of a project to mark it as R
+sub-project.
+
+Finally, if not in a project (`project-current' returned nil) the
+`default-directory' is used. It is normally the directory of the
+current file.
+
+See also `ess-ask-for-ess-directory'."
   :group 'ess
   :type '(choice (const nil) directory symbol))
 
