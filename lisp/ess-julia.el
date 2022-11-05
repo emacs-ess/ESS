@@ -72,7 +72,7 @@ VISIBLY is not currently used."
             (split-string (buffer-string) "\n"))
           (ess-julia--get-objects proc)))
 
-(defun ess-julia--retrive-topics (url)
+(defun ess-julia--retrieve-topics (url)
   (with-current-buffer (url-retrieve-synchronously url)
     (require 'url)
     (goto-char (point-min))
@@ -90,7 +90,7 @@ VISIBLY is not currently used."
   "Look up topics at https://docs.julialang.org/en/latest/manual/."
   (let* ((pages (or ess-julia--manual-topics
                     (setq ess-julia--manual-topics
-                          (ess-julia--retrive-topics
+                          (ess-julia--retrieve-topics
                            "https://docs.julialang.org/en/latest/"))))
          (page (ess-completing-read "Lookup:" pages nil t)))
     (browse-url (get-text-property 1 :manual page))))
@@ -155,7 +155,7 @@ See `comint-input-sender'."
 
 (defun ess-julia--get-objects (&optional proc obj)
   "Return all available objects.
-Local caching might be used. If MODULE is givven, return only
+Local caching might be used. If MODULE is given, return only
 objects from that MODULE."
   (setq proc (or proc (ess-get-process)))
   (when (stringp proc)
@@ -170,7 +170,7 @@ objects from that MODULE."
             (or (cdr (assoc obj objects))
                 ;; don't cache composite objects and datatypes
                 (ess-julia--get-components proc obj))
-          ;; this segment is entered when user completon at top level is
+          ;; this segment is entered when user completion at top level is
           ;; requested, either Tab or AC. Hence Main is always updated.
           (let ((modules (ess-get-words-from-vector
                           "ESS.main_modules()\n" nil nil proc))

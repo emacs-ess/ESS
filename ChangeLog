@@ -592,7 +592,7 @@
 	Not sure where this file comes from.  info/emacs does
 	not create this file in a directory that doesn't
 	already have one.  The file doesn't seem to be
-	created by makeinfo and thats where the problem lies.
+	created by makeinfo and that's where the problem lies.
 	There is no synchronization between @direntry and dir
 	once dir has been created (however that happens).  The
 	best solution at present is to keep the two in synch
@@ -862,7 +862,7 @@
 	like this would be valuable for ess-sas-graph-view and for
 	other packages as well.  After a bit more testing, I'll put
 	it some place more appropriate.  I suppose we don't
-	have alot of time left before 5.2.0
+	have a lot of time left before 5.2.0
 
 	* lisp/essa-sas.el:
 	ess-sas-data-view:  the code will make your head hurt, but
@@ -886,7 +886,7 @@
 	* lisp/essa-sas.el:
 	ess-sas-data-view:  Now ignoring WORK datasets since there is no
 	way to open them anyway.  It would be nice if this function (as well as
-	ess-sas-graph-view) could also be accessable via the mouse.
+	ess-sas-graph-view) could also be accessible via the mouse.
 	Any hints as to how to do it would be appreciated.  Currently, you have
 	to move the point manually or re-type the dataset/graph that you want
 	to view.  Just clicking on a dataset/graph would be easier.
@@ -1290,7 +1290,7 @@
 	I fixed up help-sas, installed help-s, fixed up some style issues, cleaned up
 	cross references to empty pages.
 
-	All occurences of @essver MUST have braces @essver{} or else the remainder
+	All occurrences of @essver MUST have braces @essver{} or else the remainder
 	of the source line is treated as a comment.
 
 	The doc/Makefile doesn't depend on the *.texi files.
@@ -1400,7 +1400,7 @@
 	* doc/ess.info, doc/ess.info-1, doc/ess.info-3, doc/help-sas.texi:
 	doc:  First attempt at creating info documentation for SAS.  It is
 	basically README.SAS with a few additions/corrections.  Fine for this
-	release, but could use alot of work.
+	release, but could use a lot of work.
 
 	* lisp/essa-sas.el:
 	ESS[SAS]: F12 (graph view) now defined for all locales
@@ -1421,7 +1421,7 @@
 	Also note that makeinfo appears to create working info pages, but texi2dvi
 	does not create documents correctly.  It's a shame since they are very nice,
 	except for garbage which appears to be mangled next, previous, and up.  This will
-	cause us alot of problems if we want to maintain
+	cause us a lot of problems if we want to maintain
 	one source and produce .info, .html and .pdf (I actually only tried viewing
 	with xdvi, but I suspect the problem exists with other formats, but I pray not).
 
@@ -1872,7 +1872,7 @@
 
 	2. How is kermit used by ESS?
 
-	I see definititions for ess-kermit-command ess-kermit-get ess-kermit-send,
+	I see definitions for ess-kermit-command ess-kermit-get ess-kermit-send,
 	but do not see any places they are used.
 
 	I think these three items should be separated into a new ess-kermit.el
@@ -2328,7 +2328,7 @@
 2000-06-30  A.J. Rossini  <rossini@biostat.washington.edu>
 
 	* ChangeLog, VERSION, lisp/ess-inf.el, lisp/essd-arc.el, lisp/essd-vst.el:
-	XLS fixes not quite right.  No startfile if non existant
+	XLS fixes not quite right.  No startfile if non existent
 
 	* doc/ess.info-1:
 	Updating docs for new version [make dist]
@@ -2664,9 +2664,9 @@ Wed Mar 31 14:08:39 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* lisp/essd-sta.el: fixed help facility.
 
-	* lisp/essl-sta.el: added help section regexs
+	* lisp/essl-sta.el: added help section regexes
 
-	* lisp/essd-sta.el: make descirption "same as" objects.
+	* lisp/essd-sta.el: make description "same as" objects.
 
 	* lisp/essd-sta.el: secondary prompt identical to primary prompt.
 
@@ -2732,9 +2732,9 @@ Wed Mar 31 14:08:39 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* lisp/essd-sta.el: fixed help facility.
 
-	* lisp/essl-sta.el: added help section regexs
+	* lisp/essl-sta.el: added help section regexes
 
-	* lisp/essd-sta.el: make descirption "same as" objects.
+	* lisp/essd-sta.el: make description "same as" objects.
 
 	* lisp/essd-sta.el: secondary prompt identical to primary prompt.
 
@@ -2773,7 +2773,7 @@ Wed Mar 31 14:08:39 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 	* lisp/ess-vars.el: added inferior stata program variable.
 
-	* lisp/essd-sta.el: speling error, nil -> 'nil.
+	* lisp/essd-sta.el: spelling error, nil -> 'nil.
 
 	* lisp/essl-sta.el: reversed variable alist ordering.
 
@@ -2883,7 +2883,7 @@ Wed Mar 31 14:08:39 1999  A.J. Rossini	<rossini@biostat.washington.edu>
 
 1999-02-10  Martin Maechler <maechler@stat.math.ethz.ch>
 
-	* etc/other/Tags/Lubinsky-S-tags/desc: reformated material.
+	* etc/other/Tags/Lubinsky-S-tags/desc: reformatted material.
 
 	* README: set up for 5.1.2 release
 
@@ -3031,7 +3031,7 @@ Fri Nov 20 20:57:33 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 	* lisp/ess-vars.el: ess-help-w3-url-prefix points to pyrite.
 
 	* lisp/ess-vars.el:
-	removed spurrious comment about generic function, in front of a variable.
+	removed spurious comment about generic function, in front of a variable.
 
 	* lisp/essd-s+5.el: trimmed out old S4 stuff.
 
@@ -3044,7 +3044,7 @@ Sat Nov 14 00:23:19 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 	* Makefile, lisp/ChangeLog, ChangeLog: whitespace editing.
 
 	* doc/Makefile:
-	added info target.  removed spurrious ess.info/ess.texi target.
+	added info target.  removed spurious ess.info/ess.texi target.
 
 Fri Nov 13 23:47:27 1998  A.J. Rossini	<rossini@biostat.washington.edu>
 
@@ -3275,7 +3275,7 @@ Tue Dec	 9 22:55:40 1997  A.J. Rossini	<rossini@biostat.washington.edu>
 	* lisp/ChangeLog: *** empty log message ***
 
 	* lisp/essd-r.el:
-	removed non-necessary autoload for a non-existant function (was
+	removed non-necessary autoload for a non-existent function (was
 	intended for start-args, but never was written or used).
 
 	* lisp/essl-sta.el:
@@ -3513,7 +3513,7 @@ Tue Nov 25 08:49:18 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 Tue Nov 25 08:24:42 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
-	* ess-mode.el (ess-mode): removed white space, spurrious comment.
+	* ess-mode.el (ess-mode): removed white space, spurious comment.
 
 Mon Nov 24 12:14:38 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -3837,7 +3837,7 @@ Wed Nov 19 11:25:01 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Nov 19 11:20:28 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-inf.el (ess-create-object-name-db): use temporary name for
-	ess-object-name-db; since we make it buffer local to accomodate
+	ess-object-name-db; since we make it buffer local to accommodate
 	different languages, need to handle it carefully.  In particular,
 	might be better to make buffer local upon demand, rather than
 	always buffer local.  But lots of considerations, here.
@@ -3892,7 +3892,7 @@ Tue Nov 18 17:20:21 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 Tue Nov 18 17:19:23 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
-	* ess-vars.el: removed spurrious variable.
+	* ess-vars.el: removed spurious variable.
 
 Tue Nov 18 17:18:29 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -4148,7 +4148,7 @@ Thu Nov 13 09:39:52 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 1998-11-13  A.J. Rossini  <rossini@biostat.washington.edu>
 
-	* doc/Makefile: added "info" target.  Removed spurrious
+	* doc/Makefile: added "info" target.  Removed spurious
 	ess.info/ess.texi dependency, i.e. the first.
 
 
@@ -4757,7 +4757,7 @@ Thu Oct 16 14:25:59 1997  Anthony Rossini  <rossini@fhat.stat.sc.edu>
 
 	* essd-s+3.el: editing of spaces.
 
-	* Makefile (SOURCES): changed edd-doc appropairately.i
+	* Makefile (SOURCES): changed edd-doc appropriately.i
 
 Fri Oct 10 12:05:40 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
@@ -5011,7 +5011,7 @@ Wed Sep	 3 12:54:46 1997  Anthony Rossini  <rossini@stat.sc.edu>
 Wed Sep	 3 12:30:57 1997  Anthony Rossini  <rossini@stat.sc.edu>
 
 	* ess-mode.el (ess-find-dump-file-other-window): changed
-	error to message, so that dumping non-existant R objects would
+	error to message, so that dumping non-existent R objects would
 	work.
 
 Wed Sep	 3 12:29:45 1997  Anthony Rossini  <rossini@stat.sc.edu>
@@ -6205,7 +6205,7 @@ Fri Dec 24 11:56:00 1993  David Smith  (dsmith@spam.maths.adelaide.edu.au)
 
 	* S.el (S-command): Rewrite. Now uses a new filter to redirect
 	  output to the buffer; comint never sees the output. This filter
-	  could feasibly be accomodated to detect the prompt itself;
+	  could feasibly be accommodated to detect the prompt itself;
 	  allowing for an "in the background" implementation of S-command.
 
 	  (S-process-sentinel): Reports date; useful if you have run many
@@ -6498,7 +6498,7 @@ The following is from the original Changelog section of S.el
    buffer in inferior-S-mode
 
    made function S-eval-line-and-next-line keep to the bottom of
-   the S process buffer so user can see results when working interactiveley
+   the S process buffer so user can see results when working interactively
    To do this an optional arg eob was added to S-eval-visibly
    To go to bottom of window it was necessary to use
    switch-to-buffer-other-window, but this only when eob is t.

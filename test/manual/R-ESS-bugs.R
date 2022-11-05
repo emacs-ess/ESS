@@ -407,7 +407,7 @@ parentContainer <-
 
 ### --- 17 ---
 ## Indentation -----  "expression" is special
-expremmion <- c(1, 3,
+expression <- c(1, 3,
                 9876)# was always ok
 ## Had wrong indentation here:
 expression <- c(2343,
@@ -435,7 +435,7 @@ foo <- function(x) {
 }
 
 ## VS[18-08-2012]: redundant feature. This is a feature for long subexpressions
-## imidiately folowing new line. Documented in ess-arg-function-offset-new-line
+## immediately following new line. Documented in ess-arg-function-offset-new-line
 
 ### --- 18 ---
 ##  M-C-a (beginning of function)
@@ -544,7 +544,7 @@ bar <- function(y) y
 
 
 ### --- 22 ----
-## now correct indentation (inspite of # {was same reason as 19})
+## now correct indentation (in spite of # {was same reason as 19})
 if (!grepl("#", x))
     return(res)
 

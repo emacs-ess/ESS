@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 ## -*- mode: R -*-
-## code to build ESSR environemnt.
+## code to build ESSR environment.
 ## Assume that current directory is etc/ESSR
 ## run "./BUILDESSR" to create ../ESSR.rda
 

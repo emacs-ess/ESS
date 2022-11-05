@@ -51,7 +51,7 @@
         } else {
             if (is.matrix(x))
                 x <- data.frame(unclass(x))
-            ## conversion needed, to avoid problems with derived classes suchs
+            ## conversion needed, to avoid problems with derived classes such
             ## as data.table
             h <- as.data.frame(head(x, hlength))
             t <- as.data.frame(tail(x, tlength))

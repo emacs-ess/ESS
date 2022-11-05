@@ -1466,7 +1466,7 @@ documented, returns nil."
                                          "^\\([^ \t\n]+::[^ \t\n]+\\)[ \t\n]+"
                                          (format "*ess-apropos[%s](%s)*"
                                                  ess-current-process-name (match-string 1 help-?-match))
-                                         'appropos))
+                                         'apropos))
         ((string-match "^ *\\? *\\([^ \t]+\\)$" help-?-match)
          (ess-display-help-on-object (match-string 1 help-?-match)))
         ;; Anything else we send to process almost unchanged
@@ -2878,9 +2878,9 @@ given field. Options should be separated by value of
                         "Sort by: "
                         '(("score" 1) ("date:late" 2) ("date:early" 3)
                           ("field:subject:ascending" 4)
-                          ("field:subject:decending" 5)
-                          ("field:from:ascending" 6) ("field:from:decending" 7)
-                          ("field:size:ascending" 8) ("field:size:decending" 9))
+                          ("field:subject:descending" 5)
+                          ("field:from:ascending" 6) ("field:from:descending" 7)
+                          ("field:size:ascending" 8) ("field:size:descending" 9))
                         nil t "score" nil "score")))
               (restrict (concat
                          "&idxname="

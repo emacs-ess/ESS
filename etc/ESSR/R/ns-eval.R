@@ -223,7 +223,7 @@
     ## table is used. When ess-developer is used to source method definitions the
     ## two copies of the functions are identical up to the environment. The
     ## environment of the cached object has namespace:foo as it's parent but the
-    ## environment of the object in local table is precisely namspace:foo. This
+    ## environment of the object in local table is precisely namespace:foo. This
     ## does not cause any difference in evaluation.
     methodNames <- allMethodTables
     methods <- sub(methods:::.TableMetaPrefix(), "", methodNames)

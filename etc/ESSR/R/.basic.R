@@ -145,7 +145,7 @@
     ## The following on.exit infloops in R 3.3.0
     ## https://github.com/emacs-ess/ESS/issues/334
     ## https://bugs.r-project.org/bugzilla/show_bug.cgi?id=16971
-    ## So we are cleanning it in .ess.source instead.
+    ## So we are cleaning it in .ess.source instead.
     ## on.exit(file.remove(file))
     .ess.source(file, visibly = visibly, output = output,
                 max.deparse.length = max.deparse.length,

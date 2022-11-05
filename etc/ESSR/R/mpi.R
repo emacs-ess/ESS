@@ -1,4 +1,4 @@
-## simple Message Parsing Inerface
+## simple Message Parsing Interface
 
 .ess_mpi_send <- function(head, ...){
     dots <- lapply(list(...), function(el) {

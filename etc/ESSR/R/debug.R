@@ -82,7 +82,7 @@
             paste0(pkgname, ':::`', dbged, '`')
     }))
     env <- parent.frame()
-    ## traced function don't appear here. Not realy needed and would affect performance.
+    ## traced function don't appear here. Not really needed and would affect performance.
     all <- .ess_all_functions(packages = packages, env = env)
     which_deb <- lapply(all, function(nm){
         ## if isdebugged is called with string it doess find

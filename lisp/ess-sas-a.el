@@ -1397,7 +1397,7 @@ directory that you specify with the same name, but without the
           (comint-send-input)
           ;;          (insert (read-string "Press Return to connect to Kermit: " nil nil "\C-\\c"))
           ;;        (comint-send-input)
-          ;;        (insert (read-string "Press Return when Kermit is ready to recieve: " nil nil
+          ;;        (insert (read-string "Press Return when Kermit is ready to receive: " nil nil
           ;;                (concat "receive ]" ess-sas-temp-file)))
           ;;        (comint-send-input)
           ;;        (insert (read-string "Press Return when transfer is complete: " nil nil "c"))
@@ -1441,7 +1441,7 @@ directory with the same name, but without the `ess-kermit-prefix'."
           (comint-send-input)
           ;;          (insert (read-string "Press Return to connect to Kermit: " nil nil "\C-\\c"))
           ;;        (comint-send-input)
-          ;;        (insert (read-string "Press Return when Kermit is ready to recieve: " nil nil
+          ;;        (insert (read-string "Press Return when Kermit is ready to receive: " nil nil
           ;;                (concat "receive ]" ess-sas-temp-file)))
           ;;        (comint-send-input)
           ;;        (insert (read-string "Press Return when transfer is complete: " nil nil "c"))

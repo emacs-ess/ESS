@@ -32,7 +32,7 @@ variable).
 Multi-line commands could be handled better by the command history
 mechanism.
 
-@item Changes to the continutation prompt in R (e.g. 
+@item Changes to the continuation prompt in R (e.g. 
 @code{options(continue = "    ")}) are not automatically detected by ESS.
 Hence, for now, the best thing is not to change the continuation prompt.
 If you do change the continuation prompt, you will need to change

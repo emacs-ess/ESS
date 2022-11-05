@@ -27,7 +27,7 @@
 ;; session buffer. This session buffer is set to `*R*` by default. It
 ;; is safer to pass a dedicated inferior buffer as `:session' keyword
 
-(defun test-org-R-ouput (expect input)
+(defun test-org-R-output (expect input)
   (declare (indent 1))
   (let* ((inf-buf (run-ess-test-r-vanilla))
          (inf-proc (get-buffer-process inf-buf)))
@@ -47,23 +47,23 @@
           (should (re-search-backward expect nil t)))))))
 
 (ert-deftest test-org-ob-R-output-test ()
-  (test-org-R-ouput "hello"
+  (test-org-R-output "hello"
     "#+BEGIN_SRC R :results output\n  \"hello\"\n#+END_SRC"))
 
 (ert-deftest test-org-ob-R-session-output-test ()
-  (test-org-R-ouput "hello"
+  (test-org-R-output "hello"
     "#+BEGIN_SRC R :session %s :results output\n  \"hello\"\n#+END_SRC"))
 
 (ert-deftest test-org-ob-R-value-test ()
-  (test-org-R-ouput "hello"
+  (test-org-R-output "hello"
     "#+BEGIN_SRC R :results value\n  \"hello\"\n#+END_SRC"))
 
 (ert-deftest test-org-ob-R-session-value-test ()
-  (test-org-R-ouput "hello"
+  (test-org-R-output "hello"
     "#+BEGIN_SRC R :session %s :results value\n  \"hello\"\n#+END_SRC"))
 
 (ert-deftest test-org-ob-R-data-frame-test ()
-  (test-org-R-ouput "| 3 | c |"
+  (test-org-R-output "| 3 | c |"
     "#+BEGIN_SRC R :session :results value :colnames yes\n  data.frame(x=1:3, y=c(\"a\",\"b\",\"c\"))\n#+END_SRC"))
 
 

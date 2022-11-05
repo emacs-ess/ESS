@@ -939,7 +939,7 @@ indented like this:
 See `ess-style-alist' for for an overview of ESS indentation.")
 
 (defvar ess-align-arguments-in-calls '("function[ \t]*(")
-  "A list of refexes where `ess-offset-arguments' is ignored.
+  "A list of regexes where `ess-offset-arguments' is ignored.
 List of regexes specifying the calls where `ess-offset-arguments'
 should have no effect on function declarations. The arguments of
 those calls will be aligned from the opening parenthesis.

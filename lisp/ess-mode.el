@@ -150,7 +150,7 @@
       ["R"     R   :help "Start a new R process" :active t]
       ["S"     S   :help "Start a new S process" :active t]
       ["Sqpe" Sqpe ess-microsoft-p] ;; :help "Start a new Sqpe process" :active t
-      ["S+6-exisiting" S+6-existing ess-microsoft-p] ;; :help "Access an existing S process" :active t
+      ["S+6-existing" S+6-existing ess-microsoft-p] ;; :help "Access an existing S process" :active t
       ["SAS"   SAS-menu t] ;;  :help "Start a new SAS process" :active t
       ;; The following menu item "Other" is a place-holder that will
       ;; be replaced with the other versions of R and Sqpe that can be run.

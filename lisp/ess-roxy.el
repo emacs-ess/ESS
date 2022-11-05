@@ -180,7 +180,7 @@ Use you regular key for `outline-show-entry' to reveal it.")
   (unless (featurep 'outline-magic)
     (error "Please install and load outline-magic"))
   ;; Don't show children when cycling @examples
-  (let ((this-command 'outline-cycle-overwiew))
+  (let ((this-command 'outline-cycle-overview))
     (ess-roxy-substitute-outline-regexp #'outline-cycle)))
 
 (defun ess-roxy-show-example ()

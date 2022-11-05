@@ -26,7 +26,7 @@
 ;;; Commentary:
 
 ;; Support for mouse- or cursor-sensitive actions.  This is based on
-;; and uses mouseme.el.  mouseme.el only does mouse sensititivity.
+;; and uses mouseme.el.  mouseme.el only does mouse sensitivity.
 ;; The new functions ess-mouse-me and ess-mouse-me-helper do similar
 ;; things based on the cursor, not the mouse, and can be bound to a
 ;; keystroke.

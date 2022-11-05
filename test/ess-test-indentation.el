@@ -106,7 +106,7 @@ where the edit took place. Return nil if E represents no real change.
           (with-current-buffer "*Diff*"
             (write-region (point-min) (point-max) diff-file))
           `(,(buffer-name buffer) was modified on line ,(count-lines 1 change-pos)
-            (diff was writen to ,diff-file)))))))
+            (diff was written to ,diff-file)))))))
 
 (put 'not-change-on-indent 'ert-explainer 'ess-test-explain-change-on-indent)
 

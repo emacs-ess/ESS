@@ -24,7 +24,7 @@ ESS version
 @c @end ifhtml
 @c
 @author Current Documentation by The ESS Developers
-@author Copyright @copyright{} 2002--2018 The ESS Developers
+@author Copyright @copyright{} 2002--2022 The ESS Developers
 @author Copyright @copyright{} 1996--2001 A.J. Rossini
 @author Original Documentation by David M. Smith
 @author Copyright @copyright{} 1992--1995 David M. Smith
@@ -2686,7 +2686,7 @@ filling, navigation, template generation etc. Syntax highlighting is
 provided.
 
 roxygen2 is customized by the variables in the customization group ``Ess
-Roxy''. Customizables include the roxygen2 prefix, use of folding
+Roxy''. Customizations include the roxygen2 prefix, use of folding
 to toggle visibility of roxygen2 entries and the roxygen2 template.
 
 All ESS roxygen2 support is defined in @file{ess-roxy.el} which is loaded

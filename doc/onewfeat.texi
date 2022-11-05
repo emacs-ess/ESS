@@ -281,7 +281,7 @@ The functionality was replaced with @code{ess-debug-minor-mode} and
 
 @item @ESS{[R]}: Eldoc (activated by @code{ess-use-eldoc}) has
  become more sophisticated, and hence also more intruding in the interface
- between the Statistics softare, e.g., @R{}, and the user.
+ between the Statistics software, e.g., @R{}, and the user.
 
  Note that you can turn off ElDoc, by placing @code{(setq ess-use-eldoc nil)}
  in your @file{~/.emacs} file, prior to loading ESS,
@@ -725,7 +725,7 @@ New Features:
 @item @kbd{q} quits window instead of calling @code{ess-switch-to-end-of-ESS}.
 This is consistent with emacs behavior help and other special buffers (@emph{breaking change}).
 @item @kbd{k} kills window without asking for the name (pointed by Sam Steingold)
-@item Help map inherits from @code{special-mode-map} as sugested by Sam Steingold.
+@item Help map inherits from @code{special-mode-map} as suggested by Sam Steingold.
 @item Package index: new function @code{ess-display-index} bound to
 @kbd{i} in help mode map.
 @item Package vignettes: new function @code{ess-display-vignettes} bound to
@@ -829,7 +829,7 @@ buffer local variables to store process variables is discouraged.
 no more relies on prompt regular expressions for the prompt
 detection. The only requirement on the primary process prompt is to end
 in @code{> }. This could be overwritten by setting
-@code{inferor-ess-primary-prompt}.
+@code{inferior-ess-primary-prompt}.
 
 @item @ESS{[S]}, notably @code{R}: Saved command history:
  @var{ess-history-file} now accepts @code{t} (default), @code{nil}, or a
@@ -933,7 +933,7 @@ Changes/New Features in 5.9:
 @item Toolbar:  The toolbar now has an icon for starting Splus.
 @item Indentation: New documentation and code has been added to make it
 easier to change how ESS indents code.  In particular, see
-@code{ess-default-style}, @code{ess-own-style-list} and the documention
+@code{ess-default-style}, @code{ess-own-style-list} and the documentation
 subsection ``Changing indentation styles''.
 @item @command{ess-display-help-on-object} (@kbd{C-c C-v}) now offers
  completion candidates for help file aliases, in addition to object
@@ -1258,7 +1258,7 @@ Changes/New Features in 5.2.9:
 with respect to ess-load-file has been eradicated.
 @item @iESS{[SAS]}: @kbd{C-c C-r} and @kbd{C-c C-b} once again
 work as intended and documented.
-@item @ESS{[S]}: M-x ess-fix-EQ-assign is a bit more agressive.
+@item @ESS{[S]}: M-x ess-fix-EQ-assign is a bit more aggressive.
 @item @ESS{[S]}: Imenu now also shows setAs(), etc.
 @item @ESS{[R]}: R function pattern enhanced with underlying code such that
  @kbd{M-C-a} (@code{ess-beginning-of-function}) etc now work for many more

@@ -330,7 +330,7 @@ REG-START gives the start location from where to search linkifying,
     (ess--display-indexed-help-page
      (format com pattern) regexp
      (format "*ess-apropos[%s](%s)*" ess-current-process-name pattern)
-     'appropos)))
+     'apropos)))
 
 (defun ess-display-demos ()
   "Create an ess-demos buffer with a *linked* list of available demos."

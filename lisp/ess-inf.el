@@ -512,7 +512,7 @@ inserted in the process buffer instead of the command buffer."
           (error (message "%s" (error-message-string err))))))))
 
 (defun ess--if-verbose-write-process-state (proc string &optional filter)
-  "Write informaiton about PROC, STRING, and FILTER to the dribble buffer."
+  "Write information about PROC, STRING, and FILTER to the dribble buffer."
   (ess-if-verbose-write
    (format "\n%s:
     --> busy:%s busy-end:%s sec-prompt:%s interruptable:%s <--
@@ -1109,7 +1109,7 @@ process buffer is appended to the hook from the current buffer.")
            ;; also run proc buffer local hooks
            (functions (unless (eq pbuf (current-buffer))
                         (buffer-local-value 'ess-presend-filter-functions pbuf))))
-      (setq functions (append  (delq t (copy-sequence functions)) ;; even in let, delq distructs
+      (setq functions (append  (delq t (copy-sequence functions)) ;; even in let, delq destructs
                                ess-presend-filter-functions))
       (while (and functions string)
         ;; cannot use run-hook-with-args here because string must be passed from one
@@ -1306,7 +1306,7 @@ All elements are optional.
 
 (defvar ess--command-default-timeout most-positive-fixnum)
 
-;; NOTE: We might want to switch to somethig like `cl-defun' with
+;; NOTE: We might want to switch to something like `cl-defun' with
 ;; keyword arguments given the length of the signature. Would also
 ;; make it easier to deprecate arguments.
 (defun ess-command (cmd &optional out-buffer _sleep no-prompt-check wait proc
@@ -1360,7 +1360,7 @@ wrapping the code into:
         (unwind-protect
             (progn
               ;; The process is restored from the filter once it's
-              ;; available again (i.e. a prompt or delimeter is
+              ;; available again (i.e. a prompt or delimiter is
               ;; detected). This handles the synchronous case when the
               ;; command runs to completion, as well as the
               ;; asynchronous case when an early exit occurs. The most
@@ -2490,7 +2490,7 @@ Returns nil if that file cannot be found, i.e., for R or any non-S language!"
 (defun ess-get-object-list (name &optional exclude-first)
   "Return a list of current S object names associated with process NAME.
 Uses `ess-object-list' if that is non-nil. If EXCLUDE-FIRST is
-non-nil, don't return objects in first positon (.GlobalEnv)."
+non-nil, don't return objects in first position (.GlobalEnv)."
   (or ess-object-list ;; <<-  MM: this is now always(?) nil; we cache the *-modtime-alist
       (with-current-buffer (process-buffer (ess-get-process name))
         (ess-make-buffer-current)

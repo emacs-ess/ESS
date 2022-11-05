@@ -298,7 +298,7 @@ ending positions of the string in the buffer in that order."
 
 (defun mouse-me-buffer-file-extension ()
   "Return the extension of the current buffer's filename or nil.
-Returned extension is a string begining with a period."
+Returned extension is a string beginning with a period."
   (let* ((bfn (buffer-file-name))
          (filename (and bfn (file-name-sans-versions bfn)))
          (index (and filename (string-match "\\.[^.]*$" filename))))

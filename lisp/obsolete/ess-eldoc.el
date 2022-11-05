@@ -25,7 +25,7 @@
 
 ;;; Commentary:
 
-;;;;; eldoc funcitonality has been moved into the core ;;;;;
+;;;;; eldoc functionality has been moved into the core ;;;;;
 ;;;;; this file has no effect and is left in ESS in order not to break
 ;;;;; users configuration
 
@@ -86,7 +86,7 @@
 ;; Emacs 21, because it needs the variable
 ;; eldoc-documentation-function.
 
-;;;; VS [25-02-2012]: all these issues were at least partially addresed in the
+;;;; VS [25-02-2012]: all these issues were at least partially addressed in the
 ;;;; new implementation:
 
 ;; Bug (in eldoc?): the arg list for legend() is too long to fit in

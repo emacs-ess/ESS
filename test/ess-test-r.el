@@ -263,10 +263,10 @@
                  (ess-skip-thing 'paragraph)
                  (point))))
 
-  ;; The following fails because end-of-defun assume that beggining-of-defun
+  ;; The following fails because end-of-defun assume that beginning-of-defun
   ;; always moves the pointer. We currently don't in ess-r-beginning-of-function
   ;; when there is no function. This might change when we have aproper
-  ;; ess-r-beggining-of-defun.
+  ;; ess-r-beginning-of-defun.
   ;; (should (eql 1 (ess-r-test-with-temp-text "mean(1:10)"
   ;;                  (goto-char (point-min))
   ;;                  (ess-skip-thing 'function)
@@ -584,7 +584,7 @@ fun2 <- function(x) x"
     (ess-goto-beginning-of-function-or-para)
     (should (looking-at "fn3 <-"))))
 
-(ert-deftest ess-r-beggining/end-of-defun-ignore-inner-fn-test ()
+(ert-deftest ess-r-beginning/end-of-defun-ignore-inner-fn-test ()
   (with-ess-test-r-file (expand-file-name "navigation.R" ess-test-fixtures-directory)
     (re-search-forward "fn5_body")
     (beginning-of-defun)
