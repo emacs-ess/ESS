@@ -403,7 +403,8 @@ calling `untrace-function' on these functions."
                                  #'untrace-function
                                #'trace-function))))
     (dolist (fn fns)
-      (funcall do (intern fn)))))
+      (when (symbol-function (intern fn))
+        (funcall do (intern fn))))))
 
 
 ;;*;; External modes
