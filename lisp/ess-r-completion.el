@@ -364,10 +364,11 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
               (let ((start (ess-symbol-start)))
                 (when start
                   (buffer-substring-no-properties start (point))))))
-    (candidates (let ((proc (ess-get-next-available-process)))
-                  (when proc
-                    (with-current-buffer (process-buffer proc)
-                      (all-completions arg (ess--get-cached-completions arg))))))
+    (candidates (when ess-can-eval-in-background
+                  (let ((proc (ess-get-next-available-process)))
+                    (when proc
+                      (with-current-buffer (process-buffer proc)
+                        (all-completions arg (ess--get-cached-completions arg)))))))
     (doc-buffer (company-doc-buffer (ess-r-get-object-help-string arg)))))
 
 (defun company-R-args (command &optional arg &rest ignored)
@@ -382,15 +383,17 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
                         (cons prefix (>= (length prefix)
                                          ess-company-arg-prefix-length))
                       prefix))))))
-    (candidates (let* ((proc (ess-get-next-available-process))
-                       (args (delete "..." (nth 2 (ess-function-arguments
-                                                   (car ess--fn-name-start-cache) proc))))
-                       (args (mapcar (lambda (a) (concat a ess-R-argument-suffix))
-                                     args)))
-                  (all-completions arg args)))
+    (candidates (when ess-can-eval-in-background
+                  (let* ((proc (ess-get-next-available-process))
+                         (args (delete "..." (nth 2 (ess-function-arguments
+                                                     (car ess--fn-name-start-cache) proc))))
+                         (args (mapcar (lambda (a) (concat a ess-R-argument-suffix))
+                                       args)))
+                    (all-completions arg args))))
     ;; Displaying help for the argument in the echo area is disabled
     ;; by default for performance reasons. It causes delays or hangs (#1062).
-    (meta (when (bound-and-true-p ess-r--company-meta)
+    (meta (when (and ess-can-eval-in-background
+                     (bound-and-true-p ess-r--company-meta))
             (let ((proc (ess-get-next-available-process)))
               (when (and proc
                          (with-current-buffer (process-buffer proc)
@@ -411,7 +414,8 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
                          '("library" "require"))
                  (let ((start (ess-symbol-start)))
                    (and start (buffer-substring start (point))))))
-    (candidates (all-completions arg (ess-installed-packages)))
+    (candidates (when ess-can-eval-in-background
+                  (all-completions arg (ess-installed-packages))))
     (annotation "<pkg>")
     (duplicates nil)
     (sorted t)))
@@ -421,8 +425,9 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 (defun ess-r-package-completion ()
   "Return installed packages if in a call to library or require.
 Return format suitable for `completion-at-point-functions'."
-  (when (member (car (ess--fn-name-start))
-                '("library" "require"))
+  (when (and ess-can-eval-in-background
+             (member (car (ess--fn-name-start))
+                     '("library" "require")))
     (list (ess-symbol-start)
           (point)
           (ess-installed-packages)
