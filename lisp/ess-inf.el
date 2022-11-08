@@ -394,7 +394,7 @@ Return non-nil if the process is in a ready (not busy) state."
     ;; When "\n" inserted from inferior-ess-available-p, delete the prompt.
     (when (and ready
                (process-get proc 'availability-check)
-               (string-match-p (concat "^" inferior-ess-primary-prompt "\\'") string))
+               (string-match-p (concat ".*" inferior-ess-primary-prompt "\\'") string))
       (process-put proc 'suppress-next-output? t))
     (process-put proc 'availability-check nil)
     (when ready
