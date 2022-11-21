@@ -1,6 +1,6 @@
 #### Essential functionality needed by ESS
 
-## Should work on *all* vesions of R.
+## Should work on *all* versions of R.
 ## Do not use _ in names, nor :: , nor 1L etc, as they
 ## cannot be parsed in old R versions
 
