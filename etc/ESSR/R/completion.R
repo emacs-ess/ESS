@@ -9,7 +9,7 @@ if(!exists("local"))
     local <- function(expr, envir = environment()) { invisible(eval(expr, envir=envir)) }
 
 ##' Robust version of
-##'    utils:::.addFunctionInfo(c = c("recursive", "use.names"))
+##'    utils:::.addFunctionInfo(c = c("recursive", "use.names")) #  needed only for R <= 3.y.z
 local({
     U <- asNamespace("utils"); fn <- ".addFunctionInfo"
     EX <- exists(fn, envir=U)
@@ -30,6 +30,7 @@ local({
     else x
 }
 
+## not needed for completion;   called from  (ess-r-xref--srcref *) in  ../../../lisp/ess-r-xref.el
 .ess_srcref <- function(name, pkg) {
     if (!is.null(pkg) && requireNamespace(pkg)) {
         env <- asNamespace(pkg)
@@ -39,19 +40,17 @@ local({
     fn <- .ess_eval(name, env)
     if (is.null(fn)) {
         objs <- utils::getAnywhere(name)$objs
-        for (o in objs) {
-            if (is.function(o)) {
-                fn <- o
-                break;
-            }
+        for (fn in objs) {
+            if(is.function(fn))
+                break
         }
     }
     out <- "()\n"
     if (is.function(fn) && !is.null(utils::getSrcref(fn))) {
         file <- utils::getSrcFilename(fn, full.names = TRUE)
         if (file != "") {
-            line <- .ess_nonull(utils::getSrcLocation(fn, "line"), 1)
-            col <- .ess_nonull(utils::getSrcLocation(fn, "column"), 1)
+            line <- .ess_nonull(utils::getSrcLocation(fn, "line"  ), 1)
+            col  <- .ess_nonull(utils::getSrcLocation(fn, "column"), 1)
             out <- sprintf("(\"%s\" %d %d)\n", file, line, col - 1)
         }
     }
@@ -112,7 +111,11 @@ local({
 .ess_get_completions <- function(string, end, suffix = " = ") {
     oldopts <- utils::rc.options(funarg.suffix = suffix)
     on.exit(utils::rc.options(oldopts))
-    if(.ess.Rversion > '2.14.1'){
+    sett <- utils::rc.settings
+    oldDots <- sett()[["dots"]]
+    on.exit(sett(dots=oldDots), add=TRUE)
+    sett(dots = FALSE)
+    if(.ess.Rversion > '2.14.1') {
         comp <- compiler::enableJIT(0)
         op <- options(error=NULL)
         on.exit({ options(op); compiler::enableJIT(comp)}, add = TRUE)
@@ -125,7 +128,7 @@ local({
       utils:::.retrieveCompletions())
 }
 
-.ess_arg_help <- function(arg, func){
+.ess_arg_help <- function(arg, func) {
     op <- options(error=NULL)
     on.exit(options(op))
     fguess <-
@@ -151,9 +154,9 @@ local({
         }
     }
     funcs <- c(fguess, tryCatch(methods(fguess),
-                                warning=function(w) {NULL},
-                                error=function(e) {NULL}))
-    if(length(funcs) > 1 && length(pos <- grep('default', funcs))){
+                                warning= function(w) NULL,
+                                error  = function(e) NULL))
+    if(length(funcs) > 1 && length(pos <- grep('default', funcs))) {
         funcs <- c(funcs[[pos[[1]]]], funcs[-pos[[1]]])
     }
     i <- 1; found <- FALSE
