@@ -1,6 +1,6 @@
 ;;; ess.el --- Emacs Speaks Statistics  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1997-2020 Free Software Foundation, Inc.
+;; Copyright (C) 1997-2022 Free Software Foundation, Inc.
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;;         A.J. Rossini <blindglobe@gmail.com>
@@ -20,7 +20,7 @@
 ;; Version: 18.10.3snapshot
 ;; URL: https://ess.r-project.org/
 ;; Package-Requires: ((emacs "25.1"))
-;; ESSR-Version: 1.7
+;; ESSR-Version: 1.8
 
 ;; This file is part of GNU Emacs.
 
