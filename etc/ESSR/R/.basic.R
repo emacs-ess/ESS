@@ -32,15 +32,18 @@
     ##   utils:::print.help_files_with_topic (used internally when there's
     ##   more than one a package) uses the quoted call
     ##   MM: don't understand; more specifically?
-    .ess.help <- function(...) {
+    ..help <- function(...) {
         do.call(get("help", envir = .GlobalEnv), list(...))
     }
 
     if (.ess.Rversion > "2.10") {
         ## Abbreviating help_type to avoid underscore
-        .ess.help(..., help = help.type)
+        if(!is.null(getOption("warnPartialMatchArgs"))) {
+            op <- options(warnPartialMatchArgs = FALSE); on.exit(options(op))
+        }
+        ..help(..., help = help.type)
     } else {
-        .ess.help(..., htmlhelp = help.type == "html")
+        ..help(..., htmlhelp = help.type == "html")
     }
 }
 
