@@ -555,7 +555,7 @@ Changes/Bug Fixes in 12.04-3:
 @item @ESS{[Stata]}: adjusted prompt for mata mode
 @item @ESS{[R]}: resolved name clashes with cl.el
 @item @ESS{[R]}: removed dependence on obsolete package assoc
-@item New @code{make} target  @code{lisp}, to build the lisp-only part, i.e., not building the docs.
+@item New @code{make} target  @code{lisp}, to build the Lisp-only part, i.e., not building the docs.
 @end itemize
 
 Changes/New Features in 12.04-1:
@@ -971,7 +971,7 @@ results can be viewed in an Emacs web browser.
  generation and updating roxygen templates, completion of roxygen tags,
  basic navigation (marking and moving between entries), folding using
  hs-minor-mode and preview of the Rd file.
-@item Emacs lisp files have got better names (partly, for now).
+@item Emacs Lisp files have got better names (partly, for now).
 @end itemize
 
 Changes/New Features in 5.7:
@@ -1060,7 +1060,7 @@ from @file{index.txt} to @file{.ind} and @file{chain#.txt} to @file{#.out}
 @item @ESS{[S]}: For (one-line) functions withOUT '@{ .. @}' bodys, the end
  of function is now correctly found more often.  This notably improves
  @kbd{C-c C-c} (@code{ess-eval-function-or-paragraph-and-step}).
-@item @ESS{[JAGS]}: cleanup/re-organization of elisp code;
+@item @ESS{[JAGS]}: cleanup/re-organization of Elisp code;
 symbolic links for CODA output are now only created by the new
 JAGS @code{system} command in version 1.0.3; specify whether
 this command is available via @code{ess-jags-system}; if not
@@ -1186,7 +1186,7 @@ with @kbd{M-x ess-bugs-sci-round-to-4-dp}.
 worked, but only for one language per session; they should now work for
 multiple languages.  (They were also broken on Windows machines.)
 @item @ESS{[S]} long standing buglets in the internal logic for loading
-lisp code on Windows.  Particularly fixed behavior in help mode with S-plus
+Lisp code on Windows.  Particularly fixed behavior in help mode with S-plus
 GUI.
 @item New variable, @code{ess-use-inferior-program-name-in-buffer-name},
 which enables using the executable name instead of the dialect name for

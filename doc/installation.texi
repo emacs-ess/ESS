@@ -54,7 +54,7 @@ We will refer to the location of the ESS source files as
 After installing, users should make sure they activate or load ESS in
 each Emacs session, see @ref{Activating and Loading ESS}
 
-Optionally, compile elisp files, build the documentation, and the
+Optionally, compile Elisp files, build the documentation, and the
 autoloads:
 @example
 cd /path/to/ESS/

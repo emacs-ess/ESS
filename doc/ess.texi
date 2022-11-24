@@ -322,10 +322,10 @@ separate *Help* buffer.  Second, @kbd{C-h m} pops up a complete list of
 keybindings available in each ESS mode and brief description of that
 mode.
 
-Emacs is a versatile editor written in both C and a dialect of lisp
-known as elisp. ESS is written in elisp and benefits from the flexible
+Emacs is a versatile editor written in both C and a dialect of Lisp
+known as Elisp. ESS is written in Elisp and benefits from the flexible
 nature of lisp. In particular, many aspects of ESS behaviour can be
-changed by suitable customization of lisp variables. This manual
+changed by suitable customization of Lisp variables. This manual
 mentions some of the most frequent variables. A full list of them
 however is available by using the Custom facility within Emacs. Type
 @kbd{M-x customize-group RET ess RET} to get started.
@@ -1365,7 +1365,7 @@ may be slightly off.
 @cindex echoing commands when evaluating
 @cindex evaluating code with echoed commands
 @cindex ESS commands blocking Emacs
-Passing a prefix (@kbd{C-u}) (in elisp terms, the argument VIS) to any of the following commands,
+Passing a prefix (@kbd{C-u}) (in Elisp terms, the argument VIS) to any of the following commands,
 however, reverses the meaning of @code{ess-eval-visibly} for that
 command only --- for example @kbd{C-u C-c C-j} evaluates the current
 line without showing the input in the iESS buffer.  The default value of

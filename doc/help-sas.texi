@@ -225,14 +225,14 @@ The setup of function keys for @SAS{} batch processing
 is unavoidably complex, but the usage of function keys is simple.
 There are five distinct options:
 
-Option 1 (default).  Function keys in @ESS{[SAS]} are not bound to elisp
+Option 1 (default).  Function keys in @ESS{[SAS]} are not bound to Elisp
 commands.  This is in accordance with the GNU Elisp Coding Standards
 (@acronym{GECS}) which do not allow function keys to be bound so that they are
 available to the user.
 
 Options 2-5.  Since @acronym{GECS} does not allow function keys to be bound by
 modes, these keys are often unused.  So, @ESS{[SAS]} provides users with
-the option of binding elisp commands to these keys.  Users who are
+the option of binding Elisp commands to these keys.  Users who are
 familiar with @SAS{} will, most likely, want to duplicate the function key
 capabilities of the @SAS{} Display Manager.  There are four options (noted
 in parentheses).
