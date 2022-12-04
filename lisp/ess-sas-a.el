@@ -87,7 +87,7 @@ or `ess-sas-data-view-insight'."
 (make-variable-buffer-local 'ess-sas-data-view-insight-statement)
 
 (defcustom ess-sas-graph-view-suffix-regexp
-  "[.]\\([eE]?[pP][sS]\\|[pP][dD][fF]\\|[gG][iI][fF]\\|[jJ][pP][eE]?[gG]\\|[tT][iI][fF][fF]?\\)"
+  "[.]\\([eE]?[pP][sS]\\|[pP][dD][fF]\\|[gG][iI][fF]\\|[jJ][pP][eE]?[gG]\\|[tT][iI][fF][fF]?\\|[pP][nN][gG]\\)"
   "GSASFILE suffix regexp."
   :group 'ess-sas
   :type  'string)
@@ -576,15 +576,22 @@ Use the current buffer if nil."
         (setq ess-tmp-graph (read-string "GSASFILE: "
                                          (or ess-tmp-graph ess-sas-file-path)))
 
-        ;;GNU Emacs graphics file image viewing mode loaded?
-        (if (and (bound-and-true-p auto-image-file-mode)
+;; whether the image libraries are configured is what is important here
+        (if (and (string-match "JPEG" system-configuration-features)
                  (string-match "[.][jJ][pP][eE]?[gG]" ess-tmp-graph))
             (find-file ess-tmp-graph)
-          ;;else XEmacs graphics file image viewing mode loaded?
-          (if (and (fboundp 'image-mode)
-                   (string-match "[.]\\([jJ][pP][eE]?[gG]\\|[gG][iI][fF]\\)"
-                                 ess-tmp-graph))
-              (find-file ess-tmp-graph)
+	  (if (and (string-match "PNG" system-configuration-features)
+		   (string-match "[.][pP][nN][gG]" ess-tmp-graph))
+	      (find-file ess-tmp-graph)
+        ;; ;;GNU Emacs graphics file image viewing mode loaded?
+        ;; (if (and (bound-and-true-p auto-image-file-mode)
+        ;;          (string-match "[.][jJ][pP][eE]?[gG]" ess-tmp-graph))
+        ;;     (find-file ess-tmp-graph)
+        ;;   ;;else XEmacs graphics file image viewing mode loaded?
+        ;;   (if (and (fboundp 'image-mode)
+        ;;            (string-match "[.]\\([jJ][pP][eE]?[gG]\\|[gG][iI][fF]\\)"
+        ;;                          ess-tmp-graph))
+        ;;       (find-file ess-tmp-graph)
             ;;else use the appropriate graphics file image viewer
             (while (< ess-tmp-counter ess-tmp-length)
               (setq ess-tmp-graph-alist
