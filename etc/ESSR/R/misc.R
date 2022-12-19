@@ -158,7 +158,15 @@
     mode <- sapply(objs, data.class)
     length <- sapply(objs, length)
     size <- sapply(objs, function(obj) format(object.size(obj)))
-    d <- data.frame(mode, length, size)
+    rows <- sapply(objs,nrow)
+	# sapply returns a list rather than a vector if there are NULLs eg nrow returns NULL for non-dataframes.  
+	# check if list, replace NULLS with NA and convert to vector
+	if (is.list(rows)) {
+		rows[sapply(rows,is.null)] <- NA
+		rows <- unlist(rows)
+	}
+    
+    d <- data.frame(mode, length, rows, size)
     
     var.names <- row.names(d)
     
