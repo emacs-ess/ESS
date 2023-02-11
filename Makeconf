@@ -27,6 +27,24 @@ EMACSBATCH ?= $(EMACS) -batch -Q
 # INFODIR=/usr/local/info
 # ETCDIR =$(PREFIX)/etc/ess
 
+##__ Vincent Goulet's Modified Emacs __  for macOS
+## site-lisp is empty: payload is in lisp directory
+# PREFIX=/Applications/Emacs.app/Contents/Resources
+# EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs
+# SITELISP=$(PREFIX)/lisp 
+# LISPDIR=$(SITELISP)/ess
+# INFODIR=/usr/local/info
+# ETCDIR =$(PREFIX)/etc/ess
+
+##__ GNU Emacs with Homebrew __  for macOS
+## site-lisp is not within .app directory
+# PREFIX=/Applications/Emacs.app/Contents/Resources
+# EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs
+# SITELISP=/opt/homebrew/share/emacs/site-lisp
+# LISPDIR=$(SITELISP)/ess
+# INFODIR=/usr/local/info
+# ETCDIR =$(PREFIX)/etc/ess
+
 ##__ Aquamacs __  (donated by Dan Knoepfle, Mar 26, 2011)
 # PREFIX=/Applications/Aquamacs.app/Contents/Resources/lisp/aquamacs/edit-modes
 # EMACS=/Applications/Aquamacs.app/Contents/MacOS/Aquamacs
