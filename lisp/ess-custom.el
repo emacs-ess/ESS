@@ -323,7 +323,7 @@ Value of `ess-startup-directory' has precedence over this function."
 (defvaralias 'ess-directory 'ess-startup-directory)
 (defcustom ess-startup-directory nil
   "The directory to run ESS processes from.
-If a string it should bi a directory from which to start the
+If a string it should be a directory from which to start the
 process. If a symbol, the symbol's value should be a directory.
 
 For example, the following setting would always start the process
