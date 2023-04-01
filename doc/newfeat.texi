@@ -4,6 +4,9 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item ESS[R]: @code{options(width = )} is now set on startup based
+on the width of the inferior window.
+
 @item ESS[R]: Add support for R projects and start R by default in the project folder.
 
 @item ESS[R]: Backticked symbols in the process buffer are no

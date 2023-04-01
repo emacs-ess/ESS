@@ -869,7 +869,11 @@ to `ess-completing-read'."
       (let ((proc-buf (ess-get-process-buffer proc)))
         (if noswitch
             (display-buffer proc-buf)
-          (pop-to-buffer proc-buf))))
+          (pop-to-buffer proc-buf)
+          ;; If inferior startup has already finished, set screen
+          ;; options again in case the post-run hook ran before a new
+          ;; screen config was created by `pop-to-buffer' (#1243).
+          (ess--execute-screen-options-bg))))
     proc))
 
 (defun ess-force-buffer-current (&optional prompt force no-autostart ask-if-1)
@@ -2236,6 +2240,12 @@ in `ess-r-post-run-hook' or `ess-S+-post-run-hook'."
       (if invisibly
           (ess-command command)
         (ess-eval-linewise command nil nil nil 'wait-prompt)))))
+
+;; Runs in background if inferior is not busy
+(defun ess--execute-screen-options-bg ()
+  (when (and ess-execute-screen-options-command
+             (inferior-ess-available-p))
+    (ess-execute-screen-options t)))
 
 (defun ess-calculate-width (opt)
   "Calculate width command given OPT.

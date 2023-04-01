@@ -538,7 +538,10 @@ fill=TRUE); try(traceback(), silent=TRUE)})\n")
 ;;;*;;; Mode init
 
 (define-obsolete-variable-alias 'ess-R-post-run-hook 'ess-r-post-run-hook "ESS 18.10.2")
-(defvar ess-r-post-run-hook nil
+
+(defvar ess-r-post-run-hook
+  '((lambda ()
+      (ess-execute-screen-options t)))
   "Functions run in process buffer after the initialization of R process.")
 
 ;;;###autoload
