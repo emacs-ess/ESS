@@ -284,7 +284,8 @@ representative to the common interactive use with tracebug on."
 ;; It is safer to kill the buffer synchronously, otherwise it might be
 ;; reused in another test
 (defmacro ess-test-unwind-protect (inf-buf &rest body)
-  (declare (indent 1))
+  (declare (indent 1)
+           (debug (&rest form)))
   `(unwind-protect (progn ,@body)
      (let* ((inf-buf ,inf-buf)
             (inf-proc (get-buffer-process inf-buf)))
