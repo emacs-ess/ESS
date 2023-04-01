@@ -1052,6 +1052,7 @@ Returns nil if TIMEOUT was reached, non-nil otherwise."
           (setq wait .3))))
     (< elapsed timeout)))
 
+;; This filter is active under `ess-command`
 (defun inferior-ess-ordinary-filter (proc string)
   (ess--if-verbose-write-process-state proc string "ordinary-filter")
   (let* ((cmd-buf (process-get proc 'cmd-buffer))
@@ -1063,25 +1064,31 @@ Returns nil if TIMEOUT was reached, non-nil otherwise."
             (with-current-buffer cmd-buf
               (goto-char (point-max))
               (insert string))
-            (when-let ((info (if cmd-delim
-                                 (ess--command-delimited-output-info cmd-buf cmd-delim)
-                               (ess--command-output-info cmd-buf))))
-              (let ((new-output (ess--command-set-status proc cmd-buf info)))
-                (when (not (process-get proc 'busy))
-                  ;; Store new output until restoration
-                  (when new-output
-                    (process-put proc 'pending-output new-output))
-                  ;; Restore the user's process filter as soon as process is
-                  ;; available
-                  (funcall (process-get proc 'cmd-restore-function))
-                  ;; Run callback with command output
-                  (when (process-get proc 'callbacks)
-                    (inferior-ess-run-callback proc (with-current-buffer cmd-buf
-                                                      (buffer-string)))))))
+            (if-let ((info (if cmd-delim
+                               (ess--command-delimited-output-info cmd-buf cmd-delim)
+                             (ess--command-output-info cmd-buf))))
+                (let ((new-output (ess--command-set-status proc cmd-buf info)))
+                  (ess-write-to-dribble-buffer
+                   "ess-command (filter): Found prompt\n")
+                  (when (not (process-get proc 'busy))
+                    ;; Store new output until restoration
+                    (when new-output
+                      (process-put proc 'pending-output new-output))
+                    ;; Restore the user's process filter as soon as process is
+                    ;; available
+                    (funcall (process-get proc 'cmd-restore-function))
+                    ;; Run callback with command output
+                    (when (process-get proc 'callbacks)
+                      (inferior-ess-run-callback proc (with-current-buffer cmd-buf
+                                                        (buffer-string))))))
+              (ess-write-to-dribble-buffer
+               "ess-command (filter): Accumulating output\n"))
             (setq early-exit nil))
         ;; Be defensive when something goes wrong. Restore process to a
         ;; usable state.
         (when early-exit
+          (ess-write-to-dribble-buffer
+           "ess-command (filter): Early exit\n")
           (process-put proc 'busy nil)
           (funcall (process-get proc 'cmd-restore-function)))))))
 
@@ -1407,7 +1414,7 @@ wrapping the code into:
                   ;; can't be found in the output. Disable the delimiter
                   ;; before interrupt to avoid a freeze.
                   (ess-write-to-dribble-buffer
-                   "Disabling output delimiter because CMD failed to parse")
+                   "Disabling output delimiter because CMD failed to parse\n")
                   (process-put proc 'cmd-output-delimiter nil))
                 (goto-char (point-max))
                 (ess--interrupt proc)))))))
