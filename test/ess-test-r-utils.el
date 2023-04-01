@@ -222,6 +222,7 @@ representative to the common interactive use with tracebug on."
                (setq ess-r-tests-current-output-buffer *inf-buf*)
                (let ((inhibit-read-only t))
                  (with-current-buffer ess-r-tests-current-output-buffer
+                   (ess-wait-for-process *proc*)
                    (erase-buffer)))
                (set-process-filter *proc* 'inferior-ess-output-filter)
                (prog1 (progn ,@body)

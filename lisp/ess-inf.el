@@ -202,8 +202,6 @@ This may be useful for debugging."
           (ess-wait-for-process proc nil 0.01 t))
         (unless (and proc (eq (process-status proc) 'run))
           (error "Process %s failed to start" proc-name))
-        (when ess-setwd-command
-          (ess-set-working-directory default-directory))
         (setq-local font-lock-fontify-region-function #'inferior-ess-fontify-region)
         (setq-local ess-sl-modtime-alist nil)
         (run-hooks 'ess-post-run-hook)
