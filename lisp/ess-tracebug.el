@@ -1424,7 +1424,7 @@ the output into *ess.dbg* buffer."
          (flush-timer (process-get proc 'flush-timer)))
 
     ;; current-buffer is still the user's input buffer here
-    (ess--if-verbose-write-process-state proc string)
+    (ess--if-verbose-write-process-state proc string "tracebug-filter")
     (inferior-ess-run-callback proc string)
     (process-put proc 'is-recover match-selection)
 

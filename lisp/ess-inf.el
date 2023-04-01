@@ -518,8 +518,9 @@ inserted in the process buffer instead of the command buffer."
     --> busy:%s busy-end:%s sec-prompt:%s interruptable:%s <--
     --> running-async:%s callback:%s suppress-next-output:%s <--
     --> dbg-active:%s is-recover:%s <--
-    --> string:%s\n"
-           (or filter "NORMAL-FILTER")
+    --> cmd-buffer:%s cmd-output-delimiter:%s <--
+    --> string:%s<--\n"
+           (upcase (or filter "normal-filter"))
            (process-get proc 'busy)
            (process-get proc 'busy-end?)
            (process-get proc 'sec-prompt)
@@ -529,6 +530,8 @@ inserted in the process buffer instead of the command buffer."
            (process-get proc 'suppress-next-output?)
            (process-get proc 'dbg-active)
            (process-get proc 'is-recover)
+           (process-get proc 'cmd-buffer)
+           (process-get proc 'cmd-output-delimiter)
            (if (> (length string) 150)
                (format "%s .... %s" (substring string 0 50) (substring string -50))
              string))))
@@ -1354,7 +1357,7 @@ wrapping the code into:
                                    (cons 'output-delimiter delim))
                         cmd))
             (early-exit t))
-        (ess-if-verbose-write (format "(ess-command %s ..)" cmd))
+        (ess-if-verbose-write (format "(ess-command '%s' ..)\n" cmd))
         ;; Swap the process buffer with the output buffer before
         ;; sending the command
         (unwind-protect
