@@ -478,10 +478,10 @@ inserted in the process buffer instead of the command buffer."
       (process-put proc 'busy nil))))
 
 (defun ess--delimiter-start-re (delim)
-  (concat "\\(" delim "-START$\\)"))
+  (concat "\\(" delim "-START\r*$\\)"))
 
 (defun ess--delimiter-end-re (delim)
-  (concat "\\(" delim "-END\\)"))
+  (concat "\\(" delim "-END\r*\\)"))
 
 (defun inferior-ess-mark-as-busy (proc)
   "Put PROC's busy value to t."
