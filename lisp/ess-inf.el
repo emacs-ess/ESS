@@ -1070,7 +1070,7 @@ Returns nil if TIMEOUT was reached, non-nil otherwise."
                                (ess--command-delimited-output-info cmd-buf cmd-delim)
                              (ess--command-output-info cmd-buf))))
                 (let ((new-output (ess--command-set-status proc cmd-buf info)))
-                  (ess-write-to-dribble-buffer
+                  (ess-if-verbose-write
                    "ess-command (filter): Found prompt\n")
                   (when (not (process-get proc 'busy))
                     ;; Store new output until restoration
@@ -1083,13 +1083,13 @@ Returns nil if TIMEOUT was reached, non-nil otherwise."
                     (when (process-get proc 'callbacks)
                       (inferior-ess-run-callback proc (with-current-buffer cmd-buf
                                                         (buffer-string))))))
-              (ess-write-to-dribble-buffer
+              (ess-if-verbose-write
                "ess-command (filter): Accumulating output\n"))
             (setq early-exit nil))
         ;; Be defensive when something goes wrong. Restore process to a
         ;; usable state.
         (when early-exit
-          (ess-write-to-dribble-buffer
+          (ess-if-verbose-write
            "ess-command (filter): Early exit\n")
           (process-put proc 'busy nil)
           (funcall (process-get proc 'cmd-restore-function)))))))
