@@ -629,6 +629,7 @@ some. text
         (should (ess-wait-for-process (ess-get-process) nil 5))
         (when (eq system-type 'darwin)
           ;; `ess-get-words-from-vectors' doesn't work with echoes
+          ;; https://github.com/Homebrew/homebrew-core/issues/127339
           (ert-skip "Skipping on macOS because lldb causes echo"))
         (should (equal (ess-get-words-from-vector "'a'\n")
                        (list "a")))))))
