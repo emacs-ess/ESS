@@ -616,10 +616,7 @@ will be prompted to enter arguments interactively."
               (process-send-string (get-buffer-process inf-buf) "r\n"))
           (ess-wait-for-process)
           (ess-r-initialize-on-start)
-          (comint-goto-process-mark))
-        (ess-write-to-dribble-buffer
-         (format "(R): inferior-ess-language-start=%s\n"
-                 inferior-ess-language-start)))
+          (comint-goto-process-mark)))
       inf-buf)))
 
 ;;;###autoload
@@ -655,8 +652,8 @@ Executed in process buffer."
   (ess-r-load-ESSR)
   (when inferior-ess-language-start
     (ess-command (concat inferior-ess-language-start "\n")))
-  ;; tracebug
-  (when ess-use-tracebug (ess-tracebug 1))
+  (when ess-use-tracebug
+    (ess-tracebug 1))
   (add-hook 'ess-presend-filter-functions 'ess-R-scan-for-library-call nil 'local)
   (run-hooks 'ess-r-post-run-hook))
 

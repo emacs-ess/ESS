@@ -207,7 +207,7 @@ This may be useful for debugging."
         (run-hooks 'ess-post-run-hook)
         ;; User initialization can take some time ...
         (unless no-wait
-          (ess-write-to-dribble-buffer "(inferior-ess 3): waiting for process after hook")
+          (ess-write-to-dribble-buffer "(inferior-ess): waiting for process (after hook)\n")
           (ess-wait-for-process proc)))
       inf-buf)))
 
@@ -831,8 +831,10 @@ to `ess-completing-read'."
                                 'ess-dialect
                                 (process-buffer (get-process
                                                  (car pname-list))))))))
-      ;; try to start "the appropriate" process, don't show the buffer
+      ;; Try to start "the appropriate" process, don't show the buffer
       ;; since we handle that explicitly with no-switch
+      (ess-if-verbose-write
+       "ess-request-a-process: Can't find a process, starting a new one\n")
       (ess--with-no-pop-to-buffer
         (ess-start-process-specific ess-language ess-dialect))
       (setq num-processes 1
@@ -858,6 +860,8 @@ to `ess-completing-read'."
                   ;; Prevent new process buffer from being popped
                   ;; because we handle display depending on the value
                   ;; of `no-switch`
+                  (ess-if-verbose-write
+                   "ess-request-a-process: User requested a new process\n")
                   (ess--with-no-pop-to-buffer
                     (ess-start-process-specific ess-language ess-dialect))
                   (caar ess-process-name-list))))))
@@ -871,6 +875,7 @@ to `ess-completing-read'."
           ;; If inferior startup has already finished, set screen
           ;; options again in case the post-run hook ran before a new
           ;; screen config was created by `pop-to-buffer' (#1243).
+          (ess-if-verbose-write "ess-request-a-process: starting hook\n")
           (ess--execute-screen-options-bg))))
     proc))
 
@@ -2232,6 +2237,8 @@ Also sets the \"length\" option to 99999. When INVISIBLY is
 non-nil, don't echo to R subprocess. This is a good thing to put
 in `ess-r-post-run-hook' or `ess-S+-post-run-hook'."
   (interactive)
+  (ess-if-verbose-write
+   (format "ess-execute-screen-options: invisibly=%s\n" invisibly))
   (if (null ess-execute-screen-options-command)
       (message "Not implemented for '%s'" ess-dialect)
     (let ((command (ess-calculate-width 'window)))
