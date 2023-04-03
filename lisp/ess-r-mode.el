@@ -655,7 +655,8 @@ Executed in process buffer."
   (when ess-use-tracebug
     (ess-tracebug 1))
   (add-hook 'ess-presend-filter-functions 'ess-R-scan-for-library-call nil 'local)
-  (run-hooks 'ess-r-post-run-hook))
+  (run-hooks 'ess-r-post-run-hook)
+  (ess-wait-for-process))
 
 (defun ess-r--skip-function ()
   ;; Assumes the point is at function start
