@@ -871,11 +871,11 @@ to `ess-completing-read'."
       (let ((proc-buf (ess-get-process-buffer proc)))
         (if noswitch
             (display-buffer proc-buf)
-          (pop-to-buffer proc-buf)
-          ;; If inferior startup has already finished, set screen
-          ;; options again in case the post-run hook ran before a new
-          ;; screen config was created by `pop-to-buffer' (#1243).
-          (ess-if-verbose-write "ess-request-a-process: starting hook\n")
+          (pop-to-buffer proc-buf))
+        ;; If inferior startup has already finished, set screen
+        ;; options again in case the post-run hook ran before a new
+        ;; screen config was created by `pop-to-buffer' (#1243).
+        (with-current-buffer proc-buf
           (ess--execute-screen-options-bg))))
     proc))
 
