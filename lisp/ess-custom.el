@@ -1400,7 +1400,11 @@ Good for setting up your directory."
 
 (defcustom ess-post-run-hook nil
   "Hook to call just after the ESS process starts up.
-Good for evaluating ESS code."
+Currently this should not be used to interact with the inferior
+process because this hook runs too early, before the inferior
+mode had a chance to properly start up the process. To interact
+with the process, you must use a mode-specific hook like
+'ess-r-post-run-hook'."
   :group 'ess-hooks
   :type 'hook)
 
