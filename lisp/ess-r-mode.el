@@ -616,8 +616,7 @@ will be prompted to enter arguments interactively."
               (ess-process-put 'callbacks '(inferior-ess-r--init-callback))
               ;; Trigger the callback
               (process-send-string (get-buffer-process inf-buf) "r\n"))
-          (ess-wait-for-process)
-          (ess-r-initialize-on-start)
+          (ess-r-initialize)
           (comint-goto-process-mark)))
       inf-buf)))
 
@@ -628,7 +627,7 @@ will be prompted to enter arguments interactively."
   (set-buffer (run-ess-r start-args)))
 
 (defun inferior-ess-r--init-callback (_proc _name)
-  (ess-r-initialize-on-start))
+  (ess-r-initialize))
 
 (defmacro ess-r--without-format-command (&rest body)
   (declare (indent 0)
@@ -641,19 +640,32 @@ will be prompted to enter arguments interactively."
              ,@body)
          (setq ess-format-command-alist old-alist)))))
 
-(define-obsolete-function-alias 'R-initialize-on-start 'ess-r-initialize-on-start "ESS 19.04")
-(defun ess-r-initialize-on-start ()
+(defvar ess--r-init-timeout 5
+  "Maximum time for R to become available on startup.
+If the timeout is reached, an error is thrown advising the user
+to run `ess-r-initialize' again.")
+
+(define-obsolete-function-alias 'R-initialize-on-start 'ess-r-initialize "ESS 19.04")
+(defun ess-r-initialize ()
   "This function is run after the first R prompt.
 Executed in process buffer."
   (interactive)
-  (ess-r--without-format-command
-    (ess-command (format
-                  "if (identical(getOption('pager'), file.path(R.home(), 'bin', 'pager')))
-                       options(pager = '%s')\n"
-                  inferior-ess-pager))
-    (ess-r-load-ESSR))
-  (when inferior-ess-language-start
-    (ess-command (concat inferior-ess-language-start "\n")))
+  (ess--exit-protect
+      (progn
+        (unless (ess-wait-for-process nil nil nil nil ess--r-init-timeout)
+          (error "Process is busy"))
+        (ess-r--without-format-command
+          (ess-command (format
+                        "if (identical(getOption('pager'), file.path(R.home(), 'bin', 'pager')))
+                             options(pager = '%s')\n"
+                        inferior-ess-pager))
+          ;; TODO: Detect early exits on the R side and communicate
+          ;; them to lisp
+          (ess-r-load-ESSR))
+        (when inferior-ess-language-start
+          (ess-command (concat inferior-ess-language-start "\n"))))
+    (ess-write-to-dribble-buffer "Failed to start ESSR.")
+    (error "ESSR failed to start. Please call `ess-r-initialize' to recover"))
   (ess-execute-screen-options t)
   (ess-set-working-directory default-directory)
   (when ess-use-tracebug

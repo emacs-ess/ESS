@@ -184,6 +184,20 @@ Drops `nil' entries."
 
 (define-obsolete-function-alias 'ess-line-to-list-of-words #'split-string "ESS 19.04")
 
+(defmacro ess--exit-protect (body &rest exit)
+  "Run EXIT when BODY exits early.
+Unlike `unwind-protect', the unwind forms only run in case of
+early exits. Unlike `condition-case', they run inconditionally,
+no matter the reason for exiting early (e.g. error or quit)."
+  (declare
+   (indent 1)
+   (debug (form &rest form)))
+  `(let ((--early-exit t))
+     (unwind-protect
+         (prog1 ,body (setq --early-exit nil))
+       (when --early-exit
+         ,@exit))))
+
 
 ;;*;; System
 

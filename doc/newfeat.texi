@@ -4,6 +4,9 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item ESS[R]: Unexpected exits are now detected during startup.
+In that case an error is thrown with advice about how to recover.
+
 @item ESS[R]: @code{options(width = )} is now set on startup based
 on the width of the inferior window.
 
