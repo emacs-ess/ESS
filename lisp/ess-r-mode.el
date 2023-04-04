@@ -640,7 +640,7 @@ will be prompted to enter arguments interactively."
              ,@body)
          (setq ess-format-command-alist old-alist)))))
 
-(defvar ess--r-init-timeout 5
+(defvar ess-r--init-timeout 5
   "Maximum time for R to become available on startup.
 If the timeout is reached, an error is thrown advising the user
 to run `ess-r-initialize' again.")
@@ -652,7 +652,7 @@ Executed in process buffer."
   (interactive)
   (ess--exit-protect
       (progn
-        (unless (ess-wait-for-process nil nil nil nil ess--r-init-timeout)
+        (unless (ess-wait-for-process nil nil nil nil ess-r--init-timeout)
           (error "Process is busy"))
         (ess-r--without-format-command
           (ess-command (ess-r--init-options-command))
