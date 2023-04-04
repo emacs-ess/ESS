@@ -655,15 +655,10 @@ Executed in process buffer."
         (unless (ess-wait-for-process nil nil nil nil ess--r-init-timeout)
           (error "Process is busy"))
         (ess-r--without-format-command
-          (ess-command (format
-                        "if (identical(getOption('pager'), file.path(R.home(), 'bin', 'pager')))
-                             options(pager = '%s')\n"
-                        inferior-ess-pager))
+          (ess-command (ess-r--init-options-command))
           ;; TODO: Detect early exits on the R side and communicate
           ;; them to lisp
-          (ess-r-load-ESSR))
-        (when inferior-ess-language-start
-          (ess-command (concat inferior-ess-language-start "\n"))))
+          (ess-r-load-ESSR)))
     (ess-write-to-dribble-buffer "Failed to start ESSR.")
     (error "ESSR failed to start. Please call `ess-r-initialize' to recover"))
   (ess-execute-screen-options t)
@@ -673,6 +668,29 @@ Executed in process buffer."
   (add-hook 'ess-presend-filter-functions 'ess-R-scan-for-library-call nil 'local)
   (run-hooks 'ess-r-post-run-hook)
   (ess-wait-for-process))
+
+;; FIXME: Should we stop setting `str.dendogram.last`? See:
+;; https://emacs.stackexchange.com/questions/27673/ess-dendrograms-appearance-of-last-branch/27729#27729
+;;
+;; FIXME: We don't use `ess-r-pager`? It's nil by default and
+;; documented that this should not normally be set
+(defun ess-r--init-options-command ()
+  (let ((args (list (format "STERM = '%s'" ess-STERM)
+                    "str.dendrogram.last = '\\''"
+                    (format "editor = '%s'" ess-r-editor)
+                    (ess-r--opt-if-unset "pager"
+                                         "file.path(R.home(), 'bin', 'pager')"
+                                         (format "'%s'" inferior-ess-pager))
+                    "show.error.locations = TRUE")))
+    (format "options(%s)\n" (mapconcat 'identity args ", "))))
+
+(defun ess-r--opt-if-unset (opt default value)
+  (format "%s = if (identical(getOption('%s'), %s)) %s else %s"
+          opt
+          opt
+          default
+          value
+          default))
 
 (defun ess-r--skip-function ()
   ;; Assumes the point is at function start
