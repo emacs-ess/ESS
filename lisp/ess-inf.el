@@ -1063,10 +1063,9 @@ Returns nil if TIMEOUT was reached, non-nil otherwise."
 (defun inferior-ess-ordinary-filter (proc string)
   (ess--if-verbose-write-process-state proc string "ordinary-filter")
   (let* ((cmd-buf (process-get proc 'cmd-buffer))
-         (cmd-delim (process-get proc 'cmd-output-delimiter))
-         (early-exit t))
+         (cmd-delim (process-get proc 'cmd-output-delimiter)))
     (when (buffer-live-p cmd-buf)
-      (unwind-protect
+      (ess--exit-protect
           (progn
             (with-current-buffer cmd-buf
               (goto-char (point-max))
@@ -1089,15 +1088,13 @@ Returns nil if TIMEOUT was reached, non-nil otherwise."
                       (inferior-ess-run-callback proc (with-current-buffer cmd-buf
                                                         (buffer-string))))))
               (ess-if-verbose-write
-               "ess-command (filter): Accumulating output\n"))
-            (setq early-exit nil))
+               "ess-command (filter): Accumulating output\n")))
         ;; Be defensive when something goes wrong. Restore process to a
         ;; usable state.
-        (when early-exit
-          (ess-if-verbose-write
-           "ess-command (filter): Early exit\n")
-          (process-put proc 'busy nil)
-          (funcall (process-get proc 'cmd-restore-function)))))))
+        (ess-if-verbose-write
+         "ess-command (filter): Early exit\n")
+        (process-put proc 'busy nil)
+        (funcall (process-get proc 'cmd-restore-function))))))
 
 (defvar ess-presend-filter-functions nil
   "List of functions to call before sending the input string to the process.
