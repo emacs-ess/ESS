@@ -650,7 +650,7 @@ to run `ess-r-initialize' again.")
   "This function is run after the first R prompt.
 Executed in process buffer."
   (interactive)
-  (ess--exit-protect
+  (condition-case err
       (progn
         (unless (ess-wait-for-process nil nil nil nil ess-r--init-timeout)
           (error "Process is busy"))
@@ -659,8 +659,8 @@ Executed in process buffer."
           ;; TODO: Detect early exits on the R side and communicate
           ;; them to lisp
           (ess-r-load-ESSR)))
-    (ess-write-to-dribble-buffer "Failed to start ESSR.")
-    (error "ESSR failed to start. Please call `ess-r-initialize' to recover"))
+    (error (ess-r--init-error-handler err))
+    (quit (ess-r--init-error-handler)))
   (ess-execute-screen-options t)
   (ess-set-working-directory default-directory)
   (when ess-use-tracebug
@@ -668,6 +668,15 @@ Executed in process buffer."
   (add-hook 'ess-presend-filter-functions 'ess-R-scan-for-library-call nil 'local)
   (run-hooks 'ess-r-post-run-hook)
   (ess-wait-for-process))
+
+;; TODO: Disable `ess-can-eval-in-background' in the process that
+;; failed to start to prevent cascading errors
+(defun ess-r--init-error-handler (&optional err)
+  (ess-write-to-dribble-buffer "Failed to start ESSR\n")
+  (let ((msgs `("ESSR failed to start, please call `ess-r-initialize' to recover"
+                ,@(when err
+                    (concat "Caused by error: " (error-message-string err))))))
+    (error (mapconcat 'identity msgs "\n"))))
 
 ;; FIXME: Should we stop setting `str.dendogram.last`? See:
 ;; https://emacs.stackexchange.com/questions/27673/ess-dendrograms-appearance-of-last-branch/27729#27729
