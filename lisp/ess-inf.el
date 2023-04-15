@@ -2181,8 +2181,19 @@ If in the output field, goes to the beginning of previous input."
       (inferior-ess--get-old-input:regexp)
     (inferior-ess--get-old-input:field)))
 
-(defun ess-can-eval-in-background (&optional _proc)
-  ess-can-eval-in-background)
+(defun ess-can-eval-in-background (&optional proc)
+  "Can the current process be used for background commands.
+Inspects the `ess-can-eval-in-background' variable as well as the
+`bg-eval-disabled' property of PROC or of the current process, if
+any. This makes it possible to disable background evals for a
+specific process, for instance in case it was not initialized
+properly."
+  (when ess-can-eval-in-background
+    (if-let ((proc (or proc
+                       (when ess-current-process-name
+                         (get-process ess-current-process-name)))))
+        (not (process-get proc 'bg-eval-disabled))
+      t)))
 
 
 ;;;*;;; Hot key commands
