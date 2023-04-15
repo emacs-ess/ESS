@@ -98,21 +98,21 @@ NULL
 ##' ¶@param foo
 NULL
 
-##! (should (memq 'font-lock-keyword-face (faces-at-point)))
+##! (should (memq 'font-lock-keyword-face (ess-test--faces-at-point)))
 
 ##' ¶@param foo
 NULL
 
 ##> (forward-char)
-##> (should (memq 'font-lock-keyword-face (faces-at-point)))
+##> (should (memq 'font-lock-keyword-face (ess-test--faces-at-point)))
 
 ##' @¶param foo
 NULL
 
 ##> (forward-word)
 ##> (forward-char)
-##> (should (not (memq 'font-lock-keyword-face (faces-at-point))))
-##> (should (memq 'font-lock-variable-name-face (faces-at-point)))
+##> (should (not (memq 'font-lock-keyword-face (ess-test--faces-at-point))))
+##> (should (memq 'font-lock-variable-name-face (ess-test--faces-at-point)))
 
 ##' @param ¶foo
 NULL
@@ -123,26 +123,26 @@ NULL
 ##' @param ¶foo,bar baz
 NULL
 
-##! (should (memq 'font-lock-variable-name-face (faces-at-point)))
+##! (should (memq 'font-lock-variable-name-face (ess-test--faces-at-point)))
 
 ##' @param ¶foo,bar baz
 NULL
 
 ##> (forward-word)
-##> (should (memq 'font-lock-variable-name-face (faces-at-point)))
+##> (should (memq 'font-lock-variable-name-face (ess-test--faces-at-point)))
 
 ##' @param foo¶,bar baz
 NULL
 
 ##> (forward-char)
-##> (should (memq 'font-lock-variable-name-face (faces-at-point)))
+##> (should (memq 'font-lock-variable-name-face (ess-test--faces-at-point)))
 
 ##' @param foo,¶bar baz
 NULL
 
 ##> (forward-word)
 ##> (forward-char)
-##> (should (not (memq 'font-lock-variable-name-face (faces-at-point))))
+##> (should (not (memq 'font-lock-variable-name-face (ess-test--faces-at-point))))
 
 ##' @param foo,bar ¶baz
 NULL
