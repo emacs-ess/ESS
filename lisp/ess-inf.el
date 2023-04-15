@@ -930,12 +930,12 @@ matched."
                        (process-live-p proc)
                        (equal dialect
                               (buffer-local-value 'ess-dialect (process-buffer proc)))
+                       ;; Check that we can evaluate in background
+                       ;; before checking for availability to
+                       ;; avoid issues with newline handshakes
+                       (or (not background)
+                           (ess-can-eval-in-background proc))
                        (or ignore-busy
-                           ;; Check that we can evaluate in background
-                           ;; before checking for availability to
-                           ;; avoid issues with newline handshakes
-                           (or (not background)
-                               (ess-can-eval-in-background proc))
                            (inferior-ess-available-p proc)))
               (throw 'found proc))))))))
 
