@@ -39,7 +39,7 @@
   (let ((default-directory user-emacs-directory)
         (ess-startup-directory temporary-file-directory)
         ess-ask-for-ess-directory)
-    (with-r-running nil
+    (ess-test-with-r-running nil
       (should (string= default-directory user-emacs-directory))
       (should (string= (inferior-ess-default-directory) temporary-file-directory)))
     (should (string= default-directory user-emacs-directory))))
@@ -55,7 +55,7 @@
                        (format-message error-msg))))))
 
 (ert-deftest ess-test-inferior-local-start-args ()
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (let ((inf-data (buffer-local-value 'inferior-ess--local-data
                                         (process-buffer *proc*))))
       (should (equal (car inf-data) "R"))
@@ -92,7 +92,7 @@
   ;;                    t)
   ;; (ess-async-command "{cat(1:5);Sys.sleep(5);cat(2:6)}\n" nil (get-process "R")
   ;;                    (lambda (proc) (message "done"))
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (let ((inf-proc *proc*)
           semaphore)
       (ess-async-command "{cat(1:5);Sys.sleep(0.5);cat(2:6, '\n')}\n"
@@ -106,15 +106,15 @@
                finally (should-not (process-get inf-proc 'callbacks))))))
 
 (ert-deftest ess-run-presend-hooks-test ()
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (let ((ess-presend-filter-functions (list (lambda (_string) "\"bar\""))))
-      (should (output= (ess-send-string (ess-get-process) "\"foo\"")
+      (should (ess-test-output= (ess-send-string (ess-get-process) "\"foo\"")
                        "[1] \"bar\"")))))
 
 (ert-deftest ess-load-file-test ()
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (should (string-match "^\\[1\\] \"foo\"\nSourced file"
-                          (output nil (ess-load-file (expand-file-name "file.R" ess-test-fixtures-directory)))))))
+                          (ess-test-output nil (ess-load-file (expand-file-name "file.R" ess-test-fixtures-directory)))))))
 
 (etest-deftest ess-command-incomplete-test ()
   "`ess-command' fails with incomplete input."
@@ -443,9 +443,9 @@ OUT-STRING is the content of the region captured by
     ))
 
 (ert-deftest ess-setwd-test ()
-  (with-r-running nil
+  (ess-test-with-r-running nil
     ;; Working directory is set verbosely
-    (should (output= (ess-set-working-directory temporary-file-directory)
+    (should (ess-test-output= (ess-set-working-directory temporary-file-directory)
                      (format "setwd('%s')" temporary-file-directory)))
     ;; Update process default-directory but not caller's buffer
     (let* ((cur-dir default-directory)
@@ -574,7 +574,7 @@ head(cars, 2)
                      "source('file')\n"))))
 
 (ert-deftest ess-get-words-from-vector-test ()
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (should (cl-every #'string= (ess-get-words-from-vector "c('1')\n") '("1")))
     (should (cl-every #'string= (ess-get-words-from-vector "c('1', \"2\")\n") '("1" "2")))
     (should (cl-every #'string= (ess-get-words-from-vector "c('aaa','bbb\"ccc', 'dddd')\n")
@@ -642,7 +642,7 @@ head(cars, 2)
               (should (string= (buffer-name) "*R-3.2.1:2*")))))))))
 
 (ert-deftest ess-switch-to-inferior-or-script-buffer-test ()
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (should (derived-mode-p 'ess-mode))
     (ess-switch-to-inferior-or-script-buffer nil)
     (should (derived-mode-p 'inferior-ess-mode))))

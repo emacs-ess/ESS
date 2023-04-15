@@ -82,41 +82,41 @@
          found)))))
 
 (ert-deftest ess-r-send-single-quoted-strings-test ()
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (insert "'hop'\n")
     (let (ess-eval-visibly)
-      (should (output= (ess-eval-buffer nil)
+      (should (ess-test-output= (ess-eval-buffer nil)
                        "[1] \"hop\"")))))
 
 (ert-deftest ess-r-send-double-quoted-strings-test ()
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (insert "\"hop\"\n")
     (let (ess-eval-visibly)
-      (should (output= (ess-eval-buffer nil)
+      (should (ess-test-output= (ess-eval-buffer nil)
                        "[1] \"hop\"")))))
 
 (ert-deftest ess-eval-line-test ()
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (insert "1 + 1")
     (let (ess-eval-visibly)
-      (should (output= (ess-eval-line)
+      (should (ess-test-output= (ess-eval-line)
                        "[1] 2")))
     (let ((ess-eval-visibly t))
-      (should (output= (ess-eval-line)
+      (should (ess-test-output= (ess-eval-line)
                        "1 + 1\n[1] 2")))))
 
 (ert-deftest ess-eval-region-test ()
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (insert "1 + \n1")
     (let (ess-eval-visibly)
-      (should (output= (ess-eval-region (point-min) (point-max) nil)
+      (should (ess-test-output= (ess-eval-region (point-min) (point-max) nil)
                        "+ [1] 2")))
     (let ((ess-eval-visibly t))
-      (should (output= (ess-eval-region (point-min) (point-max) nil)
+      (should (ess-test-output= (ess-eval-region (point-min) (point-max) nil)
                        "1 + \n+ 1\n[1] 2")))))
 
 (ert-deftest ess-eval-function ()
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (let (ess-eval-visibly)
       (insert "x <- function(a){\n a + 1\n}")
       (forward-line -1)
@@ -124,14 +124,14 @@
       (delete-region (progn (beginning-of-defun) (point))
                      (progn (end-of-defun) (point)))
       (insert "x(1)")
-      (should (output= (ess-eval-region (point-min) (point-max) nil)
+      (should (ess-test-output= (ess-eval-region (point-min) (point-max) nil)
                        "+ + > [1] 2")))))
 
 (ert-deftest ess-r-eval-rectangle-mark-mode-test ()
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (insert "x <- 1\nx\nx + 1\nx  +  2\n")
     (let (ess-eval-visibly)
-      (should (output= (progn
+      (should (ess-test-output= (progn
                          (goto-char (point-min))
                          (transient-mark-mode)
                          (rectangle-mark-mode)
@@ -141,46 +141,46 @@
                        "> [1] 1\n> [1] 2\n> [1] 3")))))
 
 (ert-deftest ess-set-working-directory-test ()
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (ess-set-working-directory "/")
     (ess-eval-linewise "getwd()" 'invisible)
-    (should (output= (ess-eval-buffer nil)
+    (should (ess-test-output= (ess-eval-buffer nil)
                      "setwd('/')\n> [1] \"/\""))
     (should (string= (ess-get-process-variable 'default-directory) "/"))))
 
 (ert-deftest ess-inferior-force-test ()
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (should (equal (ess-get-words-from-vector "letters[1:2]\n")
                    (list "a" "b")))))
 
 ;;; Namespaced evaluation
 
 (ert-deftest ess-r-run-presend-hooks-test ()
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (let ((ess-presend-filter-functions (list (lambda (_string) "\"bar\"")))
           (ess-r-evaluation-env "base")
           ess-eval-visibly)
       (insert "\"foo\"\n")
-      (should (output= (ess-eval-region (point-min) (point-max) nil)
+      (should (ess-test-output= (ess-eval-region (point-min) (point-max) nil)
                        "[1] \"bar\"")))))
 
 (ert-deftest ess-r-namespaced-eval-no-sourced-message-test ()
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (let ((ess-r-evaluation-env "base")
           ess-eval-visibly)
       (insert "\"foo\"\n")
-      (should (output= (ess-eval-region (point-min) (point-max) nil)
+      (should (ess-test-output= (ess-eval-region (point-min) (point-max) nil)
                        "[1] \"foo\"")))))
 
 (ert-deftest ess-r-namespaced-eval-no-srcref-in-errors-test ()
   ;; Fails since https://github.com/emacs-ess/ESS/commit/3a7d913
   (when nil
-    (with-r-running nil
+    (ess-test-with-r-running nil
       (let ((ess-r-evaluation-env "base")
             (error-msg "Error: unexpected symbol")
             ess-eval-visibly)
         (insert "(foo bar)\n")
-        (let ((output (output (ess-eval-region (point-min) (point-max) nil))))
+        (let ((output (ess-test-output (ess-eval-region (point-min) (point-max) nil))))
           (should (string= (substring output 0 (length error-msg))
                            error-msg)))))))
 
@@ -306,27 +306,27 @@
       (should (eq (face-at-point) 'font-lock-function-name-face)))))
 
 (ert-deftest inferior-ess-r-fontification-test ()
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (with-ess-process-buffer nil
       ;; Function-like keywords
       (should (eq major-mode 'inferior-ess-r-mode))
-      (insert-fontified "for")
-      (should (not (face-at -1)))
-      (insert-fontified "(")
-      (should (eq (face-at -2) 'ess-keyword-face))
+      (ess-test-insert-fontified "for")
+      (should (not (ess-test-face-at -1)))
+      (ess-test-insert-fontified "(")
+      (should (eq (ess-test-face-at -2) 'ess-keyword-face))
       ;; `in` keyword
-      (insert-fontified "foo in bar)")
+      (ess-test-insert-fontified "foo in bar)")
       (search-backward "in")
       (should (eq (face-at-point) 'ess-keyword-face))
       (erase-buffer)
-      (insert-fontified "for foo in bar")
+      (ess-test-insert-fontified "for foo in bar")
       (search-backward "in")
       (should (not (face-at-point))))))
 
 ;; roxy
 (ert-deftest ess-roxy-preview-Rd-test ()
   (let ((buf (generate-new-buffer " *temp*")))
-    (with-r-running buf
+    (ess-test-with-r-running buf
       (if (member "roxygen2" (ess-installed-packages))
           (should
            (string= "% Generated by roxygen2: do not edit by hand
@@ -647,7 +647,7 @@ x <- function(x){
     (should (looking-at-p "x <- function(x){$"))))
 
 (ert-deftest ess-test-r-help-mode ()
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (let ((ess-pop-to-buffer t))
       (ess-display-help-on-object "plot")
       (should (equal ess-help-object "plot"))
@@ -662,7 +662,7 @@ x <- function(x){
 
 (ert-deftest ess-test-r-index-mode ()
   (skip-unless (not noninteractive))
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (let ((ess-pop-to-buffer t))
       (ess-display-package-index "stats")
       (should (equal ess-help-object "stats"))
@@ -693,11 +693,11 @@ x <- function(x){
   (let ((proj-dir (expand-file-name ".."))
         (cur-dir (directory-file-name (expand-file-name default-directory))))
     (let ((ess-startup-directory nil))
-      (with-r-running nil
+      (ess-test-with-r-running nil
         (with-current-buffer (ess-get-process-buffer)
           (should (string= proj-dir (directory-file-name (expand-file-name default-directory)))))))
     (let ((ess-startup-directory 'default-directory))
-      (with-r-running nil
+      (ess-test-with-r-running nil
         (with-current-buffer (ess-get-process-buffer)
           (should (string= cur-dir (directory-file-name (expand-file-name default-directory)))))))))
 
@@ -705,22 +705,22 @@ x <- function(x){
   (let ((ess-history-file t)
         (ess-startup-directory 'default-directory) ; don't start in the project
         ess-history-directory)
-    (with-r-running nil
+    (ess-test-with-r-running nil
       (should (string= (expand-file-name ".Rhistory" default-directory)
                        (buffer-local-value 'comint-input-ring-file-name (ess-get-process-buffer))))))
   (let ((ess-history-file "foo")
         (ess-history-directory temporary-file-directory))
-    (with-r-running nil
+    (ess-test-with-r-running nil
       (should (string= (expand-file-name "foo" temporary-file-directory)
                        (buffer-local-value 'comint-input-ring-file-name (ess-get-process-buffer))))))
   (let ((ess-history-file t)
         (ess-history-directory temporary-file-directory))
-    (with-r-running nil
+    (ess-test-with-r-running nil
       (should (string= (expand-file-name ".Rhistory" temporary-file-directory)
                        (buffer-local-value 'comint-input-ring-file-name (ess-get-process-buffer))))))
   (let (ess-history-file
         ess-history-directory)
-    (with-r-running nil
+    (ess-test-with-r-running nil
       (should-not (buffer-local-value 'comint-input-ring-file-name (ess-get-process-buffer))))))
 
 (ert-deftest ess-test-roxy-prefix-strip ()
@@ -873,7 +873,7 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
   ;; Check that our test is doing what we think it should, namely that it is
   ;; creating a mock remote process (i.e. a test of our test setup)
   (with-ess-test-r-file (ess-test-create-remote-path "dummy-pkg/R/test.R")
-    (with-r-running (current-buffer)
+    (ess-test-with-r-running (current-buffer)
       (should (file-remote-p (ess-get-process-variable 'default-directory))))
     (kill-buffer)))
 
@@ -906,7 +906,7 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
     (ess--essr-load-or-throw-error remote-file-path #'ess-r--fetch-ESSR-remote)))
 
 (ert-deftest ess-r-failed-init-disable-bg-eval-test ()
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (should-error (ess-r--init-error-handler))
     (should (not (ess-can-eval-in-background)))
     (let ((proc (ess-get-current-process)))

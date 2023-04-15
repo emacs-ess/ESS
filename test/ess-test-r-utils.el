@@ -224,17 +224,17 @@ split arbitrarily."
 
 ;; !!! NB: proc functionality from now on uses inferior-ess-ordinary-filter and
 ;; !!! *proc* dynamic var
-(defmacro with-r-running (buffer-or-file &rest body)
+(defmacro ess-test-with-r-running (buffer-or-file &rest body)
   "Run BODY within BUFFER-OR-FILE with attached R process.
 If BUFFER-OR-FILE is a file, the file is visited first.  The R
 process is run with `inferior-ess-ordinary-filter' which is not
 representative to the common interactive use with tracebug on.
 BODY can refer to the process via the variable `*proc*'."
   (declare (indent 1) (debug (form body)))
-  `(ess--with-r-running-1 ,buffer-or-file
-                          (lambda (*proc*) (ignore *proc*) ,@body)))
+  `(ess-test-with-r-running-1 ,buffer-or-file
+                               (lambda (*proc*) (ignore *proc*) ,@body)))
 
-(defun ess--with-r-running-1 (buffer-or-file body-fun)
+(defun ess-test-with-r-running-1 (buffer-or-file body-fun)
   (let* ((inhibit-message ess-inhibit-message-in-tests)
          (r-file-buffer (cond ((bufferp buffer-or-file)
                                buffer-or-file)
@@ -269,7 +269,7 @@ BODY can refer to the process via the variable `*proc*'."
 ;; to perform ulterior tests with a fresh R to avoid contaminating
 ;; them.
 
-(defmacro output (&rest body)       ;; FIXME: `ess-' prefix?
+(defmacro ess-test-output (&rest body)
   (declare (indent 1) (debug (&rest body)))
   `(progn
      (ess-wait-for-process *proc*)
@@ -280,10 +280,10 @@ BODY can refer to the process via the variable `*proc*'."
        (prog1 (buffer-substring-no-properties (point-min) (point-max))
          (erase-buffer)))))
 
-(defmacro output= (body expected)       ;; FIXME: `ess-' prefix?
+(defmacro ess-test-output= (body expected)
   (declare (indent 0) (debug (sexp sexp)))
   `(progn
-     (let ((output (output ,body))
+     (let ((output (ess-test-output ,body))
            (expected ,expected))
        (if (string= output expected)
            output
@@ -291,14 +291,14 @@ BODY can refer to the process via the variable `*proc*'."
          (signal 'ert-test-failed (list (concat "Expected: \n" expected)
                                         (concat "Result: \n" output)))))))
 
-(defun face-at (point)       ;; FIXME: `ess-' prefix?
+(defun ess-test-face-at (point)
   (save-excursion
     (if (>= point 0)
         (goto-char point)
       (forward-char point))
     (get-char-property (point) 'face)))
 
-(defun insert-fontified (&rest args)
+(defun ess-test-insert-fontified (&rest args)
   (apply #'insert args)
   (font-lock-default-fontify-buffer))
 
@@ -375,7 +375,7 @@ which is relied upon by `ess-command')."
   "Attempt to attach the ESSR environment.
 Throws an error if unsuccesful."
   (with-ess-test-r-file file
-    (with-r-running (current-buffer)
+    (ess-test-with-r-running (current-buffer)
       ;; ensure that there is no ESSR environment nor any ESSR objects in the
       ;; global environment
       (ess--essr-remove)
@@ -387,7 +387,7 @@ Throws an error if unsuccesful."
       (should (ess--essr-check-if-in-essrenv)))
     (kill-buffer)))
 
-(defun token= (type &optional value)       ;; FIXME: `ess-' prefix?
+(defun ess-test-token= (type &optional value)       ;; FIXME: `ess-' prefix?
   "Check that the next token conforms to TYPE and VALUE.
 This checks it back and forth and moves the point after the
 token."

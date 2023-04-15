@@ -576,11 +576,11 @@ content. Return nil when the end of the buffer is reached."
               (list start infix-token end))))
 
 (defun ess-parser-led-funcall (left infix-token)
-  (when (ess-token= left (append '("identifier" "string" "node")
+  (when (ess-ess-test-token= left (append '("identifier" "string" "node")
                                  ess-r-prefix-keywords-list))
     (let* ((power (ess-parser-power infix-token))
            (right (ess-parse-arglist power infix-token))
-           (type (if (ess-token= left ess-r-prefix-keywords-list)
+           (type (if (ess-ess-test-token= left ess-r-prefix-keywords-list)
                      "prefixed-expr"
                    "funcall")))
       (when (string= type "prefixed-expr")
@@ -590,7 +590,7 @@ content. Return nil when the end of the buffer is reached."
                 (list left right)))))
 
 (defun ess-parser-rid-expr-prefix (right suffix-token)
-  (when (ess-refined-token= suffix-token "prefixed-expr-delimiter")
+  (when (ess-refined-ess-test-token= suffix-token "prefixed-expr-delimiter")
     (ess-parser-rnud-paren suffix-token right)))
 
 (defun ess-parser-rnud-paren (suffix-token &optional prefixed-expr)
