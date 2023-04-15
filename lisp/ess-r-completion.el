@@ -53,37 +53,36 @@
   "Return the doc string, or nil.
 If an ESS process is not associated with the buffer, do not try
 to look up any doc strings."
-  (when (and eldoc-mode ess-can-eval-in-background)
-    (let* ((proc (ess-get-next-available-process))
-           (funname (and proc (or (and ess-eldoc-show-on-symbol ;; Aggressive completion
-                                       (thing-at-point 'symbol))
-                                  (car (ess--fn-name-start))))))
-      (when funname
-        (let* ((args (ess-function-arguments funname proc))
-               (bargs (cadr args))
-               (doc (mapconcat (lambda (el)
-                                 (if (equal (car el) "...")
-                                     "..."
-                                   (concat (car el) "=" (cdr el))))
-                               bargs ", "))
-               (margs (nth 2 args))
-               (W (- (window-width (minibuffer-window)) (+ 4 (length funname))))
-               (multiline (eq t eldoc-echo-area-use-multiline-p))
-               doc1)
-          (when doc
-            (setq doc (ess-eldoc-docstring-format funname doc (not multiline)))
-            (when (or multiline (and margs (< (length doc1) W)))
-              (setq doc1 (concat doc (propertize "  || " 'face font-lock-function-name-face)))
-              (while (and margs (< (length doc1) W))
-                (let ((head (pop margs)))
-                  (unless (assoc head bargs)
-                    (setq doc doc1
-                          doc1 (concat doc1 head  "=, ")))))
-              (when (equal (substring doc -2) ", ")
-                (setq doc (substring doc 0 -2)))
-              (when (and margs (< (length doc) W))
-                (setq doc (concat doc " {--}"))))
-            doc))))))
+  (when eldoc-mode
+    (when-let ((proc (ess-get-next-available-bg-process))
+               (funname (or (and ess-eldoc-show-on-symbol ;; Aggressive completion
+                                 (thing-at-point 'symbol))
+                            (car (ess--fn-name-start)))))
+      (let* ((args (ess-function-arguments funname proc))
+             (bargs (cadr args))
+             (doc (mapconcat (lambda (el)
+                               (if (equal (car el) "...")
+                                   "..."
+                                 (concat (car el) "=" (cdr el))))
+                             bargs ", "))
+             (margs (nth 2 args))
+             (W (- (window-width (minibuffer-window)) (+ 4 (length funname))))
+             (multiline (eq t eldoc-echo-area-use-multiline-p))
+             doc1)
+        (when doc
+          (setq doc (ess-eldoc-docstring-format funname doc (not multiline)))
+          (when (or multiline (and margs (< (length doc1) W)))
+            (setq doc1 (concat doc (propertize "  || " 'face font-lock-function-name-face)))
+            (while (and margs (< (length doc1) W))
+              (let ((head (pop margs)))
+                (unless (assoc head bargs)
+                  (setq doc doc1
+                        doc1 (concat doc1 head  "=, ")))))
+            (when (equal (substring doc -2) ", ")
+              (setq doc (substring doc 0 -2)))
+            (when (and margs (< (length doc) W))
+              (setq doc (concat doc " {--}"))))
+          doc)))))
 
 (defun ess-eldoc-docstring-format (funname doc &optional truncate)
   (save-match-data
@@ -325,7 +324,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 
 (defun ess-r-get-object-help-string (sym)
   "Help string for ac."
-  (let ((proc (ess-get-next-available-process)))
+  (let ((proc (ess-get-next-available-bg-process)))
     (if (null proc)
         "No free ESS process found"
       (let ((buf (get-buffer-create " *ess-command-output*")))
@@ -342,7 +341,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 (defun ess-r-get-arg-help-string (sym &optional proc)
   "Help string for ac."
   (setq sym (replace-regexp-in-string " *= *\\'" "" sym))
-  (let ((proc (or proc (ess-get-next-available-process))))
+  (let ((proc (ess-get-next-available-bg-process proc)))
     (if (null proc)
         "No free ESS process found"
       (let ((fun (car ess--fn-name-start-cache)))
@@ -364,11 +363,9 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
               (let ((start (ess-symbol-start)))
                 (when start
                   (buffer-substring-no-properties start (point))))))
-    (candidates (when ess-can-eval-in-background
-                  (let ((proc (ess-get-next-available-process)))
-                    (when proc
-                      (with-current-buffer (process-buffer proc)
-                        (all-completions arg (ess--get-cached-completions arg)))))))
+    (candidates (when-let ((proc (ess-get-next-available-bg-process)))
+                  (with-current-buffer (process-buffer proc)
+                    (all-completions arg (ess--get-cached-completions arg)))))
     (doc-buffer (company-doc-buffer (ess-r-get-object-help-string arg)))))
 
 (defun company-R-args (command &optional arg &rest ignored)
@@ -383,21 +380,18 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
                         (cons prefix (>= (length prefix)
                                          ess-company-arg-prefix-length))
                       prefix))))))
-    (candidates (when ess-can-eval-in-background
-                  (let* ((proc (ess-get-next-available-process))
-                         (args (delete "..." (nth 2 (ess-function-arguments
+    (candidates (when-let ((proc (ess-get-next-available-bg-process)))
+                  (let* ((args (delete "..." (nth 2 (ess-function-arguments
                                                      (car ess--fn-name-start-cache) proc))))
                          (args (mapcar (lambda (a) (concat a ess-R-argument-suffix))
                                        args)))
                     (all-completions arg args))))
     ;; Displaying help for the argument in the echo area is disabled
     ;; by default for performance reasons. It causes delays or hangs (#1062).
-    (meta (when (and ess-can-eval-in-background
-                     (bound-and-true-p ess-r--company-meta))
-            (let ((proc (ess-get-next-available-process)))
-              (when (and proc
-                         (with-current-buffer (process-buffer proc)
-                           (not (file-remote-p default-directory))))
+    (meta (when (bound-and-true-p ess-r--company-meta)
+            (when-let ((proc (ess-get-next-available-bg-process)))
+              (when (with-current-buffer (process-buffer proc)
+                      (not (file-remote-p default-directory)))
                 ;; fixme: ideally meta should be fetched with args
                 (let ((doc (ess-r-get-arg-help-string arg proc)))
                   (replace-regexp-in-string "^ +\\| +$" ""
@@ -414,7 +408,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
                          '("library" "require"))
                  (let ((start (ess-symbol-start)))
                    (and start (buffer-substring start (point))))))
-    (candidates (when ess-can-eval-in-background
+    (candidates (when (ess-can-eval-in-background)
                   (all-completions arg (ess-installed-packages))))
     (annotation "<pkg>")
     (duplicates nil)
@@ -425,7 +419,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 (defun ess-r-package-completion ()
   "Return installed packages if in a call to library or require.
 Return format suitable for `completion-at-point-functions'."
-  (when (and ess-can-eval-in-background
+  (when (and (ess-can-eval-in-background)
              (member (car (ess--fn-name-start))
                      '("library" "require")))
     (list (ess-symbol-start)

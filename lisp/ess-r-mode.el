@@ -669,10 +669,11 @@ Executed in process buffer."
   (run-hooks 'ess-r-post-run-hook)
   (ess-wait-for-process))
 
-;; TODO: Disable `ess-can-eval-in-background' in the process that
-;; failed to start to prevent cascading errors
 (defun ess-r--init-error-handler (&optional err)
   (ess-write-to-dribble-buffer "Failed to start ESSR\n")
+  (when-let ((proc (and ess-local-process-name
+                        (get-process ess-local-process-name))))
+    (process-put proc 'bg-eval-disabled t))
   (let ((msgs `("ESSR failed to start, please call `ess-r-initialize' to recover"
                 ,@(when err
                     (concat "Caused by error: " (error-message-string err))))))

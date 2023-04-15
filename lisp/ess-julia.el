@@ -262,7 +262,7 @@ objects from that MODULE."
   "Return the doc string, or nil.
 If an ESS process is not associated with the buffer, do not try
 to look up any doc strings. Honors `eldoc-echo-area-use-multiline-p'."
-  (when (and ess-can-eval-in-background
+  (when (and (ess-can-eval-in-background)
              (ess-process-live-p)
              (not (ess-process-get 'busy)))
     (let ((funname (or (and ess-eldoc-show-on-symbol ;; aggressive completion

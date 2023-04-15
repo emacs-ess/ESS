@@ -360,8 +360,7 @@ defined. If no project directory has been found, use
 
 (defun inferior-ess-available-p (&optional proc)
   "Return non-nil if PROC is not busy."
-  (when-let ((proc (or proc (and ess-local-process-name
-                                 (get-process ess-local-process-name)))))
+  (when-let ((proc (or proc (ess-get-current-process))))
     (unless (process-get proc 'busy)
       (or (ess-debug-active-p proc) ; don't send empty lines in debugger
           (when-let ((last-check (process-get proc 'last-availability-check)))
@@ -755,10 +754,8 @@ Returns the name of the process, or nil if the current buffer has none."
   "Check if the local ess process is alive.
 Return nil if current buffer has no associated process, or
 process was killed. PROC defaults to `ess-local-process-name'"
-  (and (or proc ess-local-process-name)
-       (let ((proc (or proc (get-process ess-local-process-name))))
-         (and (processp proc)
-              (process-live-p proc)))))
+  (when-let ((proc (or proc (ess-get-current-process))))
+    (process-live-p proc)))
 
 (defun ess-process-get (propname &optional proc)
   "Return the variable PROPNAME (symbol) of the current ESS process.
@@ -910,12 +907,19 @@ it was successfully forced, throws an error otherwise."
   (interactive)
   (ess-force-buffer-current "Process to use: " 'force nil 'ask-if-1))
 
-(defun ess-get-next-available-process (&optional dialect ignore-busy)
+(defun ess-get-current-process ()
+  (when ess-local-process-name
+    (get-process ess-local-process-name)))
+
+(defun ess-get-next-available-process (&optional dialect ignore-busy background)
   "Return first available (aka not busy) process of dialect DIALECT.
 DIALECT defaults to the local value of ess-dialect. Return nil if
-no such process has been found."
+no such process has been found. If BACKGROUND is non-nil, only
+processes that are allowed to evaluate in the background are
+matched."
   (setq dialect (or dialect ess-dialect))
-  (when dialect
+  (when (and dialect (or (not background)
+                         ess-can-eval-in-background))
     (let (proc)
       (catch 'found
         (dolist (p (cons ess-local-process-name
@@ -926,9 +930,22 @@ no such process has been found."
                        (process-live-p proc)
                        (equal dialect
                               (buffer-local-value 'ess-dialect (process-buffer proc)))
+                       ;; Check that we can evaluate in background
+                       ;; before checking for availability to
+                       ;; avoid issues with newline handshakes
+                       (or (not background)
+                           (ess-can-eval-in-background proc))
                        (or ignore-busy
                            (inferior-ess-available-p proc)))
               (throw 'found proc))))))))
+
+(defun ess-get-next-available-bg-process (&optional proc dialect ignore-busy)
+  "Returns first avaiable process only if background evaluations are allowed.
+Same as `ess-get-next-available-process' but checks for
+`ess-can-eval-in-background'."
+  (if proc
+      (ess-can-eval-in-background proc)
+    (ess-get-next-available-process dialect ignore-busy 'background)))
 
 
 ;;*;;; Commands for switching to the process buffer
@@ -2181,6 +2198,17 @@ If in the output field, goes to the beginning of previous input."
       (inferior-ess--get-old-input:regexp)
     (inferior-ess--get-old-input:field)))
 
+(defun ess-can-eval-in-background (&optional proc)
+  "Can the current process be used for background commands.
+Inspects the `ess-can-eval-in-background' variable as well as the
+`bg-eval-disabled' property of PROC or of the current process, if
+any. This makes it possible to disable background evals for a
+specific process, for instance in case it was not initialized
+properly."
+  (when ess-can-eval-in-background
+    (when-let ((proc (or proc (ess-get-current-process))))
+      (not (process-get proc 'bg-eval-disabled)))))
+
 
 ;;;*;;; Hot key commands
 
@@ -3000,7 +3028,7 @@ NO-ERROR prevents errors when this has not been implemented for
 (defun ess-synchronize-dirs ()
   "Set Emacs' current directory to be the same as the subprocess directory.
 To be used in `ess-idle-timer-functions'."
-  (when (and ess-can-eval-in-background
+  (when (and (ess-can-eval-in-background)
              ess-getwd-command
              (inferior-ess-available-p))
     (ess-when-new-input last-sync-dirs
@@ -3040,7 +3068,7 @@ path, and can be a remote path"
 
 (defun ess-cache-search-list ()
   "To be used in `ess-idle-timer-functions', to set search path related variables."
-  (when (and ess-can-eval-in-background
+  (when (and (ess-can-eval-in-background)
              inferior-ess-search-list-command)
     (ess-when-new-input last-cache-search-list
       (let ((path (ess-search-list 'force))
