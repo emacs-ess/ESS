@@ -10,7 +10,7 @@
 (require 'ess-r-mode)
 (eval-when-compile
   (require 'cl-lib))
-(require 'etest "test/etest/etest")
+(require 'etest "etest/etest")
 
 (defvar elt-section-pattern)
 (defvar elt-chunk-pattern)

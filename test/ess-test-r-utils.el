@@ -18,7 +18,7 @@
 
 ;;; Code:
 (require 'ert)
-(require 'etest "test/etest/etest")
+(require 'etest "etest/etest")
 (require 'ess-r-mode)
 (require 'tramp)
 (require 'seq)

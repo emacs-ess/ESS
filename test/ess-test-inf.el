@@ -17,7 +17,7 @@
 ;; Tests for inferior processes.
 
 (require 'ert)
-(require 'etest "test/etest/etest")
+(require 'etest "etest/etest")
 (require 'cl-lib)
 
 ;; As we use the R inferior for the generic tests
