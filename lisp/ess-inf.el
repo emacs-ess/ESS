@@ -129,6 +129,11 @@ If `ess-plain-first-buffername', then initial process is number-free."
 (defvar-local inferior-ess--local-data nil
   "Program name and arguments used to start the inferior process.")
 
+(defvar inferior-ess--last-started-process-buffer nil
+  "Useful in unit tests to check initialisation errors.
+In that case the command fails before it can return the process
+buffer to us. This global variable can be checked instead.")
+
 (defun inferior-ess (start-args customize-alist &optional no-wait)
   "Start inferior ESS process.
 Without a prefix argument, starts a new ESS process, or switches
@@ -209,6 +214,7 @@ This may be useful for debugging."
         (unless no-wait
           (ess-write-to-dribble-buffer "(inferior-ess): waiting for process (after hook)\n")
           (ess-wait-for-process proc)))
+      (setq inferior-ess--last-started-process-buffer inf-buf)
       inf-buf)))
 
 (defun inferior-ess--get-proc-buffer-create (name)
@@ -479,6 +485,12 @@ inserted in the process buffer instead of the command buffer."
 
 (defun ess--delimiter-end-re (delim)
   (concat "\\(" delim "-END\r*\\)"))
+
+(defun ess--delimiter-error-start-re ()
+  "ESSR::ERROR \\(\"\\)")
+
+(defun ess--delimiter-error-end-re ()
+  "\\(\"\\)")
 
 (defun inferior-ess-mark-as-busy (proc)
   "Put PROC's busy value to t."
@@ -1422,23 +1434,32 @@ wrapping the code into:
                     (error "Timeout during background ESS command `%s'"
                            (ess--strip-final-newlines cmd)))))
               (setq early-exit nil))
-          (when early-exit
-            ;; Protect process interruption from further quits
-            (let ((inhibit-quit t))
-              ;; In case of early exit send an interrupt to the
-              ;; process to abort the command
-              (with-current-buffer out-buffer
-                (goto-char (point-min))
-                (when (and use-delimiter
-                           (not (re-search-forward (ess--delimiter-start-re delim) nil t)))
-                  ;; CMD probably failed to parse if the start delimiter
-                  ;; can't be found in the output. Disable the delimiter
-                  ;; before interrupt to avoid a freeze.
-                  (ess-write-to-dribble-buffer
-                   "Disabling output delimiter because CMD failed to parse\n")
-                  (process-put proc 'cmd-output-delimiter nil))
-                (goto-char (point-max))
-                (ess--interrupt proc)))))))
+          (if early-exit
+              ;; Protect process interruption from further quits
+              (let ((inhibit-quit t))
+                ;; In case of early exit send an interrupt to the
+                ;; process to abort the command
+                (with-current-buffer out-buffer
+                  (goto-char (point-min))
+                  (when (and use-delimiter
+                             (not (re-search-forward (ess--delimiter-start-re delim) nil t)))
+                    ;; CMD probably failed to parse if the start delimiter
+                    ;; can't be found in the output. Disable the delimiter
+                    ;; before interrupt to avoid a freeze.
+                    (ess-write-to-dribble-buffer
+                     "Disabling output delimiter because CMD failed to parse\n")
+                    (process-put proc 'cmd-output-delimiter nil))
+                  (goto-char (point-max))
+                  (ess--interrupt proc)))
+            (with-current-buffer out-buffer
+              (goto-char (point-min))
+              (when (re-search-forward (ess--delimiter-error-start-re) nil t)
+                (let ((start (1+ (match-beginning 1))))
+                  (when (re-search-forward (ess--delimiter-error-end-re) nil t)
+                    (let ((end (match-beginning 1)))
+                      (error "R error during background ESS command `%s'\nError: %s"
+                             (ess--strip-final-newlines cmd)
+                             (buffer-substring start end)))))))))))
     out-buffer))
 
 (defun ess--command-make-restore-function (proc)

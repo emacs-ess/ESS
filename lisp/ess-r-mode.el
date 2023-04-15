@@ -1582,16 +1582,25 @@ Source the etc/ESSR/.load.R file into the R process. The
 etc/ESSR/R directory into the ESSR environment and attaches the
 environment to the search path."
   (let* ((src-dir (expand-file-name "ESSR/R" ess-etc-directory))
-         (cmd (format "base::local({
-                          base::source('%s/.load.R', local=TRUE) #define load.ESSR
-                          .ess.ESSR.load('%s')
-                      })\n"
-                      src-dir
-                      src-dir)))
-    (with-current-buffer (ess-command cmd)
+         (buf (ess-command (ess-r--load-ESSR-command src-dir))))
+    (with-current-buffer buf
       (let ((msg (buffer-string)))
         (when (> (length msg) 1)
           (message (format "Messages while loading ESSR: %s" msg)))))))
+
+(defun ess-r--load-ESSR-command (src-dir)
+  (format "base::tryCatch(
+             base::local({
+               base::source('%s/.load.R', local=TRUE) #define load.ESSR
+               .ess.ESSR.load('%s')
+             }),
+             error = function(cnd) {
+               msg <- paste0('ESSR::ERROR \"', conditionMessage(cnd), '\"')
+               writeLines(msg)
+             }
+           )\n"
+          src-dir
+          src-dir))
 
 (defun ess-r--load-ESSR-remote (&optional chunked)
   "Load ESSR into a remote process through the process connection.

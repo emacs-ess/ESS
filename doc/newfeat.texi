@@ -4,6 +4,8 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item ESS[R]: Background commands now propagate errors to Emacs.
+
 @item ESS[R]: Background commands can now be disabled by process instad of globally.
 For instance when a process has failed to initialize properly,
 background evals are disabled for that particular process to avoid
