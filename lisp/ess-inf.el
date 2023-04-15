@@ -1463,8 +1463,13 @@ wrapping the code into:
       (goto-char (point-max))
       (ess--interrupt proc)))
   ;; Can be `t` when early exit is caused e.g. by a throw instead of
-  ;; an error or a quit
+  ;; an error or a quit. This happens in tests and within
+  ;; `while-no-input'.
   (unless (eq early-exit t)
+    (when (and (eq (car early-exit) 'quit)
+               (y-or-n-p (concat "Background background command interrupted with a user quit.\n"
+                                 "Would you like to disable background evaluations in this process?")))
+      (process-put proc 'bg-eval-disabled t))
     (signal (car early-exit) (cdr early-exit))))
 
 ;; (ess-process-get 'ess-format-command-alist)

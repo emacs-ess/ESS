@@ -4,6 +4,11 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item ESS[R]: When a background command is interrupted with C-g,
+ESS now asks the user if they want to disable background evaluations
+altogether. This is a resiliency measure against cases where background
+evals cause cascading errors or hangs.
+
 @item ESS[R]: Background commands now propagate errors to Emacs.
 
 @item ESS[R]: Background commands can now be disabled by process instad of globally.
