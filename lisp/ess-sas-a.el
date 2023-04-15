@@ -95,28 +95,13 @@ or `ess-sas-data-view-insight'."
 (defcustom ess-sas-graph-view-viewer-alist
   ;;creates something like
   ;;'(("[pP][dD][fF]" . "/usr/local/bin/acroread") ("[eE]?[pP][sS]" . "/usr/local/bin/gv")))
-  (let ((ess-tmp-alist nil)
-        (ess-tmp-ps nil) (ess-tmp-pdf nil))
-
+  (let ((ess-tmp-ps nil) (ess-tmp-pdf nil))
     (setq ess-tmp-ps (executable-find (if ess-microsoft-p "gsview32" "gsview")))
-
     (if (not ess-tmp-ps) (setq ess-tmp-ps (executable-find "gv")))
-
     (if (not ess-tmp-ps) (setq ess-tmp-ps (executable-find "ghostview")))
-
     (setq ess-tmp-pdf (executable-find "evince"))
-
     (if (not ess-tmp-pdf) (setq ess-tmp-pdf (executable-find "xpdf")))
-
-    (if (not ess-tmp-pdf) (setq ess-tmp-pdf (if ess-microsoft-p "acrord32" "acroread")))
-
-    (if (and ess-tmp-ps ess-tmp-pdf)
-        (setq ess-tmp-alist (list (cons "[eE]?[pP][sS]" ess-tmp-ps)
-                                  (cons "[pP][dD][fF]" ess-tmp-pdf)))
-
-      (if ess-tmp-ps
-          (setq ess-tmp-alist (list (cons "[eE]?[pP][sS]" ess-tmp-ps)
-                                    (cons "[pP][dD][fF]" ess-tmp-ps))))))
+    (if (not ess-tmp-pdf) (setq ess-tmp-pdf (if ess-microsoft-p "acrord32" "acroread"))))
 
   "Associate file name extensions with graphics image file viewers."
   :group 'ess-sas
