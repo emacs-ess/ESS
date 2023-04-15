@@ -360,8 +360,7 @@ defined. If no project directory has been found, use
 
 (defun inferior-ess-available-p (&optional proc)
   "Return non-nil if PROC is not busy."
-  (when-let ((proc (or proc (and ess-local-process-name
-                                 (get-process ess-local-process-name)))))
+  (when-let ((proc (or proc (ess-get-current-process))))
     (unless (process-get proc 'busy)
       (or (ess-debug-active-p proc) ; don't send empty lines in debugger
           (when-let ((last-check (process-get proc 'last-availability-check)))
@@ -755,10 +754,8 @@ Returns the name of the process, or nil if the current buffer has none."
   "Check if the local ess process is alive.
 Return nil if current buffer has no associated process, or
 process was killed. PROC defaults to `ess-local-process-name'"
-  (and (or proc ess-local-process-name)
-       (let ((proc (or proc (get-process ess-local-process-name))))
-         (and (processp proc)
-              (process-live-p proc)))))
+  (when-let ((proc (or proc (ess-get-current-process))))
+    (process-live-p proc)))
 
 (defun ess-process-get (propname &optional proc)
   "Return the variable PROPNAME (symbol) of the current ESS process.
@@ -909,6 +906,10 @@ it was successfully forced, throws an error otherwise."
   "Force a switch to a new underlying process."
   (interactive)
   (ess-force-buffer-current "Process to use: " 'force nil 'ask-if-1))
+
+(defun ess-get-current-process ()
+  (when ess-local-process-name
+    (get-process ess-local-process-name)))
 
 (defun ess-get-next-available-process (&optional dialect ignore-busy)
   "Return first available (aka not busy) process of dialect DIALECT.
@@ -2189,9 +2190,7 @@ any. This makes it possible to disable background evals for a
 specific process, for instance in case it was not initialized
 properly."
   (when ess-can-eval-in-background
-    (if-let ((proc (or proc
-                       (when ess-current-process-name
-                         (get-process ess-current-process-name)))))
+    (if-let ((proc (or proc (ess-get-current-process))))
         (not (process-get proc 'bg-eval-disabled))
       t)))
 
