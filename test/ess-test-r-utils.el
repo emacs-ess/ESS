@@ -335,6 +335,7 @@ Note that if `ess--essr-detach' is successful then it is critical
 that we don't run `ess--essr-remove-global-objs' because
 .ess.command doesn't exist in the R runtime environment (and
 which is relied upon by `ess-command')."
+  (ess-process-put 'format-command-alist nil)
   (or (ess--essr-detach)
       (ess--essr-remove-global-objs)))
 
@@ -372,7 +373,7 @@ Throws an error if unsuccesful."
       ;; global environment
       (ess--essr-remove)
       ;; inject environment and attach
-      (ess-r--without-format-command (funcall ess-r--load-ESSR-fcn))
+      (funcall ess-r--load-ESSR-fcn)
       ;; check for successful ESSR injection
       (should (not (ess--essr-check-if-in-globalenv)))
       (should (ess--essr-check-if-attached))

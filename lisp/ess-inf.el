@@ -923,6 +923,10 @@ it was successfully forced, throws an error otherwise."
   (when ess-local-process-name
     (get-process ess-local-process-name)))
 
+(defun ess-get-current-process-buffer ()
+  (when-let ((proc (ess-get-current-process)))
+    (process-buffer proc)))
+
 (defun ess-get-next-available-process (&optional dialect ignore-busy background)
   "Return first available (aka not busy) process of dialect DIALECT.
 DIALECT defaults to the local value of ess-dialect. Return nil if
@@ -1329,19 +1333,6 @@ This handles Tramp when working on a remote."
       (user-error "ESS process not ready. Finish your command before trying again")))
   proc)
 
-(defvar-local ess-format-command-alist nil
-  "Alist of mode-specific parameters for formatting a command.
-All elements are optional.
-
-- `fun': A formatting function for running a command. First
-  argument is the background command to run. Must include a
-  catch-all `&rest` parameter for extensibility.
-
-- `use-delimiter' : Whether to wait for an output sentinel. If
-  non-nil, `fun' should get the `cmd-output-delimiter' element of the
-  alist of parameters and ensure the sentinel is written to the
-  process output at the end of the command.")
-
 (defvar inferior-ess--output-delimiter-count 0)
 (defun inferior-ess--output-delimiter ()
   (setq inferior-ess--output-delimiter-count (1+ inferior-ess--output-delimiter-count))
@@ -1388,15 +1379,16 @@ wrapping the code into:
         (delim (inferior-ess--output-delimiter))
         (timeout (or timeout ess--command-default-timeout)))
     (with-current-buffer (process-buffer proc)
-      (let ((proc-forward-alist (ess--alist (ess-local-process-name
-                                             inferior-ess-primary-prompt)))
-            (use-delimiter (alist-get 'use-delimiter ess-format-command-alist))
-            (rich-cmd (if-let ((cmd-fun (alist-get 'fun ess-format-command-alist)))
-                          (funcall cmd-fun
-                                   (ess--strip-final-newlines cmd)
-                                   (cons 'output-delimiter delim))
-                        cmd))
-            (early-exit t))
+      (let* ((proc-forward-alist (ess--alist (ess-local-process-name
+                                              inferior-ess-primary-prompt)))
+             (format-command-alist (ess-process-get 'format-command-alist))
+             (use-delimiter (alist-get 'use-delimiter format-command-alist))
+             (rich-cmd (if-let ((cmd-fun (alist-get 'fun format-command-alist)))
+                           (funcall cmd-fun
+                                    (ess--strip-final-newlines cmd)
+                                    (cons 'output-delimiter delim))
+                         cmd))
+             (early-exit t))
         (ess-if-verbose-write (format "(ess-command '%s' ..)\n" cmd))
         ;; Swap the process buffer with the output buffer before
         ;; sending the command
@@ -1461,6 +1453,19 @@ wrapping the code into:
                              (ess--strip-final-newlines cmd)
                              (buffer-substring start end)))))))))))
     out-buffer))
+
+;; (ess-process-get 'ess-format-command-alist)
+;;   "Alist of mode-specific parameters for formatting a command.
+;; All elements are optional.
+;;
+;; - `fun': A formatting function for running a command. First
+;;   argument is the background command to run. Must include a
+;;   catch-all `&rest` parameter for extensibility.
+;;
+;; - `use-delimiter' : Whether to wait for an output sentinel. If
+;;   non-nil, `fun' should get the `cmd-output-delimiter' element of the
+;;   alist of parameters and ensure the sentinel is written to the
+;;   process output at the end of the command."
 
 (defun ess--command-make-restore-function (proc)
   (let ((old-pf (process-filter proc)))

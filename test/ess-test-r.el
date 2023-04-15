@@ -919,7 +919,13 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
           (with-current-buffer inferior-ess--last-started-process-buffer
             (should (string-match-p "Loading failed with a nice message."
                                     (caddr err)))
-            (should (not (ess-can-eval-in-background))))))
+            (should (not (ess-can-eval-in-background)))
+            (should (not (ess-process-get 'format-command-alist)))
+            (ess-send-string (ess-get-current-process) "Sys.unsetenv('ESSR_TEST_LOAD_ERROR')\n")
+            ;; Can recover manually
+            (ess-r-initialize)
+            (should (ess-can-eval-in-background))
+            (should (ess-process-get 'format-command-alist)))))
     (setenv "ESSR_TEST_LOAD_ERROR" nil)))
 
 (etest-deftest ess-r-command-error-test ()

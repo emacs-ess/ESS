@@ -442,7 +442,6 @@ To be used as part of `font-lock-defaults' keywords."
    '((ess-local-customize-alist             . 'ess-r-customize-alist)
      (ess-dialect                           . "R")
      (ess-suffix                            . "R")
-     (ess-format-command-alist              . ess-r-format-command-alist)
      (ess-traceback-command                 . ess-r-traceback-command)
      (ess-call-stack-command                . ess-r-call-stack-command)
      (ess-mode-completion-syntax-table      . ess-r-completion-syntax-table)
@@ -629,17 +628,6 @@ will be prompted to enter arguments interactively."
 (defun inferior-ess-r--init-callback (_proc _name)
   (ess-r-initialize))
 
-(defmacro ess-r--without-format-command (&rest body)
-  (declare (indent 0)
-           (debug (&rest form)))
-  `(with-current-buffer (process-buffer (ess-command--get-proc nil nil))
-     (let ((old-alist ess-format-command-alist))
-       (unwind-protect
-           (progn
-             (setq ess-format-command-alist nil)
-             ,@body)
-         (setq ess-format-command-alist old-alist)))))
-
 (defvar ess-r--init-timeout 5
   "Maximum time for R to become available on startup.
 If the timeout is reached, an error is thrown advising the user
@@ -654,13 +642,12 @@ Executed in process buffer."
       (progn
         (unless (ess-wait-for-process nil nil nil nil ess-r--init-timeout)
           (error "Process is busy"))
-        (ess-r--without-format-command
-          (ess-command (ess-r--init-options-command))
-          ;; TODO: Detect early exits on the R side and communicate
-          ;; them to lisp
-          (ess-r-load-ESSR)))
+        (ess-command (ess-r--init-options-command))
+        (ess-r-load-ESSR))
     (error (ess-r--init-error-handler err))
     (quit (ess-r--init-error-handler)))
+  (ess-process-put 'format-command-alist ess-r-format-command-alist)
+  (ess-process-put 'bg-eval-disabled nil)
   (ess-execute-screen-options t)
   (ess-set-working-directory default-directory)
   (when ess-use-tracebug
@@ -1559,21 +1546,20 @@ process."
   ;; `.ess.command()` is not defined until ESSR is loaded so disable
   ;; it temporarily. Would be helpful to implement an `inferior-ess-let'
   ;; macro .
-  (ess-r--without-format-command
-    (cond
-     ((file-remote-p (ess-get-process-variable 'default-directory))
-      (if (eq ess-r-fetch-ESSR-on-remotes t)
-          (or (ess-r--fetch-ESSR-remote)
-              (ess-r--load-ESSR-remote))
-        (ess-r--load-ESSR-remote)))
-     ((and (bound-and-true-p ess-remote))
-      ;; NB: With ess-remote we send by chunks because sending large sources is
-      ;; fragile
-      (if ess-r-fetch-ESSR-on-remotes
-          (or (ess-r--fetch-ESSR-remote)
-              (ess-r--load-ESSR-remote t))
-        (ess-r--load-ESSR-remote t)))
-     (t (ess-r--load-ESSR-local)))))
+  (cond
+   ((file-remote-p (ess-get-process-variable 'default-directory))
+    (if (eq ess-r-fetch-ESSR-on-remotes t)
+        (or (ess-r--fetch-ESSR-remote)
+            (ess-r--load-ESSR-remote))
+      (ess-r--load-ESSR-remote)))
+   ((and (bound-and-true-p ess-remote))
+    ;; NB: With ess-remote we send by chunks because sending large sources is
+    ;; fragile
+    (if ess-r-fetch-ESSR-on-remotes
+        (or (ess-r--fetch-ESSR-remote)
+            (ess-r--load-ESSR-remote t))
+      (ess-r--load-ESSR-remote t)))
+   (t (ess-r--load-ESSR-local))))
 
 (defun ess-r--load-ESSR-local ()
   "Load ESSR into a local process.
