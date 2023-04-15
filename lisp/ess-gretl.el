@@ -252,23 +252,15 @@ parenthetical grouping.")
 
 
 (defconst gretl-font-lock-keywords
-  ;; FIXME: Instead of `mapconcat #'identity', if these vars only contain
-  ;; strings (rather than regexps), we should use `regexp-opt'.
   (list
    ;; Fontify all builtin keywords.
-   (cons (concat "\\<\\("
-		 (mapconcat #'identity gretl-keywords "\\|")
-		 "\\)\\>")
+   (cons (concat "\\<\\(" (regexp-opt gretl-keywords) "\\)\\>")
 	 'font-lock-keyword-face)
    ;; Fontify all option flags.
-   (cons (concat "[ \t]--\\("
-		 (mapconcat #'identity gretl-option-flags "\\|")
-		 "\\)")
+   (cons (concat "[ \t]--\\(" (regexp-opt gretl-option-flags) "\\)")
 	 'font-lock-constant-face)
    ;; Fontify all command words.
-   (cons (concat "\\<\\("
-		 (mapconcat #'identity gretl-command-words "\\|")
-		 "\\)\\>")
+   (cons (concat "\\<\\(" (regexp-opt gretl-command-words) "\\)\\>")
 	 'font-lock-builtin-face)
    ;; Fontify all builtin operators.
    (cons "\\(&\\||\\|<=\\|>=\\|==\\|<\\|>\\|!=\\|!\\)"
@@ -276,15 +268,11 @@ parenthetical grouping.")
 	     'font-lock-builtin-face
 	   'font-lock-preprocessor-face))
    ;; Fontify all internal variables.
-   (cons (concat "\\$\\("
-		 (mapconcat #'identity gretl-internal-vars "\\|")
-		 "\\)\\>")
+   (cons (concat "\\$\\(" (regexp-opt gretl-internal-vars) "\\)\\>")
 	 'font-lock-variable-name-face)
 
    ;; Fontify all genr functions.
-   (cons (concat "\\<\\("
-		 (mapconcat #'identity gretl-genr-functions "\\|")
-		 "\\)\\>")
+   (cons (concat "\\<\\(" (regexp-opt gretl-genr-functions) "\\)\\>")
 	 'font-lock-variable-name-face)
    ;; Fontify all function declarations.
    (list gretl-function-header-regexp
@@ -294,19 +282,13 @@ parenthetical grouping.")
 
 
 (defvar gretl-block-begin-regexp
-  (concat "\\<\\("
-	  (mapconcat #'identity gretl-block-start-keywords "\\|")
-	  "\\)\\>"))
+  (concat "\\<\\(" (regexp-opt gretl-block-start-keywords) "\\)\\>"))
 
 (defvar gretl-block-else-regexp
-  (concat "\\<\\("
-	  (mapconcat #'identity gretl-block-other-keywords "\\|")
-	  "\\)\\>"))
+  (concat "\\<\\(" (regexp-opt gretl-block-other-keywords) "\\)\\>"))
 
 (defvar gretl-block-end-regexp
-  (concat "\\<\\("
-	  (mapconcat #'identity gretl-block-end-keywords "\\|")
-	  "\\)\\>"))
+  (concat "\\<\\(" (regexp-opt gretl-block-end-keywords) "\\)\\>"))
 
 (defvar gretl-block-begin-or-end-regexp
   (concat gretl-block-begin-regexp "\\|" gretl-block-end-regexp))
