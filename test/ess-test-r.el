@@ -908,7 +908,19 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
     (should-error (ess-r--init-error-handler))
     (should (not (ess-can-eval-in-background)))
     (let ((proc (ess-get-current-process)))
-      (should (and proc (not (eq (ess-get-next-available-bg-process) proc)))))))
+      (should (and proc (not (eq (ess-get-next-available-bg-process) proc))))))
+  (unwind-protect
+      (progn
+        (setenv "ESSR_TEST_LOAD_ERROR" "true")
+        (let ((err (should-error (progn
+                                   (run-ess-test-r-vanilla)
+                                   (with-current-buffer buf
+                                     (ess-wait-for-process nil nil nil nil 2))))))
+          (with-current-buffer inferior-ess--last-started-process-buffer
+            (should (string-match-p "Loading failed with a nice message."
+                                    (caddr err)))
+            (should (not (ess-can-eval-in-background))))))
+    (setenv "ESSR_TEST_LOAD_ERROR" nil)))
 
 (provide 'ess-test-r)
 
