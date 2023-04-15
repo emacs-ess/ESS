@@ -1,4 +1,4 @@
-;;; ess-r-syntax.el --- Utils to work with R code  -*- lexical-binding: t; -*-
+;;; ess-r-syntax.el --- Utils to work with R code
 
 ;; Copyright (C) 2015-2022 Free Software Foundation, Inc.
 ;; Author: Lionel Henry <lionel.hry@gmail.com>
