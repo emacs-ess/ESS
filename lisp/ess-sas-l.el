@@ -1,6 +1,6 @@
-;;; ess-sas-l.el --- SAS customization
+;;; ess-sas-l.el --- SAS customization  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1997-2020 Free Software Foundation, Inc.
+;; Copyright (C) 1997-2022 Free Software Foundation, Inc.
 ;; Authors: Richard M. Heiberger
 ;;          A.J. Rossini
 ;;          Rodney Sparapani
@@ -148,11 +148,11 @@ A .lst file is a SAS listing file when:
   (ess-listing-minor-mode 1)
   (buffer-disable-undo))
 
-(fset 'sas-log-mode        'SAS-log-mode)
-(fset 'SAS-transcript-mode 'SAS-log-mode)
-(fset 'sas-transcript-mode 'SAS-log-mode)
-(fset 'sas-mode 'SAS-mode)
-(fset 'sas-listing-mode    'SAS-listing-mode)
+(defalias 'sas-log-mode        #'SAS-log-mode)
+(defalias 'SAS-transcript-mode #'SAS-log-mode)
+(defalias 'sas-transcript-mode #'SAS-log-mode)
+(defalias 'sas-mode #'SAS-mode)
+(defalias 'sas-listing-mode    #'SAS-listing-mode)
 
 (defcustom  sas-indent-width 4
   "Amount to indent sas statements."
@@ -779,7 +779,7 @@ number."
      ))
   "Font Lock regexs for SAS.")
 
-(defun beginning-of-sas-statement (arg &optional comment-start)
+(defun beginning-of-sas-statement (arg &optional comstart)
   "Move point to beginning of current sas statement."
   (interactive "P")
   (let ((pos (point))
@@ -787,7 +787,7 @@ number."
     (if (search-forward ";" nil 1) (forward-char -1))
     (re-search-backward ";[ \n*/]*$" (point-min) 1 arg)
     (skip-chars-forward sas-comment-chars)
-    (if comment-start nil
+    (if comstart nil
       (if (looking-at "\\*/")
           (progn (forward-char 2)
                  (skip-chars-forward sas-comment-chars)))
@@ -1305,7 +1305,7 @@ be submitted instead.  `sas-submitable' is automatically sets to t."
           (message "----  SAS job submitted  ----   ")
 
           (if sas-notify;;  added 4/7/94
-              (set-process-sentinel (get-process proc-name) 'sas-sentinel)
+              (set-process-sentinel (get-process proc-name) #'sas-sentinel)
             (display-buffer buf t))))
     (message "----  File not submitted  ----")))
 
@@ -1491,29 +1491,29 @@ page ;
 (if sas-dir-mode-map ()
   (setq sas-dir-mode-map (make-sparse-keymap))
   ;;(define-key sas-dir-mode-map "c" 'sas-contents)
-  (define-key sas-dir-mode-map "p" 'sas-print)
-  (define-key sas-dir-mode-map "m" 'sas-mark-item)
-  (define-key sas-dir-mode-map "u" 'sas-unmark-item)
-  (define-key sas-dir-mode-map " " 'sas-next-line)
-  (define-key sas-dir-mode-map "\C-n" 'sas-next-line)
-  (define-key sas-dir-mode-map "\C-p" 'sas-prev-line)
-  (define-key sas-dir-mode-map "\177" 'sas-prev-line-undo)
-  (define-key sas-dir-mode-map "\C-b" 'sas-backward-page-narrow)
-  (define-key sas-dir-mode-map "\C-v" 'sas-forward-page-narrow)
-  (define-key sas-dir-mode-map "\C-m" 'sas-goto-dataset)
-  (define-key sas-dir-mode-map [mouse-2] 'sas-mouse-goto-dataset)
-  (define-key sas-dir-mode-map "t" 'sas-dir-goto-page)
-  (define-key sas-dir-mode-map "q" 'bury-buffer)
-  (define-key sas-dir-mode-map "g" 'sas-revert-library)
-  (define-key sas-dir-mode-map "1" 'digit-argument)
-  (define-key sas-dir-mode-map "2" 'digit-argument)
-  (define-key sas-dir-mode-map "3" 'digit-argument)
-  (define-key sas-dir-mode-map "4" 'digit-argument)
-  (define-key sas-dir-mode-map "5" 'digit-argument)
-  (define-key sas-dir-mode-map "6" 'digit-argument)
-  (define-key sas-dir-mode-map "7" 'digit-argument)
-  (define-key sas-dir-mode-map "8" 'digit-argument)
-  (define-key sas-dir-mode-map "9" 'digit-argument)
+  (define-key sas-dir-mode-map "p" #'sas-print)
+  (define-key sas-dir-mode-map "m" #'sas-mark-item)
+  (define-key sas-dir-mode-map "u" #'sas-unmark-item)
+  (define-key sas-dir-mode-map " " #'sas-next-line)
+  (define-key sas-dir-mode-map "\C-n" #'sas-next-line)
+  (define-key sas-dir-mode-map "\C-p" #'sas-prev-line)
+  (define-key sas-dir-mode-map "\177" #'sas-prev-line-undo)
+  (define-key sas-dir-mode-map "\C-b" #'sas-backward-page-narrow)
+  (define-key sas-dir-mode-map "\C-v" #'sas-forward-page-narrow)
+  (define-key sas-dir-mode-map "\C-m" #'sas-goto-dataset)
+  (define-key sas-dir-mode-map [mouse-2] #'sas-mouse-goto-dataset)
+  (define-key sas-dir-mode-map "t" #'sas-dir-goto-page)
+  (define-key sas-dir-mode-map "q" #'bury-buffer)
+  (define-key sas-dir-mode-map "g" #'sas-revert-library)
+  (define-key sas-dir-mode-map "1" #'digit-argument)
+  (define-key sas-dir-mode-map "2" #'digit-argument)
+  (define-key sas-dir-mode-map "3" #'digit-argument)
+  (define-key sas-dir-mode-map "4" #'digit-argument)
+  (define-key sas-dir-mode-map "5" #'digit-argument)
+  (define-key sas-dir-mode-map "6" #'digit-argument)
+  (define-key sas-dir-mode-map "7" #'digit-argument)
+  (define-key sas-dir-mode-map "8" #'digit-argument)
+  (define-key sas-dir-mode-map "9" #'digit-argument)
   (define-key sas-dir-mode-map [menu-bar sas run]
     '("Submit File " . submit-sas))
   )
@@ -1602,9 +1602,9 @@ page ;
 ;;(forward-line arg)
 ;;(sas-move-to-filename sas-dir-buf-end)))
 
-(defun sas-prev-line (arg)
+(defun sas-prev-line (&optional _arg)
   "Move up one line."
-  (interactive "p")
+  (interactive)
   (beginning-of-line)
   (re-search-backward "^ *[0-9]+ *<*[^:0-9\n]" (point-min) t)
   (sas-move-to-filename sas-dir-buf-end))
@@ -1795,11 +1795,11 @@ whose beginning matches the regexp `page-delimiter'."
          str)))
 
 
-(defun ess-imenu-SAS (&optional arg)
+(defun ess-imenu-SAS (&optional _arg)
   "SAS language Imenu support for ESS."
   (interactive)
   (setq imenu-generic-expression
-        '( (nil "[ \t\n=]\\([a-zA-Z_][a-zA-Z_0-9]*[.][a-zA-Z_][a-zA-Z_0-9]*\\)[ ,()\t\n;]" 1)))
+        '( (nil "[ \t\n=]\\([[:alpha:]_][[:alnum:]_]*[.][[:alpha:]_][[:alnum:]_]*\\)[ ,()\t\n;]" 1)))
   (imenu-add-to-menubar "SAS Datasets"))
 
 ;;(defun sas-revert-library ()

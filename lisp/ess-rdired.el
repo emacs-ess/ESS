@@ -1,6 +1,6 @@
 ;;; ess-rdired.el --- prototype object browser for R, looks like dired mode.  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2002-2020 Free Software Foundation, Inc.
+;; Copyright (C) 2002-2022 Free Software Foundation, Inc.
 ;; Author: Stephen Eglen <stephen@anc.ed.ac.uk>
 ;; Created: Thu 24 Oct 2002
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
@@ -153,7 +153,7 @@ details."
         (goto-char (point-min))
         ;; Delete two lines. One filled with +'s from R's prompt
         ;; printing, the other with the header info from the data.frame
-        (delete-region (point-min) (1+ (point-at-eol 2)))
+        (delete-region (point-min) (1+ (line-end-position 2)))
         (setq text (split-string (buffer-string) "\n" t "\n"))
         (erase-buffer))
       (with-current-buffer buff

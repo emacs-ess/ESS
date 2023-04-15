@@ -1,6 +1,6 @@
-;;; ess-sp6-d.el --- S-Plus 6 & 7 & 8  customization
+;;; ess-sp6-d.el --- S-Plus 6 & 7 & 8  customization  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2001-2020 Free Software Foundation, Inc.
+;; Copyright (C) 2001-2022 Free Software Foundation, Inc.
 ;; Author: A.J. Rossini <rossini@u.washington.edu>
 ;; Created: 2001/02/06
 ;; Maintainer: ESS Core Team <ESS-core@r-project.org>
@@ -104,9 +104,9 @@
 }
 ")
 
-(defalias 'S+6 'S+)
-(defun S+ (&optional proc-name)
-  "Call 'Splus6', based on S version 4, from Bell Labs.
+(defalias 'S+6 #'S+)
+(defun S+ (&optional _proc-name)
+  "Call `Splus6', based on S version 4, from Bell Labs.
 New way to do it."
   (interactive)
   (ess-write-to-dribble-buffer
@@ -120,9 +120,9 @@ New way to do it."
     inf-buf))
 
 
-(defalias 'S+6-mode 'S+-mode)
+(defalias 'S+6-mode #'S+-mode)
 ;;;###autoload
-(defun S+-mode (&optional proc-name)
+(defun S+-mode (&optional _proc-name)
   "Major mode for editing S+ source.  See `ess-mode' for more help."
   (interactive)
   (setq-local ess-local-customize-alist S+-customize-alist)
@@ -131,7 +131,7 @@ New way to do it."
   (setq imenu-generic-expression ess-imenu-S-generic-expression)
   (when ess-imenu-use-S (imenu-add-to-menubar "Imenu-S")))
 
-(defalias 'S+6-transcript-mode 'S+-transcript-mode)
+(defalias 'S+6-transcript-mode #'S+-transcript-mode)
 (define-derived-mode S+-transcript-mode ess-transcript-mode "ESS S Transcript"
   "S-PLUS 6 transcript mode."
   :syntax-table S-syntax-table
@@ -185,7 +185,7 @@ ESS initialization."
 ;; Define the runners
 (ess-s-define-runners)
 (define-obsolete-function-alias
-  'ess-s-versions-create 'ess-s-define-runners "ESS 18.10")
+  'ess-s-versions-create #'ess-s-define-runners "ESS 18.10")
 
 
 

@@ -17,7 +17,7 @@
 ;;
 
 (require 'ert)
-(require 'etest)
+(require 'etest "test/etest/etest")
 (require 'ess-r-mode)
 (require 'ess-test-r-utils)
 

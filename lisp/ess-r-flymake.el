@@ -1,6 +1,6 @@
 ;;; ess-r-flymake.el --- A ess-r Flymake backend  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2018-2020 Free Software Foundation, Inc.
+;; Copyright (C) 2018-2022 Free Software Foundation, Inc.
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
 
 
@@ -155,7 +155,7 @@ into a list and call REPORT-FN on it."
     (if (ess-r--flymake-check-errors)
         (with-current-buffer src-buffer
           ;; we are in the sentinel here; don't throw but remove our hook instead
-          (remove-hook 'flymake-diagnostic-functions 'ess-r-flymake t))
+          (remove-hook 'flymake-diagnostic-functions #'ess-r-flymake t))
       (goto-char (point-min))
       (cl-loop
        while (search-forward-regexp

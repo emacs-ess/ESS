@@ -1,6 +1,6 @@
 ;; ess-tracebug.el --- Tracing and debugging facilities for ESS.  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2011-2020 Free Software Foundation, Inc.
+;; Copyright (C) 2011-2022 Free Software Foundation, Inc.
 ;; Author: Vitalie Spinu
 ;; Maintainer: Vitalie Spinu
 ;; Created: Oct 14 14:15:22 2010
@@ -457,7 +457,7 @@ See `ess-tracebug-help' for the overview of ess-tracebug functionality."
           (run-hooks 'ess-tracebug-exit-hook)
           (message "ess-tracebug mode disabled"))))))
 
-(defalias 'ess-toggle-tracebug 'ess-tracebug)
+(defalias 'ess-toggle-tracebug #'ess-tracebug)
 
 
 ;;;_* TRACEBACK
@@ -596,7 +596,7 @@ ESS internal code assumes default R prompts.")
       (setq ess--tb-last-input (point))
       (setq ess--tb-last-input-overlay
             (ess--tb-make-last-input-overlay
-             (point-at-bol) (point-at-eol))))
+             (line-beginning-position) (line-end-position))))
     ;; busy timer
     (setq mode-line-buffer-identification
           (list (car (propertized-buffer-identification "%3b"))
@@ -605,22 +605,18 @@ ESS internal code assumes default R prompts.")
     (setq ess--busy-timer
           (run-with-timer 2 .5 (ess--make-busy-timer-function (get-buffer-process (current-buffer)))))
     (add-hook 'kill-buffer-hook (lambda () (when ess--busy-timer (cancel-timer ess--busy-timer))))
-    (add-hook 'comint-input-filter-functions  'ess-tracebug-set-last-input nil 'local)
+    (add-hook 'comint-input-filter-functions #'ess-tracebug-set-last-input nil 'local)
 
     ;; redefine
     ;; TODO: all this part should go (partially gone now)
-    (unless (fboundp 'orig-ess-parse-errors)
-      (defalias 'orig-ess-parse-errors (symbol-function 'ess-parse-errors))
-      (defalias 'ess-parse-errors (symbol-function 'next-error)))))
+    (advice-add 'ess-parse-errors :override #'next-error)))
 
 (defun ess--tb-stop ()
   "Stop ess traceback session in the current ess process."
   (with-current-buffer (process-buffer (get-process ess-current-process-name))
     ;; restore original definitions
     (when (equal ess-dialect "R")
-      (when (fboundp 'orig-ess-parse-errors)
-        (defalias 'ess-parse-errors (symbol-function 'orig-ess-parse-errors))
-        (fmakunbound 'orig-ess-parse-errors)))
+      (advice-remove 'ess-parse-errors #'next-error))
     (if (local-variable-p 'ess--tb-last-input-overlay)
         (delete-overlay ess--tb-last-input-overlay))
     (kill-local-variable 'ess--tb-last-input-overlay)
@@ -630,7 +626,7 @@ ESS internal code assumes default R prompts.")
     (kill-local-variable 'compilation-error-regexp-alist)
     (kill-local-variable 'compilation-search-path)
     (cancel-timer ess--busy-timer)
-    (remove-hook 'comint-input-filter-functions  'ess-tracebug-set-last-input 'local)
+    (remove-hook 'comint-input-filter-functions #'ess-tracebug-set-last-input 'local)
     (setq mode-line-buffer-identification (propertized-buffer-identification "%12b"))))
 
 (defvar ess--dbg-forward-ring (make-ring 10)
@@ -653,8 +649,8 @@ bindings are available (\\[next-error] and \\[previous-error])
 for `next-error' and `previous-error' respectively.
 
 You can bind `no-select' versions of this commands:
-\(define-key compilation-minor-mode-map [(?n)] #'next-error-no-select)
-\(define-key compilation-minor-mode-map [(?p)] #'previous-error-no-select)"
+\(define-key compilation-minor-mode-map [(?n)] #\\='next-error-no-select)
+\(define-key compilation-minor-mode-map [(?p)] #\\='previous-error-no-select)"
   (interactive)
   (cl-assert ess-traceback-command nil
              "Not implemented for dialect %s" ess-dialect)
@@ -692,7 +688,7 @@ Also see `ess-show-traceback'"
   (let ((ess-traceback-command ess-call-stack-command))
     (ess-show-traceback)))
 
-(defalias 'ess-show-R-traceback 'ess-show-traceback)
+(defalias 'ess-show-R-traceback #'ess-show-traceback)
 
 (defun ess--tb-next-error-goto-process-marker ()
   ;; assumes current buffer is the process buffer with compilation enabled
@@ -763,7 +759,7 @@ This is the value of `next-error-function' in iESS buffers."
 
 (defun inferior-ess-move-last-input-overlay ()
   "Move the overlay to the point."
-  (let ((pbol (point-at-bol)))
+  (let ((pbol (line-beginning-position)))
     (move-overlay ess--tb-last-input-overlay
                   pbol (max (- (point) 2) (+ pbol 2)))))
 
@@ -946,9 +942,9 @@ The action list is in `ess-debug-error-action-alist'."
 (defun ess--dbg-activate-overlays ()
   "Initialize active debug line overlays."
   (move-overlay ess--dbg-current-debug-overlay
-                (point-at-bol) (1+ (point-at-eol)) (current-buffer))
+                (line-beginning-position) (1+ (line-end-position)))
   ;; used by overlay-arrow functionality on no-X,  should be bol
-  (move-marker ess--dbg-current-debug-position (point-at-bol)))
+  (move-marker ess--dbg-current-debug-position (line-beginning-position)))
 
 (defun ess--dbg-deactivate-overlays ()
   "Delete debugger markers and overlays.
@@ -1082,14 +1078,14 @@ watch and loggers.  Integrates into ESS and iESS modes by binding
     (process-put proc 'dbg-buffer dbuff); buffer were the look up takes place
     (process-put proc 'dbg-active nil)  ; t if the process is in active debug state.
                                         ; Active debug states are usually those, in which prompt start with Browser[d]>
-    (set-process-filter proc 'inferior-ess-tracebug-output-filter)
+    (set-process-filter proc #'inferior-ess-tracebug-output-filter)
     (with-current-buffer (process-buffer proc)
       (unless (equal ess-dialect "R")
         (error "Can not activate the debugger for %s dialect" ess-dialect))
       (add-to-list 'ess--mode-line-process-indicator 'ess--dbg-mode-line-debug t)
       (add-to-list 'ess--mode-line-process-indicator 'ess--dbg-mode-line-error-action t)
 
-      (add-hook 'ess-presend-filter-functions 'ess--dbg-remove-empty-lines nil 'local))
+      (add-hook 'ess-presend-filter-functions #'ess--dbg-remove-empty-lines nil 'local))
     (with-current-buffer dbuff
       (setq ess-local-process-name lpn)
       (buffer-disable-undo)
@@ -1115,8 +1111,8 @@ Kill the *ess.dbg.[R_name]* buffer."
           (error "Can not deactivate the debugger for %s dialect" ess-dialect))
       (delq 'ess--dbg-mode-line-debug ess--mode-line-process-indicator)
       (delq 'ess--dbg-mode-line-error-action ess--mode-line-process-indicator)
-      (remove-hook 'ess-presend-filter-functions 'ess--dbg-remove-empty-lines 'local))
-    (set-process-filter proc 'inferior-ess-output-filter)
+      (remove-hook 'ess-presend-filter-functions #'ess--dbg-remove-empty-lines 'local))
+    (set-process-filter proc #'inferior-ess-output-filter)
     (kill-buffer (process-get proc 'dbg-buffer))
     (process-put proc 'dbg-buffer nil)
     (process-put proc 'dbg-active nil)
@@ -1210,7 +1206,7 @@ the payload list of each message.")
   "Read STR and evaluate as Emacs expression.
 If present, the CALLBACK string is passed through `format' with
 returned value from EXPR and then sent to the subprocess."
-  (let ((result (eval (read str))))
+  (let ((result (eval (read str) t)))
     (when callback
       (ess-send-string (ess-get-process) (format callback result)))))
 
@@ -1546,15 +1542,15 @@ different window."
       (setq ref (ess--dbg-get-next-ref -1 (point-max) ess--dbg-last-ref-marker
                                        ess--dbg-regexp-reference)) ; sets point at the end of found ref
       (when ref
-        (move-marker ess--dbg-last-ref-marker (point-at-eol))
+        (move-marker ess--dbg-last-ref-marker (line-end-position))
         ;; each new step repositions the current-ref!
         (move-marker ess--dbg-current-ref ess--dbg-last-ref-marker)))
     (when ref
-      (let ((buf (apply 'ess--dbg-goto-ref other-window ref)))
+      (let ((buf (apply #'ess--dbg-goto-ref other-window ref)))
         (if buf
             ;; if referenced buffer has been found, put overlays:
             (with-current-buffer buf
-              (setq t-debug-position (copy-marker (point-at-bol)))
+              (setq t-debug-position (copy-marker (line-beginning-position)))
               (if (equal t-debug-position ess--dbg-current-debug-position)
                   (progn ;; highlights the overlay for ess--dbg-blink-interval seconds
                     (overlay-put ess--dbg-current-debug-overlay 'face 'ess--dbg-blink-same-ref-face)
@@ -1629,11 +1625,11 @@ nil, or TB-INDEX is not found return nil."
               (goto-char pos)
               (forward-line (1- line))
               (if col
-                  (goto-char (+ (point-at-bol) col))
+                  (goto-char (+ (line-beginning-position) col))
                 (back-to-indentation))
               (when (bound-and-true-p org-babel-tangled-file)
                 (org-babel-tangle-jump-to-org))
-              (list (point-marker) (copy-marker (point-at-eol))))))))))
+              (list (point-marker) (copy-marker (line-end-position))))))))))
 
 (defvar ess-r-package-library-paths)
 (defun ess--dbg-find-buffer (filename)
@@ -1723,7 +1719,7 @@ giving the `line'; defaults to 2.  nC - sub-expr giving the
 (defun ess--debug-keys-message-string (&optional map)
   (let ((overriding-local-map (or map ess-debug-minor-mode-map)))
     (substitute-command-keys
-     (mapconcat 'identity
+     (mapconcat #'identity
                 '("(\\[ess-debug-command-continue])cont"
                   "(\\[ess-debug-command-continue-multi])cont-multi"
                   "(\\[ess-debug-command-next])next"
@@ -1766,10 +1762,10 @@ If supplied, EV must be a proper key event or a string representing the digit."
         (when (re-search-backward "\\(?: \\|^\\)\\([0-9]+\\):[^\t]+Selection:" ess--tb-last-input t)
           (setq depth (string-to-number (match-string 1)))
           (when (> depth 9)
-            (setq ev-char (ess-completing-read "Selection" (mapcar 'number-to-string
+            (setq ev-char (ess-completing-read "Selection" (mapcar #'number-to-string
                                                                    (number-sequence depth 0 -1))
                                                nil t ev-char nil)))))
-      (setq prompt (delete-and-extract-region  (point-at-bol) mark-pos))
+      (setq prompt (delete-and-extract-region (line-beginning-position) mark-pos))
       (insert (concat  prompt ev-char "\n"))
       (ess-send-string proc ev-char)
       (move-marker (process-mark proc) (max-char)))))
@@ -1903,19 +1899,17 @@ ARGS are ignored to allow using this function in process hooks."
 
 (defun ess--bp-pipe-block-p ()
   (save-excursion
-    (let ((inhibit-point-motion-hooks t)
-          (inhibit-field-text-motion t))
+    (let ((inhibit-field-text-motion t))
       (forward-line -1)
       (end-of-line)
-      (looking-back "%>%[ \t]*" (point-at-bol)))))
+      (looking-back "%>%[ \t]*" (line-beginning-position)))))
 
 (defun ess--bp-pipe-native-block-p ()
   (save-excursion
-    (let ((inhibit-point-motion-hooks t)
-          (inhibit-field-text-motion t))
+    (let ((inhibit-field-text-motion t))
       (forward-line -1)
       (end-of-line)
-      (looking-back "|>[ \t]*" (point-at-bol)))))
+      (looking-back "|>[ \t]*" (line-beginning-position)))))
 
 (defvar ess--bp-identifier 1)
 (defcustom ess-bp-type-spec-alist
@@ -2092,7 +2086,7 @@ Returns the beginning position of the hidden text."
                 ;;                              'bp-substring 'comment)))
                 ))))))))
 
-(add-hook 'ess-r-mode-hook 'ess-bp-recreate-all)
+(add-hook 'ess-r-mode-hook #'ess-bp-recreate-all)
 
 
 (defun ess-bp-get-bp-position-nearby ()
@@ -2141,8 +2135,8 @@ to the current position, nil if not found."
   (interactive)
   (let* ((pos (ess-bp-get-bp-position-nearby))
          (same-line (and pos
-                         (<=  (point-at-bol) (cdr pos))
-                         (>= (point-at-eol) (car pos))))
+                         (<=  (line-beginning-position) (cdr pos))
+                         (>= (line-end-position) (car pos))))
          (types ess-bp-type-spec-alist)
          (ev last-command-event)
          (com-char  (event-basic-type ev))
@@ -2192,14 +2186,14 @@ to the current position, nil if not found."
         (init-pos (make-marker)))
     (if (null pos)
         (if interactive? (message "No breakpoints nearby"))
-      (if (eq (point) (point-at-eol))
+      (if (eq (point) (line-end-position))
           (goto-char (1- (point)))) ;; work-around for issue  3
       (set-marker init-pos  (point))
       (goto-char (car pos))
       (delete-region (car pos) (cdr pos))
       (indent-for-tab-command)
       (goto-char init-pos)
-      (if (eq (point) (point-at-eol)) (forward-char)))))
+      (if (eq (point) (line-end-position)) (forward-char)))))
 
 (defun ess-bp-kill-all nil
   "Delete all breakpoints in current buffer."
@@ -2323,7 +2317,7 @@ If there is no active R session, this command triggers an error."
         (dummy-string
          (ess-tracebug--propertize "|" 'current-watch-bar 'font-lock-keyword-face)))
     (ess-tracebug--set-left-margin)
-    (setq-local revert-buffer-function 'ess-watch-revert-buffer)
+    (setq-local revert-buffer-function #'ess-watch-revert-buffer)
     (turn-on-font-lock)
     (setq ess-watch-current-block-overlay
           (make-overlay (point-min) (point-max)))
@@ -2371,7 +2365,7 @@ the debugging."
         (ess-command  ess-watch-command wbuf sleep no-prompt-check)
         ;; delete the ++++++> line  ;; not very reliable but works fine so far.
         (goto-char (point-min))
-        (delete-region (point-at-bol) (+ 1 (point-at-eol)))
+        (delete-region (line-beginning-position) (+ 1 (line-end-position)))
         (ess-watch-set-current curr-block)
         (set-window-point (get-buffer-window wbuf) (point))))))
 
@@ -2458,7 +2452,7 @@ Arguments IGNORE and NOCONFIRM currently not used."
   (goto-char (point-min))
   (re-search-forward ess-watch-start-expression nil t nr)
   (goto-char (match-end 0))
-  (apply 'move-overlay ess-watch-current-block-overlay (ess-watch-block-limits-at-point)))
+  (apply #'move-overlay ess-watch-current-block-overlay (ess-watch-block-limits-at-point)))
 
 
 (defun ess-watch--make-alist ()
@@ -2529,7 +2523,7 @@ Optional N if supplied gives the number of steps forward `backward-char'."
   (unless (re-search-forward ess-watch-start-expression nil t n)
     (goto-char (point-min)) ;;circular but always moves to start!
     (re-search-forward ess-watch-start-expression nil t 1))
-  (apply 'move-overlay ess-watch-current-block-overlay (ess-watch-block-limits-at-point)))
+  (apply #'move-overlay ess-watch-current-block-overlay (ess-watch-block-limits-at-point)))
 
 (defun ess-watch-previous-block (&optional n)
   "Move the overlay over the previous block.
@@ -2541,7 +2535,7 @@ Optional N if supplied gives the number of backward steps."
     (goto-char (point-max)) ;;circular but always moves to last!
     (re-search-backward ess-watch-start-expression nil t 1))
   (goto-char (match-end 0))
-  (apply 'move-overlay ess-watch-current-block-overlay (ess-watch-block-limits-at-point)))
+  (apply #'move-overlay ess-watch-current-block-overlay (ess-watch-block-limits-at-point)))
 
 ;;;_  + BLOCK MANIPULATION and EDITING
 (defun ess-watch-rename ()
@@ -2555,7 +2549,7 @@ Optional N if supplied gives the number of backward steps."
     ;; (reg-expr (concat "^" ess-watch-start-expression "\\s-*\\(.*\\)$"))
     ;; (reg-all (concat "\\(" reg-name "\\)\n\\(" reg-expr "\\)"))
     ;; (pos 0) wal name expr)
-    (unless (re-search-forward reg-name (point-at-eol) t)
+    (unless (re-search-forward reg-name (line-end-position) t)
       (error "Can not find the name substring in the current watch block "))
     (setq name (match-string-no-properties 1))
     (setq start (match-beginning 1))
@@ -2628,7 +2622,7 @@ Optional N if supplied gives the number of backward steps."
         wbl)
     (when (> nr 1)
       (setq buffer-read-only nil)
-      (setq wbl (apply 'delete-and-extract-region  (ess-watch-block-limits-at-point)))
+      (setq wbl (apply #'delete-and-extract-region  (ess-watch-block-limits-at-point)))
       (re-search-backward ess-watch-start-block nil t 1) ;; current block was deleted, point is at the end of previous block
       (insert wbl)
       (ess-watch--install-.ess_watch_expressions)
@@ -2644,7 +2638,7 @@ Optional N if supplied gives the number of backward steps."
         wbl)
     (when (< nr nr-all)
       (setq buffer-read-only nil)
-      (setq wbl (apply 'delete-and-extract-region  (ess-watch-block-limits-at-point)))
+      (setq wbl (apply #'delete-and-extract-region  (ess-watch-block-limits-at-point)))
       (end-of-line)
       (when (re-search-forward ess-watch-start-block nil t 1) ;; current block was deleted, point is at the end of previous block or point-max
         (goto-char (match-beginning 0)))
@@ -2656,7 +2650,7 @@ Optional N if supplied gives the number of backward steps."
   "Kill the current block."
   (interactive)
   (setq buffer-read-only nil)
-  (apply 'delete-region (ess-watch-block-limits-at-point))
+  (apply #'delete-region (ess-watch-block-limits-at-point))
   (ess-watch--install-.ess_watch_expressions))
 
 ;;;_ + Debug/Undebug at point

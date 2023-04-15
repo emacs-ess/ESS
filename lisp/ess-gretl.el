@@ -1,6 +1,6 @@
 ;; ess-gretl.el --- ESS gretl mode and inferior interaction  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2012-2020 Free Software Foundation, Inc.
+;; Copyright (C) 2012-2022 Free Software Foundation, Inc.
 ;; Author: Ahmadou Dicko, Spinu Vitalie and Allin Cottrell
 ;; Maintainer: ESS Core Team <ESS-core@r-project.org>
 ;; Created: 01-10-2012 (ESS 12.09)
@@ -252,20 +252,22 @@ parenthetical grouping.")
 
 
 (defconst gretl-font-lock-keywords
+  ;; FIXME: Instead of `mapconcat #'identity', if these vars only contain
+  ;; strings (rather than regexps), we should use `regexp-opt'.
   (list
    ;; Fontify all builtin keywords.
    (cons (concat "\\<\\("
-		 (mapconcat 'identity gretl-keywords "\\|")
+		 (mapconcat #'identity gretl-keywords "\\|")
 		 "\\)\\>")
 	 'font-lock-keyword-face)
    ;; Fontify all option flags.
    (cons (concat "[ \t]--\\("
-		 (mapconcat 'identity gretl-option-flags "\\|")
+		 (mapconcat #'identity gretl-option-flags "\\|")
 		 "\\)")
 	 'font-lock-constant-face)
    ;; Fontify all command words.
    (cons (concat "\\<\\("
-		 (mapconcat 'identity gretl-command-words "\\|")
+		 (mapconcat #'identity gretl-command-words "\\|")
 		 "\\)\\>")
 	 'font-lock-builtin-face)
    ;; Fontify all builtin operators.
@@ -275,13 +277,13 @@ parenthetical grouping.")
 	   'font-lock-preprocessor-face))
    ;; Fontify all internal variables.
    (cons (concat "\\$\\("
-		 (mapconcat 'identity gretl-internal-vars "\\|")
+		 (mapconcat #'identity gretl-internal-vars "\\|")
 		 "\\)\\>")
 	 'font-lock-variable-name-face)
 
    ;; Fontify all genr functions.
    (cons (concat "\\<\\("
-		 (mapconcat 'identity gretl-genr-functions "\\|")
+		 (mapconcat #'identity gretl-genr-functions "\\|")
 		 "\\)\\>")
 	 'font-lock-variable-name-face)
    ;; Fontify all function declarations.
@@ -293,17 +295,17 @@ parenthetical grouping.")
 
 (defvar gretl-block-begin-regexp
   (concat "\\<\\("
-	  (mapconcat 'identity gretl-block-start-keywords "\\|")
+	  (mapconcat #'identity gretl-block-start-keywords "\\|")
 	  "\\)\\>"))
 
 (defvar gretl-block-else-regexp
   (concat "\\<\\("
-	  (mapconcat 'identity gretl-block-other-keywords "\\|")
+	  (mapconcat #'identity gretl-block-other-keywords "\\|")
 	  "\\)\\>"))
 
 (defvar gretl-block-end-regexp
   (concat "\\<\\("
-	  (mapconcat 'identity gretl-block-end-keywords "\\|")
+	  (mapconcat #'identity gretl-block-end-keywords "\\|")
 	  "\\)\\>"))
 
 (defvar gretl-block-begin-or-end-regexp
@@ -378,7 +380,7 @@ end keywords as associated values.")
   (interactive)
   (end-of-line)
   (indent-line-to
-   (or (and (ess-inside-string-p (point-at-bol)) 0)
+   (or (and (ess-inside-string-p (line-beginning-position)) 0)
        (save-excursion (ignore-errors (gretl-form-indent)))
        (save-excursion
          (let ((endtok (progn
@@ -544,7 +546,7 @@ to gretl, put them in the variable `inferior-gretl-args'."
 			                   "'] ? "))
 		            nil)))
          (inf-buf (inferior-ess r-start-args gretl-customize-alist)))
-    (setq-local indent-line-function 'gretl-indent-line)
+    (setq-local indent-line-function #'gretl-indent-line)
     (setq-local gretl-basic-offset 4)
     (setq indent-tabs-mode nil)
     (goto-char (point-max))

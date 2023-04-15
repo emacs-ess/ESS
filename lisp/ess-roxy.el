@@ -1,6 +1,6 @@
-;;; ess-roxy.el --- convenient editing of in-code roxygen documentation
+;;; ess-roxy.el --- convenient editing of in-code roxygen documentation  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2009-2020 Free Software Foundation, Inc.
+;; Copyright (C) 2009-2022 Free Software Foundation, Inc.
 ;; Author: Henning Redestig <henning.red * go0glemail c-m>
 
 ;; This file is part of GNU Emacs.
@@ -143,16 +143,16 @@ Use you regular key for `outline-show-entry' to reveal it.")
         ;; Autofill
         (setq-local paragraph-start (concat "\\(" ess-roxy-re "\\)*" paragraph-start))
         (setq-local paragraph-separate (concat "\\(" ess-roxy-re "\\)*" paragraph-separate))
-        (setq-local adaptive-fill-function 'ess-roxy-adaptive-fill-function)
+        (setq-local adaptive-fill-function #'ess-roxy-adaptive-fill-function)
         ;; Hooks
-        (add-hook 'ess-presend-filter-functions 'ess-roxy-remove-roxy-re nil t))
+        (add-hook 'ess-presend-filter-functions #'ess-roxy-remove-roxy-re nil t))
     ;; Turn off `ess-roxy-mode':
     ;; Hideshow
     (when (and ess-roxy-hide-show-p hs-minor-mode)
       (hs-show-all)
       (hs-minor-mode))
     ;; Hooks
-    (remove-hook 'ess-presend-filter-functions 'ess-roxy-remove-roxy-re t)
+    (remove-hook 'ess-presend-filter-functions #'ess-roxy-remove-roxy-re t)
     (font-lock-remove-keywords nil ess-roxy-font-lock-keywords)
     ;; (setq-local syntax-propertize-function nil)
     ;; (setq-local font-lock-fontify-region-function nil)
@@ -201,16 +201,16 @@ Use you regular key for `outline-show-entry' to reveal it.")
         (ess-roxy-hide-example)))))
 
 (when (featurep 'outline-magic)
-  (substitute-key-definition 'outline-cyle
-                             'ess-roxy-cyle-example
+  (substitute-key-definition #'outline-cyle
+                             #'ess-roxy-cyle-example
                              ess-roxy-mode-map outline-mode-menu-bar-map))
 
-(substitute-key-definition 'outline-hide-entry
-                           'ess-roxy-hide-example
+(substitute-key-definition #'outline-hide-entry
+                           #'ess-roxy-hide-example
                            ess-roxy-mode-map outline-minor-mode-map)
 
-(substitute-key-definition 'outline-show-entry
-                           'ess-roxy-show-example
+(substitute-key-definition #'outline-show-entry
+                           #'ess-roxy-show-example
                            ess-roxy-mode-map outline-minor-mode-map)
 
 
@@ -219,7 +219,7 @@ Use you regular key for `outline-show-entry' to reveal it.")
 (defun ess-back-to-roxy ()
   "Go to roxy prefix."
   (end-of-line)
-  (re-search-backward (concat ess-roxy-re " ?") (point-at-bol))
+  (re-search-backward (concat ess-roxy-re " ?") (line-beginning-position))
   (goto-char (match-end 0)))
 
 (defun ess-roxy-beg-of-entry ()
@@ -702,7 +702,7 @@ block before the point."
   (save-excursion
     (if (ess-roxy-entry-p)
         (progn
-          (goto-char (point-at-bol))
+          (goto-char (line-beginning-position))
           (search-forward-regexp ess-roxy-re))
       (if not-here
           (search-backward-regexp ess-roxy-re)))
@@ -725,7 +725,7 @@ block before the point."
 See `hs-show-block' and `ess-roxy-hide-block'."
   (interactive)
   (hs-life-goes-on
-   (if (hs-overlay-at (point-at-eol))
+   (if (hs-overlay-at (line-end-position))
        (hs-show-block)
      (ess-roxy-hide-block))))
 
@@ -805,7 +805,7 @@ Assumes point is at the beginning of the function."
 
 (defun ess-roxy-tag-completion ()
   "Completion data for Emacs >= 24."
-  (when (save-excursion (re-search-backward "@\\<\\(\\w*\\)" (point-at-bol) t))
+  (when (save-excursion (re-search-backward "@\\<\\(\\w*\\)" (line-beginning-position) t))
     (let ((beg (match-beginning 1))
           (end (match-end 1)))
       (when (and end (= end (point)))
@@ -965,7 +965,8 @@ If not in a roxygen entry, call `back-to-indentation'."
   (if (ess-roxy-entry-p)
       (progn
         (end-of-line)
-        (re-search-backward (concat ess-roxy-re " *") (point-at-bol) t)
+        (re-search-backward (concat ess-roxy-re " *")
+                            (line-beginning-position) t)
         (goto-char (match-end 0)))
     (back-to-indentation)))
 
@@ -974,7 +975,8 @@ If not in a roxygen entry, call `back-to-indentation'."
       (indent-new-comment-line)
     (ess-roxy-indent-on-newline)))
 
-(define-obsolete-function-alias 'ess-roxy-newline-and-indent 'ess-roxy-newline "ESS 19.04")
+(define-obsolete-function-alias 'ess-roxy-newline-and-indent
+  #'ess-roxy-newline "ESS 19.04")
 (defun ess-roxy-newline ()
   "Start a newline and insert the roxygen prefix.
 Only do this if in a roxygen block and
@@ -1014,7 +1016,7 @@ Only do this if in a roxygen block and
    ;; Return t to signal to go on to `c-fill-paragraph'.
    (t t)))
 
-(advice-add 'c-fill-paragraph :before-while 'ess-roxy-cpp-fill-paragraph)
+(advice-add 'c-fill-paragraph :before-while #'ess-roxy-cpp-fill-paragraph)
 
 (defun ess-roxy-enable-in-cpp ()
   "Enable `ess-roxy-mode' in C++ buffers in R packages."

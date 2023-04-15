@@ -1,6 +1,6 @@
 ;;; ess-s-lang.el --- Support for editing S source code  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1989-2020 Free Software Foundation, Inc.
+;; Copyright (C) 1989-2022 Free Software Foundation, Inc.
 ;; Author: A.J. Rossini <rossini@biostat.washington.edu>
 ;; Created: 26 Aug 1997
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
@@ -431,7 +431,7 @@ If `ess-language' is not \"S\", call `self-insert-command' with ARG."
     (funcall #'self-insert-command arg)))
 
 ;; In case people had this in their config don't cause errors:
-(define-obsolete-function-alias 'ess-smart-S-assign 'ess-insert-assign "ESS 18.10")
+(define-obsolete-function-alias 'ess-smart-S-assign #'ess-insert-assign "ESS 18.10")
 (define-obsolete-function-alias 'ess-disable-smart-S-assign #'ignore "ESS 18.10")
 
 (defun ess-add-MM-keys ()
@@ -479,7 +479,7 @@ ARG is ignored."
   (declare (obsolete "It is set automatically in major modes" "ESS 19.04"))
   (imenu-add-to-menubar "Imenu-S"))
 
-(define-obsolete-function-alias 'ess-imenu-R 'ess-imenu-S "ESS 19.04")
+(define-obsolete-function-alias 'ess-imenu-R #'ess-imenu-S "ESS 19.04")
 
 
  ;;; Speedbar stuff.
@@ -514,19 +514,19 @@ return it.  Otherwise, return `ess-help-topics-list'."
   (ess-command ".ess.getHelpAliases(reset = TRUE)\n"
                nil nil nil nil nil nil ess-help--aliases-timeout))
 
-(defalias 'S 'S+)
-(defalias 's-mode 'S+-mode)
-(defalias 's-transcript-mode 'S+-transcript-mode)
-(defalias 'S-transcript-mode 's-transcript-mode)
-(defalias 'S-mode 's-mode)
+(defalias 'S #'S+)
+(defalias 's-mode #'S+-mode)
+(defalias 's-transcript-mode #'S+-transcript-mode)
+(defalias 'S-transcript-mode #'s-transcript-mode)
+(defalias 'S-mode #'s-mode)
 
 
 (define-obsolete-function-alias 'ess-toggle-S-assign-key #'ignore "ESS 18.10")
-(define-obsolete-function-alias 'ess-smart-underscore 'ess-insert-assign "ESS 18.10")
-(define-obsolete-function-alias 'ess-insert-S-assign 'ess-insert-assign "ESS 18.10")
+(define-obsolete-function-alias 'ess-smart-underscore #'ess-insert-assign "ESS 18.10")
+(define-obsolete-function-alias 'ess-insert-S-assign #'ess-insert-assign "ESS 18.10")
 
-(define-obsolete-function-alias 'ess-toggle-underscore 'ess-disable-smart-S-assign "ESS 18.10")
-(define-obsolete-function-alias 'ess-toggle-S-assign 'ess-disable-smart-S-assign "ESS 18.10")
+(define-obsolete-function-alias 'ess-toggle-underscore #'ess-disable-smart-S-assign "ESS 18.10")
+(define-obsolete-function-alias 'ess-toggle-S-assign #'ess-disable-smart-S-assign "ESS 18.10")
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.[Ss]t\\'" . S-transcript-mode))

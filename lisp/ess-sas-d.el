@@ -1,6 +1,6 @@
-;;; ess-sas-d.el --- SAS customization
+;;; ess-sas-d.el --- SAS customization  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1997-2020 Free Software Foundation, Inc.
+;; Copyright (C) 1997-2022 Free Software Foundation, Inc.
 ;; Author: Richard M. Heiberger <rmh@temple.edu>
 ;; Created: 20 Aug 1997
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
@@ -225,8 +225,8 @@ Better logic needed!  (see 2 uses, in this file).")
     (if ess-sas-local-pc-keys (ess-sas-local-pc-keys))
     (if ess-sas-global-unix-keys (ess-sas-global-unix-keys))
     (if ess-sas-global-pc-keys (ess-sas-global-pc-keys)))
-  (define-key sas-mode-local-map ";" 'ess-electric-run-semicolon)
-  (define-key sas-mode-local-map (kbd "\C-c\C-w") 'ess-multi-frame-SAS)
+  (define-key sas-mode-local-map ";" #'ess-electric-run-semicolon)
+  (define-key sas-mode-local-map (kbd "\C-c\C-w") #'ess-multi-frame-SAS)
   ;; this is a mess
   ;; interactive and batch commands share sas-mode-local-map,
   ;; but the associated commands are very different
@@ -260,27 +260,29 @@ Better logic needed!  (see 2 uses, in this file).")
 If the line contains \"run;\" or \"quit;\" and nothing else then
 indent line."
   (interactive "P")
-  (if ess-sas-edit-keys-toggle (insert ";") (let (insertpos)
-                                              (if (and (not arg)
-                                                       (eolp)
-                                                       (save-excursion
-                                                         (skip-chars-backward " \t")
-                                                         (backward-word 1)
-                                                         (and (looking-at "run\\|quit")
-                                                              (progn
-                                                                (skip-chars-backward " \t")
-                                                                (bolp)))))
-                                                  (progn
-                                                    (insert last-command-event)
-                                                    (funcall indent-line-function)
-                                                    (save-excursion
-                                                      (if insertpos (goto-char (1+ insertpos)))
-                                                      (delete-char -1))))
-                                              (if insertpos
-                                                  (save-excursion
-                                                    (goto-char insertpos)
-                                                    (self-insert-command (prefix-numeric-value arg)))
-                                                (self-insert-command (prefix-numeric-value arg))))))
+  (if ess-sas-edit-keys-toggle
+      (insert ";")
+    (let (insertpos) ;; FIXME: Always nil?
+      (if (and (not arg)
+               (eolp)
+               (save-excursion
+                 (skip-chars-backward " \t")
+                 (backward-word 1)
+                 (and (looking-at "run\\|quit")
+                      (progn
+                        (skip-chars-backward " \t")
+                        (bolp)))))
+          (progn
+            (insert last-command-event)
+            (funcall indent-line-function)
+            (save-excursion
+              (if insertpos (goto-char (1+ insertpos)))
+              (delete-char -1))))
+      (if insertpos
+          (save-excursion
+            (goto-char insertpos)
+            (self-insert-command (prefix-numeric-value arg)))
+        (self-insert-command (prefix-numeric-value arg))))))
 
 (defun SAS-menu ()
   "Start SAS from the menu."

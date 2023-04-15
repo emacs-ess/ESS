@@ -1,4 +1,4 @@
-;;; ess-font-lock.el --- font-lock color options
+;;; ess-font-lock.el --- font-lock color options  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2000-2022  Free Software Foundation, Inc.
 

@@ -17,24 +17,25 @@
 ;;
 
 (require 'ert)
-(require 'etest)
+(require 'etest "test/etest/etest")
 (require 'ess-r-mode)
 (require 'ess-test-r-utils)
 (require 'cc-mode)
 (require 'imenu)
 (with-no-warnings
   (when (< emacs-major-version 26)
-    (require 'cl)))
+    (require 'cl))) ;; FIXME: For?
 
 ;;; R
 
 ;;; Code:
 
 (ert-deftest ess-r-inherits-prog-mode-test ()
-  (let ((prog-mode-hook (lambda () (setq ess-test-prog-hook t))))
+  (let* ((pmh-was-run nil)
+         (prog-mode-hook (lambda () (setq pmh-was-run t))))
     (with-ess-test-r-file nil
       (should (derived-mode-p 'prog-mode))
-      (should ess-test-prog-hook)
+      (should pmh-was-run)
       (should
        ;; Test that prog-mode-map is a keymap-parent
        (let ((map (current-local-map))
@@ -156,7 +157,7 @@
 
 (ert-deftest ess-r-run-presend-hooks-test ()
   (with-r-running nil
-    (let ((ess-presend-filter-functions (list (lambda (string) "\"bar\"")))
+    (let ((ess-presend-filter-functions (list (lambda (_string) "\"bar\"")))
           (ess-r-evaluation-env "base")
           ess-eval-visibly)
       (insert "\"foo\"\n")
@@ -204,7 +205,7 @@
 
 (defun ess-test-init-insert-assign ()
   (let ((map (make-sparse-keymap)))
-    (define-key map "_" 'ess-insert-assign)
+    (define-key map "_" #'ess-insert-assign)
     (use-local-map map)))
 
 (etest-deftest ess-insert-assign-test ()

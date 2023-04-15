@@ -30,7 +30,7 @@
 (defun test-org-R-output (expect input)
   (declare (indent 1))
   (let* ((inf-buf (run-ess-test-r-vanilla))
-         (inf-proc (get-buffer-process inf-buf)))
+        ) ;; (inf-proc (get-buffer-process inf-buf))
     (setq input (format input (buffer-name inf-buf)))
     (ess-test-unwind-protect inf-buf
       (with-current-buffer (get-buffer-create "*ess-org-test*")

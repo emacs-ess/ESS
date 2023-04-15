@@ -1,6 +1,6 @@
 ;;; ess-bugs-d.el --- ESS[BUGS] dialect  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2008-2020 Free Software Foundation, Inc.
+;; Copyright (C) 2008-2022 Free Software Foundation, Inc.
 
 ;; Author: Rodney Sparapani
 ;; Maintainer: ESS-help <ess-help@r-project.org>
@@ -251,7 +251,7 @@
   (setq ess-language "S") ; mimic S for ess-smart-underscore
   (unless (when (fboundp 'w32-shell-dos-semantics)
             (w32-shell-dos-semantics))
-    (add-hook 'comint-output-filter-functions 'ess-bugs-exit-notify-sh)))
+    (add-hook 'comint-output-filter-functions #'ess-bugs-exit-notify-sh)))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.[Bb][Uu][Gg]\\'" . ess-bugs-mode))

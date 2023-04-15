@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 
 (defun token= (type &optional value)
   "Check that the next token conforms to TYPE and VALUE.

@@ -17,7 +17,7 @@
 ;; Tests for inferior processes.
 
 (require 'ert)
-(require 'etest)
+(require 'etest "test/etest/etest")
 (require 'cl-lib)
 
 ;; As we use the R inferior for the generic tests
@@ -47,7 +47,7 @@
 (ert-deftest ess-test-inferior-live-process-error ()
   (let* ((ess-gen-proc-buffer-name-function
           ;; Generate same inferior name each time
-          (lambda (&rest args) "" "foo"))
+          (lambda (&rest _) "" "foo"))
          (error-msg "Can't start a new session in buffer `foo` because one already exists")
          (inf-buf (run-ess-test-r-vanilla)))
     (ess-test-unwind-protect inf-buf
@@ -56,7 +56,8 @@
 
 (ert-deftest ess-test-inferior-local-start-args ()
   (with-r-running nil
-    (let ((inf-data (buffer-local-value 'inferior-ess--local-data *inf-buf*)))
+    (let ((inf-data (buffer-local-value 'inferior-ess--local-data
+                                        (process-buffer *proc*))))
       (should (equal (car inf-data) "R"))
       (should (equal (cdr inf-data) "--no-readline  --no-init-file --no-site-file")))))
 
@@ -97,7 +98,7 @@
       (ess-async-command "{cat(1:5);Sys.sleep(0.5);cat(2:6, '\n')}\n"
                          (get-buffer-create " *ess-async-text-command-output*")
                          inf-proc
-                         (lambda (&rest args) (setq semaphore t)))
+                         (lambda (&rest _) (setq semaphore t)))
       (should (process-get inf-proc 'callbacks))
       (cl-loop repeat 3
                until (and semaphore (null (process-get inf-proc 'callbacks)))
@@ -106,7 +107,7 @@
 
 (ert-deftest ess-run-presend-hooks-test ()
   (with-r-running nil
-    (let ((ess-presend-filter-functions (list (lambda (string) "\"bar\""))))
+    (let ((ess-presend-filter-functions (list (lambda (_string) "\"bar\""))))
       (should (output= (ess-send-string (ess-get-process) "\"foo\"")
                        "[1] \"bar\"")))))
 
@@ -501,9 +502,10 @@ cleaned-prompts >
 }
 ")
         (output "> ")
-        (output-nowait "> fn <- function() {
-+ }
-> "))
+        ;; (output-nowait "> fn <- function() {
+;; + }
+;; > ")
+        )
     (let ((inferior-ess-replace-long+ t))
       (let ((ess-eval-visibly nil))
         (should (string= output
@@ -525,14 +527,15 @@ head(cars, 2)
 1     4    2
 2     4   10
 > ")
-        (output-nowait "cat(\"some. text\\n\")
-+ head(cars, 2)
-some. text
-> 
-  speed dist
-1     4    2
-2     4   10
-> "))
+        ;; (output-nowait "cat(\"some. text\\n\")
+;; + head(cars, 2)
+;; some. text
+;; > 
+;;   speed dist
+;; 1     4    2
+;; 2     4   10
+;; > ")
+        )
     (let ((inferior-ess-replace-long+ t))
       ;; Can't figure out why this has changed
       ;; (let ((ess-eval-visibly nil))

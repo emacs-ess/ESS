@@ -20,7 +20,7 @@
   "Backticked symbols are not fontified as strings."
   :case "¶`f¶oo¶`"
   (setq-local font-lock-syntactic-face-function
-              'inferior-ess-r-font-lock-syntactic-face-function)
+              #'inferior-ess-r-font-lock-syntactic-face-function)
   (font-lock-ensure)
   (should (not (face-at-point))))
 

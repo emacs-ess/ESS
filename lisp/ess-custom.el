@@ -1322,7 +1322,7 @@ these values, use the customize interface. See the documentation
 of each variable for its meaning."
   :group 'ess-edit
   :type 'alist
-  :initialize 'custom-initialize-set
+  :initialize #'custom-initialize-set
   :set (lambda (symbol value)
          (set symbol value)
          (ess-add-style 'OWN value)))

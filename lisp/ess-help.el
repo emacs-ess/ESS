@@ -1,6 +1,6 @@
 ;;; ess-help.el --- Support for viewing ESS help files  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1989-2020 Free Software Foundation, Inc.
+;; Copyright (C) 1989-2022 Free Software Foundation, Inc.
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
@@ -168,7 +168,7 @@ ignored."
   (ess-process-put 'sp-for-help-changed? t)
   (ess-display-help-on-object ess-help-object))
 
-(defalias 'ess-help 'ess-display-help-on-object)
+(defalias 'ess-help #'ess-display-help-on-object)
 
 (cl-defgeneric ess-build-help-command (object)
   "Build a string command for retrieving help on OBJECT."
@@ -282,7 +282,7 @@ REG-START gives the start location from where to search linkifying,
       (delete-region (point-min) (point-max))
       (setq ess-local-process-name pname)
       (ess--help-major-mode)
-      (ess-setq-vars-local (eval alist))
+      (ess-setq-vars-local (eval alist t))
       (setq ess-help-object help-object
             ess-help-sec-regex "\\(^\\s-.*\n\\)\\|\\(^\n\\)")
       (ess--foreground-command command buff)
@@ -376,7 +376,7 @@ See `ess-display-vignettes' for ALL."
                              (get-text-property pos 'vignette)
                              (get-text-property pos 'package))))
 
-(defalias 'ess-help-quit 'quit-window)
+(defalias 'ess-help-quit #'quit-window)
 (make-obsolete 'ess-help-quit 'quit-window "16.04")
 
 (defun ess-display-help (buff)
@@ -659,7 +659,7 @@ nil otherwise."
 
 (defun ess-get-help-files-list ()
   "Return a list of files which have help available."
-  (apply 'nconc
+  (apply #'nconc
          (mapcar (lambda (str)
                    (let ((dirname (concat str "/.Help")))
                      (and (file-directory-p dirname)
@@ -758,7 +758,8 @@ other dialects)."
                        (ess-symbol-at-point)))
           ess--descr-o-a-p-commands) ;; used in ess--describe-object-at-point
       (unless objname (error "No object at point "))
-      (define-key map (vector last-command-event) 'ess--describe-object-at-point)
+      (define-key map (vector last-command-event)
+                  #'ess--describe-object-at-point)
       ;; todo: put digits into the map
       (let* ((inhibit-quit t) ;; C-g removes the buffer
              (buf (ess--execute-electric-command

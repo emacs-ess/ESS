@@ -1,6 +1,6 @@
-;;; ess-eldoc.el --- Use eldoc to report R function names.
+;;; ess-eldoc.el --- Use eldoc to report R function names.  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1997-2020 Free Software Foundation, Inc.
+;; Copyright (C) 1997-2022 Free Software Foundation, Inc.
 ;; Author: Stephen Eglen
 ;; Created: 2007-06-30
 ;; Maintainer: ESS-core <ESS-core@r-project.org>

@@ -1,5 +1,6 @@
-(defun face-at-point ()
-  (get-char-property (point) 'face))
+;; -*- lexical-binding: t; -*-
+;; (defun face-at-point ()
+;;   (get-char-property (point) 'face))
 
 (defmacro with-ess-toggled-font-lock-keyword (enable keywords &rest body)
   (declare (indent 2)

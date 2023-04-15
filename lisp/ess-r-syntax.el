@@ -1,6 +1,6 @@
-;;; ess-r-syntax.el --- Utils to work with R code
+;;; ess-r-syntax.el --- Utils to work with R code  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2015-2020 Free Software Foundation, Inc.
+;; Copyright (C) 2015-2022 Free Software Foundation, Inc.
 ;; Author: Lionel Henry <lionel.hry@gmail.com>
 ;; Created: 12 Oct 2015
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
@@ -123,7 +123,7 @@ This is useful to trigger side-effects. FORMS follows the same
 syntax as arguments to `cond'."
   (declare (indent 0) (debug nil))
   `(let ((forms (list ,@(mapcar (lambda (form) `(progn ,@form)) forms))))
-     (cl-some 'identity (mapcar 'eval forms))))
+     (cl-some #'identity (mapcar (lambda (e) (eval e t)) forms))))
 
 (defun ess-char-syntax (string)
   (char-to-string (char-syntax (string-to-char string))))
@@ -615,37 +615,40 @@ content. Return nil when the end of the buffer is reached."
 
 ;;;*;;; Parsing
 
+(defvar ess-parser--backward nil)
+
 (defun ess-parser-advance (&optional type value)
-  (if (bound-and-true-p ess-parser--backward)
+  (if ess-parser--backward
       (ess-climb-token type value)
     (ess-jump-token type value)))
 
 (defun ess-parser-advance-pair (&optional type token)
-  (if (bound-and-true-p ess-parser--backward)
+  (if ess-parser--backward
       (ess-climb-paired-delims type token)
     (ess-jump-paired-delims type token)))
 
 (defun ess-parser-next-token ()
-  (if (bound-and-true-p ess-parser--backward)
+  (if ess-parser--backward
       (ess-token-before)
     (ess-token-after)))
 
 (defun ess-parser-token-start (token)
-  (if (bound-and-true-p ess-parser--backward)
+  (if ess-parser--backward
       (ess-token-end token)
     (ess-token-start token)))
 
 (defun ess-parser-power (token)
-  (or (if (bound-and-true-p ess-parser--backward)
-          (gethash (ess-token-type token) ess-token-r-right-power-table)
-        (gethash (ess-token-type token) ess-token-r-power-table))
+  (or (gethash (ess-token-type token)
+               (if ess-parser--backward
+                   ess-token-r-right-power-table
+                 ess-token-r-power-table))
       0))
 
 (defun ess-node (type pos contents)
-  (let ((pos (if (bound-and-true-p ess-parser--backward)
+  (let ((pos (if ess-parser--backward
                  (cons (cdr pos) (car pos))
                pos))
-        (contents (if (bound-and-true-p ess-parser--backward)
+        (contents (if ess-parser--backward
                       (nreverse contents)
                     contents)))
     (list type pos contents)))
@@ -654,7 +657,7 @@ content. Return nil when the end of the buffer is reached."
 (defalias 'ess-node-end #'ess-token-end)
 
 (defun ess-parse-start-token (token)
-  (let* ((table (if (bound-and-true-p ess-parser--backward)
+  (let* ((table (if ess-parser--backward
                     ess-token-r-rnud-table
                   ess-token-r-nud-table))
          (nud (gethash (ess-token-type token) table)))
@@ -663,7 +666,7 @@ content. Return nil when the end of the buffer is reached."
 
 (defun ess-parse-infix-token (infix-token left)
   (let ((infix-power (ess-parser-power infix-token))
-        (led (or (when (bound-and-true-p ess-parser--backward)
+        (led (or (when ess-parser--backward
                    (gethash (ess-token-type infix-token) ess-token-r-rid-table))
                  (gethash (ess-token-type infix-token) ess-token-r-led-table))))
     (funcall led left infix-token)))
@@ -684,7 +687,7 @@ content. Return nil when the end of the buffer is reached."
     (goto-char last-successful-pos)
     last-success))
 
-(defun ess-parse-arglist (power start-token)
+(defun ess-parse-arglist (_power start-token)
   (let ((start-pos (point))
         (arg-start-pos (point))
         (arglist (list start-token))
@@ -914,7 +917,7 @@ nil, return the prefix."
 (defun ess-behind-prefixed-block-p (&optional call)
   (if call
       (looking-at (concat call "[ \t]*("))
-    (cl-some 'looking-at ess-prefixed-block-patterns)))
+    (cl-some #'looking-at ess-prefixed-block-patterns)))
 
 (defun ess-unbraced-block-p (&optional ignore-ifelse)
   "This indicates whether point is in front of an unbraced
@@ -926,7 +929,7 @@ position of the control flow function (if, for, while, etc)."
                   (not ignore-ifelse))
              (and (looking-at "(")
                   (ess-backward-sexp)
-                  (cl-some 'looking-at ess-prefixed-block-patterns)
+                  (cl-some #'looking-at ess-prefixed-block-patterns)
                   (if ignore-ifelse
                       (not (looking-at "if\\b"))
                     t)))

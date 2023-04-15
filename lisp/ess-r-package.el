@@ -1,6 +1,6 @@
 ;;; ess-r-package.el --- Package development mode for R.  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2011-2020 Free Software Foundation, Inc.
+;; Copyright (C) 2011-2022 Free Software Foundation, Inc.
 ;; Author: Lionel Henry, Vitalie Spinu
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
 
@@ -247,7 +247,7 @@ Namespaced evaluation is enabled if
                    (string= (directory-file-name subpath) "R")))
         (ess-r-set-evaluation-env (ess-r-package-name))))))
 
-(add-hook 'ess-r-mode-hook 'ess-r-package-enable-namespaced-evaluation)
+(add-hook 'ess-r-mode-hook #'ess-r-package-enable-namespaced-evaluation)
 
 (defun ess-r-package-eval-linewise (command &optional msg p actions)
   "Send COMMAND to R process.
@@ -279,7 +279,7 @@ arguments, or expressions which return R arguments."
          (args (cond ((null action) "")
                      ((stringp action) action)
                      ((functionp action) (funcall action))
-                     ((listp action) (eval action))
+                     ((listp action) (eval action t))
                      (t (error "Invalid action")))))
     (if (string= "" args)
         args
@@ -525,14 +525,14 @@ Set this variable to nil to disable the mode line entirely."
                       inferior-ess-reload-function)))
           (mapc (lambda (var)
                   (set (make-local-variable var)
-                       (eval (cdr (assq var ess-r-customize-alist)))))
+                       (eval (cdr (assq var ess-r-customize-alist)) t)))
                 vars))
         (add-hook 'project-find-functions #'ess-r-project nil 'local)
         (run-hooks 'ess-r-package-enter-hook))
     (remove-hook 'project-find-functions #'ess-r-project)
     (run-hooks 'ess-r-package-exit-hook)))
 
-(add-hook 'after-change-major-mode-hook 'ess-r-package-auto-activate)
+(add-hook 'after-change-major-mode-hook #'ess-r-package-auto-activate)
 
 
 ;;;*;;; Activation
@@ -568,22 +568,21 @@ package mode. Use this function if state of the buffer such as
     (ess-r-package-re-activate)))
 
 (defun ess-r-package-activate-directory-tracker ()
-  (add-hook 'after-change-functions 'ess-r-package-default-directory-tracker t t))
+  (add-hook 'after-change-functions #'ess-r-package-default-directory-tracker t t))
 
-(add-hook 'shell-mode-hook 'ess-r-package-activate-directory-tracker t)
-(add-hook 'eshell-mode-hook 'ess-r-package-activate-directory-tracker t)
-(when (fboundp 'advice-add)
-  (require 'shell)
-  (advice-add 'shell-resync-dirs :after 'ess-r-package-re-activate))
+(add-hook 'shell-mode-hook #'ess-r-package-activate-directory-tracker t)
+(add-hook 'eshell-mode-hook #'ess-r-package-activate-directory-tracker t)
+;; (require 'shell)
+(advice-add 'shell-resync-dirs :after #'ess-r-package-re-activate)
 
 
 ;;;*;;; Deprecated variables and functions
 (defun ess-developer (&optional _val)
   (error "As of ESS 16.04, `ess-developer' is deprecated. Use `ess-r-set-evaluation-env' instead"))
 
-(defalias 'ess-toggle-developer 'ess-developer)
-(define-obsolete-function-alias 'ess-r-devtools-check-package-buildwin 'ess-r-devtools-check-with-winbuilder "18.04")
-(define-obsolete-function-alias 'ess-r-devtools-ask 'ess-r-devtools-execute-command "18.04")
+(defalias 'ess-toggle-developer #'ess-developer)
+(define-obsolete-function-alias 'ess-r-devtools-check-package-buildwin #'ess-r-devtools-check-with-winbuilder "18.04")
+(define-obsolete-function-alias 'ess-r-devtools-ask #'ess-r-devtools-execute-command "18.04")
 
 (make-obsolete-variable 'ess-developer "Please use `ess-developer-select-package' and `ess-r-set-evaluation-env' instead." "16.04")
 (make-obsolete-variable 'ess-developer-root-file "Please use `ess-r-package-root-file' instead." "16.04")

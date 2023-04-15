@@ -10,12 +10,11 @@
 (require 'ess-r-mode)
 (eval-when-compile
   (require 'cl-lib))
-(require 'etest)
+(require 'etest "test/etest/etest")
 
 (defvar elt-section-pattern)
 (defvar elt-chunk-pattern)
 (defvar elt-code-pattern)
-(defvar chunk-end)
 (defvar elt-code-cont-pattern)
 (defvar test-case)
 (defvar test-case-state)
@@ -70,7 +69,7 @@
   (with-temp-buffer
     (insert src-string)
     ;; Don't check safety of local variables declared in test files
-    (cl-letf (((symbol-function 'safe-local-variable-p) (lambda (sym val) t)))
+    (cl-letf (((symbol-function 'safe-local-variable-p) (lambda (_sym _val) t)))
       (let ((enable-dir-local-variables nil))
         (hack-local-variables)))
     (let ((elt-chunk-pattern elt-ess-r-chunk-pattern)
@@ -148,7 +147,7 @@
     (condition-case cnd
         (let* ((test-case (progn
                             (skip-chars-forward " \t\n")
-                            (elt-process-case)))
+                            (elt-process-case chunk-end)))
                (test-case-state test-case))
           (while (looking-at elt-code-pattern)
             (elt-process-next-subchunk chunk-end))
@@ -166,7 +165,7 @@
 
 (defun elt-process-next-subchunk (chunk-end)
   (let* ((continuation (looking-at elt-code-cont-pattern))
-         (test-code (elt-process-code))
+         (test-code (elt-process-code chunk-end))
          (test-result (elt-run-chunk test-code
                                      elt-mode-init
                                      continuation))
@@ -178,7 +177,7 @@
     (delete-region (point) subchunk-end)
     (insert (concat "\n" test-result "\n\n"))))
 
-(defun elt-process-case ()
+(defun elt-process-case (chunk-end)
   (let ((case-start (progn
                       (skip-chars-forward " \t\n")
                       (goto-char (line-beginning-position))
@@ -194,7 +193,7 @@
     (insert "\n")
     (buffer-substring-no-properties case-start case-end)))
 
-(defun elt-process-code ()
+(defun elt-process-code (chunk-end)
   (let* ((test-start (point))
          (test-end (if (re-search-forward "^$" chunk-end t)
                        (1- (match-beginning 0))

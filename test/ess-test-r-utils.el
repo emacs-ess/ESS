@@ -18,7 +18,7 @@
 
 ;;; Code:
 (require 'ert)
-(require 'etest)
+(require 'etest "test/etest/etest")
 (require 'ess-r-mode)
 (require 'tramp)
 (require 'seq)
@@ -39,7 +39,7 @@
   (declare (indent 1) (debug (&rest body)))
   `(let ((inhibit-message ess-inhibit-message-in-tests)
          (*file* ,file))
-     (save-window-excursion
+     (save-window-excursion ;; FIXME: Why not `save-current-buffer'?
        (set-buffer (if *file*
                        (find-file-noselect *file*)
                      (generate-new-buffer " *with-r-file-temp*")))
@@ -98,6 +98,33 @@ inserted text."
 	       (goto-char (point-min))))
        ,@body)))
 
+(defmacro ess-test-sleep-while (test seconds timeout &optional msg)
+  (declare (debug t))
+  `(ess--test-sleep-while-1 (lambda () ,test) ,seconds ,timeout ,msg))
+
+(defun ess--test-sleep-while-1 (test-fun seconds timeout msg)
+  (let ((time-start (current-time)))
+    (while (funcall test-fun)
+      (when (time-less-p timeout (time-subtract (current-time) time-start))
+        (error (or msg "Exceeded timeout")))
+      (sleep-for seconds))
+    t))
+
+(defmacro ess-test-unwind-protect (inf-buf &rest body)
+  (declare (indent 1)
+           (debug (&rest form)))
+  `(ess--test-unwind-protect-1 ,inf-buf (lambda () ,@body)))
+
+(defun ess--test-unwind-protect-1 (inf-buf body-fun)
+  (unwind-protect (funcall body-fun)
+    (let* ((inf-proc (get-buffer-process inf-buf)))
+      (when (and inf-proc (process-live-p inf-proc))
+        (set-process-query-on-exit-flag inf-proc nil)
+        (kill-process inf-proc)
+        (ess-test-sleep-while (process-live-p inf-proc) 0.001 1
+                              "Expected dead process"))
+      (kill-buffer inf-buf))))
+
 (defun run-ess-test-r-vanilla ()
   "Start vanilla R process and return the process object."
   (save-window-excursion
@@ -135,14 +162,14 @@ inserted text."
 
 (defun ess-send-input-to-R (input &optional type)
   "Eval INPUT and return the entire content of the REPL buffer.
-TYPE can be one of 'string, 'region 'c-c or 'repl. If nil or
-'string, use `ess-send-string' (lowest level primitive); if
-'region use `ess-eval-region' if 'c-c use
+TYPE can be one of `string', `region', `c-c' or `repl'.  If nil or
+`string', use `ess-send-string' (lowest level primitive); if
+`region' use `ess-eval-region' if `c-c' use
 `ess-eval-region-or-function-or-paragraph' which is by default
-bound to C-c C-c; if 'repl, eval interactively at the REPL. All
-prompts in the output are replaced with '> '. There is no full
+bound to `C-c C-c'; if `repl', eval interactively at the REPL.
+All prompts in the output are replaced with \"> \". There is no fool
 proof way to test for prompts given that process output could be
-split arbitrary."
+split arbitrarily."
   (let* ((prompt-regexp "^\\([+.>] \\)\\{2,\\}")
          (inf-buf (run-ess-test-r-vanilla))
          (inf-proc (get-buffer-process inf-buf))
@@ -199,35 +226,43 @@ split arbitrary."
 ;; !!! *proc* dynamic var
 (defmacro with-r-running (buffer-or-file &rest body)
   "Run BODY within BUFFER-OR-FILE with attached R process.
-If BUFFER-OR-FILE is a file, the file is visited first. The R
+If BUFFER-OR-FILE is a file, the file is visited first.  The R
 process is run with `inferior-ess-ordinary-filter' which is not
-representative to the common interactive use with tracebug on."
+representative to the common interactive use with tracebug on.
+BODY can refer to the process via the variable `*proc*'."
   (declare (indent 1) (debug (form body)))
-  `(let* ((inhibit-message ess-inhibit-message-in-tests)
-          (buffer-or-file ,buffer-or-file)
-          (r-file-buffer (cond ((bufferp buffer-or-file)
-                                buffer-or-file)
-                               ((stringp buffer-or-file)
-                                (find-file-noselect buffer-or-file))
-                               (t
-                                (generate-new-buffer " *with-r-file-temp*")))))
-     (save-window-excursion
-       (switch-to-buffer r-file-buffer)
-       (R-mode)
-       (let* ((*proc* (get-buffer-process (run-ess-test-r-vanilla)))
-              (ess-local-process-name (process-name *proc*))
-              (*inf-buf* (process-buffer *proc*)))
-         (unwind-protect
-             (ess-test-unwind-protect *inf-buf*
-               (setq ess-r-tests-current-output-buffer *inf-buf*)
-               (let ((inhibit-read-only t))
-                 (with-current-buffer ess-r-tests-current-output-buffer
-                   (ess-wait-for-process *proc*)
-                   (erase-buffer)))
-               (set-process-filter *proc* 'inferior-ess-output-filter)
-               (prog1 (progn ,@body)
-                 (ess-wait-for-process *proc*)))
-           (setq ess-r-tests-current-output-buffer nil))))))
+  `(ess--with-r-running-1 ,buffer-or-file
+                          (lambda (*proc*) (ignore *proc*) ,@body)))
+
+(defun ess--with-r-running-1 (buffer-or-file body-fun)
+  (let* ((inhibit-message ess-inhibit-message-in-tests)
+         (r-file-buffer (cond ((bufferp buffer-or-file)
+                               buffer-or-file)
+                              ((stringp buffer-or-file)
+                               (find-file-noselect buffer-or-file))
+                              (t
+                               (generate-new-buffer " *with-r-file-temp*")))))
+    ;; FIXME: If you don't want to display `r-file-buffer', then why not
+    ;; use `with-current-buffer' rather than using `switch-to-buffer'
+    ;; and then having to try and undo its damage with `save-window-excursion'
+    ;; (which can't work when `switch-to-buffer' created a new frame)?
+    (save-window-excursion
+      (switch-to-buffer r-file-buffer)
+      (R-mode)
+      (let* ((*proc* (get-buffer-process (run-ess-test-r-vanilla)))
+             (ess-local-process-name (process-name *proc*))
+             (*inf-buf* (process-buffer *proc*)))
+        (unwind-protect
+            (ess-test-unwind-protect *inf-buf*
+              (setq ess-r-tests-current-output-buffer *inf-buf*)
+              (let ((inhibit-read-only t))
+                (with-current-buffer ess-r-tests-current-output-buffer
+                  (ess-wait-for-process *proc*)
+                  (erase-buffer)))
+              (set-process-filter *proc* #'inferior-ess-output-filter)
+              (prog1 (funcall body-fun *proc*)
+                (ess-wait-for-process *proc*)))
+          (setq ess-r-tests-current-output-buffer nil))))))
 
 (defvar ess-r-tests-current-output-buffer nil)
 
@@ -239,7 +274,7 @@ representative to the common interactive use with tracebug on."
 ;; to perform ulterior tests with a fresh R to avoid contaminating
 ;; them.
 
-(defmacro output (&rest body)
+(defmacro output (&rest body)       ;; FIXME: `ess-' prefix?
   (declare (indent 1) (debug (&rest body)))
   `(progn
      (ess-wait-for-process *proc*)
@@ -250,18 +285,18 @@ representative to the common interactive use with tracebug on."
        (prog1 (buffer-substring-no-properties (point-min) (point-max))
          (erase-buffer)))))
 
-(defmacro output= (body expected)
+(defmacro output= (body expected)       ;; FIXME: `ess-' prefix?
   (declare (indent 0) (debug (sexp sexp)))
   `(progn
      (let ((output (output ,body))
-           (expected (eval ,expected)))
+           (expected ,expected))
        (if (string= output expected)
            output
          ;; Probably a better way but this gets the job done
          (signal 'ert-test-failed (list (concat "Expected: \n" expected)
                                         (concat "Result: \n" output)))))))
 
-(defun face-at (point)
+(defun face-at (point)       ;; FIXME: `ess-' prefix?
   (save-excursion
     (if (>= point 0)
         (goto-char point)
@@ -272,31 +307,8 @@ representative to the common interactive use with tracebug on."
   (apply #'insert args)
   (font-lock-default-fontify-buffer))
 
-(defmacro ess-test-sleep-while (test seconds timeout &optional msg)
-  `(let ((_seconds ,seconds)
-         (_timeout ,timeout)
-         (_time-start (current-time)))
-     (while ,test
-       (when (time-less-p _timeout (time-subtract (current-time) _time-start))
-         (error (or ,msg "Exceeded timeout")))
-       (sleep-for _seconds))
-     t))
-
 ;; It is safer to kill the buffer synchronously, otherwise it might be
 ;; reused in another test
-(defmacro ess-test-unwind-protect (inf-buf &rest body)
-  (declare (indent 1)
-           (debug (&rest form)))
-  `(unwind-protect (progn ,@body)
-     (let* ((inf-buf ,inf-buf)
-            (inf-proc (get-buffer-process inf-buf)))
-       (when (and inf-proc (process-live-p inf-proc))
-         (set-process-query-on-exit-flag inf-proc nil)
-         (kill-process inf-proc)
-         (ess-test-sleep-while (process-live-p inf-proc) 0.001 1
-                               "Expected dead process"))
-       (kill-buffer inf-buf))))
-
 (defun ess-test-r-set-local-process (&optional type)
   (let* ((proc-buf (ess-r-test-proc-buf (or type 'tracebug)))
          (proc (get-buffer-process proc-buf)))
@@ -321,9 +333,9 @@ representative to the common interactive use with tracebug on."
    (tramp-connection-timeout   10)))
 
 (defun ess-test-create-remote-path (path)
-  "Construct a remote path using the 'mock' TRAMP method.
+  "Construct a remote path using the `mock' TRAMP method.
 Take a string PATH representing a local path, and construct a
-remote path that uses the 'mock' TRAMP method."
+remote path that uses the `mock' TRAMP method."
   (let ((full-path (abbreviate-file-name (expand-file-name path))))
     (concat "/mock::" full-path)))
 
@@ -380,7 +392,7 @@ Throws an error if unsuccesful."
       (should (ess--essr-check-if-in-essrenv)))
     (kill-buffer)))
 
-(defun token= (type &optional value)
+(defun token= (type &optional value)       ;; FIXME: `ess-' prefix?
   "Check that the next token conforms to TYPE and VALUE.
 This checks it back and forth and moves the point after the
 token."
