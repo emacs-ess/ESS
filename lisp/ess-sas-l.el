@@ -1490,8 +1490,6 @@ page ;
 
 (if sas-dir-mode-map ()
   (setq sas-dir-mode-map (make-sparse-keymap))
-  ;;(define-key sas-dir-mode-map "c" 'sas-contents)
-  (define-key sas-dir-mode-map "p" #'sas-print)
   (define-key sas-dir-mode-map "m" #'sas-mark-item)
   (define-key sas-dir-mode-map "u" #'sas-unmark-item)
   (define-key sas-dir-mode-map " " #'sas-next-line)
@@ -1501,10 +1499,8 @@ page ;
   (define-key sas-dir-mode-map "\C-b" #'sas-backward-page-narrow)
   (define-key sas-dir-mode-map "\C-v" #'sas-forward-page-narrow)
   (define-key sas-dir-mode-map "\C-m" #'sas-goto-dataset)
-  (define-key sas-dir-mode-map [mouse-2] #'sas-mouse-goto-dataset)
   (define-key sas-dir-mode-map "t" #'sas-dir-goto-page)
   (define-key sas-dir-mode-map "q" #'bury-buffer)
-  (define-key sas-dir-mode-map "g" #'sas-revert-library)
   (define-key sas-dir-mode-map "1" #'digit-argument)
   (define-key sas-dir-mode-map "2" #'digit-argument)
   (define-key sas-dir-mode-map "3" #'digit-argument)
@@ -1645,20 +1641,6 @@ page ;
               (buffer-substring (match-beginning 0)
                                 (match-end 0))))))
 
-;;(defun sas-contents ()
-;;  "Run proc contents on current file."
-;;  (interactive)
-;;  (let ((buffer-read-only nil) (sas-get-options "linesize=70"))
-;;    (sas-get-dataset (sas-get-filename) 2 t t (buffer-name))
-;;    (end-of-buffer)
-;;    (backward-page-top-of-window 1)))
-;;
-;;(defun sas-print ()
-;;  "Run proc contents on current file."
-;;  (interactive)
-;;  (sas-get-dataset (sas-get-filename) 1 nil nil nil
-;;                   (sas-create-var-string)))
-
 (defun sas-goto-page (arg)
   "Goto top of page ARG.  If no ARG, then goto top of file."
   (interactive "P")
@@ -1736,21 +1718,6 @@ whose beginning matches the regexp `page-delimiter'."
                (sas-narrow-to-page)
                (goto-char (point-min)))))))
 
-;;(defun sas-mouse-goto-dataset (event)
-;;  (interactive "e")
-;;  (let (page buf)
-;;    (save-window-excursion
-;;      (save-excursion
-;;        (set-buffer (window-buffer (posn-window (event-end event))))
-;;        (save-excursion
-;;          (goto-char (posn-point (event-end event)))
-;;          (setq page (sas-get-file-number)))
-;;        (sas-goto-dataset page)
-;;        (setq buf (buffer-name))))
-;;    (set-buffer buf)
-;;    (goto-char (point-min))
-;;    (display-buffer buf)))
-
 
 (defun sas-dir-goto-page (page)
   (interactive "p")
@@ -1801,12 +1768,6 @@ whose beginning matches the regexp `page-delimiter'."
   (setq imenu-generic-expression
         '( (nil "[ \t\n=]\\([[:alpha:]_][[:alnum:]_]*[.][[:alpha:]_][[:alnum:]_]*\\)[ ,()\t\n;]" 1)))
   (imenu-add-to-menubar "SAS Datasets"))
-
-;;(defun sas-revert-library ()
-;;  "Update current library."
-;;  (interactive)
-;;  (if sas-directory-name
-;;      (sas-make-library sas-directory-name t)))
 
 (provide 'ess-sas-l)
 
