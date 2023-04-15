@@ -53,7 +53,7 @@
   "Return the doc string, or nil.
 If an ESS process is not associated with the buffer, do not try
 to look up any doc strings."
-  (when (and eldoc-mode ess-can-eval-in-background)
+  (when (and eldoc-mode (ess-can-eval-in-background))
     (let* ((proc (ess-get-next-available-process))
            (funname (and proc (or (and ess-eldoc-show-on-symbol ;; Aggressive completion
                                        (thing-at-point 'symbol))
@@ -364,7 +364,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
               (let ((start (ess-symbol-start)))
                 (when start
                   (buffer-substring-no-properties start (point))))))
-    (candidates (when ess-can-eval-in-background
+    (candidates (when (ess-can-eval-in-background)
                   (let ((proc (ess-get-next-available-process)))
                     (when proc
                       (with-current-buffer (process-buffer proc)
@@ -383,7 +383,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
                         (cons prefix (>= (length prefix)
                                          ess-company-arg-prefix-length))
                       prefix))))))
-    (candidates (when ess-can-eval-in-background
+    (candidates (when (ess-can-eval-in-background)
                   (let* ((proc (ess-get-next-available-process))
                          (args (delete "..." (nth 2 (ess-function-arguments
                                                      (car ess--fn-name-start-cache) proc))))
@@ -392,7 +392,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
                     (all-completions arg args))))
     ;; Displaying help for the argument in the echo area is disabled
     ;; by default for performance reasons. It causes delays or hangs (#1062).
-    (meta (when (and ess-can-eval-in-background
+    (meta (when (and (ess-can-eval-in-background)
                      (bound-and-true-p ess-r--company-meta))
             (let ((proc (ess-get-next-available-process)))
               (when (and proc
@@ -414,7 +414,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
                          '("library" "require"))
                  (let ((start (ess-symbol-start)))
                    (and start (buffer-substring start (point))))))
-    (candidates (when ess-can-eval-in-background
+    (candidates (when (ess-can-eval-in-background)
                   (all-completions arg (ess-installed-packages))))
     (annotation "<pkg>")
     (duplicates nil)
@@ -425,7 +425,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 (defun ess-r-package-completion ()
   "Return installed packages if in a call to library or require.
 Return format suitable for `completion-at-point-functions'."
-  (when (and ess-can-eval-in-background
+  (when (and (ess-can-eval-in-background)
              (member (car (ess--fn-name-start))
                      '("library" "require")))
     (list (ess-symbol-start)

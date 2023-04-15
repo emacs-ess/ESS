@@ -2181,6 +2181,9 @@ If in the output field, goes to the beginning of previous input."
       (inferior-ess--get-old-input:regexp)
     (inferior-ess--get-old-input:field)))
 
+(defun ess-can-eval-in-background (&optional _proc)
+  ess-can-eval-in-background)
+
 
 ;;;*;;; Hot key commands
 
@@ -3000,7 +3003,7 @@ NO-ERROR prevents errors when this has not been implemented for
 (defun ess-synchronize-dirs ()
   "Set Emacs' current directory to be the same as the subprocess directory.
 To be used in `ess-idle-timer-functions'."
-  (when (and ess-can-eval-in-background
+  (when (and (ess-can-eval-in-background)
              ess-getwd-command
              (inferior-ess-available-p))
     (ess-when-new-input last-sync-dirs
@@ -3040,7 +3043,7 @@ path, and can be a remote path"
 
 (defun ess-cache-search-list ()
   "To be used in `ess-idle-timer-functions', to set search path related variables."
-  (when (and ess-can-eval-in-background
+  (when (and (ess-can-eval-in-background)
              inferior-ess-search-list-command)
     (ess-when-new-input last-cache-search-list
       (let ((path (ess-search-list 'force))
