@@ -922,6 +922,12 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
             (should (not (ess-can-eval-in-background))))))
     (setenv "ESSR_TEST_LOAD_ERROR" nil)))
 
+(etest-deftest ess-r-command-error-test ()
+  (let ((err (should-error (ess-command "stop('bar')\n"))))
+    (should (string-match-p "R error during background ESS command ‘stop('bar')’\nError: bar"
+                            (cadr err))))
+  :inf-result "")
+
 (provide 'ess-test-r)
 
 

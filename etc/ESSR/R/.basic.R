@@ -235,9 +235,18 @@ if(.ess.Rversion < "1.8")
             invokeRestart("browser")
     }
 
-    out <- withCallingHandlers(
-        interrupt = restart,
-        withVisible(expr)
+    ## Should be an exiting handler to be able to catch
+    ## stack overflow errors
+    rethrow <- function(cnd) {
+        stop('ESSR::ERROR \"', conditionMessage(cnd), '\"')
+    }
+
+    out <- tryCatch(
+        error = rethrow,
+        withCallingHandlers(
+            interrupt = restart,
+            withVisible(expr)
+        )
     )
 
     ## Print result manually because we can't rely on auto-print
