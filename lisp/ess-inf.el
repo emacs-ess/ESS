@@ -1393,56 +1393,44 @@ wrapping the code into:
         ;; Swap the process buffer with the output buffer before
         ;; sending the command
         (unwind-protect
-            (progn
-              ;; The process is restored from the filter once it's
-              ;; available again (i.e. a prompt or delimiter is
-              ;; detected). This handles the synchronous case when the
-              ;; command runs to completion, as well as the
-              ;; asynchronous case when an early exit occurs. The most
-              ;; common cause of early exits are interrupts sent by
-              ;; Emacs when the user types (see `when-no-input'). In
-              ;; these cases we forward the interrupt to the process
-              ;; and return to the caller right away. We can't restore
-              ;; synchronously after an interrupt because the output
-              ;; of the background command would spill into the
-              ;; process buffer of the user when the process doesn't
-              ;; interrupt in time.
-              (process-put proc 'cmd-restore-function
-                           (ess--command-make-restore-function proc))
-              (when use-delimiter
-                (process-put proc 'cmd-output-delimiter delim))
-              (process-put proc 'cmd-buffer out-buffer)
-              (set-process-filter proc 'inferior-ess-ordinary-filter)
-              (with-current-buffer out-buffer
-                (ess-setq-vars-local proc-forward-alist)
-                (setq buffer-read-only nil)
-                (erase-buffer)
-                (inferior-ess-mark-as-busy proc)
-                (process-send-string proc rich-cmd)
-                ;; Need time for ess-create-object-name-db on PC
-                (if no-prompt-check
-                    (sleep-for 0.02) ; 0.1 is noticeable!
-                  (unless (ess-wait-for-process proc nil wait force-redisplay timeout)
-                    (error "Timeout during background ESS command `%s'"
-                           (ess--strip-final-newlines cmd)))))
-              (setq early-exit nil))
+            (condition-case err
+                (progn
+                  ;; The process is restored from the filter once it's
+                  ;; available again (i.e. a prompt or delimiter is
+                  ;; detected). This handles the synchronous case when the
+                  ;; command runs to completion, as well as the
+                  ;; asynchronous case when an early exit occurs. The most
+                  ;; common cause of early exits are interrupts sent by
+                  ;; Emacs when the user types (see `when-no-input'). In
+                  ;; these cases we forward the interrupt to the process
+                  ;; and return to the caller right away. We can't restore
+                  ;; synchronously after an interrupt because the output
+                  ;; of the background command would spill into the
+                  ;; process buffer of the user when the process doesn't
+                  ;; interrupt in time.
+                  (process-put proc 'cmd-restore-function
+                               (ess--command-make-restore-function proc))
+                  (when use-delimiter
+                    (process-put proc 'cmd-output-delimiter delim))
+                  (process-put proc 'cmd-buffer out-buffer)
+                  (set-process-filter proc 'inferior-ess-ordinary-filter)
+                  (with-current-buffer out-buffer
+                    (ess-setq-vars-local proc-forward-alist)
+                    (setq buffer-read-only nil)
+                    (erase-buffer)
+                    (inferior-ess-mark-as-busy proc)
+                    (process-send-string proc rich-cmd)
+                    ;; Need time for ess-create-object-name-db on PC
+                    (if no-prompt-check
+                        (sleep-for 0.02) ; 0.1 is noticeable!
+                      (unless (ess-wait-for-process proc nil wait force-redisplay timeout)
+                        (error "Timeout during background ESS command `%s'"
+                               (ess--strip-final-newlines cmd))))
+                    (setq early-exit nil)))
+              (error (setq early-exit err))
+              (quit (setq early-exit err)))
           (if early-exit
-              ;; Protect process interruption from further quits
-              (let ((inhibit-quit t))
-                ;; In case of early exit send an interrupt to the
-                ;; process to abort the command
-                (with-current-buffer out-buffer
-                  (goto-char (point-min))
-                  (when (and use-delimiter
-                             (not (re-search-forward (ess--delimiter-start-re delim) nil t)))
-                    ;; CMD probably failed to parse if the start delimiter
-                    ;; can't be found in the output. Disable the delimiter
-                    ;; before interrupt to avoid a freeze.
-                    (ess-write-to-dribble-buffer
-                     "Disabling output delimiter because CMD failed to parse\n")
-                    (process-put proc 'cmd-output-delimiter nil))
-                  (goto-char (point-max))
-                  (ess--interrupt proc)))
+              (ess--command-error-handler proc out-buffer use-delimiter delim early-exit)
             (with-current-buffer out-buffer
               (goto-char (point-min))
               (when (re-search-forward (ess--delimiter-error-start-re) nil t)
@@ -1453,6 +1441,31 @@ wrapping the code into:
                              (ess--strip-final-newlines cmd)
                              (buffer-substring start end)))))))))))
     out-buffer))
+
+(defun ess--command-error-handler (proc
+                                   out-buffer
+                                   use-delimiter
+                                   delim
+                                   early-exit)
+  (let ((inhibit-quit t))
+    ;; In case of early exit send an interrupt to the
+    ;; process to abort the command
+    (with-current-buffer out-buffer
+      (goto-char (point-min))
+      (when (and use-delimiter
+                 (not (re-search-forward (ess--delimiter-start-re delim) nil t)))
+        ;; CMD probably failed to parse if the start delimiter
+        ;; can't be found in the output. Disable the delimiter
+        ;; before interrupt to avoid a freeze.
+        (ess-write-to-dribble-buffer
+         "Disabling output delimiter because CMD failed to parse\n")
+        (process-put proc 'cmd-output-delimiter nil))
+      (goto-char (point-max))
+      (ess--interrupt proc)))
+  ;; Can be `t` when early exit is caused e.g. by a throw instead of
+  ;; an error or a quit
+  (unless (eq early-exit t)
+    (signal (car early-exit) (cdr early-exit))))
 
 ;; (ess-process-get 'ess-format-command-alist)
 ;;   "Alist of mode-specific parameters for formatting a command.
