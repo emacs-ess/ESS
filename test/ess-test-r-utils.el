@@ -242,12 +242,7 @@ BODY can refer to the process via the variable `*proc*'."
                                (find-file-noselect buffer-or-file))
                               (t
                                (generate-new-buffer " *with-r-file-temp*")))))
-    ;; FIXME: If you don't want to display `r-file-buffer', then why not
-    ;; use `with-current-buffer' rather than using `switch-to-buffer'
-    ;; and then having to try and undo its damage with `save-window-excursion'
-    ;; (which can't work when `switch-to-buffer' created a new frame)?
-    (save-window-excursion
-      (switch-to-buffer r-file-buffer)
+    (with-current-buffer r-file-buffer
       (R-mode)
       (let* ((*proc* (get-buffer-process (run-ess-test-r-vanilla)))
              (ess-local-process-name (process-name *proc*))
