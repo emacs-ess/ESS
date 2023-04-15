@@ -1,6 +1,6 @@
 ;; ess-julia.el --- ESS julia mode and inferior interaction  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2012-2020 Free Software Foundation, Inc.
+;; Copyright (C) 2012-2022 Free Software Foundation, Inc.
 ;; Author: Vitalie Spinu
 ;; Maintainer: Vitalie Spinu
 ;; Created: 02-04-2012 (ESS 12.03)
@@ -137,7 +137,7 @@ See `comint-input-sender'."
                           (+ beg 1 (length obj))
                         beg)))
             (list beg (point)
-                  (nreverse (mapcar 'car (ess-julia--get-objects proc obj)))
+                  (nreverse (mapcar #'car (ess-julia--get-objects proc obj)))
                   :exclusive 'no)))
       (when (string-match "complet" (symbol-name last-command))
         (message "No ESS process of dialect %s started" ess-dialect)
@@ -231,7 +231,7 @@ objects from that MODULE."
 
 (declare-function company-begin-backend "company.el")
 
-(defun company-ess-julia-objects (command &optional arg &rest ignored)
+(defun company-ess-julia-objects (command &optional arg &rest _ignored)
   (interactive (list 'interactive))
   (cl-case command
     (interactive (company-begin-backend 'company-ess-julia-objects))
@@ -366,10 +366,10 @@ It makes underscores and dots word constituent chars.")
   ;; company
   (ess--setup-company '(company-ess-julia-objects))
   ;; for emacs >= 24
-  (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
-  (add-hook 'completion-at-point-functions 'ess-julia-object-completion nil 'local)
-  (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
-  (add-hook 'completion-at-point-functions 'ess-julia-latexsub-completion nil 'local)
+  (remove-hook 'completion-at-point-functions #'ess-filename-completion 'local) ;; should be first
+  (add-hook 'completion-at-point-functions #'ess-julia-object-completion nil 'local)
+  (add-hook 'completion-at-point-functions #'ess-filename-completion nil 'local)
+  (add-hook 'completion-at-point-functions #'ess-julia-latexsub-completion nil 'local)
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar)))
 
 ;; Inferior mode
@@ -390,10 +390,10 @@ It makes underscores and dots word constituent chars.")
   (ess--setup-auto-complete '(ac-source-ess-julia-objects) t)
   ;; company
   (ess--setup-company '(company-ess-julia-objects) t)
-  (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
-  (add-hook 'completion-at-point-functions 'ess-julia-object-completion nil 'local)
-  (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
-  (add-hook 'completion-at-point-functions 'ess-julia-latexsub-completion nil 'local)
+  (remove-hook 'completion-at-point-functions #'ess-filename-completion 'local) ;; should be first
+  (add-hook 'completion-at-point-functions #'ess-julia-object-completion nil 'local)
+  (add-hook 'completion-at-point-functions #'ess-filename-completion nil 'local)
+  (add-hook 'completion-at-point-functions #'ess-julia-latexsub-completion nil 'local)
   (setq comint-input-sender #'ess-julia-input-sender))
 
 (defvar ess-julia-mode-hook nil)

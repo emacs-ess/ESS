@@ -1,7 +1,7 @@
 ;; -*- lexical-binding: t -*-
 
 (require 'ert)
-(require 'etest)
+(require 'etest "../etest")
 
 (etest-deftest etest-local-vars-test ()
   "`:init' keyword specifies local variables."

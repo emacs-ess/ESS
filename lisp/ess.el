@@ -101,7 +101,8 @@ Is set  by \\[ess-version-string].")
          (git-rev (when (file-exists-p git-fname)
                     (with-current-buffer (find-file-noselect git-fname)
                       (goto-char (point-min))
-                      (concat "git: "(buffer-substring 1 (point-at-eol))))))
+                      (concat "git: "(buffer-substring
+                                      (point-min) (line-end-position))))))
          (elpa-fname (concat ess-dir "ess-pkg.el"))
          (elpa-rev (when (file-exists-p elpa-fname)
                      ;; Get it from ELPA dir name, (probably won't work if installed manually)
@@ -188,7 +189,8 @@ etc.")
 
 (require 'timer)
 (defvar ess--idle-timer
-  (run-with-idle-timer ess-idle-timer-interval 'repeat 'ess--idle-timer-function)
+  (run-with-idle-timer ess-idle-timer-interval 'repeat
+                       #'ess--idle-timer-function)
   "Timer used to run `ess-idle-timer-functions'.")
 
 

@@ -17,7 +17,7 @@
 ;; Tests for inferior processes.
 
 (require 'ert)
-(require 'etest)
+(require 'etest "etest/etest")
 (require 'cl-lib)
 
 ;; As we use the R inferior for the generic tests
@@ -39,7 +39,7 @@
   (let ((default-directory user-emacs-directory)
         (ess-startup-directory temporary-file-directory)
         ess-ask-for-ess-directory)
-    (with-r-running nil
+    (ess-test-with-r-running nil
       (should (string= default-directory user-emacs-directory))
       (should (string= (inferior-ess-default-directory) temporary-file-directory)))
     (should (string= default-directory user-emacs-directory))))
@@ -47,7 +47,7 @@
 (ert-deftest ess-test-inferior-live-process-error ()
   (let* ((ess-gen-proc-buffer-name-function
           ;; Generate same inferior name each time
-          (lambda (&rest args) "" "foo"))
+          (lambda (&rest _) "" "foo"))
          (error-msg "Can't start a new session in buffer `foo` because one already exists")
          (inf-buf (run-ess-test-r-vanilla)))
     (ess-test-unwind-protect inf-buf
@@ -55,8 +55,9 @@
                        (format-message error-msg))))))
 
 (ert-deftest ess-test-inferior-local-start-args ()
-  (with-r-running nil
-    (let ((inf-data (buffer-local-value 'inferior-ess--local-data *inf-buf*)))
+  (ess-test-with-r-running nil
+    (let ((inf-data (buffer-local-value 'inferior-ess--local-data
+                                        (process-buffer *proc*))))
       (should (equal (car inf-data) "R"))
       (should (equal (cdr inf-data) "--no-readline  --no-init-file --no-site-file")))))
 
@@ -91,13 +92,13 @@
   ;;                    t)
   ;; (ess-async-command "{cat(1:5);Sys.sleep(5);cat(2:6)}\n" nil (get-process "R")
   ;;                    (lambda (proc) (message "done"))
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (let ((inf-proc *proc*)
           semaphore)
       (ess-async-command "{cat(1:5);Sys.sleep(0.5);cat(2:6, '\n')}\n"
                          (get-buffer-create " *ess-async-text-command-output*")
                          inf-proc
-                         (lambda (&rest args) (setq semaphore t)))
+                         (lambda (&rest _) (setq semaphore t)))
       (should (process-get inf-proc 'callbacks))
       (cl-loop repeat 3
                until (and semaphore (null (process-get inf-proc 'callbacks)))
@@ -105,15 +106,15 @@
                finally (should-not (process-get inf-proc 'callbacks))))))
 
 (ert-deftest ess-run-presend-hooks-test ()
-  (with-r-running nil
-    (let ((ess-presend-filter-functions (list (lambda (string) "\"bar\""))))
-      (should (output= (ess-send-string (ess-get-process) "\"foo\"")
+  (ess-test-with-r-running nil
+    (let ((ess-presend-filter-functions (list (lambda (_string) "\"bar\""))))
+      (should (ess-test-output= (ess-send-string (ess-get-process) "\"foo\"")
                        "[1] \"bar\"")))))
 
 (ert-deftest ess-load-file-test ()
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (should (string-match "^\\[1\\] \"foo\"\nSourced file"
-                          (output nil (ess-load-file (expand-file-name "file.R" ess-test-fixtures-directory)))))))
+                          (ess-test-output nil (ess-load-file (expand-file-name "file.R" ess-test-fixtures-directory)))))))
 
 (etest-deftest ess-command-incomplete-test ()
   "`ess-command' fails with incomplete input."
@@ -442,9 +443,9 @@ OUT-STRING is the content of the region captured by
     ))
 
 (ert-deftest ess-setwd-test ()
-  (with-r-running nil
+  (ess-test-with-r-running nil
     ;; Working directory is set verbosely
-    (should (output= (ess-set-working-directory temporary-file-directory)
+    (should (ess-test-output= (ess-set-working-directory temporary-file-directory)
                      (format "setwd('%s')" temporary-file-directory)))
     ;; Update process default-directory but not caller's buffer
     (let* ((cur-dir default-directory)
@@ -501,9 +502,10 @@ cleaned-prompts >
 }
 ")
         (output "> ")
-        (output-nowait "> fn <- function() {
-+ }
-> "))
+        ;; (output-nowait "> fn <- function() {
+;; + }
+;; > ")
+        )
     (let ((inferior-ess-replace-long+ t))
       (let ((ess-eval-visibly nil))
         (should (string= output
@@ -525,14 +527,15 @@ head(cars, 2)
 1     4    2
 2     4   10
 > ")
-        (output-nowait "cat(\"some. text\\n\")
-+ head(cars, 2)
-some. text
-> 
-  speed dist
-1     4    2
-2     4   10
-> "))
+        ;; (output-nowait "cat(\"some. text\\n\")
+;; + head(cars, 2)
+;; some. text
+;; > 
+;;   speed dist
+;; 1     4    2
+;; 2     4   10
+;; > ")
+        )
     (let ((inferior-ess-replace-long+ t))
       ;; Can't figure out why this has changed
       ;; (let ((ess-eval-visibly nil))
@@ -571,7 +574,7 @@ some. text
                      "source('file')\n"))))
 
 (ert-deftest ess-get-words-from-vector-test ()
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (should (cl-every #'string= (ess-get-words-from-vector "c('1')\n") '("1")))
     (should (cl-every #'string= (ess-get-words-from-vector "c('1', \"2\")\n") '("1" "2")))
     (should (cl-every #'string= (ess-get-words-from-vector "c('aaa','bbb\"ccc', 'dddd')\n")
@@ -639,7 +642,7 @@ some. text
               (should (string= (buffer-name) "*R-3.2.1:2*")))))))))
 
 (ert-deftest ess-switch-to-inferior-or-script-buffer-test ()
-  (with-r-running nil
+  (ess-test-with-r-running nil
     (should (derived-mode-p 'ess-mode))
     (ess-switch-to-inferior-or-script-buffer nil)
     (should (derived-mode-p 'inferior-ess-mode))))

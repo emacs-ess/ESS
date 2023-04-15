@@ -1,5 +1,6 @@
+;; -*- lexical-binding: t; -*-
 
-(defun token= (type &optional value)
+(defun ess-test-token= (type &optional value)
   "Check that the next token conforms to TYPE and VALUE.
 This checks it back and forth and moves the point after the
 token."

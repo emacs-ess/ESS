@@ -1,6 +1,6 @@
-;;; msdos.el --- Run an MS-DOS shell in an NTemacs buffer with bash as the shell
+;;; msdos.el --- Run an MS-DOS shell in an NTemacs buffer with bash as the shell  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1999-2020 Free Software Foundation, Inc.
+;; Copyright (C) 1999-2022 Free Software Foundation, Inc.
 ;; Author: Richard M. Heiberger <rmh@temple.edu>
 ;; Created: February 1999
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
@@ -104,7 +104,7 @@ its value is used as a list of arguments when invoking the shell.
         (save-excursion
           (setenv "COMSPEC" explicit-msdos-comspec-file-name)
           (setenv "SHELL" explicit-msdos-shell-file-name)
-          (set-buffer (apply 'make-comint "msdos" prog
+          (set-buffer (apply #'make-comint "msdos" prog
                              (if (and xargs-name (boundp xargs-name))
                                  (symbol-value xargs-name))
                              (if (file-exists-p startfile)
@@ -142,7 +142,7 @@ d. strips ctrl-m from output.
   (setq msdos-minor-mode t)
   (set (make-local-variable 'comint-completion-addsuffix) '("\\" . " "))
   (setq comint-process-echoes t)
-  (add-hook 'comint-output-filter-functions 'shell-strip-ctrl-m nil t)
+  (add-hook 'comint-output-filter-functions #'shell-strip-ctrl-m nil t)
   (set-process-coding-system (get-buffer-process (current-buffer)) 'raw-text-dos 'raw-text-dos)
   ;; buffer-process-coding-system is critical.
   )

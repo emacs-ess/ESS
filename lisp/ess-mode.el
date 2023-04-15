@@ -1,6 +1,6 @@
 ;;; ess-mode.el -- Emacs Speaks Statistics root mode.  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1994-2020 Free Software Foundation, Inc.
+;; Copyright (C) 1994-2022 Free Software Foundation, Inc.
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
 
 ;; This file is part of GNU Emacs.
@@ -103,8 +103,8 @@
 ;; 27 binds M-j to `default-indent-new-line' which calls
 ;; `comment-line-break-function' if point is in a comment. We set this
 ;; function in the mode init.
-(substitute-key-definition 'indent-new-comment-line
-                           'ess-indent-new-comment-line
+(substitute-key-definition #'indent-new-comment-line
+                           #'ess-indent-new-comment-line
                            ess-mode-map global-map)
 
 (defvar ess-extra-map
@@ -309,7 +309,7 @@ indentation style. See `ess-style-alist' for predefined styles."
           (:eval (ess--get-mode-line-indicator))
           ess--local-mode-line-process-indicator
           "]"))
-  (add-hook 'ess-idle-timer-functions 'ess-synchronize-dirs nil 'local))
+  (add-hook 'ess-idle-timer-functions #'ess-synchronize-dirs nil 'local))
 
 (defun ess--get-mode-line-indicator ()
   "Get `ess--mode-line-process-indicator' from process buffer.
@@ -319,7 +319,8 @@ Internal function to be used for dynamic mode-line display in
       (let* ((proc (get-process ess-local-process-name))
              (buff (when proc (process-buffer proc))))
         (if (and proc (buffer-live-p buff))
-            (with-current-buffer buff (mapcar 'eval ess--mode-line-process-indicator))
+            (with-current-buffer buff
+              (mapcar (lambda (e) (eval e t)) ess--mode-line-process-indicator))
           "none"))
     "none"))
 
@@ -392,7 +393,8 @@ Otherwise go to the end of paragraph."
   (ess-goto-end-of-function-or-para)
   (exchange-point-and-mark))
 
-(define-obsolete-function-alias 'ess-mark-function 'ess-mark-function-or-para "15.09")
+(define-obsolete-function-alias 'ess-mark-function
+  #'ess-mark-function-or-para "15.09")
 
 (defun ess-narrow-to-defun-or-para ()
   "Make text outside current function invisible.
@@ -407,7 +409,8 @@ current function."
                        (point))))
       (narrow-to-region beg end))))
 
-(define-obsolete-function-alias 'ess-narrow-to-defun 'ess-narrow-to-defun-or-para "15.09")
+(define-obsolete-function-alias 'ess-narrow-to-defun
+  #'ess-narrow-to-defun-or-para "15.09")
 
 ;; FIXME: Support soft breaks with `insert-and-inherit'. See
 ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Hard-and-Soft-Newlines.html

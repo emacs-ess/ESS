@@ -5,11 +5,11 @@
 
 ¶`a"a"a` "a`a`a"
 
-##! (should (token= "identifier" "`a\"a\"a`"))
+##! (should (ess-test-token= "identifier" "`a\"a\"a`"))
 
 `a"a"a`¶ "a`a`a"
 
-##> (should (token= "string" "\"a`a`a\""))
+##> (should (ess-test-token= "string" "\"a`a`a\""))
 
 `a"a"a` "a`a`a"¶
 
@@ -18,11 +18,11 @@
 
 ¶.a_a a10
 
-##! (should (token= "identifier" ".a_a"))
+##! (should (ess-test-token= "identifier" ".a_a"))
 
 .a_a¶ a10
 
-##> (should (token= "identifier" "a10"))
+##> (should (ess-test-token= "identifier" "a10"))
 
 .a_a a10¶
 
@@ -31,19 +31,19 @@
 
 ¶100 1E10 1e10 1.10
 
-##! (should (token= "number" "100"))
+##! (should (ess-test-token= "number" "100"))
 
 100¶ 1E10 1e10 1.10
 
-##> (should (token= "number" "1E10"))
+##> (should (ess-test-token= "number" "1E10"))
 
 100 1E10¶ 1e10 1.10
 
-##> (should (token= "number" "1e10"))
+##> (should (ess-test-token= "number" "1e10"))
 
 100 1E10 1e10¶ 1.10
 
-##> (should (token= "number" "1.10"))
+##> (should (ess-test-token= "number" "1.10"))
 
 100 1E10 1e10 1.10¶
 
@@ -52,16 +52,16 @@
 
 ¶() a[[[]]] {}
 
-##! (should (token= "("))
+##! (should (ess-test-token= "("))
 
 (¶) a[[[]]] {}
 
-##> (should (token= ")"))
+##> (should (ess-test-token= ")"))
 
 ()¶ a[[[]]] {}
 
 ##> (ess-jump-token)
-##> (should (token= "[["))
+##> (should (ess-test-token= "[["))
 
 () a[[¶[]]] {}
 
@@ -70,7 +70,7 @@
 
 () a[[[¶]]] {}
 
-##> (should (token= "]]"))
+##> (should (ess-test-token= "]]"))
 
 () a[[[]]¶] {}
 
@@ -79,11 +79,11 @@
 
 () a[[[]]]¶ {}
 
-##> (should (token= "{"))
+##> (should (ess-test-token= "{"))
 
 () a[[[]]] {¶}
 
-##> (should (token= "}"))
+##> (should (ess-test-token= "}"))
 
 () a[[[]]] {}¶
 
@@ -103,12 +103,12 @@
 ¶.; .,
 
 ##! (ess-jump-token)
-##! (should (token= ";"))
+##! (should (ess-test-token= ";"))
 
 .;¶ .,
 
 ##> (ess-jump-token)
-##> (should (token= ","))
+##> (should (ess-test-token= ","))
 
 .; .,¶
 
@@ -117,12 +117,12 @@
 
 ¶if if_else else function while for
 
-##! (should (token= "if"))
-##! (should (token= "identifier" "if_else"))
-##! (should (token= "else"))
-##! (should (token= "function"))
-##! (should (token= "while"))
-##! (should (token= "for"))
+##! (should (ess-test-token= "if"))
+##! (should (ess-test-token= "identifier" "if_else"))
+##! (should (ess-test-token= "else"))
+##! (should (ess-test-token= "function"))
+##! (should (ess-test-token= "while"))
+##! (should (ess-test-token= "for"))
 
 if if_else else function while for¶
 
@@ -135,17 +135,17 @@ if if_else else function while for¶
 ¶a & a && a &&& a | a || a ||| a
 
 ##! (ess-jump-token)
-##! (should (token= "&"))
+##! (should (ess-test-token= "&"))
 
 a &¶ a && a &&& a | a || a ||| a
 
 ##> (ess-jump-token)
-##> (should (token= "&&"))
+##> (should (ess-test-token= "&&"))
 
 a & a &&¶ a &&& a | a || a ||| a
 
 ##> (ess-jump-token)
-##> (should (token= "&&"))
+##> (should (ess-test-token= "&&"))
 
 a & a && a &&¶& a | a || a ||| a
 
@@ -155,17 +155,17 @@ a & a && a &&¶& a | a || a ||| a
 a & a && a &&&¶ a | a || a ||| a
 
 ##> (ess-jump-token)
-##> (should (token= "|"))
+##> (should (ess-test-token= "|"))
 
 a & a && a &&& a |¶ a || a ||| a
 
 ##> (ess-jump-token)
-##> (should (token= "||"))
+##> (should (ess-test-token= "||"))
 
 a & a && a &&& a | a ||¶ a ||| a
 
 ##> (ess-jump-token)
-##> (should (token= "||"))
+##> (should (ess-test-token= "||"))
 
 a & a && a &&& a | a || a ||¶| a
 
@@ -180,22 +180,22 @@ a & a && a &&& a | a || a |||¶ a
 ¶a = a := a == a === a :== a != a :!= a
 
 ##! (ess-jump-token)
-##! (should (token= "="))
+##! (should (ess-test-token= "="))
 
 a =¶ a := a == a === a :== a != a :!= a
 
 ##> (ess-jump-token)
-##> (should (token= ":="))
+##> (should (ess-test-token= ":="))
 
 a = a :=¶ a == a === a :== a != a :!= a
 
 ##> (ess-jump-token)
-##> (should (token= "=="))
+##> (should (ess-test-token= "=="))
 
 a = a := a ==¶ a === a :== a != a :!= a
 
 ##> (ess-jump-token)
-##> (should (token= "=="))
+##> (should (ess-test-token= "=="))
 
 a = a := a == a ==¶= a :== a != a :!= a
 
@@ -205,7 +205,7 @@ a = a := a == a ==¶= a :== a != a :!= a
 a = a := a == a ===¶ a :== a != a :!= a
 
 ##> (ess-jump-token)
-##> (should (token= ":="))
+##> (should (ess-test-token= ":="))
 
 a = a := a == a === a :=¶= a != a :!= a
 
@@ -215,16 +215,16 @@ a = a := a == a === a :=¶= a != a :!= a
 a = a := a == a === a :==¶ a != a :!= a
 
 ##> (ess-jump-token)
-##> (should (token= "!="))
+##> (should (ess-test-token= "!="))
 
 a = a := a == a === a :== a !=¶ a :!= a
 
 ##> (ess-jump-token)
-##> (should (token= ":"))
+##> (should (ess-test-token= ":"))
 
 a = a := a == a === a :== a != a :¶!= a
 
-##> (should (token= "!="))
+##> (should (ess-test-token= "!="))
 
 a = a := a == a === a :== a != a :!=¶ a
 
@@ -234,26 +234,26 @@ a = a := a == a === a :== a != a :!=¶ a
 ¶a %>% a %a`a`a"a"a$a@a% a %% a %%% a % a
 
 ##! (ess-jump-token)
-##! (should (token= "%infix%" "%>%"))
+##! (should (ess-test-token= "%infix%" "%>%"))
 
 a %>%¶ a %a`a`a"a"a$a@a% a %% a %%% a % a
 
 ##> (ess-jump-token)
-##> (should (token= "%infix%" "%a`a`a\"a\"a$a@a%"))
+##> (should (ess-test-token= "%infix%" "%a`a`a\"a\"a$a@a%"))
 
 a %>% a %a`a`a"a"a$a@a%¶ a %% a %%% a % a
 
 ##> (ess-jump-token)
-##> (should (token= "%%"))
+##> (should (ess-test-token= "%%"))
 
 a %>% a %a`a`a"a"a$a@a% a %%¶ a %%% a % a
 
 ##> (ess-jump-token)
-##> (should (token= "%%"))
+##> (should (ess-test-token= "%%"))
 
 a %>% a %a`a`a"a"a$a@a% a %% a %%¶% a % a
 
-##> (should (token= "%infix%" "% a %"))
+##> (should (ess-test-token= "%infix%" "% a %"))
 
 a %>% a %a`a`a"a"a$a@a% a %% a %%% a %¶ a
 
@@ -263,49 +263,49 @@ a %>% a %a`a`a"a"a$a@a% a %% a %%% a %¶ a
 ¶a + a - a - -a * a ** a ^ a ^ ++a
 
 ##! (ess-jump-token)
-##! (should (token= "+"))
+##! (should (ess-test-token= "+"))
 
 a +¶ a - a - -a * a ** a ^ a ^ ++a
 
 ##> (ess-jump-token)
-##> (should (token= "-"))
+##> (should (ess-test-token= "-"))
 
 a + a -¶ a - -a * a ** a ^ a ^ ++a
 
 ##> (ess-jump-token)
-##> (should (token= "-"))
+##> (should (ess-test-token= "-"))
 
 a + a - a -¶ -a * a ** a ^ a ^ ++a
 
-##> (should (token= "-"))
+##> (should (ess-test-token= "-"))
 
 a + a - a - -¶a * a ** a ^ a ^ ++a
 
 ##> (ess-jump-token)
-##> (should (token= "*"))
+##> (should (ess-test-token= "*"))
 
 a + a - a - -a *¶ a ** a ^ a ^ ++a
 
 ##> (ess-jump-token)
-##> (should (token= "**"))
+##> (should (ess-test-token= "**"))
 
 a + a - a - -a * a **¶ a ^ a ^ ++a
 
 ##> (ess-jump-token)
-##> (should (token= "^"))
+##> (should (ess-test-token= "^"))
 
 a + a - a - -a * a ** a ^¶ a ^ ++a
 
 ##> (ess-jump-token)
-##> (should (token= "^"))
+##> (should (ess-test-token= "^"))
 
 a + a - a - -a * a ** a ^ a ^¶ ++a
 
-##> (should (token= "+"))
+##> (should (ess-test-token= "+"))
 
 a + a - a - -a * a ** a ^ a ^ +¶+a
 
-##> (should (token= "+"))
+##> (should (ess-test-token= "+"))
 
 a + a - a - -a * a ** a ^ a ^ ++¶a
 
@@ -315,22 +315,22 @@ a + a - a - -a * a ** a ^ a ^ ++¶a
 ¶a:  a::  a:::  a::::  a:::=
 
 ##! (ess-jump-token)
-##! (should (token= ":"))
+##! (should (ess-test-token= ":"))
 
 a:¶  a::  a:::  a::::  a:::=
 
 ##> (ess-jump-token)
-##> (should (token= "::"))
+##> (should (ess-test-token= "::"))
 
 a:  a::¶  a:::  a::::  a:::=
 
 ##> (ess-jump-token)
-##> (should (token= ":::"))
+##> (should (ess-test-token= ":::"))
 
 a:  a::  a:::¶  a::::  a:::=
 
 ##> (ess-jump-token)
-##> (should (token= ":::"))
+##> (should (ess-test-token= ":::"))
 
 a:  a::  a:::  a:::¶:  a:::=
 
@@ -340,7 +340,7 @@ a:  a::  a:::  a:::¶:  a:::=
 a:  a::  a:::  a::::¶  a:::=
 
 ##> (ess-jump-token)
-##> (should (token= ":::"))
+##> (should (ess-test-token= ":::"))
 
 a:  a::  a:::  a::::  a:::¶=
 
@@ -350,32 +350,32 @@ a:  a::  a:::  a::::  a:::¶=
 ¶a <-  a <<-  a -> >  a ->> a >> a
 
 ##! (ess-jump-token)
-##! (should (token= "<-"))
+##! (should (ess-test-token= "<-"))
 
 a <-¶  a <<-  a -> >  a ->> a >> a
 
 ##> (ess-jump-token)
-##> (should (token= "<<-"))
+##> (should (ess-test-token= "<<-"))
 
 a <-  a <<-¶  a -> >  a ->> a >> a
 
 ##> (ess-jump-token)
-##> (should (token= "->"))
+##> (should (ess-test-token= "->"))
 
 a <-  a <<-  a ->¶ >  a ->> a >> a
 
-##> (should (token= ">"))
+##> (should (ess-test-token= ">"))
 
 a <-  a <<-  a -> >¶  a ->> a >> a
 
 ##> (ess-jump-token)
-##> (should (token= "->>"))
+##> (should (ess-test-token= "->>"))
 
 a <-  a <<-  a -> >  a ->>¶ a >> a
 
 ##> (ess-jump-token)
-##> (should (token= ">"))
-##> (should (token= ">"))
+##> (should (ess-test-token= ">"))
+##> (should (ess-test-token= ">"))
 
 a <-  a <<-  a -> >  a ->> a >>¶ a
 
@@ -385,30 +385,30 @@ a <-  a <<-  a -> >  a ->> a >>¶ a
 ¶a < >  a >=  a > =  a <=
 
 ##! (ess-jump-token)
-##! (should (token= "<"))
+##! (should (ess-test-token= "<"))
 
 a <¶ >  a >=  a > =  a <=
 
-##> (should (token= ">"))
+##> (should (ess-test-token= ">"))
 
 a < >¶  a >=  a > =  a <=
 
 ##> (ess-jump-token)
-##> (should (token= ">="))
+##> (should (ess-test-token= ">="))
 
 a < >  a >=¶  a > =  a <=
 
 ##> (ess-jump-token)
-##> (should (token= ">"))
+##> (should (ess-test-token= ">"))
 
 a < >  a >=  a >¶ =  a <=
 
-##> (should (token= "="))
+##> (should (ess-test-token= "="))
 
 a < >  a >=  a > =¶  a <=
 
 ##> (ess-jump-token)
-##> (should (token= "<="))
+##> (should (ess-test-token= "<="))
 
 a < >  a >=  a > =  a <=¶
 
@@ -417,13 +417,13 @@ a < >  a >=  a > =  a <=¶
 
 ¶~a~~a
 
-##! (should (token= "~"))
+##! (should (ess-test-token= "~"))
 
 ~¶a~~a
 
 ##> (ess-jump-token)
-##> (should (token= "~"))
-##> (should (token= "~"))
+##> (should (ess-test-token= "~"))
+##> (should (ess-test-token= "~"))
 
 ~a~~¶a
 
@@ -435,7 +435,7 @@ a < >  a >=  a > =  a <=¶
 
 call(param ¶= NULL)
 
-##! (should (token= "="))
+##! (should (ess-test-token= "="))
 ##! (should (ess-refined-token= (ess-token-before) "param-assign"))
 
 call(param =¶ NULL)
@@ -445,7 +445,7 @@ call(param =¶ NULL)
 
 call(¶"param" = NULL)
 
-##! (should (token= "string" "\"param\""))
+##! (should (ess-test-token= "string" "\"param\""))
 ##! (should (ess-refined-token= (ess-token-before) "identifier"))
 
 call("param"¶ = NULL)
@@ -455,7 +455,7 @@ call("param"¶ = NULL)
 
 ¶"call"()
 
-##! (should (token= "string" "\"call\""))
+##! (should (ess-test-token= "string" "\"call\""))
 ##! (should (ess-refined-token= (ess-token-before) "identifier"))
 
 "call"¶()

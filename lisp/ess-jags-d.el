@@ -1,6 +1,6 @@
 ;;; ess-jags-d.el --- ESS[JAGS] dialect  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2009-2020 Free Software Foundation, Inc.
+;; Copyright (C) 2009-2022 Free Software Foundation, Inc.
 
 ;; Author: Rodney Sparapani
 ;; Created: 13 March 2008
@@ -246,7 +246,7 @@
   (setq ess-language "S") ; mimic S for ess-smart-underscore
   (unless (and (fboundp 'w32-shell-dos-semantics)
                (w32-shell-dos-semantics))
-    (add-hook 'comint-output-filter-functions 'ess-bugs-exit-notify-sh))
+    (add-hook 'comint-output-filter-functions #'ess-bugs-exit-notify-sh))
   )
 
 ;;;###autoload

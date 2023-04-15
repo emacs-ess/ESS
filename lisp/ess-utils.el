@@ -1,6 +1,6 @@
 ;;; ess-utils.el --- General Emacs utility functions used by ESS  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1998-2020 Free Software Foundation, Inc.
+;; Copyright (C) 1998-2022 Free Software Foundation, Inc.
 ;; Author: Martin Maechler <maechler@stat.math.ethz.ch>
 ;; Created: 9 Sept 1998
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
@@ -155,7 +155,7 @@ This function will work even if LIST is unsorted.  See also `delete-dups'."
       (setq list (setcdr list (funcall predicate (car list) (cdr list))))))
   list)
 
-(define-obsolete-function-alias 'ess-uniq-list 'delete-dups "ESS 19.04")
+(define-obsolete-function-alias 'ess-uniq-list #'delete-dups "ESS 19.04")
 
 (defalias 'ess-flatten-list
   ;; `flatten-tree' is a function in Emacs 27
@@ -180,7 +180,7 @@ Drops `nil' entries."
    (t (list list))))
 
 (define-obsolete-function-alias 'ess-delete-blank-lines
-  'delete-blank-lines "ESS 19.04")
+  #'delete-blank-lines "ESS 19.04")
 
 (define-obsolete-function-alias 'ess-line-to-list-of-words #'split-string "ESS 19.04")
 
@@ -215,7 +215,7 @@ no matter the reason for exiting early (e.g. error or quit)."
         (goto-char ess-temp-store-point))
       t)))
 
-(define-obsolete-function-alias 'ess-find-exec 'ess-find-exec-completions "ESS 19.04")
+(define-obsolete-function-alias 'ess-find-exec #'ess-find-exec-completions "ESS 19.04")
 (defun ess-find-exec-completions (root)
   "Given the ROOT of an executable file name, find all possible completions.
 Search for the executables in the variable `exec-path'."
@@ -235,7 +235,7 @@ Search for the executables in the variable `exec-path'."
 
 (defun ess-drop-non-directories (file-strings)
   "Drop all entries in FILE-STRINGS that do not \"look like\" directories."
-  (ess-flatten-list (mapcar 'file-name-directory file-strings)))
+  (ess-flatten-list (mapcar #'file-name-directory file-strings)))
 
 (defun ess--parent-dir (path n)
   "Return Nth parent of PATH."
@@ -317,7 +317,7 @@ evaluation of BODY."
     (if (and (symbolp sym)
              (custom-variable-p sym))
         (cons
-         (eval (car (get sym 'standard-value)))
+         (eval (car (get sym 'standard-value)) t)
          (symbol-value sym))
       (error "`ess-font-lock-keywords' must be a symbol of a custom variable"))))
 
@@ -431,6 +431,8 @@ calling `untrace-function' on these functions."
 (defvar ido-directory-nonreadable)
 (defvar ido-current-directory)
 (defvar ido-enable-flex-matching)
+(declare-function ido-choose-completion-string "ido")
+(declare-function ido-minibuffer-setup "ido")
 (declare-function ido-read-internal "ido" (item prompt hist &optional default require-match initial))
 
 (defun ess-completing-read (prompt collection &optional predicate
@@ -458,15 +460,15 @@ with ': ' and (default %s) when needed. If HIST is nil use
               sel)
           (unwind-protect
               (progn
-                (add-hook 'minibuffer-setup-hook 'ido-minibuffer-setup)
-                (add-hook 'choose-completion-string-functions 'ido-choose-completion-string)
+                (add-hook 'minibuffer-setup-hook #'ido-minibuffer-setup)
+                (add-hook 'choose-completion-string-functions #'ido-choose-completion-string)
                 (setq sel (ido-read-internal 'list prompt hist def require-match initial-input))
                 (when hist  ;; ido does not push into hist the whole match if C-SPC or RET is used (reported)
                   (unless (string= sel (car (symbol-value hist)))
                     (set hist (cons sel  (symbol-value hist))))))
             (when reset-ido
-              (remove-hook 'minibuffer-setup-hook 'ido-minibuffer-setup)
-              (remove-hook 'choose-completion-string-functions 'ido-choose-completion-string)))
+              (remove-hook 'minibuffer-setup-hook #'ido-minibuffer-setup)
+              (remove-hook 'choose-completion-string-functions #'ido-choose-completion-string)))
           sel)
       ;; else usual completion
       (completing-read prompt collection predicate require-match initial-input hist def))))
@@ -637,7 +639,7 @@ GTags file (default TAGS): ")
                                                (nth 2 l))))
                                    imenu-generic-expression)))
            (tags-cmd (format "etags -o %s --regex='%s' -" tagfile
-                             (mapconcat 'identity regs "' --regex='"))))
+                             (mapconcat #'identity regs "' --regex='"))))
       (message "Building tags: %s" tagfile)
       (when (= 0 (shell-command (format "%s | %s" find-cmd tags-cmd)))
         (message "Building tags .. ok!")))))
@@ -739,7 +741,7 @@ Copied almost verbatim from gnus-utils.el (but with test for mac added)."
   (when focus-follows-mouse
     (set-mouse-position frame (1- (frame-width frame)) 0)))
 
-(define-obsolete-function-alias 'ess-do-auto-fill 'do-auto-fill "ESS 19.04")
+(define-obsolete-function-alias 'ess-do-auto-fill #'do-auto-fill "ESS 19.04")
 
 
 ;;*;; Syntax
@@ -1092,7 +1094,7 @@ nil and not t, query for each instance."
   (save-excursion
     (goto-char (point-max))
     (forward-line -1)
-    (delete-region (point-at-eol) (point-max))))
+    (delete-region (line-end-position) (point-max))))
 
 (defun ess-sleep ()
   "Put Emacs to sleep for `ess-sleep-for-shell' seconds (floats work)."
@@ -1103,7 +1105,7 @@ nil and not t, query for each instance."
   (when buf (set-buffer buf))
   (mapc (lambda (pair)
           (make-local-variable (car pair))
-          (set (car pair) (eval (cdr pair)))
+          (set (car pair) (eval (cdr pair) t))
           (when (bound-and-true-p ess--make-local-vars-permanent)
             (put (car pair) 'permanent-local t))) ;; hack for Rnw
         alist))
@@ -1117,8 +1119,8 @@ VARS must be a list of symbols."
 (defvar ess-error-regexp   "^\\(Syntax error: .*\\) at line \\([0-9]*\\), file \\(.*\\)$"
   "Regexp to search for errors.")
 
-(define-obsolete-function-alias 'ess-beginning-of-function 'beginning-of-defun "ESS 19.04")
-(define-obsolete-function-alias 'ess-end-of-function 'end-of-defun "ESS 19.04")
+(define-obsolete-function-alias 'ess-beginning-of-function #'beginning-of-defun "ESS 19.04")
+(define-obsolete-function-alias 'ess-end-of-function #'end-of-defun "ESS 19.04")
 
 (with-no-warnings
   (defalias 'ess--project-root

@@ -1,6 +1,6 @@
 ;; ess-rd.el --- Support for editing R documentation (Rd) source  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1997-2020 Free Software Foundation, Inc.
+;; Copyright (C) 1997-2022 Free Software Foundation, Inc.
 ;; Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
 ;; Created: 25 July 1997
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
@@ -150,12 +150,12 @@ All Rd mode abbrevs start with a grave accent (`)."
   (list
    (cons
     (concat "\\\\\\("
-            (mapconcat 'identity Rd-section-names "\\|")
+            (mapconcat #'identity Rd-section-names "\\|")
             "\\>\\)")
     'font-lock-reference-face) ; Rd-bold-face
    (cons
     (concat "\\\\\\("
-            (mapconcat 'identity Rd-keywords "\\|")
+            (mapconcat #'identity Rd-keywords "\\|")
             "\\>\\)")
     'font-lock-keyword-face)
    '("^#\\(ifn?def\\)\\s-+\\(\\sw+\\)"
@@ -241,12 +241,12 @@ Type \\[list-abbrevs] to display the built-in abbrevs for Rd
 keywords.To automatically turn on the abbrev(iate) features, add
 the following to your Emacs configuration file:
 
-  (add-hook 'Rd-mode-hook #'abbrev-mode)"
+  (add-hook \\='Rd-mode-hook #\\='abbrev-mode)"
   (setq ess-language "S" ess-dialect  "R")
   (require 'ess-r-mode)
   (ess-setq-vars-local ess-r-customize-alist)
 
-  (setq-local indent-line-function 'Rd-mode-indent-line)
+  (setq-local indent-line-function #'Rd-mode-indent-line)
   (setq fill-column 72)
   (setq-local comment-start-skip "\\s<+\\s-*")
   (setq-local comment-start "% ")
@@ -306,7 +306,7 @@ the following to your Emacs configuration file:
       0)
      (t
       (let ((p (progn
-                 (re-search-forward "[ \t]*\\s)*" (point-at-eol) t)
+                 (re-search-forward "[ \t]*\\s)*" (line-end-position) t)
                  (point))))
         (if (or (< (forward-line -1) 0)
                 (Rd-mode-in-verbatim-p))
@@ -316,7 +316,7 @@ the following to your Emacs configuration file:
                           (Rd-mode-in-preprocessor-line-p))
                       (not (bobp)))
             (forward-line -1))
-          (re-search-forward "[ \t]*\\s)*" (point-at-eol) t)
+          (re-search-forward "[ \t]*\\s)*" (line-end-position) t)
           (prog1
               (+ (current-indentation)
                  (* (car (parse-partial-sexp (point) p))
@@ -478,7 +478,7 @@ temporary one in variable `temporary-file-directory'."
     (unless (get-buffer-window pbuf 'visible)
       (display-buffer pbuf t))))
 
-(define-obsolete-function-alias 'Rd-submit-bug-report 'ess-submit-bug-report "2018-08-16")
+(define-obsolete-function-alias 'Rd-submit-bug-report #'ess-submit-bug-report "2018-08-16")
 
 (provide 'ess-rd)
 

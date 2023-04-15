@@ -1,6 +1,6 @@
 ;;; ess-r-a.el -- Possible local customizations for R with ESS.  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1997-2020 Free Software Foundation, Inc.
+;; Copyright (C) 1997-2022 Free Software Foundation, Inc.
 ;; Author: A.J. Rossini <blindglobe@gmail.com>
 ;; Created: 17 November 1999
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
@@ -42,7 +42,7 @@
 (declare-function ns-do-applescript "nsfns.m" (script))
 (declare-function do-applescript "ess-r-a" (script))
 (unless (fboundp 'do-applescript)
-  (defalias 'do-applescript 'ns-do-applescript))
+  (defalias 'do-applescript #'ns-do-applescript))
 
 (defalias 'essr
   (read-kbd-macro
@@ -142,8 +142,8 @@ is)."
   ;; call this once
   ;; (ajr::scroll-to-end::peterD "emacs")
 
-  (global-set-key [f11] 'show-max-other-window)
-  (global-set-key [f12] 'ess-eval-line-visibly-and-step))
+  (global-set-key [f11] #'show-max-other-window)
+  (global-set-key [f12] #'ess-eval-line-visibly-and-step))
 
 
  ; Provide package

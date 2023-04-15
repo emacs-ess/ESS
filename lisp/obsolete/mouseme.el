@@ -1,6 +1,6 @@
-;;; mouseme.el --- mouse menu with commands that operate on strings
+;;; mouseme.el --- mouse menu with commands that operate on strings  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1997-2020 by Free Software Foundation, Inc.
+;; Copyright (C) 1997-2022 by Free Software Foundation, Inc.
 
 ;; Author: Howard Melman <howard@silverstream.com>
 ;; Keywords: mouse, menu
@@ -78,8 +78,7 @@ It can return either the string or to be most efficient, a list of
 three elements: the string and the beginning and ending points of the
 string in the buffer."
   :type 'function
-  :options '(mouse-me-get-string)
-  :group 'mouseme)
+  :options '(mouse-me-get-string))
 
 (defcustom mouse-me-build-menu-function 'mouse-me-build-menu
   "Function used by `mouse-me' to build the popup menu.
@@ -88,8 +87,7 @@ be made buffer local and set to something more appropriate for
 a specific mode.  The function will be called with one argument,
 the string selected, as returned by `mouse-me-get-string-function'."
   :type 'function
-  :options '(mouse-me-build-menu)
-  :group 'mouseme)
+  :options '(mouse-me-build-menu))
 
 (defvar mouse-me-grep-use-extension 't
   "If non-nil `mouse-me-grep' grep's in files with current file's extension.")
@@ -133,8 +131,7 @@ argument.  Or if the function has the symbol property `mouse-me-type'
 and if its value is the symbol `region' it will be called with the
 beginning and ending points of the selected string.  If the value is
 the symbol `string' it will be called with one string argument."
-  :type '(repeat sexp)
-  :group 'mouseme)
+  :type '(repeat sexp))
 
 (put 'kill-region 'mouse-me-type 'region)
 (put 'ispell-region 'mouse-me-type 'region)
@@ -179,7 +176,7 @@ Returns a list of three elements, the string and the beginning and
 ending positions of the string in the buffer in that order."
   (save-match-data
     (save-excursion
-      (let ((start (point)) beg end str p)
+      (let ((start (point)) beg end str)
         (skip-syntax-forward "^ >()\"")
         (setq end (point))
         (goto-char start)
@@ -285,8 +282,7 @@ ending positions of the string in the buffer in that order."
   (interactive "sGrep: ")
   (grep-compute-defaults)
   (let ((reg grep-find-command)
-        (ext (mouse-me-buffer-file-extension))
-        beg end)
+        (ext (mouse-me-buffer-file-extension)))
     (if (string-match "\\(^.+-type f \\)\\(.+$\\)" reg)
         (setq reg (concat (match-string 1 reg)
                           (if mouse-me-grep-use-extension
@@ -344,7 +340,7 @@ Returned extension is a string beginning with a period."
     (setq cmd (funcall func))
     ;; run the command, eval'ing if it was a list
     (if (listp cmd)
-        (setq cmd (eval cmd)))
+        (setq cmd (eval cmd t)))
     (setq mmtype (get cmd 'mouse-me-type))
     (cond ((eq mmtype 'region)
            (funcall cmd beg end))

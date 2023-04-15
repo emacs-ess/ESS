@@ -1,6 +1,6 @@
 ;;; essd-els.el --- S-PLUS 3.x at another location customization  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1998-2020 Free Software Foundation, Inc.
+;; Copyright (C) 1998-2022 Free Software Foundation, Inc.
 
 ;; Author: Richard M. Heiberger <rmh@temple.edu>
 ;; Created: December 1998
@@ -79,8 +79,6 @@ The default value is nil."
   (setq-local ess-local-customize-alist S+elsewhere-customize-alist)
   (ess-mode))
 
-(define-obsolete-function-alias 'S+elsewhere-transcript-mode #'S-transcript-mode "2000")
-
 ;; This REALLY shouldn't need an editing mode.  Just a transcript and
 ;; an inferior process handler.
 
@@ -108,7 +106,7 @@ buffer on the local computer."
   (let ((proc (get-buffer-process (buffer-name))))
     (if (not proc)
         (error "No process is associated with this buffer")
-      (set-process-filter proc 'inferior-ess-output-filter)
+      (set-process-filter proc #'inferior-ess-output-filter)
       (setq ess-current-process-name (process-name proc))
       (add-to-list 'ess-process-name-list
                    (list ess-current-process-name)))))

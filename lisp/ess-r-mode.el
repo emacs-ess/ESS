@@ -1,6 +1,6 @@
 ;;; ess-r-mode.el --- R customization  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1997-2020 Free Software Foundation, Inc.
+;; Copyright (C) 1997-2022 Free Software Foundation, Inc.
 ;; Author: A.J. Rossini
 ;; Created: 12 Jun 1997
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
@@ -586,8 +586,8 @@ will be prompted to enter arguments interactively."
                  start-args)
                 ((and start-args
                       (listp start-args)
-                      (cl-every 'stringp start-args))
-                 (mapconcat 'identity start-args " "))
+                      (cl-every #'stringp start-args))
+                 (mapconcat #'identity start-args " "))
                 (start-args
                  (read-string
                   (concat "Starting Args"
@@ -633,7 +633,9 @@ will be prompted to enter arguments interactively."
 If the timeout is reached, an error is thrown advising the user
 to run `ess-r-initialize' again.")
 
-(define-obsolete-function-alias 'R-initialize-on-start 'ess-r-initialize "ESS 19.04")
+(define-obsolete-function-alias 'R-initialize-on-start
+  #'ess-r-initialize "ESS 19.04")
+
 (defun ess-r-initialize ()
   "This function is run after the first R prompt.
 Executed in process buffer."
@@ -652,7 +654,7 @@ Executed in process buffer."
   (ess-set-working-directory default-directory)
   (when ess-use-tracebug
     (ess-tracebug 1))
-  (add-hook 'ess-presend-filter-functions 'ess-R-scan-for-library-call nil 'local)
+  (add-hook 'ess-presend-filter-functions #'ess-R-scan-for-library-call nil 'local)
   (run-hooks 'ess-r-post-run-hook)
   (ess-wait-for-process))
 
@@ -817,10 +819,10 @@ top level functions only."
   (ess--setup-company ess-r-company-backends)
   (setq-local prettify-symbols-alist ess-r-prettify-symbols)
   (setq font-lock-defaults '(ess-build-font-lock-keywords nil nil ((?\. . "w") (?\_ . "w"))))
-  (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
-  (add-hook 'completion-at-point-functions 'ess-r-object-completion nil 'local)
+  (remove-hook 'completion-at-point-functions #'ess-filename-completion 'local) ;; should be first
+  (add-hook 'completion-at-point-functions #'ess-r-object-completion nil 'local)
   (add-hook 'completion-at-point-functions #'ess-r-package-completion nil 'local)
-  (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
+  (add-hook 'completion-at-point-functions #'ess-filename-completion nil 'local)
   (add-hook 'xref-backend-functions #'ess-r-xref-backend nil 'local)
   (add-hook 'project-find-functions #'ess-r-project nil 'local)
 
@@ -833,9 +835,9 @@ top level functions only."
   (setq-local end-of-defun-function #'ess-r-end-of-defun)
   (ess-roxy-mode))
 ;;;###autoload
-(defalias 'R-mode 'ess-r-mode)
+(defalias 'R-mode #'ess-r-mode)
 ;;;###autoload
-(defalias 'r-mode 'ess-r-mode)
+(defalias 'r-mode #'ess-r-mode)
 
 
 ;;;###autoload
@@ -996,7 +998,7 @@ Set SYM to VAL and call `ess-r-redefine-runners'."
   (ess-r-redefine-runners))
 
 (define-obsolete-function-alias
-  'ess-r-versions-create 'ess-r-define-runners "ESS 18.10")
+  'ess-r-versions-create #'ess-r-define-runners "ESS 18.10")
 
 (defvar ess-newest-R nil
   "Stores the newest version of R that has been found.
@@ -1168,7 +1170,7 @@ use \"bin/Rterm.exe\"."
   (setq font-lock-defaults '(ess-build-font-lock-keywords
                              nil nil ((?\. . "w") (?\_ . "w") (?' . ".")))))
 
-(fset 'r-transcript-mode 'ess-r-transcript-mode)
+(defalias 'r-transcript-mode #'ess-r-transcript-mode)
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.[Rr]out\\'" . ess-r-transcript-mode))
@@ -1190,7 +1192,7 @@ not issue messages."
     (goto-char from)
     (ess-rep-regexp "\\(\\([][=,()]\\|<-\\) *\\)F\\>" "\\1FALSE"
                     'fixcase nil (not quietly))))
-(define-obsolete-function-alias 'R-fix-T-F 'ess-r-fix-T-F
+(define-obsolete-function-alias 'R-fix-T-F #'ess-r-fix-T-F
   "ESS 18.10")
 
 (defvar ess--packages-cache nil
@@ -1240,7 +1242,7 @@ With argument UPDATE, update cached packages list."
                                       (match-string 2 url)))
         (ess-command (format mirror-cmd ess--CRAN-mirror)))))
   (message "CRAN mirror: %s" (car (ess-get-words-from-vector "getOption('repos')[['CRAN']]\n"))))
-(define-obsolete-function-alias 'ess-setCRANMiror 'ess-set-CRAN-mirror "ESS 18.10")
+(define-obsolete-function-alias 'ess-setCRANMiror #'ess-set-CRAN-mirror "ESS 18.10")
 
 (defun ess-r-check-install-package (pkg)
   "Check if package PKG is installed and offer to install if not."
@@ -1271,7 +1273,7 @@ Placed into `ess-presend-filter-functions' for R dialects."
   "Load an R package."
   (ess-eval-linewise (format "library('%s')\n" pack)))
 
-(define-obsolete-function-alias 'ess-library 'ess-load-library "ESS[12.09-1]")
+(define-obsolete-function-alias 'ess-library #'ess-load-library "ESS[12.09-1]")
 
 ;;; smart-comma was a bad idea
 (eval-after-load "eldoc"
@@ -1697,7 +1699,8 @@ Return the amount the indentation changed by."
       (indent-region start (point)))))
 
 (defun ess-offset (offset)
-  (setq offset (eval (intern (concat "ess-offset-" (symbol-name offset)))))
+  (setq offset
+        (symbol-value (intern (concat "ess-offset-" (symbol-name offset)))))
   (when (and (not (eq offset nil))
              (listp offset)
              (or (numberp (cadr offset))
@@ -1712,7 +1715,8 @@ Return the amount the indentation changed by."
          ess-indent-offset)))
 
 (defun ess-offset-type (offset)
-  (setq offset (eval (intern (concat "ess-offset-" (symbol-name offset)))))
+  (setq offset
+        (symbol-value (intern (concat "ess-offset-" (symbol-name offset)))))
   (if (listp offset)
       (car offset)
     offset))
@@ -1843,7 +1847,7 @@ Returns nil if line starts inside a string, t if in a comment."
                      (when (ess-at-containing-sexp
                              (looking-at "{"))
                        (ess-escape-prefixed-block))))
-                   (cl-some 'looking-at
+                   (cl-some #'looking-at
                             (ess-overridden-blocks)))
           (+ (current-column) offset))))))
 
@@ -1975,7 +1979,7 @@ Returns nil if line starts inside a string, t if in a comment."
          (override (and ess-align-arguments-in-calls
                         (save-excursion
                           (ess-climb-object)
-                          (cl-some 'looking-at
+                          (cl-some #'looking-at
                                    ess-align-arguments-in-calls))))
          (type-sym (cond (block 'block)
                          ((looking-at "[[:blank:]]*[([][[:blank:]]*\\($\\|#\\)")
@@ -2204,7 +2208,7 @@ Returns nil if line starts inside a string, t if in a comment."
 
 (defun ess-calculate-indent--nested-calls ()
   (when ess-align-nested-calls
-    (let ((calls (mapconcat 'identity ess-align-nested-calls "\\|"))
+    (let ((calls (mapconcat #'identity ess-align-nested-calls "\\|"))
           match)
       (save-excursion
         (and containing-sexp
@@ -2510,9 +2514,9 @@ state.")
   (setq-local comint-prompt-regexp inferior-S-prompt)
   (setq-local syntax-propertize-function ess-r--syntax-propertize-function)
   (setq comint-input-sender 'inferior-ess-r-input-sender)
-  (remove-hook 'completion-at-point-functions 'ess-filename-completion 'local) ;; should be first
-  (add-hook 'completion-at-point-functions 'ess-r-object-completion nil 'local)
-  (add-hook 'completion-at-point-functions 'ess-filename-completion nil 'local)
+  (remove-hook 'completion-at-point-functions #'ess-filename-completion 'local) ;; should be first
+  (add-hook 'completion-at-point-functions #'ess-r-object-completion nil 'local)
+  (add-hook 'completion-at-point-functions #'ess-filename-completion nil 'local)
   (add-hook 'xref-backend-functions #'ess-r-xref-backend nil 'local)
   (add-hook 'project-find-functions #'ess-r-project nil 'local)
   ;; eldoc
@@ -2522,7 +2526,7 @@ state.")
   ;; company
   (ess--setup-company ess-r-company-backends t)
   (setq comint-get-old-input #'inferior-ess-get-old-input)
-  (add-hook 'comint-input-filter-functions 'ess-search-path-tracker nil 'local))
+  (add-hook 'comint-input-filter-functions #'ess-search-path-tracker nil 'local))
 
 
 
@@ -2605,7 +2609,7 @@ from all installed packages, which can be very slow."
                    (goto-char (point-min))
                    (when (re-search-forward "(list" nil t)
                      (goto-char (match-beginning 0))
-                     (ignore-errors (eval (read (current-buffer)))))))
+                     (ignore-errors (eval (read (current-buffer)) t)))))
          (proc-name ess-current-process-name)
          (alist ess-local-customize-alist)
          (remote (file-remote-p default-directory))
@@ -2615,7 +2619,7 @@ from all installed packages, which can be very slow."
     (with-current-buffer buff
       (setq buffer-read-only nil)
       (delete-region (point-min) (point-max))
-      (ess-setq-vars-local (eval alist))
+      (ess-setq-vars-local (eval alist t))
       (setq ess-local-process-name proc-name)
       (ess--help-major-mode)
       (setq ess-help-sec-regex "^\\w+:$"
@@ -2738,13 +2742,13 @@ from all installed packages, which can be very slow."
         des-col-beginning des-col-end entries)
     (with-current-buffer (ess-command cmd (get-buffer-create " *ess-rutils-pkgs*"))
       (goto-char (point-min))
-      (delete-region (point) (1+ (point-at-eol)))
+      (delete-region (point) (1+ (line-end-position)))
       ;; Now we have a buffer with package name, description, and
       ;; version. description and version are surrounded by quotes,
       ;; description is separated by whitespace.
       (re-search-forward "\\>[[:space:]]+")
       (setq des-col-beginning (current-column))
-      (goto-char (point-at-eol))
+      (goto-char (line-end-position))
       ;; Unless someone has a quote character in their package version,
       ;; two quotes back will be the end of the package description.
       (dotimes (_ 2) (search-backward "\""))
@@ -2917,7 +2921,8 @@ given field. Options should be separated by value of
   (interactive "sSearch string: ")
   (let ((site "https://search.r-project.org/cgi-bin/namazu.cgi?query=")
         (okstring (replace-regexp-in-string " +" "+" string)))
-    (if current-prefix-arg
+    (browse-url
+     (if current-prefix-arg
         (let ((mpp (concat
                     "&max="
                     (completing-read
@@ -2941,16 +2946,17 @@ given field. Options should be separated by value of
               (restrict (concat
                          "&idxname="
                          (mapconcat
-                          'identity
+                          #'identity
                           (completing-read-multiple
                            "Limit search to: "
                            '(("Rhelp02a" 1) ("functions" 2)
                              ("docs" 3) ("Rhelp01" 4))
                            nil t "Rhelp02a,functions,docs" nil
-                           "Rhelp02a,functions,docs") "&idxname="))))
-          (browse-url (concat site okstring mpp format sortby restrict)))
-      (browse-url (concat site okstring "&max=20&result=normal&sort=score"
-                          "&idxname=Rhelp02a&idxname=functions&idxname=docs")))))
+                           "Rhelp02a,functions,docs")
+                          "&idxname="))))
+          (concat site okstring mpp format sortby restrict))
+       (concat site okstring "&max=20&result=normal&sort=score"
+               "&idxname=Rhelp02a&idxname=functions&idxname=docs")))))
 
 (defun ess-rutils-help-search (string)
   "Search for STRING using help.search()."

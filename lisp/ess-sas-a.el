@@ -1,6 +1,6 @@
-;;; ess-sas-a.el --- clean-room implementation of many SAS-mode features
+;;; ess-sas-a.el --- clean-room implementation of many SAS-mode features  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1997-2020 Free Software Foundation, Inc.
+;; Copyright (C) 1997-2022 Free Software Foundation, Inc.
 ;; Author: Rodney A. Sparapani
 ;; Maintainer: ESS-core@r-project.org
 ;; Created: 17 November 1999
@@ -95,28 +95,13 @@ or `ess-sas-data-view-insight'."
 (defcustom ess-sas-graph-view-viewer-alist
   ;;creates something like
   ;;'(("[pP][dD][fF]" . "/usr/local/bin/acroread") ("[eE]?[pP][sS]" . "/usr/local/bin/gv")))
-  (let ((ess-tmp-alist nil)
-        (ess-tmp-ps nil) (ess-tmp-pdf nil))
-
+  (let ((ess-tmp-ps nil) (ess-tmp-pdf nil))
     (setq ess-tmp-ps (executable-find (if ess-microsoft-p "gsview32" "gsview")))
-
     (if (not ess-tmp-ps) (setq ess-tmp-ps (executable-find "gv")))
-
     (if (not ess-tmp-ps) (setq ess-tmp-ps (executable-find "ghostview")))
-
     (setq ess-tmp-pdf (executable-find "evince"))
-
     (if (not ess-tmp-pdf) (setq ess-tmp-pdf (executable-find "xpdf")))
-
-    (if (not ess-tmp-pdf) (setq ess-tmp-pdf (if ess-microsoft-p "acrord32" "acroread")))
-
-    (if (and ess-tmp-ps ess-tmp-pdf)
-        (setq ess-tmp-alist (list (cons "[eE]?[pP][sS]" ess-tmp-ps)
-                                  (cons "[pP][dD][fF]" ess-tmp-pdf)))
-
-      (if ess-tmp-ps
-          (setq ess-tmp-alist (list (cons "[eE]?[pP][sS]" ess-tmp-ps)
-                                    (cons "[pP][dD][fF]" ess-tmp-ps))))))
+    (if (not ess-tmp-pdf) (setq ess-tmp-pdf (if ess-microsoft-p "acrord32" "acroread"))))
 
   "Associate file name extensions with graphics image file viewers."
   :group 'ess-sas
@@ -471,7 +456,7 @@ Use the current buffer if nil."
   (ess-sas--change-alist 'ess-kermit-remote-directory ess-kermit-remote-directory nil))
 
 (define-obsolete-function-alias
-  'ess-change-alist 'ess-sas--change-alist "ESS 18.10")
+  'ess-change-alist #'ess-sas--change-alist "ESS 18.10")
 
 (defun ess-sas-data-view-fsview (&optional ess-sas-data)
   "Open a dataset for viewing with PROC FSVIEW."
@@ -806,7 +791,7 @@ optional argument is non-nil, then set-buffer rather than switch."
         )
 
       (if (eq ess-sas-submit-method 'sh)
-          (add-hook 'comint-output-filter-functions 'ess-exit-notify-sh)) ;; 19.28
+          (add-hook 'comint-output-filter-functions #'ess-exit-notify-sh)) ;; 19.28
       ;; nil t) works for newer emacsen
       )
     )
@@ -888,30 +873,25 @@ optional argument is non-nil, then set-buffer rather than switch."
   )
 
 ; else
-(defun ess-sas-rtf-portrait (&optional ess-tmp-font-size)
+(defun ess-sas-rtf-portrait (&optional _ess-tmp-font-size)
   "Creates an MS RTF portrait file from the current buffer."
   (interactive)
-;  (ess-sas-file-path t)
   (ess-revert-wisely)
-
   (set-visited-file-name (concat (buffer-name) ".rtf"))
-;    (ess-sas-goto "rtf" t)
-  (if 'buffer-read-only (setq buffer-read-only nil))
-    (ess-rtf-replace-chars)
-
-    (goto-char (point-min))
-    (insert (concat
-             "{\\rtf1\\ansi{\\fonttbl\\f1\\fmodern " ess-sas-rtf-font-name ";}\n"
-             "\\margl720\\margr720\\margt720\\margb720\n"
-             "{\\colortbl;\\red0\\green0\\blue0;\\red0\\green0\\blue255;\\red0\\green255\\blue255;\\red0\\green255\\blue0;\\red255\\green0\\blue255;\\red255\\green0\\blue0;\\red255\\green255\\blue0;\\red255\\green255\\blue255;\\red0\\green0\\blue128;\\red0\\green128\\blue128;\\red0\\green128\\blue0;\\red128\\green0\\blue128;\\red128\\green0\\blue0;\\red128\\green128\\blue0;\\red128\\green128\\blue128;\\red192\\green192\\blue192;}\n"
-             "{\\stylesheet{\\s15\\plain\\f1\\fs16\\cf1\\cb8\\lang1024 Emacs Text;}{\\*\\cs16 \\additive\\f1\\fs16\\cf1\\cb8\\lang1024 Emacs Base Style;}}\n"
-             "{\\plain\\s15{\\cs16\\cs16\\f1\\fs16\\cf1\\cb8\\lang1024{\\cs16\\f1\\fs16\\cf1\\cb8\\lang1024\n"))
-
-    (goto-char (point-max))
-    (insert "}}}}\n")
-
-    (save-buffer)
-    (kill-buffer (current-buffer)))
+  (when buffer-read-only
+    (setq buffer-read-only nil))
+  (ess-rtf-replace-chars)
+  (goto-char (point-min))
+  (insert (concat
+           "{\\rtf1\\ansi{\\fonttbl\\f1\\fmodern " ess-sas-rtf-font-name ";}\n"
+           "\\margl720\\margr720\\margt720\\margb720\n"
+           "{\\colortbl;\\red0\\green0\\blue0;\\red0\\green0\\blue255;\\red0\\green255\\blue255;\\red0\\green255\\blue0;\\red255\\green0\\blue255;\\red255\\green0\\blue0;\\red255\\green255\\blue0;\\red255\\green255\\blue255;\\red0\\green0\\blue128;\\red0\\green128\\blue128;\\red0\\green128\\blue0;\\red128\\green0\\blue128;\\red128\\green0\\blue0;\\red128\\green128\\blue0;\\red128\\green128\\blue128;\\red192\\green192\\blue192;}\n"
+           "{\\stylesheet{\\s15\\plain\\f1\\fs16\\cf1\\cb8\\lang1024 Emacs Text;}{\\*\\cs16 \\additive\\f1\\fs16\\cf1\\cb8\\lang1024 Emacs Base Style;}}\n"
+           "{\\plain\\s15{\\cs16\\cs16\\f1\\fs16\\cf1\\cb8\\lang1024{\\cs16\\f1\\fs16\\cf1\\cb8\\lang1024\n"))
+  (goto-char (point-max))
+  (insert "}}}}\n")
+  (save-buffer)
+  (kill-buffer (current-buffer)))
 
 (defun ess-rtf-replace-chars ()
   "Convert a text file to an MS RTF file."
@@ -923,32 +903,28 @@ optional argument is non-nil, then set-buffer rather than switch."
   (goto-char (point-min))
   (while (re-search-forward "\t" nil t) (replace-match "\\tab" nil t)))
 
-(defun ess-sas-rtf-landscape (&optional ess-tmp-font-size)
+(defun ess-sas-rtf-landscape (&optional _ess-tmp-font-size)
   "Creates an MS RTF landscape file from the current buffer."
   (interactive)
   (ess-revert-wisely)
-
   (set-visited-file-name (concat (buffer-name) ".rtf"))
-
-  (if 'buffer-read-only (setq buffer-read-only nil))
-    (ess-rtf-replace-chars)
-
-    (goto-char (point-min))
-            (insert (concat
-             "{\\rtf1\\ansi{\\fonttbl\\f1\\fmodern " ess-sas-rtf-font-name ";}\n"
-             "\\margl720\\margr720\\margt720\\margb720\n"
-	     "{\\*\\pgdsctbl\n"
-	     "{\\pgdsc0\\pgdscuse195\\lndscpsxn\\pgwsxn15840\\pghsxn12240\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\pgdscnxt0 Default;}}\n"
-	     "\\landscape\\paperh12240\\paperw15840\\margl1800\\margr1800\\margt1440\\margb1440\\sectd\\sbknone\\lndscpsxn\\pgwsxn15840\\pghsxn12240\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\ftnbj\\ftnstart1\\ftnrstcont\\ftnnar\\aenddoc\\aftnrstcont\\aftnstart1\\aftnnrlc\n"
-             "{\\colortbl;\\red0\\green0\\blue0;\\red0\\green0\\blue255;\\red0\\green255\\blue255;\\red0\\green255\\blue0;\\red255\\green0\\blue255;\\red255\\green0\\blue0;\\red255\\green255\\blue0;\\red255\\green255\\blue255;\\red0\\green0\\blue128;\\red0\\green128\\blue128;\\red0\\green128\\blue0;\\red128\\green0\\blue128;\\red128\\green0\\blue0;\\red128\\green128\\blue0;\\red128\\green128\\blue128;\\red192\\green192\\blue192;}\n"
-             "{\\stylesheet{\\s15\\plain\\f1\\fs16\\cf1\\cb8\\lang1024 Emacs Text;}{\\*\\cs16 \\additive\\f1\\fs16\\cf1\\cb8\\lang1024 Emacs Base Style;}}\n"
-             "{\\plain\\s15{\\cs16\\cs16\\f1\\fs16\\cf1\\cb8\\lang1024{\\cs16\\f1\\fs16\\cf1\\cb8\\lang1024\n"))
-
-    (goto-char (point-max))
-    (insert "}}}}\n")
-
-    (save-buffer)
-    (kill-buffer (current-buffer)))
+  (when buffer-read-only
+    (setq buffer-read-only nil))
+  (ess-rtf-replace-chars)
+  (goto-char (point-min))
+  (insert (concat
+           "{\\rtf1\\ansi{\\fonttbl\\f1\\fmodern " ess-sas-rtf-font-name ";}\n"
+           "\\margl720\\margr720\\margt720\\margb720\n"
+	   "{\\*\\pgdsctbl\n"
+	   "{\\pgdsc0\\pgdscuse195\\lndscpsxn\\pgwsxn15840\\pghsxn12240\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\pgdscnxt0 Default;}}\n"
+	   "\\landscape\\paperh12240\\paperw15840\\margl1800\\margr1800\\margt1440\\margb1440\\sectd\\sbknone\\lndscpsxn\\pgwsxn15840\\pghsxn12240\\marglsxn1800\\margrsxn1800\\margtsxn1440\\margbsxn1440\\ftnbj\\ftnstart1\\ftnrstcont\\ftnnar\\aenddoc\\aftnrstcont\\aftnstart1\\aftnnrlc\n"
+           "{\\colortbl;\\red0\\green0\\blue0;\\red0\\green0\\blue255;\\red0\\green255\\blue255;\\red0\\green255\\blue0;\\red255\\green0\\blue255;\\red255\\green0\\blue0;\\red255\\green255\\blue0;\\red255\\green255\\blue255;\\red0\\green0\\blue128;\\red0\\green128\\blue128;\\red0\\green128\\blue0;\\red128\\green0\\blue128;\\red128\\green0\\blue0;\\red128\\green128\\blue0;\\red128\\green128\\blue128;\\red192\\green192\\blue192;}\n"
+           "{\\stylesheet{\\s15\\plain\\f1\\fs16\\cf1\\cb8\\lang1024 Emacs Text;}{\\*\\cs16 \\additive\\f1\\fs16\\cf1\\cb8\\lang1024 Emacs Base Style;}}\n"
+           "{\\plain\\s15{\\cs16\\cs16\\f1\\fs16\\cf1\\cb8\\lang1024{\\cs16\\f1\\fs16\\cf1\\cb8\\lang1024\n"))
+  (goto-char (point-max))
+  (insert "}}}}\n")
+  (save-buffer)
+  (kill-buffer (current-buffer)))
 
 (defun ess-sas-rtf-us-landscape ()
   "Creates an MS RTF US landscape file from the current buffer."
@@ -1146,10 +1122,11 @@ Keep in mind that the maximum command line length in MS-DOS is
                                    "Each place is given by: (Number of times) at (Line):(Column).\\|"
                                    "[0-9][0-9]:[0-9][0-9] [MTWFS][aeioudhnrst]+day, [JFMASOND]"
                                    "[aeiouybcghlmnprstv]+ [1-9][0-9]?, 20[0-9][0-9]\\)\\)")
-                                  nil t) (replace-match (if strip " " "/*\\&*/") t))
+                                  nil t)
+      (replace-match (if strip " " "/*\\&*/") t))
     ))
 
-(defun ess-sas-toggle-sas-listing-mode (&optional force)
+(defun ess-sas-toggle-sas-listing-mode (&optional _force)
   "Toggle SAS-listing-mode for .lst files."
   (interactive)
   (ess-sas-goto-lst)
@@ -1209,7 +1186,7 @@ be placed on the menubar upon ESS initialization."
     (setq ess-sas-created-runners
           (mapc (lambda (v) (ess-define-runner v "SAS")) versions))))
 (define-obsolete-function-alias
-  'ess-sas-create-versions 'ess-sas-define-runners "ESS 18.10")
+  'ess-sas-create-versions #'ess-sas-define-runners "ESS 18.10")
 
 
 ;;; Section 3:  Key Definitions
@@ -1237,7 +1214,7 @@ nil binds TAB to `sas-indent-line' and RET to `newline-and-indent'.
 Non-nil binds TAB to `ess-sas-tab-to-tab-stop',
 C-TAB to `ess-sas-backward-delete-tab', and RET to `newline'.")
 
-(defun ess-sas-edit-keys-toggle (&optional arg)
+(defun ess-sas-edit-keys-toggle (&optional _arg)
   "Toggle `ess-sas-edit-keys-toggle'.  Optional arg is still
 accepted for backward compatibility, however, arg is ignored."
   (interactive)
@@ -1252,27 +1229,27 @@ accepted for backward compatibility, however, arg is ignored."
 (defun ess-sas-global-pc-keys ()
   "PC-like SAS key definitions"
   (interactive)
-  (global-set-key [(control f1)] 'ess-sas-rtf-portrait)
-  (global-set-key [(control f2)] 'ess-sas-rtf-landscape)
-  (global-set-key (quote [f2]) 'ess-revert-wisely)
-  (global-set-key (quote [f3]) 'ess-sas-goto-shell)
-  (global-set-key (quote [f4]) 'ess-sas-goto-file-1)
-  (global-set-key (quote [f5]) 'ess-sas-goto-sas)
-  (global-set-key (quote [f6]) 'ess-sas-goto-log)
-  (global-set-key [(control f6)] 'ess-sas-append-log)
-  (global-set-key (quote [f7]) 'ess-sas-goto-lst)
-  (global-set-key [(control f7)] 'ess-sas-append-lst)
-  (global-set-key (quote [f8]) 'ess-sas-submit)
-  (global-set-key [(control f8)] 'ess-sas-submit-region)
-  (global-set-key (quote [f9]) 'ess-sas-data-view-fsview)
-  (global-set-key [(control f9)] 'ess-sas-data-view-insight)
-  ;; (global-set-key (quote [f10]) 'ess-sas-toggle-sas-log-mode)
-  ;; (global-set-key [(control f10)] 'ess-sas-toggle-sas-listing-mode)
-  ;; (global-set-key (quote [f11]) 'ess-sas-goto-file-2)
-  ;; (global-set-key [(control f11)] 'ess-ebcdic-to-ascii-search-and-replace)
-  (global-set-key (quote [f12]) 'ess-sas-graph-view)
-  (global-set-key [(control tab)] 'ess-sas-backward-delete-tab)
-  ;; (define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path)
+  (global-set-key [(control f1)] #'ess-sas-rtf-portrait)
+  (global-set-key [(control f2)] #'ess-sas-rtf-landscape)
+  (global-set-key (quote [f2]) #'ess-revert-wisely)
+  (global-set-key (quote [f3]) #'ess-sas-goto-shell)
+  (global-set-key (quote [f4]) #'ess-sas-goto-file-1)
+  (global-set-key (quote [f5]) #'ess-sas-goto-sas)
+  (global-set-key (quote [f6]) #'ess-sas-goto-log)
+  (global-set-key [(control f6)] #'ess-sas-append-log)
+  (global-set-key (quote [f7]) #'ess-sas-goto-lst)
+  (global-set-key [(control f7)] #'ess-sas-append-lst)
+  (global-set-key (quote [f8]) #'ess-sas-submit)
+  (global-set-key [(control f8)] #'ess-sas-submit-region)
+  (global-set-key (quote [f9]) #'ess-sas-data-view-fsview)
+  (global-set-key [(control f9)] #'ess-sas-data-view-insight)
+  ;; (global-set-key (quote [f10]) #'ess-sas-toggle-sas-log-mode)
+  ;; (global-set-key [(control f10)] #'ess-sas-toggle-sas-listing-mode)
+  ;; (global-set-key (quote [f11]) #'ess-sas-goto-file-2)
+  ;; (global-set-key [(control f11)] #'ess-ebcdic-to-ascii-search-and-replace)
+  (global-set-key (quote [f12]) #'ess-sas-graph-view)
+  (global-set-key [(control tab)] #'ess-sas-backward-delete-tab)
+  ;; (define-key sas-mode-local-map "\C-c\C-p" #'ess-sas-file-path)
   (setq ess-sas-global-pc-keys t)
   (setq ess-sas-global-unix-keys nil)
   (setq ess-sas-local-pc-keys nil)
@@ -1282,27 +1259,27 @@ accepted for backward compatibility, however, arg is ignored."
 (defun ess-sas-global-unix-keys ()
   "Unix/Mainframe-like SAS key definitions"
   (interactive)
-  (global-set-key [(control f1)] 'ess-sas-rtf-portrait)
-  (global-set-key [(control f2)] 'ess-sas-rtf-landscape)
-  (global-set-key (quote [f2]) 'ess-revert-wisely)
-  (global-set-key (quote [f3]) 'ess-sas-submit)
-  (global-set-key [(control f3)] 'ess-sas-submit-region)
-  (global-set-key (quote [f4]) 'ess-sas-goto-sas)
-  (global-set-key (quote [f5]) 'ess-sas-goto-log)
-  (global-set-key [(control f5)] 'ess-sas-append-log)
-  (global-set-key (quote [f6]) 'ess-sas-goto-lst)
-  (global-set-key [(control f6)] 'ess-sas-append-lst)
-  (global-set-key (quote [f7]) 'ess-sas-goto-file-1)
-  (global-set-key (quote [f8]) 'ess-sas-goto-shell)
-  (global-set-key (quote [f9]) 'ess-sas-data-view-fsview)
-  (global-set-key [(control f9)] 'ess-sas-data-view-insight)
-  ;; (global-set-key (quote [f10]) 'ess-sas-toggle-sas-log-mode)
-  ;; (global-set-key [(control f10)] 'ess-sas-toggle-sas-listing-mode)
-  ;; (global-set-key (quote [f11]) 'ess-sas-goto-file-2)
-  ;; (global-set-key [(control f11)] 'ess-ebcdic-to-ascii-search-and-replace)
-  (global-set-key (quote [f12]) 'ess-sas-graph-view)
-  (global-set-key [(control tab)] 'ess-sas-backward-delete-tab)
-  ;;(define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path)
+  (global-set-key [(control f1)] #'ess-sas-rtf-portrait)
+  (global-set-key [(control f2)] #'ess-sas-rtf-landscape)
+  (global-set-key (quote [f2])   #'ess-revert-wisely)
+  (global-set-key (quote [f3])   #'ess-sas-submit)
+  (global-set-key [(control f3)] #'ess-sas-submit-region)
+  (global-set-key (quote [f4])   #'ess-sas-goto-sas)
+  (global-set-key (quote [f5])   #'ess-sas-goto-log)
+  (global-set-key [(control f5)] #'ess-sas-append-log)
+  (global-set-key (quote [f6])   #'ess-sas-goto-lst)
+  (global-set-key [(control f6)] #'ess-sas-append-lst)
+  (global-set-key (quote [f7])   #'ess-sas-goto-file-1)
+  (global-set-key (quote [f8])   #'ess-sas-goto-shell)
+  (global-set-key (quote [f9])   #'ess-sas-data-view-fsview)
+  (global-set-key [(control f9)] #'ess-sas-data-view-insight)
+  ;; (global-set-key (quote [f10]) #'ess-sas-toggle-sas-log-mode)
+  ;; (global-set-key [(control f10)] #'ess-sas-toggle-sas-listing-mode)
+  ;; (global-set-key (quote [f11]) #'ess-sas-goto-file-2)
+  ;; (global-set-key [(control f11)] #'ess-ebcdic-to-ascii-search-and-replace)
+  (global-set-key (quote [f12]) #'ess-sas-graph-view)
+  (global-set-key [(control tab)] #'ess-sas-backward-delete-tab)
+  ;;(define-key sas-mode-local-map "\C-c\C-p" #'ess-sas-file-path)
   (setq ess-sas-global-pc-keys nil)
   (setq ess-sas-global-unix-keys t)
   (setq ess-sas-local-pc-keys nil)
@@ -1312,26 +1289,26 @@ accepted for backward compatibility, however, arg is ignored."
 (defun ess-sas-local-pc-keys ()
   "PC-like SAS key definitions."
   (interactive)
-  (define-key sas-mode-local-map [(control f1)] 'ess-sas-rtf-portrait)
-  (define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-landscape)
-  (define-key sas-mode-local-map (quote [f2]) 'ess-revert-wisely)
-  (define-key sas-mode-local-map (quote [f3]) 'ess-sas-goto-shell)
-  (define-key sas-mode-local-map (quote [f4]) 'ess-sas-goto-file-1)
-  (define-key sas-mode-local-map (quote [f5]) 'ess-sas-goto-sas)
-  (define-key sas-mode-local-map (quote [f6]) 'ess-sas-goto-log)
-  (define-key sas-mode-local-map [(control f6)] 'ess-sas-append-log)
-  (define-key sas-mode-local-map (quote [f7]) 'ess-sas-goto-lst)
-  (define-key sas-mode-local-map [(control f7)] 'ess-sas-append-lst)
-  (define-key sas-mode-local-map (quote [f8]) 'ess-sas-submit)
-  (define-key sas-mode-local-map [(control f8)] 'ess-sas-submit-region)
-  (define-key sas-mode-local-map (quote [f9]) 'ess-sas-data-view-fsview)
-  (define-key sas-mode-local-map [(control f9)] 'ess-sas-data-view-insight)
-  (define-key sas-mode-local-map (quote [f10]) 'ess-sas-toggle-sas-log-mode)
-  (define-key sas-mode-local-map [(control f10)] 'ess-sas-toggle-sas-listing-mode)
-  (define-key sas-mode-local-map (quote [f11]) 'ess-sas-goto-file-2)
-  (define-key sas-mode-local-map [(control f11)] 'ess-ebcdic-to-ascii-search-and-replace)
-  (define-key sas-mode-local-map (quote [f12]) 'ess-sas-graph-view)
-                                        ;(define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path)
+  (define-key sas-mode-local-map [(control f1)] #'ess-sas-rtf-portrait)
+  (define-key sas-mode-local-map [(control f2)] #'ess-sas-rtf-landscape)
+  (define-key sas-mode-local-map (quote [f2]) #'ess-revert-wisely)
+  (define-key sas-mode-local-map (quote [f3]) #'ess-sas-goto-shell)
+  (define-key sas-mode-local-map (quote [f4]) #'ess-sas-goto-file-1)
+  (define-key sas-mode-local-map (quote [f5]) #'ess-sas-goto-sas)
+  (define-key sas-mode-local-map (quote [f6]) #'ess-sas-goto-log)
+  (define-key sas-mode-local-map [(control f6)] #'ess-sas-append-log)
+  (define-key sas-mode-local-map (quote [f7]) #'ess-sas-goto-lst)
+  (define-key sas-mode-local-map [(control f7)] #'ess-sas-append-lst)
+  (define-key sas-mode-local-map (quote [f8]) #'ess-sas-submit)
+  (define-key sas-mode-local-map [(control f8)] #'ess-sas-submit-region)
+  (define-key sas-mode-local-map (quote [f9]) #'ess-sas-data-view-fsview)
+  (define-key sas-mode-local-map [(control f9)] #'ess-sas-data-view-insight)
+  (define-key sas-mode-local-map (quote [f10]) #'ess-sas-toggle-sas-log-mode)
+  (define-key sas-mode-local-map [(control f10)] #'ess-sas-toggle-sas-listing-mode)
+  (define-key sas-mode-local-map (quote [f11]) #'ess-sas-goto-file-2)
+  (define-key sas-mode-local-map [(control f11)] #'ess-ebcdic-to-ascii-search-and-replace)
+  (define-key sas-mode-local-map (quote [f12]) #'ess-sas-graph-view)
+                                        ;(define-key sas-mode-local-map "\C-c\C-p" #'ess-sas-file-path)
   (setq ess-sas-global-pc-keys nil)
   (setq ess-sas-global-unix-keys nil)
   (setq ess-sas-local-pc-keys t)
@@ -1341,26 +1318,26 @@ accepted for backward compatibility, however, arg is ignored."
 (defun ess-sas-local-unix-keys ()
   "Unix/Mainframe-like SAS key definitions"
   (interactive)
-  (define-key sas-mode-local-map [(control f1)] 'ess-sas-rtf-portrait)
-  (define-key sas-mode-local-map [(control f2)] 'ess-sas-rtf-landscape)
-  (define-key sas-mode-local-map (quote [f2]) 'ess-revert-wisely)
-  (define-key sas-mode-local-map (quote [f3]) 'ess-sas-submit)
-  (define-key sas-mode-local-map [(control f3)] 'ess-sas-submit-region)
-  (define-key sas-mode-local-map (quote [f4]) 'ess-sas-goto-sas)
-  (define-key sas-mode-local-map (quote [f5]) 'ess-sas-goto-log)
-  (define-key sas-mode-local-map [(control f5)] 'ess-sas-append-log)
-  (define-key sas-mode-local-map (quote [f6]) 'ess-sas-goto-lst)
-  (define-key sas-mode-local-map [(control f6)] 'ess-sas-append-lst)
-  (define-key sas-mode-local-map (quote [f7]) 'ess-sas-goto-file-1)
-  (define-key sas-mode-local-map (quote [f8]) 'ess-sas-goto-shell)
-  (define-key sas-mode-local-map (quote [f9]) 'ess-sas-data-view-fsview)
-  (define-key sas-mode-local-map [(control f9)] 'ess-sas-data-view-insight)
-  (define-key sas-mode-local-map (quote [f10]) 'ess-sas-toggle-sas-log-mode)
-  (define-key sas-mode-local-map [(control f10)] 'ess-sas-toggle-sas-listing-mode)
-  (define-key sas-mode-local-map (quote [f11]) 'ess-sas-goto-file-2)
-  (define-key sas-mode-local-map [(control f11)] 'ess-ebcdic-to-ascii-search-and-replace)
-  (define-key sas-mode-local-map (quote [f12]) 'ess-sas-graph-view)
-                                        ;(define-key sas-mode-local-map "\C-c\C-p" 'ess-sas-file-path)
+  (define-key sas-mode-local-map [(control f1)] #'ess-sas-rtf-portrait)
+  (define-key sas-mode-local-map [(control f2)] #'ess-sas-rtf-landscape)
+  (define-key sas-mode-local-map (quote [f2]) #'ess-revert-wisely)
+  (define-key sas-mode-local-map (quote [f3]) #'ess-sas-submit)
+  (define-key sas-mode-local-map [(control f3)] #'ess-sas-submit-region)
+  (define-key sas-mode-local-map (quote [f4]) #'ess-sas-goto-sas)
+  (define-key sas-mode-local-map (quote [f5]) #'ess-sas-goto-log)
+  (define-key sas-mode-local-map [(control f5)] #'ess-sas-append-log)
+  (define-key sas-mode-local-map (quote [f6]) #'ess-sas-goto-lst)
+  (define-key sas-mode-local-map [(control f6)] #'ess-sas-append-lst)
+  (define-key sas-mode-local-map (quote [f7]) #'ess-sas-goto-file-1)
+  (define-key sas-mode-local-map (quote [f8]) #'ess-sas-goto-shell)
+  (define-key sas-mode-local-map (quote [f9]) #'ess-sas-data-view-fsview)
+  (define-key sas-mode-local-map [(control f9)] #'ess-sas-data-view-insight)
+  (define-key sas-mode-local-map (quote [f10]) #'ess-sas-toggle-sas-log-mode)
+  (define-key sas-mode-local-map [(control f10)] #'ess-sas-toggle-sas-listing-mode)
+  (define-key sas-mode-local-map (quote [f11]) #'ess-sas-goto-file-2)
+  (define-key sas-mode-local-map [(control f11)] #'ess-ebcdic-to-ascii-search-and-replace)
+  (define-key sas-mode-local-map (quote [f12]) #'ess-sas-graph-view)
+  ;;(define-key sas-mode-local-map "\C-c\C-p" #'ess-sas-file-path)
   (setq ess-sas-global-pc-keys nil)
   (setq ess-sas-global-unix-keys nil)
   (setq ess-sas-local-pc-keys nil)

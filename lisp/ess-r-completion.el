@@ -1,6 +1,6 @@
 ;;; ess-r-completion.el --- R completion  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2015-2020 Free Software Foundation, Inc.
+;; Copyright (C) 2015-2022 Free Software Foundation, Inc.
 ;; Author: Vitalie Spinu
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
 
@@ -291,9 +291,9 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
             (setq ess--cached-sp-objects (cdr ess-sl-modtime-alist)))
           ;; reread new package, but not rda, much faster and not needed anyways
           (process-put *proc* 'sp-for-ac-changed? nil)))
-      (apply 'append
+      (apply #'append
              (cl-cddar ess-sl-modtime-alist) ; .GlobalEnv
-             (mapcar 'cddr ess--cached-sp-objects)))))
+             (mapcar #'cddr ess--cached-sp-objects)))))
 
 
 ;;;*;;; ARGUMENTS
@@ -355,7 +355,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
 ;;;*;;; COMPANY
 ;; https://company-mode.github.io
 
-(defun company-R-objects (command &optional arg &rest ignored)
+(defun company-R-objects (command &optional arg &rest _ignored)
   (interactive (list 'interactive))
   (cl-case command
     (interactive (company-begin-backend 'company-R-objects))
@@ -368,7 +368,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
                     (all-completions arg (ess--get-cached-completions arg)))))
     (doc-buffer (company-doc-buffer (ess-r-get-object-help-string arg)))))
 
-(defun company-R-args (command &optional arg &rest ignored)
+(defun company-R-args (command &optional arg &rest _ignored)
   (interactive (list 'interactive))
   (cl-case command
     (interactive (company-begin-backend 'company-R-args))
@@ -400,7 +400,7 @@ To be used instead of ESS' completion engine for R versions >= 2.7.0."
     (require-match 'never)
     (doc-buffer (company-doc-buffer (ess-r-get-arg-help-string arg)))))
 
-(defun company-R-library (command &optional arg &rest ignored)
+(defun company-R-library (command &optional arg &rest _ignored)
   (interactive (list 'interactive))
   (cl-case command
     (interactive (company-begin-backend 'company-R-library))

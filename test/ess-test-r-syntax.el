@@ -17,7 +17,7 @@
 ;;
 
 (require 'ert)
-(require 'etest)
+(require 'etest "etest/etest")
 (require 'ess-r-mode)
 (require 'ess-test-r-utils)
 
@@ -43,7 +43,7 @@
 
 (etest-deftest ess-r-tokens-pipe-operator-test ()
   :case "a ¶|> b"
-  (should (token= "|>"))
+  (should (ess-test-token= "|>"))
   :result "a |>¶ b")
 
 (etest-deftest ess-r-raw-strings-test ()

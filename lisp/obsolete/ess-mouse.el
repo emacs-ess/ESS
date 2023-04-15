@@ -1,6 +1,6 @@
-;;; ess-mouse.el --- Support for mouse- or cursor-sensitive actions
+;;; ess-mouse.el --- Support for mouse- or cursor-sensitive actions  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2001-2020 Free Software Foundation, Inc.
+;; Copyright (C) 2001-2022 Free Software Foundation, Inc.
 ;; Author: Richard M. Heiberger <rmh@temple.edu>
 ;; Created: 25 Mar 2001
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
@@ -94,7 +94,7 @@
     (setq cmd (funcall func name))
     ;; run the command, eval'ing if it was a list
     (if (listp cmd)
-        (setq cmd (eval cmd)))
+        (setq cmd (eval cmd t)))
     (setq mmtype (get cmd 'mouse-me-type))
     (cond ((eq mmtype 'region)
            (funcall cmd beg end))
@@ -160,7 +160,7 @@ the symbol `string' it will be called with one string argument."
 
 
 (defun ess-mouse-me-eval-expanded (string &optional head tail commands-buffer
-                                          page value-returned)
+                                          _page value-returned)
   "Send the expanded STRING to the inferior-ess process using `ess-command'
 after first concating the HEAD and TAIL.  Put answer in COMMANDS-BUFFER if
 specified, otherwise in \"tmp-buffer\".  In either
@@ -169,7 +169,7 @@ constructed command.  If PAGE is non-nil, expand
 the string one more time by embedding it in a \"page()\" command."
   (interactive)
   (let* (scommand
-         page-scommand
+         ;; page-scommand
          (lproc-name ess-local-process-name)
          (ess-mouse-customize-alist ess-local-customize-alist))
     (if (not head) (setq head "summary("))
@@ -180,7 +180,7 @@ the string one more time by embedding it in a \"page()\" command."
 
     (ess-make-buffer-current)
     (pop-to-buffer-same-window commands-buffer)
-    (ess-setq-vars-local (eval ess-mouse-customize-alist) (current-buffer))
+    (ess-setq-vars-local (eval ess-mouse-customize-alist t) (current-buffer))
     (setq ess-local-process-name lproc-name)
     (ess-command (concat scommand "\n") commands-buffer)
     (if (not value-returned) (pop-to-buffer-same-window (nth 1 (buffer-list))))
@@ -213,9 +213,9 @@ the string one more time by embedding it in a \"page()\" command."
 ;;       (defun ess-S-mouse-me-ess-transcript-mode ()
 ;;         (define-key ess-transcript-mode-map [S-mouse-3] 'ess-mouse-me))
 ;;
-(add-hook 'ess-mode-hook            'ess-S-mouse-me-menu-commands)
-(add-hook 'inferior-ess-mode-hook   'ess-S-mouse-me-menu-commands)
-(add-hook 'ess-transcript-mode-hook 'ess-S-mouse-me-menu-commands)
+(add-hook 'ess-mode-hook            #'ess-S-mouse-me-menu-commands)
+(add-hook 'inferior-ess-mode-hook   #'ess-S-mouse-me-menu-commands)
+(add-hook 'ess-transcript-mode-hook #'ess-S-mouse-me-menu-commands)
 ;; (add-hook 'ess-transcript-mode-hook 'ess-S-mouse-me-ess-transcript-mode)
 
 
