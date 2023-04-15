@@ -587,6 +587,7 @@ fun2 <- function(x) x"
 
 (ert-deftest ess-r-beginning/end-of-defun-ignore-inner-fn-test ()
   (with-ess-test-r-file (expand-file-name "navigation.R" ess-test-fixtures-directory)
+    (goto-char (point-min))
     (re-search-forward "fn5_body")
     (beginning-of-defun)
     (should (looking-at "fn4 <- "))
