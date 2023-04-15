@@ -911,12 +911,15 @@ it was successfully forced, throws an error otherwise."
   (when ess-local-process-name
     (get-process ess-local-process-name)))
 
-(defun ess-get-next-available-process (&optional dialect ignore-busy)
+(defun ess-get-next-available-process (&optional dialect ignore-busy background)
   "Return first available (aka not busy) process of dialect DIALECT.
 DIALECT defaults to the local value of ess-dialect. Return nil if
-no such process has been found."
+no such process has been found. If BACKGROUND is non-nil, only
+processes that are allowed to evaluate in the background are
+matched."
   (setq dialect (or dialect ess-dialect))
-  (when dialect
+  (when (and dialect (or (not background)
+                         ess-can-eval-in-background))
     (let (proc)
       (catch 'found
         (dolist (p (cons ess-local-process-name
@@ -928,18 +931,21 @@ no such process has been found."
                        (equal dialect
                               (buffer-local-value 'ess-dialect (process-buffer proc)))
                        (or ignore-busy
+                           ;; Check that we can evaluate in background
+                           ;; before checking for availability to
+                           ;; avoid issues with newline handshakes
+                           (or (not background)
+                               (ess-can-eval-in-background proc))
                            (inferior-ess-available-p proc)))
               (throw 'found proc))))))))
 
 (defun ess-get-next-available-bg-process (&optional proc dialect ignore-busy)
   "Returns first avaiable process only if background evaluations are allowed.
 Same as `ess-get-next-available-process' but checks for
-`ess-can-eval-in-background' carefully."
-  ;; Don't check for availability if background evals were disabled
-  (when ess-can-eval-in-background
-    (when-let ((proc (or proc (ess-get-next-available-process dialect ignore-busy))))
-      (when (ess-can-eval-in-background proc)
-        proc))))
+`ess-can-eval-in-background'."
+  (if proc
+      (ess-can-eval-in-background proc)
+    (ess-get-next-available-process dialect ignore-busy 'background)))
 
 
 ;;*;;; Commands for switching to the process buffer
