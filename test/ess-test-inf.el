@@ -163,6 +163,31 @@ Browse[1]> "
   :inf-result "NULL
 Browse[1]> ")
 
+(etest-deftest ess--command-browser-unscoped-essr ()
+  "`ess-command' when ESSR is not in scope."
+  :cleanup (ess-test--browser-cleanup)
+  (ess-send-string (ess-get-process) "evalq({ browser(); NULL }, baseenv())\n")
+  (ess-test--browser)
+  :inf-result "Called from: evalq({
+    browser()
+    NULL
+}, baseenv())
+Browse[1]> debug at #1: browser()
+Browse[3]> Browse[3]> "
+
+  (should (equal (ess-get-words-from-vector "'foo'\n")
+                 '("foo")))
+
+  ;; No impact on inferior
+  :inf-result ""
+  (should (inferior-ess-available-p))
+
+  ;; We're still in the browser
+  (ess-send-string (ess-get-process) "NULL\n")
+  (ess-wait-for-process)
+  :inf-result "NULL
+Browse[3]> ")
+
 (etest-deftest ess-command-browser-curly-braces ()
   "`{` expressions when debugger is active do not interrupt command."
   :cleanup (ess-test--browser-cleanup)

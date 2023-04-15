@@ -4,6 +4,10 @@
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
+@item ESS[R]: ESSR commands are now more robust when ESSR is
+not in scope. This can happen when using @code{browser()} in
+an environment that doesn't inherit from the search path.
+
 @item ESS[R]: Unexpected exits are now detected during startup.
 In that case an error is thrown with advice about how to recover.
 

@@ -480,7 +480,7 @@ fill=TRUE); try(traceback(), silent=TRUE)})\n")
 
 (defun ess-r-format-command (cmd &rest args)
   (let ((sentinel (alist-get 'output-delimiter args)))
-    (format ".ess.command(local(%s), '%s')\n" cmd sentinel)))
+    (ess-r--format-call ".ess.command(local(%s), '%s')\n" cmd sentinel)))
 
 (defvar ess-r-format-command-alist
   '((fun           . ess-r-format-command)
@@ -1093,7 +1093,8 @@ returned."
 (defun ess-current-R-version ()
   "Get the version of R currently running in the ESS buffer as a string."
   (ess-make-buffer-current)
-  (car (ess-get-words-from-vector "as.character(.ess.Rversion)\n")))
+  (car (ess-get-words-from-vector (format "base::as.character(%s)\n"
+                                          (ess-r--format-call ".ess.Rversion")))))
 
 (defun ess-current-R-at-least (version)
   "Is the version of R (in the ESS buffer) at least (\">=\") VERSION ?
@@ -1102,7 +1103,9 @@ Examples: (ess-current-R-at-least '2.7.0)
   (ess-make-buffer-current)
   (string= "TRUE"
            (car (ess-get-words-from-vector
-                 (format "as.character(.ess.Rversion >= \"%s\")\n" version)))))
+                 (format "base::as.character(%s >= \"%s\")\n"
+                         (ess-r--format-call ".ess.Rversion")
+                         version)))))
 (defun ess-find-newest-date (rvers)
   "Find the newest version of R given in the a-list RVERS.
 Each element of RVERS is a dotted pair (date . R-version), where
@@ -1306,13 +1309,19 @@ Placed into `ess-presend-filter-functions' for R dialects."
                    (ess-r-arg "verbose" "TRUE"))))
     (concat visibly output pkg verbose)))
 
+(defun ess-r--format-call (cmd &rest objects)
+  "Prefix an ESSR command with a namespace qualifier.
+CMD is formatted with OBJECTS using `format'."
+  (concat "base::as.environment('ESSR')$"
+          (apply #'format cmd objects)))
+
 (cl-defmethod ess-build-eval-command--override (string &context (ess-dialect "R")
                                                        &optional visibly output file &rest args)
   "R method to build eval command."
   (let* ((namespace (caar args))
          (namespace (unless ess-debug-minor-mode
                       (or namespace (ess-r-get-evaluation-env))))
-         (cmd (if namespace ".ess.ns_eval" ".ess.eval"))
+         (cmd (ess-r--format-call (if namespace ".ess.ns_eval" ".ess.eval")))
          (file (when file (ess-r-arg "file" file t)))
          (rargs (ess-r-build-args visibly output namespace)))
     (concat cmd "(\"" string "\"" rargs file ")\n")))
@@ -1320,7 +1329,7 @@ Placed into `ess-presend-filter-functions' for R dialects."
 (cl-defmethod ess-build-load-command (string &context (ess-dialect "R")
                                              &optional visibly output file &rest _args)
   (let* ((namespace (or file (ess-r-get-evaluation-env)))
-         (cmd (if namespace ".ess.ns_source" ".ess.source"))
+         (cmd (ess-r--format-call (if namespace ".ess.ns_source" ".ess.source")))
          (rargs (ess-r-build-args visibly output namespace)))
     (concat cmd "('" string "'" rargs ")\n")))
 
@@ -1443,7 +1452,7 @@ selected (see `ess-r-set-evaluation-env')."
   (setq ess-r-help--local-object obj)
   (let ((obj-arg (concat "'" obj "'"))
         (pkg-arg (ess-r-arg "package" pkg t)))
-    (concat ".ess.help(" obj-arg pkg-arg ")\n")))
+    (ess-r--format-call ".ess.help(%s%s)\n" obj-arg pkg-arg)))
 
 (defun ess-r-help--build-help-command--unqualified (obj)
   (if (eq ess-help-type 'index)
@@ -1572,11 +1581,12 @@ Source the etc/ESSR/.load.R file into the R process. The
 etc/ESSR/R directory into the ESSR environment and attaches the
 environment to the search path."
   (let* ((src-dir (expand-file-name "ESSR/R" ess-etc-directory))
-         (cmd (format "local({
-                          source('%s/.load.R', local=TRUE) #define load.ESSR
+         (cmd (format "base::local({
+                          base::source('%s/.load.R', local=TRUE) #define load.ESSR
                           .ess.ESSR.load('%s')
                       })\n"
-                      src-dir src-dir)))
+                      src-dir
+                      src-dir)))
     (with-current-buffer (ess-command cmd)
       (let ((msg (buffer-string)))
         (when (> (length msg) 1)
@@ -2566,9 +2576,10 @@ state.")
   "Add links to the help buffer."
   (let ((links (when (ess-process-live-p)
                  (ess-get-words-from-vector
-                  (format ".ess.helpLinks('%s' %s)\n"
-                          ess-r-help--local-object
-                          (ess-r-arg "package" ess-r-help--local-package t)))))
+                  (ess-r--format-call
+                   ".ess.helpLinks('%s' %s)\n"
+                   ess-r-help--local-object
+                   (ess-r-arg "package" ess-r-help--local-package t)))))
         (inhibit-read-only t))
     (save-excursion
       ;; Search for fancy quotes only. If users have
