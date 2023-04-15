@@ -39,7 +39,7 @@
   (declare (indent 1) (debug (&rest body)))
   `(let ((inhibit-message ess-inhibit-message-in-tests)
          (*file* ,file))
-     (save-window-excursion ;; FIXME: Why not `save-current-buffer'?
+     (save-current-buffer
        (set-buffer (if *file*
                        (find-file-noselect *file*)
                      (generate-new-buffer " *with-r-file-temp*")))
