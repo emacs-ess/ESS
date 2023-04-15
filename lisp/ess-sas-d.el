@@ -262,27 +262,21 @@ indent line."
   (interactive "P")
   (if ess-sas-edit-keys-toggle
       (insert ";")
-    (let (insertpos) ;; FIXME: Always nil?
-      (if (and (not arg)
-               (eolp)
-               (save-excursion
-                 (skip-chars-backward " \t")
-                 (backward-word 1)
-                 (and (looking-at "run\\|quit")
-                      (progn
-                        (skip-chars-backward " \t")
-                        (bolp)))))
-          (progn
-            (insert last-command-event)
-            (funcall indent-line-function)
-            (save-excursion
-              (if insertpos (goto-char (1+ insertpos)))
-              (delete-char -1))))
-      (if insertpos
+    (if (and (not arg)
+             (eolp)
+             (save-excursion
+               (skip-chars-backward " \t")
+               (backward-word 1)
+               (and (looking-at "run\\|quit")
+                    (progn
+                      (skip-chars-backward " \t")
+                      (bolp)))))
+        (progn
+          (insert last-command-event)
+          (funcall indent-line-function)
           (save-excursion
-            (goto-char insertpos)
-            (self-insert-command (prefix-numeric-value arg)))
-        (self-insert-command (prefix-numeric-value arg))))))
+            (delete-char -1))))
+    (self-insert-command (prefix-numeric-value arg))))
 
 (defun SAS-menu ()
   "Start SAS from the menu."
