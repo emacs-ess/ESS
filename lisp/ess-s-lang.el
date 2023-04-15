@@ -479,8 +479,6 @@ ARG is ignored."
   (declare (obsolete "It is set automatically in major modes" "ESS 19.04"))
   (imenu-add-to-menubar "Imenu-S"))
 
-(define-obsolete-function-alias 'ess-imenu-R #'ess-imenu-S "ESS 19.04")
-
 
  ;;; Speedbar stuff.
 
@@ -514,19 +512,9 @@ return it.  Otherwise, return `ess-help-topics-list'."
   (ess-command ".ess.getHelpAliases(reset = TRUE)\n"
                nil nil nil nil nil nil ess-help--aliases-timeout))
 
-(defalias 'S #'S+)
-(defalias 's-mode #'S+-mode)
-(defalias 's-transcript-mode #'S+-transcript-mode)
-(defalias 'S-transcript-mode #'s-transcript-mode)
-(defalias 'S-mode #'s-mode)
-
-
 (define-obsolete-function-alias 'ess-toggle-S-assign-key #'ignore "ESS 18.10")
 (define-obsolete-function-alias 'ess-smart-underscore #'ess-insert-assign "ESS 18.10")
 (define-obsolete-function-alias 'ess-insert-S-assign #'ess-insert-assign "ESS 18.10")
-
-(define-obsolete-function-alias 'ess-toggle-underscore #'ess-disable-smart-S-assign "ESS 18.10")
-(define-obsolete-function-alias 'ess-toggle-S-assign #'ess-disable-smart-S-assign "ESS 18.10")
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.[Ss]t\\'" . S-transcript-mode))

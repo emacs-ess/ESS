@@ -200,11 +200,6 @@ Use you regular key for `outline-show-entry' to reveal it.")
       (when (ess-roxy-entry-p "examples")
         (ess-roxy-hide-example)))))
 
-(when (featurep 'outline-magic)
-  (substitute-key-definition #'outline-cyle
-                             #'ess-roxy-cyle-example
-                             ess-roxy-mode-map outline-mode-menu-bar-map))
-
 (substitute-key-definition #'outline-hide-entry
                            #'ess-roxy-hide-example
                            ess-roxy-mode-map outline-minor-mode-map)
