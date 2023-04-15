@@ -61,6 +61,7 @@
 (defvar inferior-ess-mode-map)
 (defvar ess-mode-map)
 (defvar ess--inhibit-presend-hooks)
+
 (declare-function ess--accumulation-buffer "ess-inf")
 (declare-function ess--if-verbose-write-process-state "ess-inf")
 (declare-function ess--run-presend-hooks "ess-inf")
@@ -69,6 +70,7 @@
 (declare-function ess-build-load-command "ess-inf")
 (declare-function ess-command "ess-inf")
 (declare-function ess-dirs "ess-inf")
+(declare-function ess-eval-region--normalise-region "ess-inf" )
 (declare-function ess-force-buffer-current "ess-inf")
 (declare-function ess-get-process "ess-inf")
 (declare-function ess-get-process-variable "ess-inf")
@@ -80,17 +82,19 @@
 (declare-function ess-send-string "ess-inf")
 (declare-function ess-switch-process "ess-inf" ())
 (declare-function ess-switch-to-ESS "ess-inf")
-(declare-function ess-wait-for-process "ess-inf")
 (declare-function ess-switch-to-end-of-ESS "ess-inf" ())
-(declare-function ess-eval-region--normalise-region "ess-inf" )
-(declare-function inferior-ess-run-callback "ess-inf")
+(declare-function ess-wait-for-process "ess-inf")
 (declare-function inferior-ess--set-status "ess-inf")
+(declare-function inferior-ess-output-filter "ess-inf")
+(declare-function inferior-ess-run-callback "ess-inf")
+
 (declare-function ess-helpobjs-at-point--read-obj "ess-help")
 (declare-function ess-r-get-evaluation-env "ess-r-mode")
+(declare-function ess-roxy--region-p "ess-roxy")
+
 (declare-function ess-r-package--all-source-dirs "ess-r-package")
 (declare-function ess-r-package-name "ess-r-package")
 (declare-function ess-r-package-source-dirs "ess-r-package")
-(declare-function ess-roxy--region-p "ess-roxy")
 
 
 ;; Do not require tramp at runtime. It is expensive to load. Instead,
@@ -99,11 +103,11 @@
 (declare-function tramp-dissect-file-name "tramp")
 (declare-function tramp-get-remote-tmpdir "tramp")
 ;; The following declares can be removed once we drop Emacs 25
-(declare-function tramp-file-name-method "tramp")
-(declare-function tramp-file-name-user "tramp")
+(declare-function tramp-file-name-hop "tramp")
 (declare-function tramp-file-name-host "tramp")
 (declare-function tramp-file-name-localname "tramp")
-(declare-function tramp-file-name-hop "tramp")
+(declare-function tramp-file-name-method "tramp")
+(declare-function tramp-file-name-user "tramp")
 
 
 (defgroup ess-tracebug nil
