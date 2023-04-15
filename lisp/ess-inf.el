@@ -931,6 +931,16 @@ no such process has been found."
                            (inferior-ess-available-p proc)))
               (throw 'found proc))))))))
 
+(defun ess-get-next-available-bg-process (&optional proc dialect ignore-busy)
+  "Returns first avaiable process only if background evaluations are allowed.
+Same as `ess-get-next-available-process' but checks for
+`ess-can-eval-in-background' carefully."
+  ;; Don't check for availability if background evals were disabled
+  (when ess-can-eval-in-background
+    (when-let ((proc (or proc (ess-get-next-available-process dialect ignore-busy))))
+      (when (ess-can-eval-in-background proc)
+        proc))))
+
 
 ;;*;;; Commands for switching to the process buffer
 
@@ -2190,9 +2200,8 @@ any. This makes it possible to disable background evals for a
 specific process, for instance in case it was not initialized
 properly."
   (when ess-can-eval-in-background
-    (if-let ((proc (or proc (ess-get-current-process))))
-        (not (process-get proc 'bg-eval-disabled))
-      t)))
+    (when-let ((proc (or proc (ess-get-current-process))))
+      (not (process-get proc 'bg-eval-disabled)))))
 
 
 ;;;*;;; Hot key commands
