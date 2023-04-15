@@ -903,6 +903,11 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
     (should (file-exists-p essr-path))
     (ess--essr-load-or-throw-error remote-file-path #'ess-r--fetch-ESSR-remote)))
 
+(ert-deftest ess-r-failed-init-disable-bg-eval-test ()
+  (with-r-running nil
+    (should-error (ess-r--init-error-handler))
+    (should (not (ess-can-eval-in-background)))))
+
 (provide 'ess-test-r)
 
 
