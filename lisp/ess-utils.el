@@ -431,6 +431,8 @@ calling `untrace-function' on these functions."
 (defvar ido-directory-nonreadable)
 (defvar ido-current-directory)
 (defvar ido-enable-flex-matching)
+(declare-function ido-choose-completion-string "ido")
+(declare-function ido-minibuffer-setup "ido")
 (declare-function ido-read-internal "ido" (item prompt hist &optional default require-match initial))
 
 (defun ess-completing-read (prompt collection &optional predicate
