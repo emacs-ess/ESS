@@ -25,6 +25,7 @@
 
 (defvar etest-r-config
   '(:init ((mode . r)
+           (ess-offset . 4)
            (eval . (ess-test-r-set-local-process)))))
 
 (defvar ess-test-fixtures-directory
