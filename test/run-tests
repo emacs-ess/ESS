@@ -54,7 +54,6 @@
 (when (member "--literate" argv)
   (ess-test-load-locally "ess-test-literate.el" ess-test-path)
   (ess-test-load-locally "test-etest.el" etest-path)
-  (elt-deftest test-elt () "elt.R")
   (elt-deftest test-ess-roxy-literate () "roxy.R")
   ;; (elt-deftest test-ess-r-code-fill () "code-fill.R")
   (elt-deftest test-ess-r-misc () "misc.R")
