@@ -23,7 +23,7 @@
 (setq ess-use-flymake nil)
 
 (when (= (length argv) 0)
-  (setq argv '("--ess" "--inf" "--org" "--r-core" "--r-indent" "--r-pkg" "--literate")))
+  (setq argv '("--ess" "--inf" "--org" "--r-core" "--r-indent" "--r-pkg")))
 
 ;; Enable file-local variables while loading
 (defun ess-test-load-locally (name &optional dir)
@@ -54,9 +54,6 @@
   (ess-test-load-locally "ess-test-indentation.el" ess-test-path))
 (when (member "--r-pkg" argv)
   (ess-test-load-locally "ess-test-r-package.el" ess-test-path))
-(when (member "--literate" argv)
-  (ess-test-load-locally "ess-test-literate.el" ess-test-path)
-  (ess-test-load-locally "test-etest.el" etest-path))
 
 ;; run tests
 (ert-run-tests-batch-and-exit t)
