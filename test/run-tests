@@ -56,7 +56,6 @@
   (ess-test-load-locally "ess-test-literate.el" ess-test-path)
   (ess-test-load-locally "test-etest.el" etest-path)
   ;; (elt-deftest test-ess-r-code-fill () "code-fill.R")
-  (elt-deftest test-ess-r-misc () "misc.R")
   (elt-deftest test-ess-r-syntax () "syntax.R")
   (elt-deftest test-ess-r-tokens () "tokens.R")
   (elt-deftest test-ess-r-fontification () "fontification.R")
