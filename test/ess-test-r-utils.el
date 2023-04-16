@@ -25,7 +25,12 @@
 
 (defvar etest-r-config
   '(:init ((mode . r)
-           (eval . (ess-test-r-set-local-process)))))
+           (ess-offset . 4)
+           (eval . (progn
+                     (ess-test-r-set-local-process)
+                     ;; Reset local config to ESS defaults
+                     (ess-set-style 'RRR 'quiet)
+                     (setq-local ess-fill-calls-newlines nil))))))
 
 (defvar ess-test-fixtures-directory
   (expand-file-name "fixtures"
@@ -387,12 +392,29 @@ Throws an error if unsuccesful."
       (should (ess--essr-check-if-in-essrenv)))
     (kill-buffer)))
 
-(defun ess-test-token= (type &optional value)       ;; FIXME: `ess-' prefix?
+(defun ess-test-token= (type &optional value)
   "Check that the next token conforms to TYPE and VALUE.
 This checks it back and forth and moves the point after the
 token."
   (and (ess-jump-token type value)
        (ess-token-before= type value)))
+
+;; The macro has better failure reporting
+(defmacro ess-test-should-token= (type &optional value)
+  "Check that the next token conforms to TYPE and VALUE.
+This checks it back and forth and moves the point after the
+token."
+  `(let* ((-type ,type)
+          (-value ,value)
+          (tok (should (ess-jump-token))))
+     (let ((-type (if (listp -type) -type (list -type)))
+           (-value (if (listp -value) -value (list -value))))
+       (when -type
+         (should (ess-token-type tok))
+         (should (member (ess-token-type tok) -type)))
+       (when -value
+         (should (ess-token-value tok))
+         (should (member (ess-token-value tok) -value))))))
 
 (defmacro ess-with-toggled-font-lock-keyword (enable keywords &rest body)
   (declare (indent 2)

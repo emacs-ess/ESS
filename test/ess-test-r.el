@@ -203,50 +203,6 @@
                                          ("2005-12-30" . "R-2.0")))
                  "R-dev")))
 
-(defun ess-test-init-insert-assign ()
-  (let ((map (make-sparse-keymap)))
-    (define-key map "_" #'ess-insert-assign)
-    (use-local-map map)))
-
-(etest-deftest ess-insert-assign-test ()
-  "Repeated calls cycle between assignment and self-insert."
-  :init ((mode . r)
-         (eval . (ess-test-init-insert-assign)))
-  :case "foo¶"
-  "_" :result "foo <- ¶"
-  "_" :result "foo_¶"
-  "_" :result "foo_ <- ¶")
-
-(etest-deftest ess-insert-assign-whitespace-test ()
-  "Whitespace is cleaned up before insertion."
-  :init ((mode . r)
-         (eval . (ess-test-init-insert-assign)))
-  :case "foo ¶"  "_" :result "foo <- ¶"
-  :case "foo  ¶" "_" :result "foo <- ¶")
-
-(etest-deftest ess-cycle-assign-test ()
-  "Repeated calls cycle trough assignment operators."
-  :init ((mode . r))
-  :case "foo¶"
-  "C-c C-=" :result "foo <- ¶"
-  "C-c C-=" :result "foo <<- ¶"
-  "C-c C-=" :result "foo = ¶"
-  "C-c C-=" :result "foo -> ¶"
-  "C-c C-=" :result "foo ->> ¶"
-  "C-c C-=" :result "foo <- ¶"
-  "C-c C-=" :result "foo <<- ¶")
-
-(etest-deftest ess-cycle-assign-whitespace-test ()
-  "Whitespace is cleaned up before insertion"
-  :init ((mode . r))
-  :case "foo ¶"
-  "C-c C-=" :result "foo <- ¶"
-  "C-c C-=" :result "foo <<- ¶"
-
-  :case "foo  ¶"
-  "C-c C-=" :result "foo <- ¶"
-  "C-c C-=" :result "foo <<- ¶")
-
 (ert-deftest ess-skip-thing-test ()
   (should (eql 18
                (ess-r-test-with-temp-text "x <- function(x){\n mean(x)\n }\n \n \n x(3)\n "

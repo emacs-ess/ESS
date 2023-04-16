@@ -1,4 +1,4 @@
-;;; ess-test-r-tokens.el --- ESS tests for R tokens  -*- lexical-binding: t; -*-
+;;; ess-test-r-syntax.el --- ESS tests for R syntax  -*- lexical-binding: t; -*-
 ;;
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -90,6 +90,137 @@ r\"(foor¶'()¶'bar))\"
 "
   (should (not (equal (syntax-after (point))
                       (string-to-syntax "|")))))
+
+(etest-deftest ess-r-syntax-climb-test ()
+  :case "
+stuff1 =, ¶stuff2
+stuff1 =; ¶stuff2
+stuff1 := ¶stuff2
+stuff1 %a?a:a% ¶stuff2
+stuff1 %% ¶stuff2
+stuff1 => ¶stuff2
+"
+  (ess-climb-operator)
+  :result "
+stuff1 =, ¶stuff2
+stuff1 =; ¶stuff2
+stuff1¶ := stuff2
+stuff1¶ %a?a:a% stuff2
+stuff1¶ %% stuff2
+stuff1¶ => stuff2
+"
+
+  :case "
+function_call()
+¶
+"
+  (ess-climb-block-prefix)
+  :result "
+function_call()
+¶
+"
+  (ess-climb-block-prefix "function")
+  :result "
+function_call()
+¶
+")
+
+(etest-deftest ess-r-syntax-climb-continuations-test ()
+  :case "(!stuff1 ||¶ stuff2)"
+  (ess-climb-continuations)
+  :result "(¶!stuff1 || stuff2)"
+
+  :case "
+object <-
+    fun_call() %>%
+    ¶fun_call()
+
+object <-
+    fun_call() %>% fun_call() %>%
+    ¶fun_call()
+
+object <-
+    namespace::fun_call() %>%
+    ¶fun_call()
+
+object <-
+    namespace:::fun_call() %>%
+    ¶fun_call()
+
+object <-
+    object@fun_call() %>%
+    ¶fun_call()
+
+object <-
+    object$fun_call() %>%
+    ¶fun_call()
+"
+
+  (ess-climb-continuations)
+  :result "
+¶object <-
+    fun_call() %>%
+    fun_call()
+
+¶object <-
+    fun_call() %>% fun_call() %>%
+    fun_call()
+
+¶object <-
+    namespace::fun_call() %>%
+    fun_call()
+
+¶object <-
+    namespace:::fun_call() %>%
+    fun_call()
+
+¶object <-
+    object@fun_call() %>%
+    fun_call()
+
+¶object <-
+    object$fun_call() %>%
+    fun_call()
+")
+
+(etest-deftest ess-r-syntax-climb-sticky-ops-test ()
+  :case "
+object@field¶
+object$field¶
+namespace::object¶
+namespace:::object¶
+"
+
+  (ess-climb-expression)
+  :result "
+¶object@field
+¶object$field
+¶namespace::object
+¶namespace:::object
+"
+
+  :case reset
+  (ess-climb-object)
+  :result "
+¶object@field
+¶object$field
+¶namespace::object
+¶namespace:::object
+")
+
+(etest-deftest ess-r-syntax-jump-test ()
+  :case "
+    ¶if (test1)
+        stuff1
+    if (test2)
+        stuff2"
+
+  (ess-jump-expression)
+  :result "
+    if (test1)
+        stuff1¶
+    if (test2)
+        stuff2")
 
 
 ;; Local Variables:

@@ -288,3 +288,17 @@ Also tests local config test is cleaned up properly."
   :result \"\")
 \")\"
 ")
+
+(etest-deftest etest-reset-case-test ()
+  "Can reset case to its last value"
+  :case "
+¶foo
+"
+  (kill-line)
+  :result "
+¶
+"
+  :case reset
+  :result "
+¶foo
+")

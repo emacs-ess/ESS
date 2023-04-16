@@ -95,7 +95,10 @@ up a particular mode.")
 keyword can be a command or a list of commands. Strings are
 interpreted as `kbd' commands.
 
- The buffer is initialised with the list of local variables found
+Top-level expressions are evaluated in the same way as `:eval'
+arguments.
+
+The buffer is initialised with the list of local variables found
 in `:init' keywords. The `:cleanup' keyword takes
 unwind-protected expressions that are evaluated in LIFO order
 after the test succeeds or fails.
@@ -113,6 +116,7 @@ buffer-local variable `etest-local-inferior-buffer'.
 and are processed with DO-RESULT."
   (etest--with-test-buffer (etest--setup-body body)
     (let ((etest--msg-sentinel (etest--make-message-sentinel))
+          (etest--last-case "")
           etest--cleanup)
       (unwind-protect
           (while body
@@ -130,7 +134,10 @@ and are processed with DO-RESULT."
                     (`:case (progn
                               (erase-buffer)
                               (setq last-command nil)
-                              (insert etest--value)))
+                              (if (eq etest--value 'reset)
+                                  (insert etest--last-case)
+                                (insert etest--value)
+                                (setq etest--last-case etest--value))))
                     (`:eval (etest-run (current-buffer) (etest--wrap-test etest--value)))
                     (`:result (funcall do-result
                                        (etest--result (current-buffer))

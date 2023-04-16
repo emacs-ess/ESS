@@ -39,6 +39,7 @@
 ;;; Code:
 
 (require 'ert)
+(require 'etest "etest/etest")
 (require 'ess-r-mode)
 (require 'ess-test-r-utils)
 
@@ -137,6 +138,46 @@ where the edit took place. Return nil if E represents no real change.
 (ert-deftest test-ess-R-indentation-misc1 ()
   (ess-test-R-indentation "styles/misc1.R" 'misc1))
 
+(etest-deftest test-ess-indent-exp ()
+  :case "
+  {
+          fun¶_call(
+argument
+) +
+stuff1
+ } +
+stuff2
+"
+
+  ;; Bound to `ess-indent-exp'
+  "C-M-q"
+  :result "
+  {
+          fun¶_call(
+              argument
+          ) +
+              stuff1
+ } +
+stuff2
+"
+
+  :case reset
+  "C-u"
+  "C-M-q"
+  :result "
+{
+    fun¶_call(
+        argument
+    ) +
+        stuff1
+} +
+    stuff2
+")
+
 (provide 'ess-test-indentation)
+
+;; Local Variables:
+;; etest-local-config: etest-r-config
+;; End:
 
 ;;; ess-test-indentation.el ends here
