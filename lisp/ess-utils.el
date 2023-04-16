@@ -585,9 +585,10 @@ the prompt from those lines that remain. Invoke this command with
         (setq this-command 'yank))))
 
 (defun ess-yank (&optional arg)
-  "Call `ess-yank-cleaned-commands' if ARG is 16.
-With double prefix ARG (\\[universal-argument]
-\\[universal-argument]) call `ess-yank-cleaned-commands'."
+  "Variant of `yank' that optionally extracts commands from transcripts.
+When called with double prefix ARG (\\[universal-argument]
+\\[universal-argument]), calls `ess-transcript-clean-region'
+before yanking. See `ess-yank-cleaned-commands'."
   (interactive "*P")
   (if (equal '(16) arg)
       (ess-yank-cleaned-commands)
