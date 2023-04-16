@@ -1,4 +1,4 @@
-;;; ess-test-r-tokens.el --- ESS tests for R tokens  -*- lexical-binding: t; -*-
+;;; ess-test-r-syntax.el --- ESS tests for R syntax  -*- lexical-binding: t; -*-
 ;;
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
