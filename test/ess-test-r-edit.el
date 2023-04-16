@@ -102,6 +102,145 @@
   "C-c C-=" :result "foo <- ¶"
   "C-c C-=" :result "foo <<- ¶")
 
+"\nfun_call(¶argument1,\n         argument2,\n         argument3,\n         argument4,\n         argument5)"
+"\nfun_call(¶\n    argument1,\n    argument2,\n    argument3,\n    argument4,\n    argument5\n)"
+
+(etest-deftest test-ess-r-edit-call-filling ()
+  "With point in front of parentheses."
+  (setq-local fill-column 40)
+
+  :case "
+fun_call(¶argument1, argument2, argument3, argument4,
+         argument5)"
+
+  "M-q"
+  :result "
+fun_call(¶argument1, argument2,
+         argument3, argument4,
+         argument5)"
+
+    "M-q"
+    :result "
+fun_call(¶argument1,
+         argument2,
+         argument3,
+         argument4,
+         argument5)"
+
+    "M-q"
+    :result "
+fun_call(¶argument1, argument2, argument3, argument4,
+         argument5)"
+
+    "M-q"
+    :result "
+fun_call(¶argument1, argument2,
+         argument3, argument4,
+         argument5)")
+
+(etest-deftest test-ess-r-edit-call-filling-middle ()
+  "With point in the middle of the function symbol."
+  (setq-local fill-column 40)
+
+  :case "
+fun¶_call(argument1, argument2, argument3, argument4,
+         argument5)"
+
+  "M-q"
+  :result "
+fun¶_call(argument1, argument2,
+         argument3, argument4,
+         argument5)")
+
+(etest-deftest test-ess-r-edit-call-filling-before-comment ()
+  "If a comment is in the way we can't do anything."
+  :case "
+fun_call(¶         ## comment
+    argument1,     ## comment
+    argument2)"
+
+  "M-q"
+  :result "
+fun_call(¶         ## comment
+    argument1,     ## comment
+    argument2)")
+
+(etest-deftest test-ess-r-edit-call-filling-multiline-param ()
+  :case "
+¶fun_call(parameter =
+            'string')"
+
+  "M-q"
+  :result "
+¶fun_call(parameter = 'string')")
+
+(etest-deftest test-ess-r-edit-call-filling-john-doe ()
+  "Not sure what this is testing."
+  :case "
+`fun_call`(¶argument1, argument2)"
+
+  "M-q"
+  "M-q"
+  :result "
+`fun_call`(¶argument1,
+           argument2)")
+
+(etest-deftest test-ess-r-edit-call-filling-empty-arguments ()
+  (setq-local fill-column 42)
+
+  :case "
+fun_call¶(argument1, , arg2, , argument3, , argument4)"
+
+  "M-q"
+  :result "
+fun_call¶(argument1, , arg2, , argument3, ,
+         argument4)"
+
+  "M-q"
+  :result "
+fun_call¶(argument1,
+        ,
+         arg2,
+        ,
+         argument3,
+        ,
+         argument4)")
+
+(etest-deftest test-ess-r-edit-ops-filling ()
+  :case "
+lm(outcome¶ ~ pred1 +
+       pred2 +
+       pred3 +
+       pred4,
+   data)"
+
+  "M-q"
+  :result "
+lm(outcome¶ ~ pred1 + pred2 + pred3 + pred4,
+   data)"
+
+  "M-q"
+  :result "
+lm(outcome¶ ~
+       pred1 +
+       pred2 +
+       pred3 +
+       pred4,
+   data)"
+
+  "M-q"
+  :result "
+lm(outcome¶ ~ pred1 +
+       pred2 +
+       pred3 +
+       pred4,
+   data)")
+
+(etest-deftest test-ess-r-edit-ops-filling-no-rhs ()
+  :case "fun_call(¶argument +)"
+  "M-q"
+  :result "fun_call(¶argument +)")
+
 ;; Local Variables:
 ;; etest-local-config: etest-r-config
 ;; End:

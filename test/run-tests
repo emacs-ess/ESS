@@ -56,9 +56,7 @@
   (ess-test-load-locally "ess-test-r-package.el" ess-test-path))
 (when (member "--literate" argv)
   (ess-test-load-locally "ess-test-literate.el" ess-test-path)
-  (ess-test-load-locally "test-etest.el" etest-path)
-  ;; (elt-deftest test-ess-r-code-fill () "code-fill.R")
-  )
+  (ess-test-load-locally "test-etest.el" etest-path))
 
 ;; run tests
 (ert-run-tests-batch-and-exit t)

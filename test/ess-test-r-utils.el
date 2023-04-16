@@ -26,7 +26,11 @@
 (defvar etest-r-config
   '(:init ((mode . r)
            (ess-offset . 4)
-           (eval . (ess-test-r-set-local-process)))))
+           (eval . (progn
+                     (ess-test-r-set-local-process)
+                     ;; Reset local config to ESS defaults
+                     (ess-set-style 'RRR 'quiet)
+                     (setq-local ess-fill-calls-newlines nil))))))
 
 (defvar ess-test-fixtures-directory
   (expand-file-name "fixtures"
