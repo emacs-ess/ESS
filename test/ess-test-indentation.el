@@ -161,16 +161,7 @@ stuff2
 stuff2
 "
 
-  :case "
-  {
-          fun¶_call(
-argument
-) +
-stuff1
- } +
-stuff2
-"
-
+  :case reset
   "C-u"
   "C-M-q"
   :result "

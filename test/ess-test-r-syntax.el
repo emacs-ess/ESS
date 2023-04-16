@@ -199,14 +199,7 @@ namespace:::object¶
 ¶namespace:::object
 "
 
-  ;; reset-case
-  :case "
-object@field¶
-object$field¶
-namespace::object¶
-namespace:::object¶
-"
-
+  :case reset
   (ess-climb-object)
   :result "
 ¶object@field
