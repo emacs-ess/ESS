@@ -16,6 +16,16 @@
 ;;; Commentary:
 ;;
 
+(require 'ert)
+(require 'etest "etest/etest")
+(require 'ess-r-mode)
+(require 'ess-test-r-utils)
+
+(defun ess-test-init-insert-assign ()
+  (let ((map (make-sparse-keymap)))
+    (define-key map "_" #'ess-insert-assign)
+    (use-local-map map)))
+
 (etest-deftest test-ess-r-edit-keybindings-smart-assign ()
   (define-key ess-mode-map "_" #'ess-insert-assign)
   :case "foo¶"
@@ -56,6 +66,41 @@
   "_" :result "foo <~ ¶"
   "_" :result "foo_¶"
   "_" :result "foo_ <~ ¶")
+
+(etest-deftest test-ess-r-edit-insert-assign ()
+  "Repeated calls cycle between assignment and self-insert."
+  :init ((eval . (ess-test-init-insert-assign)))
+  :case "foo¶"
+  "_" :result "foo <- ¶"
+  "_" :result "foo_¶"
+  "_" :result "foo_ <- ¶")
+
+(etest-deftest test-ess-r-edit-insert-assign-whitespace ()
+  "Whitespace is cleaned up before insertion."
+  :init ((eval . (ess-test-init-insert-assign)))
+  :case "foo ¶"  "_" :result "foo <- ¶"
+  :case "foo  ¶" "_" :result "foo <- ¶")
+
+(etest-deftest test-ess-r-edit-cycle-assign-test ()
+  "Repeated calls cycle trough assignment operators."
+  :case "foo¶"
+  "C-c C-=" :result "foo <- ¶"
+  "C-c C-=" :result "foo <<- ¶"
+  "C-c C-=" :result "foo = ¶"
+  "C-c C-=" :result "foo -> ¶"
+  "C-c C-=" :result "foo ->> ¶"
+  "C-c C-=" :result "foo <- ¶"
+  "C-c C-=" :result "foo <<- ¶")
+
+(etest-deftest test-ess-r-edit-cycle-assign-whitespace-test ()
+  "Whitespace is cleaned up before insertion"
+  :case "foo ¶"
+  "C-c C-=" :result "foo <- ¶"
+  "C-c C-=" :result "foo <<- ¶"
+
+  :case "foo  ¶"
+  "C-c C-=" :result "foo <- ¶"
+  "C-c C-=" :result "foo <<- ¶")
 
 ;; Local Variables:
 ;; etest-local-config: etest-r-config
