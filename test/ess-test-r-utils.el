@@ -32,6 +32,10 @@
                      (ess-set-style 'RRR 'quiet)
                      (setq-local ess-fill-calls-newlines nil))))))
 
+(defvar etest-r-ts-config
+  '(:init ((mode . r-ts)
+           (r-indent-offset . 4))))
+
 (defvar ess-test-fixtures-directory
   (expand-file-name "fixtures"
                     (file-name-directory (or load-file-name

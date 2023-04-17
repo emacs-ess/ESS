@@ -54,9 +54,33 @@
      ((node-is ")") parent-bol 0)
      ((node-is "consequence") parent-bol r-indent-offset)
      ((parent-is "brace_list") parent-bol r-indent-offset)
-     ((parent-is "binary") parent-bol r-indent-offset)
+     ((parent-is "binary") r--indent-binary-root-bol r-indent-offset)
      (no-node parent-bol 0)))
   "Tree-sitter indent rules for `r-ts-mode'.")
+
+(defun r--indent-binary-root-bol (node parent &rest _)
+  (r--ts-node-start (r--ts-binary-root node parent)))
+
+(defun r--ts-binary-root (node parent)
+  "Find the root of a tree of binary expressions."
+  (let ((is-binary-parent (lambda (n p) (equal (treesit-node-type p) "binary"))))
+    (r--ts-climb-while node parent is-binary-parent)))
+
+(defun r--ts-climb-while (node parent predicate)
+  "Climb parents while predicate matches NODE and PARENT."
+  (while (funcall predicate node parent)
+    (setq node parent)
+    (setq parent (treesit-node-parent node)))
+  node)
+
+(defun r--ts-node-start (node)
+  "Like `treesit-node-start' but skips blank lines."
+  (let ((start (treesit-node-start node)))
+    (save-excursion
+      (goto-char start)
+      (or (when (re-search-forward "[^\t\n ]" nil t)
+            (match-beginning 0))
+          start))))
 
 
 ;;; Mode

@@ -20,3 +20,45 @@
 (require 'etest "etest/etest")
 (require 'ess-r-mode)
 (require 'ess-test-r-utils)
+
+(defun test-r-ts-goto (fun)
+  (let ((node (test-r-ts-call-with-node fun)))
+    (goto-char (cond ((numberp node)
+                      node)
+                     ((treesit-node-p node)
+                      (r--ts-node-start node))
+                     (t
+                      (error "Unexpected result"))))))
+
+(defun test-r-ts-call-with-node (fun)
+  (let ((node (treesit-node-at (point))))
+    (funcall (symbol-function fun)
+             node
+             (treesit-node-parent node))))
+
+(etest-deftest test-r-ts-binary-root ()
+  :case "
+1 + 2 + ¶3
+1 + 2 * 3 / ¶4
+"
+  (test-r-ts-goto #'r--ts-binary-root)
+  :result "
+¶1 + 2 + 3
+¶1 + 2 * 3 / 4
+"
+
+  :case "¶1 + 2 + 3"
+  (test-r-ts-goto #'r--ts-binary-root)
+  :result "¶1 + 2 + 3"
+
+  :case "
+NULL
+1 + ¶2 + 3"
+  (test-r-ts-goto #'r--indent-binary-root-bol)
+  :result "
+NULL
+¶1 + 2 + 3")
+
+;; Local Variables:
+;; etest-local-config: etest-r-ts-config
+;; End:
