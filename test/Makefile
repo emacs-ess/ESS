@@ -26,6 +26,9 @@ r r-core:
 r-indent:
 	${EMACS} -Q --script run-tests --r-indent
 
+r-ts:
+	${EMACS} -Q --script run-tests --r-ts
+
 r-pkg:
 	${EMACS} -Q --script run-tests --r-pkg
 

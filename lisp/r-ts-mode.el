@@ -55,7 +55,7 @@
      ((node-is "consequence") parent-bol r-indent-offset)
      ((parent-is "brace_list") parent-bol r-indent-offset)
      ((parent-is "binary") r--indent-binary-root-bol r-indent-offset)
-     (no-node parent-bol 0)))
+     (no-node no-indent 0)))
   "Tree-sitter indent rules for `r-ts-mode'.")
 
 (defun r--indent-binary-root-bol (node parent &rest _)

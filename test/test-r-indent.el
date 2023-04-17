@@ -18,7 +18,7 @@
 
 (require 'ert)
 (require 'etest "etest/etest")
-(require 'ess-r-mode)
+(require 'r-ts-mode)
 (require 'ess-test-r-utils)
 
 (defun test-r-ts-goto (fun)
@@ -58,6 +58,28 @@ NULL
   :result "
 NULL
 ¶1 + 2 + 3")
+
+(etest-deftest test-r-indent-binary-ops-consecutive ()
+  "Second expression should be influenced by first one."
+  :case "
+1 +
+2 +
+3
+
+1 +
+2 *
+3 /
+4"
+  (indent-region (point-min) (point-max))
+  :result "¶
+1 +
+    2 +
+    3
+
+1 +
+    2 *
+    3 /
+    4")
 
 ;; Local Variables:
 ;; etest-local-config: etest-r-ts-config
