@@ -48,30 +48,50 @@
   (regexp-opt '("lambda_function"
                 "function_definition")))
 
+(defvar r--binary-op-regexp
+  (concat
+   (regexp-opt '("?" ":=" "=" "<-" "<<-" "->" "->>" "~" "|>" "=>" "||" "|"
+                 "&&" "&" "<" "<=" ">" ">=" "==" "!=" "+" "-" "*" "/" ":"
+                 "**" "^" "$" "@" "::" ":::"))
+   "\\|%.+%"))
+
 (defvar r--indent-rules
-  '((r
+  `((r
      ((node-is "}") parent-bol 0)
      ((node-is ")") parent-bol 0)
      ((node-is "consequence") parent-bol r-indent-offset)
-     ((parent-is "brace_list") parent-bol r-indent-offset)
-     ((parent-is "binary") r--indent-binary-root-bol r-indent-offset)
-     (no-node no-indent 0)))
+     ((parent-is "program") parent-bol 0)
+     ((parent-is "{") parent-bol r-indent-offset)
+     ((parent-is ,r--binary-op-regexp) r--ts-binary-root-bol r-indent-offset)
+     (no-node parent-bol 0)))
   "Tree-sitter indent rules for `r-ts-mode'.")
 
-(defun r--indent-binary-root-bol (node parent &rest _)
+(defun r--ts-binary-root-bol (node parent &rest _)
   (r--ts-node-start (r--ts-binary-root node parent)))
 
 (defun r--ts-binary-root (node parent)
   "Find the root of a tree of binary expressions."
-  (let ((is-binary-parent (lambda (n p) (equal (treesit-node-type p) "binary"))))
-    (r--ts-climb-while node parent is-binary-parent)))
+  (r--ts-parent-while
+   node parent
+   (symbol-function #'r--ts-node-is-operand)))
 
-(defun r--ts-climb-while (node parent predicate)
+(defun r--ts-node-is-binary-operator (node _p)
+  (string-match-p
+   r--binary-op-regexp
+   (treesit-node-type node)))
+
+(defun r--ts-node-is-operand (node parent)
+  (string-match-p
+   r--binary-op-regexp
+   (treesit-node-type parent)))
+
+(defun r--ts-parent-while (node parent predicate)
   "Climb parents while predicate matches NODE and PARENT."
-  (while (funcall predicate node parent)
-    (setq node parent)
-    (setq parent (treesit-node-parent node)))
-  node)
+  (let ((parent (or parent (treesit-node-parent node))))
+    (while (funcall predicate node parent)
+      (setq node parent)
+      (setq parent (treesit-node-parent node)))
+    node))
 
 (defun r--ts-node-start (node)
   "Like `treesit-node-start' but skips blank lines."

@@ -27,6 +27,8 @@
                       node)
                      ((treesit-node-p node)
                       (r--ts-node-start node))
+                     ((not node)
+                      (error "Can't find node"))
                      (t
                       (error "Unexpected result"))))))
 
@@ -54,13 +56,14 @@
   :case "
 NULL
 1 + ¶2 + 3"
-  (test-r-ts-goto #'r--indent-binary-root-bol)
+  (test-r-ts-goto #'r--ts-binary-root)
   :result "
 NULL
 ¶1 + 2 + 3")
 
 (etest-deftest test-r-indent-binary-ops-consecutive ()
-  "Second expression should be influenced by first one."
+  "Second expression should be influenced by first one.
+See https://github.com/r-lib/tree-sitter-r/issues/44."
   :case "
 1 +
 2 +
@@ -69,7 +72,14 @@ NULL
 1 +
 2 *
 3 /
-4"
+4
+
+# But here `2` should be indented according to `1`?
+{
+1
+2
+}
+"
   (indent-region (point-min) (point-max))
   :result "¶
 1 +
@@ -79,7 +89,14 @@ NULL
 1 +
     2 *
     3 /
-    4")
+    4
+
+# But here `2` should be indented according to `1`?
+{
+    1
+    2
+}
+")
 
 ;; Local Variables:
 ;; etest-local-config: etest-r-ts-config
