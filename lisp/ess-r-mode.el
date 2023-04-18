@@ -655,6 +655,8 @@ Executed in process buffer."
   (when ess-use-tracebug
     (ess-tracebug 1))
   (add-hook 'ess-presend-filter-functions #'ess-R-scan-for-library-call nil 'local)
+  ;; Wait before running user hook so they can call blocking commands
+  (ess-wait-for-process)
   (run-hooks 'ess-r-post-run-hook)
   (ess-wait-for-process))
 

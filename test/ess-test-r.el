@@ -892,6 +892,15 @@ https://github.com/emacs-ess/ESS/issues/725#issuecomment-431781558"
                             (cadr err))))
   :inf-result "")
 
+(ert-deftest ess-r-post-run-hook-test ()
+  "ESS waits before running user hook so that blocking
+commands may be used."
+  (let* (result
+         (ess-r-post-run-hook
+          (list (lambda () (setq result (ess-get-words-from-vector "'foo'\n"))))))
+    (ess-test-with-r-running nil)
+    (should (equal result (list "foo")))))
+
 (provide 'ess-test-r)
 
 
