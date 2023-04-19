@@ -679,19 +679,20 @@ Executed in process buffer."
   (let ((args (list (format "STERM = '%s'" ess-STERM)
                     "str.dendrogram.last = '\\''"
                     (format "editor = '%s'" ess-r-editor)
-                    (ess-r--opt-if-unset "pager"
-                                         "file.path(R.home(), 'bin', 'pager')"
-                                         (format "'%s'" inferior-ess-pager))
+                    (ess-r--update-opt-if-eq "pager"
+                                             "file.path(R.home(), 'bin', 'pager')"
+                                             (format "'%s'" inferior-ess-pager))
                     "show.error.locations = TRUE")))
     (format "options(%s)\n" (mapconcat 'identity args ", "))))
 
-(defun ess-r--opt-if-unset (opt default value)
-  (format "%s = if (identical(getOption('%s'), %s)) %s else %s"
-          opt
-          opt
-          default
-          value
-          default))
+(defun ess-r--update-opt-if-eq (opt old new)
+  (let ((actual (format "getOption('%s')" opt)))
+    (format "%s = if (identical(%s, %s)) %s else %s"
+            opt
+            actual
+            old
+            new
+            actual)))
 
 (defun ess-r--skip-function ()
   ;; Assumes the point is at function start
