@@ -690,8 +690,8 @@ Executed in process buffer."
           opt
           opt
           default
-          value
-          default))
+          default
+          value))
 
 (defun ess-r--skip-function ()
   ;; Assumes the point is at function start
