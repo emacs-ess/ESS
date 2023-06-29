@@ -1183,9 +1183,9 @@ Kill the *ess.dbg.[R_name]* buffer."
 
 ;; http://jkorpela.fi/chars/c0.html
 ;; https://en.wikipedia.org/wiki/C0_and_C1_control_codes
-(defvar ess--mpi-message-start-delimiter "\001") ; SOH control code
-(defvar ess--mpi-message-field-separator "\002") ; STX control code
-(defvar ess--mpi-message-end-delimiter "\003")   ; ETX control code
+(defvar ess--mpi-message-start-delimiter "\035\036") ; GS RS
+(defvar ess--mpi-message-field-separator "\037") ; US
+(defvar ess--mpi-message-end-delimiter "\036\035")   ; RS GS
 
 (define-obsolete-variable-alias 'ess-mpi-alist 'ess-mpi-handlers "ESS 19.04")
 (defvar ess-mpi-handlers
@@ -1229,9 +1229,9 @@ value from EXPR and then sent to the subprocess."
 
 (defun ess-mpi-handle-messages (buf)
   "Handle all mpi messages in BUF and delete them.
-The MPI message has the form \001TYPE\002FIELD...\003 where TYPE
+The MPI message has the form \035\036TYPE\037FIELD\036\035 where TYPE
 is the type of the messages on which handlers in
-`ess-mpi-handlers' are dispatched. And FIELDs are strings. Note
+`ess-mpi-handlers' are dispatched, and FIELDs are strings. Note
 that the MPI message contains literal ASCII control codes as
 delimiters. Return :incomplete if BUF ends with an incomplete
 message."
