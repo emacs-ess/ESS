@@ -289,7 +289,7 @@ to look up any doc strings. Honors `eldoc-echo-area-use-multiline-p'."
   '((inferior-ess-primary-prompt   . "\\w*> ")
     (inferior-ess-secondary-prompt . nil)
     (inferior-ess-prompt           . "\\w*> ")
-    (ess-local-customize-alist     . ess-julia-customize-alist)
+    (ess-local-customize-alist     . 'ess-julia-customize-alist)
     (inferior-ess-program          . inferior-julia-program)
     (ess-load-command              . "include(expanduser(\"%s\"))\n")
     (ess-funargs-command           . "ESS.fun_args(\"%s\")\n")
