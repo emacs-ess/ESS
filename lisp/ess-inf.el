@@ -1,6 +1,6 @@
 ;;; ess-inf.el --- Support for running S as an inferior Emacs process  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1989-2022 Free Software Foundation, Inc.
+;; Copyright (C) 1989-2023 Free Software Foundation, Inc.
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
@@ -652,7 +652,9 @@ the name of the inferior process (e.g. \"R:1\"), and DIALECT is
 the language dialect (e.g. \"R\")."
   (let ((default-dir (inferior-ess--get-startup-directory)))
     (if ess-ask-for-ess-directory
-        (let ((prompt (format "%s starting project directory? " procname)))
+        (let ((prompt (format "%s starting project directory? " procname))
+              (display-buffer-overriding-action nil) ; hack to let helm display a buffer
+              )
           (ess-prompt-for-directory default-dir prompt))
       default-dir)))
 
