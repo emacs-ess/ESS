@@ -1,6 +1,6 @@
 ;; ess-rd.el --- Support for editing R documentation (Rd) source  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1997-2022 Free Software Foundation, Inc.
+;; Copyright (C) 1997-2023 Free Software Foundation, Inc.
 ;; Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
 ;; Created: 25 July 1997
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
@@ -152,7 +152,7 @@ All Rd mode abbrevs start with a grave accent (`)."
     (concat "\\\\\\("
             (mapconcat #'identity Rd-section-names "\\|")
             "\\>\\)")
-    'font-lock-reference-face) ; Rd-bold-face
+    'font-lock-constant-face) ; Rd-bold-face
    (cons
     (concat "\\\\\\("
             (mapconcat #'identity Rd-keywords "\\|")
