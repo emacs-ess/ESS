@@ -1522,6 +1522,7 @@ the output into *ess.dbg* buffer."
     (define-key map (kbd "M-C") #'ess-debug-command-continue)
     (define-key map [(control meta ?C)] #'ess-debug-command-continue-multi)
     (define-key map (kbd "M-N") #'ess-debug-command-next)
+    (define-key ess-debug-minor-mode-map (kbd "M-S") #'ess-debug-command-step)
     (define-key map [(control meta ?N)] #'ess-debug-command-next-multi)
     (define-key map (kbd "M-Q") #'ess-debug-command-quit)
     (define-key map (kbd "M-U") #'ess-debug-command-up)
@@ -1784,6 +1785,17 @@ Equivalent to `n' at the R prompt."
   (if (ess--dbg-is-recover-p)
       (ess-send-string (ess-get-process) "0")
     (ess-send-string (ess-get-process) "n")))
+
+(defun ess-debug-command-step ()
+      "Step into in debug mode.
+Equivalent to `s' at the R prompt."
+       (interactive)
+  (ess-force-buffer-current)
+  (unless (ess--dbg-is-active-p)
+    (error "Debugger is not active"))
+  (if (ess--dbg-is-recover-p)
+      (ess-send-string (ess-get-process) "0")
+    (ess-send-string (ess-get-process) "s")))
 
 (defun ess-debug-command-next-multi (&optional N)
   "Ask for N and step (n) N times in debug mode."
