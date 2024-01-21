@@ -31,8 +31,6 @@ tmp*
 .DS_Store
 ._.DS_Store
 .dependencies
-NEWS
-ONEWS
 
 # ELPA-generated files
 /ess-autoloads.el
