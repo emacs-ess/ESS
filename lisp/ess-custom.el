@@ -329,7 +329,7 @@ process. If a symbol, the symbol's value should be a directory.
 For example, the following setting would always start the process
 in the directory of the current file:
 
-   (setq ess-startup-directory 'default-directory)
+   (setq ess-startup-directory ''default-directory)
 
 If `ess-startup-directory' is nil (the default) and
 `ess-startup-directory-function' is non-nil, the value returned
@@ -1404,7 +1404,7 @@ Currently this should not be used to interact with the inferior
 process because this hook runs too early, before the inferior
 mode had a chance to properly start up the process. To interact
 with the process, you must use a mode-specific hook like
-'ess-r-post-run-hook'."
+`ess-r-post-run-hook'."
   :group 'ess-hooks
   :type 'hook)
 

@@ -1,0 +1,38 @@
+From 68984a5a0a1df5a5a2619b579f23f70128e979cd Mon Sep 17 00:00:00 2001
+Message-ID: <68984a5a0a1df5a5a2619b579f23f70128e979cd.1705837631.git.yantar92@posteo.net>
+From: Ihor Radchenko <yantar92@posteo.net>
+Date: Sun, 21 Jan 2024 12:44:32 +0100
+Subject: [PATCH] ess-request-a-process: Honor
+ ess-gen-proc-buffer-name-function
+
+* lisp/ess-inf.el (ess-request-a-process): Do not make processes not
+matching `ess-gen-proc-buffer-name-function' current.
+---
+ lisp/ess-inf.el | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/lisp/ess-inf.el b/lisp/ess-inf.el
+index 9ca3f455..aaff314c 100644
+--- a/lisp/ess-inf.el
++++ b/lisp/ess-inf.el
+@@ -820,7 +820,7 @@ (defun ess-request-a-process (message &optional noswitch ask-if-1)
+                            (delete-dups (list "R" "S+" (or (bound-and-true-p S+-dialect-name) "S+")
+                                               "stata" (or (bound-and-true-p STA-dialect-name) "stata")
+                                               "julia" "SAS")))))
+-         (pname-list (delq nil ;; keep only those matching dialect
++         (pname-list (delq nil ;; keep only those matching dialect and `ess-gen-proc-buffer-name-function'
+                            (append
+                             (mapcar (lambda (lproc)
+                                       (and (equal ess-dialect
+@@ -828,6 +828,8 @@ (defun ess-request-a-process (message &optional noswitch ask-if-1)
+                                                    'ess-dialect
+                                                    (process-buffer (get-process (car lproc)))))
+                                            (not (equal ess-local-process-name (car lproc)))
++                                           (equal (buffer-name (process-buffer (get-process (car lproc))))
++                                                  (funcall ess-gen-proc-buffer-name-function (car lproc)))
+                                            (car lproc)))
+                                     ess-process-name-list)
+                             ;; append local only if running
+-- 
+2.43.0
+

@@ -820,7 +820,7 @@ to `ess-completing-read'."
                            (delete-dups (list "R" "S+" (or (bound-and-true-p S+-dialect-name) "S+")
                                               "stata" (or (bound-and-true-p STA-dialect-name) "stata")
                                               "julia" "SAS")))))
-         (pname-list (delq nil ;; keep only those matching dialect
+         (pname-list (delq nil ;; keep only those matching dialect and `ess-gen-proc-buffer-name-function'
                            (append
                             (mapcar (lambda (lproc)
                                       (and (equal ess-dialect
@@ -828,6 +828,8 @@ to `ess-completing-read'."
                                                    'ess-dialect
                                                    (process-buffer (get-process (car lproc)))))
                                            (not (equal ess-local-process-name (car lproc)))
+                                           (equal (buffer-name (process-buffer (get-process (car lproc))))
+                                                  (funcall ess-gen-proc-buffer-name-function (car lproc)))
                                            (car lproc)))
                                     ess-process-name-list)
                             ;; append local only if running
