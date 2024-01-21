@@ -1,11 +1,14 @@
-Changes and New Features in 24.01:
+Changes and New Features in 24.01.0:
 
    * updating version number
 
    * fix docstring warnings in ess-custom
+     sed/VERSION/24.01.0/ 
+     commit ess-custom with VERSION NOT 24.01.0
+     so remember to git checkout ess-custom.el after make install
 
-   *  make `ess-request-a-process' obey `ess-gen-proc-buffer-name-function'
-      thanks to Ihor Radchenko <yantar92@posteo.net>
+   * make `ess-request-a-process' obey `ess-gen-proc-buffer-name-function'
+     thanks to Ihor Radchenko <yantar92@posteo.net>
 
 Changes and New Features in 19.04 (unreleased):
 

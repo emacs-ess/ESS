@@ -1,6 +1,6 @@
 ;;; ess.el --- Emacs Speaks Statistics  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1997-2022 Free Software Foundation, Inc.
+;; Copyright (C) 1997-2024 Free Software Foundation, Inc.
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;;         A.J. Rossini <blindglobe@gmail.com>

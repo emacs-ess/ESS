@@ -17,11 +17,12 @@ ESSR-VERSION := $(shell sed -n "s/;; ESSR-Version: *\(.*\) */\1/p" lisp/ess.el)
 all: lisp doc etc autoloads
 
 .PHONY: version
-version:
+version: VERSION
 	@echo "********************* VERSIONS **************************"
 	@echo $(shell $(EMACS) --version | sed -n 1p)
 	@echo ESS $(ESSVERSION)
 	@echo ESSR $(ESSR-VERSION)
+	@sed -i "s/\"VERSION\"/\"$(ESSVERSION)\"/" lisp/ess-custom.el
 	@echo "*********************************************************"
 
 .PHONY: lisp

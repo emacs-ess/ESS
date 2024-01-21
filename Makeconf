@@ -19,6 +19,14 @@ SITELISP ?= $(PREFIX)/share/emacs/site-lisp
 ESSDESTDIR ?= $(SITELISP)/ess
 EMACSBATCH ?= $(EMACS) -batch -Q
 
+##__ GNU Emacs __ preparing for ESS release
+DESTDIR = /usr/local
+PREFIX = $(DESTDIR)
+EMACS = $(PREFIX)/emacs/29.1/bin/emacs
+SITELISP = $(PREFIX)/emacs/29.1/share/emacs/site-lisp
+ESSDESTDIR = $(SITELISP)/ess
+EMACSBATCH = $(EMACS) -batch -Q
+
 ##__ GNU Emacs __  for macOS
 # PREFIX=/Applications/Emacs.app/Contents/Resources
 # EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs
