@@ -175,7 +175,8 @@ ChangeLog: VERSION
 
 tag:
 	@echo "** Tagging the release **  1) pull existing;  2) tag  3) push it"
-	git pull --tags
+	git fetch --tags
+##	git pull --tags
 	@echo "Creating tag (no signing, as that fails for MM)"
 	git tag -m'release tagging' v$(ESSVERSION)
 	@echo '** Pushing the 	v$(ESSVERSION)  upstream ...'
