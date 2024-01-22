@@ -1,6 +1,18 @@
 @comment @itemize @w{}
 @comment @item
 
+Changes and New Features in 24.01.0:
+@itemize @bullet
+
+@item fix docstring warnings in ess-custom
+lisp/ess-custom.el with version @emph{not} 24.01.0 (or similar),
+but do remember to make after checkout.
+
+@item Better ``collaboration'' with org-mode
+Now @code{ess-request-a-process} obeys @code{ess-gen-proc-buffer-name-function},
+thanks to Ihor Radchenko.
+@end itemize
+
 Changes and New Features in 19.04 (unreleased):
 @itemize @bullet
 
@@ -108,7 +120,7 @@ are now always stripped from the prefix, so they can be sent to the
 process easily. Previously, this was only the case inside the
 @code{examples} field. Since roxygen is switching to R markdown, it
 becomes useful to evaluate chunks of R outside examples.
-  
+
 @item stata support is now obsolete since we were unable to elicit
 FSF paperwork from some of the original authors: see the lisp/obsolete
 sub-directory on the ESS github repo
