@@ -5,8 +5,9 @@ Changes and New Features in 24.01.0:
 @itemize @bullet
 
 @item fix docstring warnings in ess-custom
-lisp/ess-custom.el with version @emph{not} 24.01.0 (or similar),
-but do remember to make after checkout.
+
+@item :package-version is now set to "VERSION" in ess-custom.
+By make this is replaced with "24.01.0" (or similar).
 
 @item Better ``collaboration'' with org-mode
 Now @code{ess-request-a-process} obeys @code{ess-gen-proc-buffer-name-function},
@@ -283,7 +284,7 @@ Evaluation is directed into GlobalEnv as originally intended.
 full docs in the tarballs.
 @end itemize
 
-Bug Fixes in 18.10-1:
+Bug Fixes in 18.10.1:
 @itemize @bullet
 @item New functions @code{ess-eval-line-visibly-and-step} (@kbd{C-c C-n} and @code{ess-eval-region-or-line-visibly-and-step} (@kbd{C-RET})
 which behave as the old versions of @code{ess-eval-line-and-step} and @code{ess-eval-region-or-line-and-step}.
