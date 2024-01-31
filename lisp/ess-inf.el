@@ -828,8 +828,6 @@ to `ess-completing-read'."
                                                    'ess-dialect
                                                    (process-buffer (get-process (car lproc)))))
                                            (not (equal ess-local-process-name (car lproc)))
-                                           (equal (buffer-name (process-buffer (get-process (car lproc))))
-                                                  (funcall ess-gen-proc-buffer-name-function (car lproc)))
                                            (car lproc)))
                                     ess-process-name-list)
                             ;; append local only if running

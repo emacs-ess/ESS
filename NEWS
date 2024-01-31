@@ -1,8 +1,13 @@
-Changes and New Features in 24.01.0:
+Changes and New Features in 24.01.1:
 
-   • fix docstring warnings in ess-custom lisp/ess-custom.el with
-     version _not_ 24.01.0 (or similar), but do remember to make after
-     checkout.
+   • Revert a bug introduced with the ‘ess-request-a-process’ change
+
+   Changes and New Features in 24.01.0:
+
+   • fix docstring warnings in ess-custom
+
+   • :package-version is now set to "VERSION" in ess-custom.  By make
+     this is replaced with "24.01.0" (or similar).
 
    • Better “collaboration” with org-mode Now ‘ess-request-a-process’
      obeys ‘ess-gen-proc-buffer-name-function’, thanks to Ihor
@@ -270,7 +275,7 @@ documentation for more detail:
    • ‘Makefile’ fixes, notably for ‘make install’ and including full
      docs in the tarballs.
 
-   Bug Fixes in 18.10-1:
+   Bug Fixes in 18.10.1:
    • New functions ‘ess-eval-line-visibly-and-step’ (‘C-c C-n’ and
      ‘ess-eval-region-or-line-visibly-and-step’ (‘C-RET’) which behave
      as the old versions of ‘ess-eval-line-and-step’ and

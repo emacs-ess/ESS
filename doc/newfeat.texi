@@ -1,6 +1,12 @@
 @comment @itemize @w{}
 @comment @item
 
+Changes and New Features in 24.01.1:
+@itemize @bullet
+
+@item Revert a bug introduced with the @code{ess-request-a-process} change
+@end itemize
+
 Changes and New Features in 24.01.0:
 @itemize @bullet
 
