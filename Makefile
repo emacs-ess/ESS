@@ -78,7 +78,7 @@ uninstall:
 ## the rest of the targets are for ESS developer's use only :
 .PHONY: tarballs sign-tarballs
 TARBALLS = ess-$(ESSVERSION).tar ess-$(ESSVERSION).tgz ess-$(ESSVERSION).zip # TODO: ess-plus-$(VERSION).tar
-tarballs: $(TARBALLS)
+tarballs: $(TARBALLS) 
 
 SIGNED_TARBALLS = $(addsuffix .sig, $(TARBALLS))
 sign-tarballs: $(SIGNED_TARBALLS)
@@ -117,8 +117,8 @@ ess-$(ESSVERSION).tar:
 # run in the foreground so you can accept the certificate
 # NB 'all', 'cleanup-dist' must not be targets: otherwise, e.g.
 #    'make tarball' re-builds the tarballs always!
-$(ESSDIR): RPM.spec
-	$(MAKE) all
+$(ESSDIR): RPM.spec autoloads
+	$(MAKE) all 
 #	remove previous ESSDIR, etc:
 	$(MAKE) cleanup-dist
 	@echo "** Exporting Files **"
@@ -133,6 +133,7 @@ $(ESSDIR): RPM.spec
 	cd lisp; $(INSTALL) ess.el ../$(ESSDIR)/lisp/; cd ..
 	cd lisp; $(MAKE) julia-mode.el; $(INSTALL) julia-mode.el ../$(ESSDIR)/lisp/; cd ..
 	$(INSTALL) RPM.spec $(ESSDIR)/
+	$(INSTALL) lisp/ess-autoloads.el $(ESSDIR)/lisp/
 	chmod a-w $(ESSDIR)/lisp/*.el
 	chmod u+w $(ESSDIR)/lisp/ess-site.el $(ESSDIR)/Make* $(ESSDIR)/*/Makefile
 	touch $(ESSDIR)/etc/.IS.RELEASE
