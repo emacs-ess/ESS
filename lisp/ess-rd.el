@@ -131,7 +131,7 @@ All Rd mode abbrevs start with a grave accent (`)."
     ;;
     "RdOpts" "R" "S3method" "S4method" "Sexpr"
     "abbr" "acronym"
-    "bold" "cite" "code" "command" "cr" "dQuote" "deqn" "dfn" "dontrun"
+    "bold" "cite" "code" "command" "cr" "dQuote" "deqn" "dfn" "dontdiff" "dontrun"
     "dontshow" "donttest" "dots" "email" "emph" "enc" "env" "eqn" "figure" "file"
     "href"
     "ifelse" "if"
