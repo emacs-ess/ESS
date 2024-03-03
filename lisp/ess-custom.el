@@ -2098,7 +2098,7 @@ strings that should not be treated as `words’ by `regexp-opt' in
 (defvar ess-R-function-name-regexp
   (concat "\\("      "\\sw+" "\\)"
           "[ \t]*"   "\\(<-\\)"
-          "[ \t\n]*" "function\\b"))
+          "[ \t\n]*" "\\(function\\b\\|\\\\\\)"))
 
 (defvar ess-S-function-name-regexp
   ess-R-function-name-regexp)
