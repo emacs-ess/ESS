@@ -2050,7 +2050,17 @@ See also function `ess-create-object-name-db'.")
     "switch" "function" "return" "on.exit" "stop" ".Defunct" "tryCatch"
     "withRestarts" "invokeRestart"
     "recover" "browser")
-  "Reserved words or special functions in the R language.")
+  "Reserved words or special functions in the R language.
+See also `ess-R-keystrings'.")
+
+(defvar ess-R-keystrings
+  '("\\" "\?")
+  "Reserved non-word strings or special functions whose names
+include special characters in the R language.
+
+Similar font-locking usage as `ess-R-keywords', but dedicated to
+strings that should not be treated as `words’ by `regexp-opt' in
+`ess-r--find-fl-keyword'.")
 
 (defvar ess-S-keywords
   (append ess-R-keywords '("terminate")))
