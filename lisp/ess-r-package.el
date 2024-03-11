@@ -93,6 +93,11 @@ All children of these directories are also considered source
 containing directories.  Use `ess-r-package-source-dirs' to get
 all source dirs recursively within the current package.")
 
+(defcustom ess-r-package-use-compile-buffer nil
+  "When t, run some package commands in a separate compilation buffer."
+  :group 'ess-r-package
+  :type 'boolean)
+
 
 ;;;*;;; Package Detection
 
@@ -285,6 +290,20 @@ arguments, or expressions which return R arguments."
         args
       (concat ", " args))))
 
+(defun ess-r-package-eval-in-compile-buffer (expr)
+  "Evalate R expression EXPR in a standalone `compilation-mode'
+buffer."
+  (let* ((procname inferior-ess-r-program-name)
+         (pkg-info (or (ess-r-package-project)
+                       (ess-r-package-set-package)))
+         (pkg-name (ess-r-package-name))
+         (default-directory (cdr pkg-info))
+         (command (format "%s --slave --no-readline -e \"%s\"" procname expr)))
+    (compilation-start command nil
+                       (lambda (name-of-mode)
+                         (concat "*" (downcase name-of-mode) ":" pkg-name "*"))
+                       ess-r-error-regexp-alist)))
+
 
 ;;;*;;; Devtools Integration
 
@@ -306,9 +325,13 @@ With prefix ARG ask for extra args."
   "Interface for `devtools::check()'.
 With prefix ARG ask for extra args."
   (interactive "P")
-  (ess-r-package-eval-linewise
-   "devtools::check(%s)\n" "Checking %s" arg
-   '("" (read-string "Arguments: " "vignettes = FALSE"))))
+  (let ((actions '("" (read-string "Arguments: " "vignettes = FALSE"))))
+    (if ess-r-package-use-compile-buffer
+        (ess-r-package-eval-in-compile-buffer
+         (format "devtools::check('.'%s)"
+                 (ess-r-command--build-args arg actions)))
+      (ess-r-package-eval-linewise
+       "devtools::check(%s)\n" "Checking %s" arg actions))))
 
 (defun ess-r-devtools-check-with-winbuilder (&optional arg)
   "Interface for `devtools::check_win_XYZ()'.
@@ -355,9 +378,13 @@ With prefix ARG, build with `vignettes = FALSE'."
   "Interface for `devtools::test()'.
 With prefix argument ARG, run tests on current file only."
   (interactive "P")
-  (ess-r-package-eval-linewise
-   "devtools::test(%s)\n" "Testing %s" arg
-   '("" ess-r-devtools--cur-file-filter)))
+  (let ((actions '("" ess-r-devtools--cur-file-filter)))
+    (if ess-r-package-use-compile-buffer
+        (ess-r-package-eval-in-compile-buffer
+         (format "devtools::test('.'%s)"
+                 (ess-r-command--build-args arg actions)))
+      (ess-r-package-eval-linewise
+       "devtools::test(%s)\n" "Testing %s" arg actions))))
 
 (defun ess-r-devtools--cur-file-filter ()
   (let ((file (or (and buffer-file-name
@@ -402,9 +429,13 @@ Respects `ess-save-silently', which see."
   "Interface for `devtools::document()'.
 With prefix ARG ask for extra arguments."
   (interactive "P")
-  (ess-r-package-eval-linewise
-   "devtools::document(%s)\n" "Documenting %s" arg
-   '("" (read-string "Arguments: "))))
+  (let ((actions '("" (read-string "Arguments: "))))
+    (if ess-r-package-use-compile-buffer
+        (ess-r-package-eval-in-compile-buffer
+         (format "devtools::document('.'%s)"
+                 (ess-r-command--build-args arg actions)))
+      (ess-r-package-eval-linewise
+       "devtools::document(%s)\n" "Documenting %s" arg actions))))
 
 (defun ess-r-devtools-install-package (&optional arg)
   "Interface to `devtools::install()'.
