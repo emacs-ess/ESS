@@ -115,6 +115,7 @@ can then examine these objects, plot them, and so on."
         `[("Name" 18 t)
           ("Class" 10 t)
           ("Length" 10 ess-rdired--length-predicate)
+          ("Rows" 10 ess-rdired--rows-predicate)
           ("Size" 10 ess-rdired--size-predicate)])
   (add-hook 'tabulated-list-revert-hook #'ess-rdired-refresh nil t)
   (when (and (not ess-rdired-auto-update-timer)
@@ -173,7 +174,7 @@ details."
 
 (defun ess-rdired--tabulated-list-entries (text)
   "Return a value suitable for `tabulated-list-entries' from TEXT."
-  (let (name class length size)
+    (let (name class length rows size)
     (if (not (string-match-p " +\"" text))
         ;; Normal-world
         (setq text (split-string text " " t)
@@ -185,13 +186,15 @@ details."
             text (split-string (substring text (1+ (match-end 0))) " " t)))
     (setq class (nth 0 text)
           length (nth 1 text)
-          size (nth 2 text))
+          rows (nth 2 text)
+          size (nth 3 text))
     (list name
           `[(,name
              help-echo "mouse-2, RET: View this object"
              action ess-rdired-view)
             ,class
             ,length
+            ,rows
             ,size])))
 
 (defun ess-rdired-edit ()
@@ -269,6 +272,13 @@ After switching to a new process, the buffer is updated."
 
 (defun ess-rdired--length-predicate (A B)
   "Enable sorting by length in `ess-rdired' buffers.
+Return t if A's length is < than B's length."
+  (let ((lenA (aref (cadr A) 2))
+        (lenB (aref (cadr B) 2)))
+    (< (string-to-number lenA) (string-to-number lenB))))
+
+(defun ess-rdired--rows-predicate (A B)
+  "Enable sorting by rows in `ess-rdired' buffers.
 Return t if A's length is < than B's length."
   (let ((lenA (aref (cadr A) 2))
         (lenB (aref (cadr B) 2)))
