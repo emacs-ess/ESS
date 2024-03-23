@@ -419,7 +419,7 @@ To be used as part of `font-lock-defaults' keywords."
         (if (member kw ess-r--non-fn-kwds)
             (push kw non-fn-kwds)
           (push kw fn-kwds)))
-      (dolist (kw ess-R-keystrings)
+      (dolist (kw ess-r--keystrings)
 	(if (member kw ess-r--non-fn-kstrs)
 	    (push kw non-fn-kstrs)
 	  (push kw fn-kstrs)))
