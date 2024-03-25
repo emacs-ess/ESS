@@ -2052,6 +2052,15 @@ See also function `ess-create-object-name-db'.")
     "recover" "browser")
   "Reserved words or special functions in the R language.")
 
+(defvar ess-r--keystrings
+  '("\\" "\?")
+  "Reserved non-word strings or special functions whose names
+include special characters in the R language.
+
+Similar font-locking usage as `ess-R-keywords', but dedicated to
+strings that should not be treated as `words’ by `regexp-opt' in
+`ess-r--find-fl-keyword'.")
+
 (defvar ess-S-keywords
   (append ess-R-keywords '("terminate")))
 
@@ -2088,7 +2097,8 @@ See also function `ess-create-object-name-db'.")
 (defvar ess-R-function-name-regexp
   (concat "\\("      "\\sw+" "\\)"
           "[ \t]*"   "\\(<-\\)"
-          "[ \t\n]*" "function\\b"))
+          "[ \t\n]*" "\\(function\\b\\|\\(\\\\[ \t\n(]+\\)\\)"))
+;; "[ \t\n(]+" after "\\\\" since cannot use "\\b" to bound a non-word
 
 (defvar ess-S-function-name-regexp
   ess-R-function-name-regexp)

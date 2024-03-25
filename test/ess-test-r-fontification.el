@@ -57,6 +57,7 @@
 ¶while ¶for ¶if ¶switch ¶function ¶return ¶on.exit ¶stop
 ¶tryCatch ¶withRestarts ¶invokeRestart ¶recover ¶browser
 ¶message ¶warning ¶signalCondition ¶withCallingHandlers
+¶\\
 "
   (should (not (face-at-point))))
 
@@ -66,7 +67,7 @@
 ¶while() ¶for() ¶if() ¶function()
 ¶switch() ¶return() ¶on.exit() ¶stop() ¶tryCatch()
 ¶withRestarts() ¶invokeRestart() ¶recover() ¶browser()
-¶.Defunct()
+¶.Defunct() ¶\\(\\\\\\)()
 "
   (should (eq (face-at-point) 'ess-keyword-face))
 
@@ -75,7 +76,7 @@
 while¶() for¶() if¶() function¶()
 switch¶() return¶() on.exit¶() stop¶() tryCatch¶()
 withRestarts¶() invokeRestart¶() recover¶() browser¶()
-.Defunct¶()
+.Defunct¶() \\(\\\\\\)¶()
 "
   (should (not (face-at-point)))
 
@@ -95,7 +96,7 @@ message¶() warning¶() signalCondition¶() withCallingHandlers¶()
 
 (etest-deftest ess-test-r-fontification-keywords-simple-test ()
   "Simple keywords are always fontified."
-  :case "¶else ¶break ¶next ¶repeat"
+  :case "¶else ¶break ¶next ¶repeat ¶\?"
   (should (eq (face-at-point) 'ess-keyword-face)))
 
 (etest-deftest ess-test-r-fontification-keywords-in-test ()
@@ -154,6 +155,7 @@ message¶() warning¶() signalCondition¶() withCallingHandlers¶()
 ¶`[.foo` <- function(...) NULL
 ¶\"[.foo\" <- function(...) NULL
 "
+
   (should (eq (face-at-point) 'font-lock-function-name-face))
 
   (with-ess-disabled-font-lock-keyword 'ess-R-fl-keyword:fun-defs
