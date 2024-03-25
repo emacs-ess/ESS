@@ -372,7 +372,7 @@ namespace.")
                  (ess-goto-char string-end)
                  (ess-looking-at "<-")
                  (ess-goto-char (match-end 0))
-                 (ess-looking-at "function\\b" t)))
+                 (ess-looking-at "function\\b\\|\\\\" t)))
           font-lock-function-name-face)
          ((save-excursion
             (and (cdr (assq 'ess-fl-keyword:fun-calls ess-R-font-lock-keywords))
