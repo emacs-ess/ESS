@@ -372,7 +372,7 @@ namespace.")
                  (ess-goto-char string-end)
                  (ess-looking-at "<-")
                  (ess-goto-char (match-end 0))
-                 (ess-looking-at "function\\b" t)))
+                 (ess-looking-at "function\\b\\|\\\\" t)))
           font-lock-function-name-face)
          ((save-excursion
             (and (cdr (assq 'ess-fl-keyword:fun-calls ess-R-font-lock-keywords))
@@ -394,23 +394,44 @@ namespace.")
     font-lock-comment-face))
 
 (defvar ess-r--non-fn-kwds
-  '("in" "else" "break" "next" "repeat"))
+  '("in" "else" "break" "next" "repeat")
+  "Reserved words that should not be treated as names of special
+functions by `ess-r--find-fl-keyword'; such reserved words do
+not need to be followed by an open parenthesis to trigger
+font-locking.
+See also `ess-r--non-fn-kstrs'.")
+
+(defvar ess-r--non-fn-kstrs
+  '("\?")
+  "Reserved non-word strings that should not be treated as names of
+special functions by `ess-r--find-fl-keyword'; such reserved
+strings do not need to be followed by an open parenthesis to
+trigger font-locking.
+See also `ess-r--non-fn-kwds'.")
 
 (defvar-local ess-r--keyword-regexp nil)
 (defun ess-r--find-fl-keyword (limit)
-  "Search for R keyword and set the match data.
+  "Search for R keyword or keystring and set the match data.
 To be used as part of `font-lock-defaults' keywords."
   (unless ess-r--keyword-regexp
-    (let (fn-kwds non-fn-kwds)
+    (let (fn-kwds non-fn-kwds fn-kstrs non-fn-kstrs)
       (dolist (kw ess-R-keywords)
         (if (member kw ess-r--non-fn-kwds)
             (push kw non-fn-kwds)
           (push kw fn-kwds)))
+      (dolist (kw ess-r--keystrings)
+	(if (member kw ess-r--non-fn-kstrs)
+	    (push kw non-fn-kstrs)
+	  (push kw fn-kstrs)))
       (setq ess-r--keyword-regexp
             (concat "\\("
                     (regexp-opt non-fn-kwds 'words)
+                    "\\|"
+                    (regexp-opt non-fn-kstrs t)
                     "\\)\\|\\("
                     (regexp-opt fn-kwds 'words)
+                    "\\|"
+                    (regexp-opt fn-kstrs t)
                     "\\)"))))
   (let (out)
     (while (and (not out)

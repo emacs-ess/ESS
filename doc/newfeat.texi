@@ -1,6 +1,15 @@
 @comment @itemize @w{}
 @comment @item
 
+Changes and New Features in development version:
+@itemize @bullet
+
+@item ESS[R]: The shorthand notation for lambda functions
+and the question mark are now fontified as keywords.
+Contributed by Maxime Pettinger.
+
+@end itemize
+
 Changes and New Features in 24.01.1:
 @itemize @bullet
 

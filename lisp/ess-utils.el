@@ -807,7 +807,7 @@ Copied almost verbatim from gnus-utils.el (but with test for mac added)."
 
                   "\\(" space "\\s<.*\\s>\\)*"      ; whitespace, comment
                   ;; FIXME: in principle we should skip 'definition *= *' here
-                  space "function\\s-*(" ; whitespace, function keyword, parenthesis
+                  space "\\(function\\|\\\\\\)\\s-*(" ; whitespace, function keyword, parenthesis
                   )))
     `(,part-1 ,part-2))
   "Partial regex for matching functions.
