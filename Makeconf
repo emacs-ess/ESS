@@ -27,22 +27,21 @@ EMACSBATCH ?= $(EMACS) -batch -Q
 # ESSDESTDIR = $(SITELISP)/ess
 # EMACSBATCH = $(EMACS) -batch -Q
 
-##__ GNU Emacs __  for macOS
+##__ GNU Emacs __  for macOS (and see Homebrew below)
 # PREFIX=/Applications/Emacs.app/Contents/Resources
 # EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs
+# ## standard site-lisp
 # SITELISP=$(PREFIX)/site-lisp
 # LISPDIR=$(SITELISP)/ess
+# ## Vincent Goulet's Modified Emacs needs the following 2 settings
+# ## SITELISP=$(PREFIX)/lisp
+# ## LISPDIR=$(SITELISP)/ess/lisp
+# ESSDESTDIR=$(LISPDIR)
 # INFODIR=/usr/local/info
 # ETCDIR =$(PREFIX)/etc/ess
-
-##__ Vincent Goulet's Modified Emacs __  for macOS
-## site-lisp is empty: payload is in lisp directory
-# PREFIX=/Applications/Emacs.app/Contents/Resources
-# EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs
-# SITELISP=$(PREFIX)/lisp 
-# LISPDIR=$(SITELISP)/ess
-# INFODIR=/usr/local/info
-# ETCDIR =$(PREFIX)/etc/ess
+# EMACSBATCH=$(EMACS) -batch -Q
+# ## MacTeX does not provide makeinfo 
+# MAKEINFO=touch ess.info && true
 
 ##__ GNU Emacs with Homebrew __  for macOS
 ## site-lisp is not within .app directory

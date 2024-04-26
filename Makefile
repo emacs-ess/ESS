@@ -22,8 +22,10 @@ version: VERSION
 	@echo $(shell $(EMACS) --version | sed -n 1p)
 	@echo ESS $(ESSVERSION)
 	@echo ESSR $(ESSR-VERSION)
-	@sed -i "s/\"VERSION\"/\"$(ESSVERSION)\"/" lisp/ess-custom.el
+	@sed -i .orig "s/\"VERSION\"/\"$(ESSVERSION)\"/" lisp/ess-custom.el
 	@echo "*********************************************************"
+## FreeBSD sed -i requires a file extension
+## GNU sed -i does not require, but allows one
 
 .PHONY: lisp
 lisp: version
