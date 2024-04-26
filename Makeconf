@@ -41,7 +41,7 @@ EMACSBATCH ?= $(EMACS) -batch -Q
 # ETCDIR =$(PREFIX)/etc/ess
 # EMACSBATCH=$(EMACS) -batch -Q
 # ## MacTeX does not provide makeinfo 
-# MAKEINFO=touch ess.info && true
+# MAKEINFO=touch ess.info
 
 ##__ GNU Emacs with Homebrew __  for macOS
 ## site-lisp is not within .app directory
