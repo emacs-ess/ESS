@@ -1427,19 +1427,21 @@ Used to decide highlighting and tag completion."
   :type '(repeat string))
 
 (defcustom ess-roxy-tags-param '("author" "aliases" "concept" "details"
-                                 "examples" "format" "keywords"
+                                 "example" "examples" "examplesIf"
+                                 "format" "keywords"
                                  "method" "exportMethod"
                                  "name" "note" "param"
-                                 "include" "references" "return"
+                                 "include" "references" "return" "returns"
                                  "seealso" "source" "docType"
                                  "title" "TODO" "usage" "import"
-                                 "exportClass" "exportPattern" "S3method"
+                                 "exportClass" "exportPattern"
+                                 "exportS3Method" "S3method"
                                  "inherit" "inheritParams" "inheritSection"
                                  "importFrom" "importClassesFrom"
                                  "importMethodsFrom" "useDynLib"
                                  "rawNamespace"
                                  "rdname" "section" "slot" "description"
-                                 "md" "eval" "family")
+                                 "md" "eval" "evalNamespace" "family")
   "The tags used in roxygen fields that require a parameter.
 Used to decide highlighting and tag completion."
   :group 'ess-roxy
