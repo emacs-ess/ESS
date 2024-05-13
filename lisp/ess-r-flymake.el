@@ -90,7 +90,7 @@ each element is passed as argument to `lintr::with_defaults'."
         } else {
             tryCatch(lintr::lint(commandArgs(TRUE), ...),
                     error = function(e) {
-                       cat('@@warning: @@', e)
+                       cat('@@warning: @@', conditionMessage(e))
                     })
         }
     }
