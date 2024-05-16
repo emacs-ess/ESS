@@ -1,4 +1,10 @@
-Changes and New Features in 24.01.1:
+Changes and New Features in development version:
+
+   • ESS[R]: The shorthand notation for lambda functions and the
+     question mark are now fontified as keywords.  Contributed by Maxime
+     Pettinger.
+
+   Changes and New Features in 24.01.1:
 
    • Revert a bug introduced with the ‘ess-request-a-process’ change
 
