@@ -11,7 +11,7 @@
 ## load .base.R and all other files into ESSR environment; then attach ESSR
 .ess.ESSR.load <- function(dir) {
 
-    if (nzchar(Sys.getenv("ESSR_TEST_LOAD_ERROR")))
+    if (Sys.getenv("ESSR_TEST_LOAD_ERROR") != "")
         stop('Loading failed with a nice message.')
 
     Rver <- .ess.ESSR.get.rver()
