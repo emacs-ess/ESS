@@ -80,7 +80,7 @@
 .ess.helpLinks <- function(topic, package) {
     tryCatch(
         warning = function(...) NULL,
-        error = function(...) NULL,
+        error = function(...) NULL, # needs R >= 2.13.0
         {
             ast <- .ess.fetchParsedRd(topic, package)
             .ess.findLinks(ast)
@@ -156,7 +156,7 @@
 }
 
 .ess.strip.error <- function(msg, srcfile) {
-    pattern <- paste0(srcfile, ":[0-9]+:[0-9]+: ")
+    pattern <- paste(srcfile, ":[0-9]+:[0-9]+: ", sep = "")
     sub(pattern, "", msg)
 }
 
@@ -218,12 +218,12 @@ if(.ess.Rversion < "1.8")
         sink(getConnection(1))
 
     on.exit({
-        writeLines(paste0(sentinel, "-END"))
+        writeLines(paste(sentinel, "-END", sep = ""))
         if (sinked)
             sink(NULL)
     })
 
-    writeLines(paste0(sentinel, "-START"))
+    writeLines(paste(sentinel, "-START", sep = ""))
 
     .ess.environment.state$env <- parent.frame()
     on.exit(.ess.environment.state$env <- NULL, add = TRUE)
