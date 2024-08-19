@@ -13,6 +13,7 @@
 ## ESSDESTDIR  Destination of ESS
 DESTDIR ?= /usr
 PREFIX ?= $(DESTDIR)
+
 ##__ GNU Emacs __
 EMACS ?= emacs
 SITELISP ?= $(PREFIX)/share/emacs/site-lisp
@@ -40,8 +41,8 @@ EMACSBATCH ?= $(EMACS) -batch -Q
 # INFODIR=/usr/local/info
 # ETCDIR =$(PREFIX)/etc/ess
 # EMACSBATCH=$(EMACS) -batch -Q
-# ## MacTeX does not provide makeinfo 
-# MAKEINFO=touch ess.info
+### R provides makeinfo/texi2pdf/texi2dvi outside of the PATH 
+### add the line "/opt/R/MACHINE/bin" to the file /etc/paths
 
 ##__ GNU Emacs with Homebrew __  for macOS
 ## site-lisp is not within .app directory
