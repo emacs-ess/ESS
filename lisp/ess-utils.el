@@ -784,12 +784,18 @@ Copied almost verbatim from gnus-utils.el (but with test for mac added)."
          ;; FIXME: allow '%foo%' but only when quoted; don't allow [_0-9] at beg.
          (space "\\(\\s-\\|\n\\)*")         ; white space
 
+         (S7-method (concat "method(" Symb "," space
+                            "\\(list(\\(" Symb ",?" space "\\)+)\\|" Symb
+                            "\\))"))
+
          (part-1 (concat
                   "\\(" ;;--------outer Either-------
                   "\\(\\("          ; EITHER
                   Q xSymb Q         ; any function name between quotes
                   "\\)\\|\\("
                   Symb ; (beginning of name) + ess-r-symbol-pattern
+                  "\\)\\|\\("       ; Add S7 method as a valid function name
+                  S7-method
                   "\\)\\)"))        ; END EITHER OR
 
          (set-S4-exp
