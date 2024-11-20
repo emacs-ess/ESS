@@ -42,7 +42,8 @@
 ;; Don't require `julia-mode' to compile this file.
 (when t (require 'julia-mode))
 (declare-function julia-mode "julia-mode" ())
-(declare-function julia-latexsub "julia-mode" ())
+(declare-function julia-mode-latexsub-completion-at-point-before "julia-mode" ())
+(declare-function julia-mode-latexsub-completion-at-point-around "julia-mode" ())
 (defvar julia-mode-syntax-table)
 
 (defvar ac-prefix)
@@ -117,12 +118,6 @@ See `comint-input-sender'."
 
 
 ;;; COMPLETION
-(defun ess-julia-latexsub-completion ()
-  "Complete latex input in format required by `completion-at-point-functions'."
-  (if (julia-latexsub) ; julia-latexsub returns nil if it performed a completion, the point otherwise
-      nil
-    (lambda () t) ;; bypass other completion methods
-    ))
 
 (defun ess-julia-object-completion ()
   "Return completions in format required by `completion-at-point-functions'."
@@ -369,7 +364,8 @@ It makes underscores and dots word constituent chars.")
   (remove-hook 'completion-at-point-functions #'ess-filename-completion 'local) ;; should be first
   (add-hook 'completion-at-point-functions #'ess-julia-object-completion nil 'local)
   (add-hook 'completion-at-point-functions #'ess-filename-completion nil 'local)
-  (add-hook 'completion-at-point-functions #'ess-julia-latexsub-completion nil 'local)
+  (add-hook 'completion-at-point-functions #'julia-mode-latexsub-completion-at-point-before nil 'local)
+  (add-hook 'completion-at-point-functions #'julia-mode-latexsub-completion-at-point-around nil 'local)
   (if (fboundp 'ess-add-toolbar) (ess-add-toolbar)))
 
 ;; Inferior mode
@@ -393,7 +389,8 @@ It makes underscores and dots word constituent chars.")
   (remove-hook 'completion-at-point-functions #'ess-filename-completion 'local) ;; should be first
   (add-hook 'completion-at-point-functions #'ess-julia-object-completion nil 'local)
   (add-hook 'completion-at-point-functions #'ess-filename-completion nil 'local)
-  (add-hook 'completion-at-point-functions #'ess-julia-latexsub-completion nil 'local)
+  (add-hook 'completion-at-point-functions #'julia-mode-latexsub-completion-at-point-before nil 'local)
+  (add-hook 'completion-at-point-functions #'julia-mode-latexsub-completion-at-point-around nil 'local)
   (setq comint-input-sender #'ess-julia-input-sender))
 
 (defvar ess-julia-mode-hook nil)
