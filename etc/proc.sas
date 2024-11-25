@@ -3,6 +3,8 @@ data proc;
     length name $ 20;
     input name;
 datalines;
+calendar
+compare
 freq
 sgdesign
 sgmap
