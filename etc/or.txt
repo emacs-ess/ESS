@@ -1,8 +1,0 @@
-PROC OPTMODEL Procedure
-PROC OPTLP Procedure
-PROC OPTMILP Procedure
-PROC OPTQP Procedure
-PROC OPTMODEL Procedure
-PROC OPTLP Procedure
-PROC OPTMILP Procedure
-PROC OPTQP Procedure

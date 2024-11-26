@@ -1,97 +1,48 @@
 
 data proc;
     length name $ 20;
+    infile 'all.txt';
+   
     input name;
-datalines;
-calendar
-compare
-freq
-optgraph
-sgdesign
-sgmap
-sgplot
-sgrender
-sgscatter
-;
-run;
 
-%macro main;
-
-/*
-data files;
-    length file $ 200;
-    infile "ls1";
-    input file;
-run;
-
-%let k=%_nobs(data=files);
-
-%do i=1 %to &k;
-
-data _null_;
-    set files(obs=&i firstobs=&i);
-    call symput("file", trim(file));
-run;
-*/
-
-%let files=base.txt stat.txt ets.txt qc.txt or.txt;
-%let k=%_count(&files);
-
-%do i=1 %to &k;
-
-%let file=%scan(&files, &i, %str( ));
-
-data _0;
-    length name $ 20;
-    infile "&file";
-    input @'PROC ' name;
-    name=compress(name, '.,: ');
-
-    if length(name)>1;
+    if length(name)>1 & name^='SAS';
 
     if verify(name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ')=0;
 
     name=lowcase(name);
 run;
 
-%_sort(data=_0, out=_0, by=name, sort=nodupkey);
-
-data proc;
-    set proc _0;
+proc sort nodupkey data=proc;
     by name;
-    if first.name;
 run;
-
-%end;
 
 data proc;
     set proc;
     by name;
-    where name not in('casoperate', 'casual', 
-        'datapath', 'dates', 'dath', 'dbms', 'descending', 'distr',
-        'dmdb', 'dmine', 'dmneurl', 'dmreg', 'dmvq', 'docparse',
-        'emclus', 'eng', 'entrytype', 'etb',
-        'geostan', 'global', 'gremov',
-        'imlh', 'imll', 'imstat', 'indexpath',
-        'keepvars', 
-        'lasr', 'layout', 'listnode', 'lognumberformat',
-        'maxsteps', 'mddb', 'mdx', 'missing', 'mlsid', 
-        'noexec', 'noseqcover', 
-        'ods', 'oliphant', 'outedge', 'outstat', 'outvert',
-        'parms', 'path', 'pmbr', 'printinternalnames', 'printtarget',
-        'record', 'records', 'reph',
-        'sas', 'save', 'segsize', 'selectmgr', 'seth', 'spd', 'sq', 'sqlh', 'sqll', 
-        'svdonly', 'svm', 'svmscore', 'targetstd', 'taxonomy', 'tgparse', 'tpars',
-        'xml', 'xsrun',
-        'yzb');
+*these PROCs are not present on my system: YMMV;
+*if it starts with HP, then it requires the high-performance products;
+    where name not in:(
+        'aggregation', 'appsrv', 
+        'compile', 
+        'db2ext', 'db2util', 'dmsrvadm', 'dmsrvdatasvc', 'dmsrvprocesssvc',
+        'dqloclst', 'dqmatch', 'dqscheme', 
+        'gis', 
+        'hp',
+        'imstat', 'imxfer', 'items',
+        'lasr', 
+        'mddb', 
+        'optgraph',
+        'pds', 'pdscopy',
+        'quest', 
+        'rdc', 'rdpool', 'rdsec', 'recommend', 'release', 'risk',
+        'source',
+        'tapecopy', 'tapelabel',
+        'vasmp'
+        );
 run;
 
 proc print; 
 run;
-
-%mend main;
-
-%main;
 
 data proc;
     set proc end=last;
