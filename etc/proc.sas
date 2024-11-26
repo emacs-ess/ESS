@@ -6,6 +6,7 @@ datalines;
 calendar
 compare
 freq
+optgraph
 sgdesign
 sgmap
 sgplot
@@ -16,6 +17,7 @@ run;
 
 %macro main;
 
+/*
 data files;
     length file $ 200;
     infile "ls1";
@@ -30,6 +32,14 @@ data _null_;
     set files(obs=&i firstobs=&i);
     call symput("file", trim(file));
 run;
+*/
+
+%let files=base.txt stat.txt ets.txt qc.txt or.txt;
+%let k=%_count(&files);
+
+%do i=1 %to &k;
+
+%let file=%scan(&files, &i, %str( ));
 
 data _0;
     length name $ 20;
