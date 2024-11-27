@@ -21,7 +21,7 @@ data proc;
     by name;
 *these PROCs are not present on my system: YMMV;
 *if it starts with HP, then it requires the high-performance products;
-    where name not in:(
+    *where name not in:(
         'aggregation', 'appsrv', 
         'compile', 
         'db2ext', 'db2util', 'dmsrvadm', 'dmsrvdatasvc', 'dmsrvprocesssvc',
