@@ -35,7 +35,7 @@ Changes and New Features in 24.01.0:
 @item :package-version is now set to "VERSION" in ess-custom.
 By make this is replaced with "24.01.0" (or similar).
 
-@item Better ``collaboration'' with org-mode
+@item Better ``collaboration'' with org-mode.
 Now @code{ess-request-a-process} obeys @code{ess-gen-proc-buffer-name-function},
 thanks to Ihor Radchenko.
 @end itemize
