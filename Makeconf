@@ -20,11 +20,11 @@ SITELISP ?= $(PREFIX)/share/emacs/site-lisp
 ESSDESTDIR ?= $(SITELISP)/ess
 EMACSBATCH ?= $(EMACS) -batch -Q
 
-# ##__ GNU Emacs __ preparing for a emacs 29.1 "ESS" release
+# ##__ GNU Emacs __ for version 29.4 
 # DESTDIR = /usr/local
 # PREFIX = $(DESTDIR)
-# EMACS = $(PREFIX)/emacs/29.1/bin/emacs
-# SITELISP = $(PREFIX)/emacs/29.1/share/emacs/site-lisp
+# EMACS = $(PREFIX)/emacs/29.4/bin/emacs
+# SITELISP = $(PREFIX)/emacs/29.4/share/emacs/site-lisp
 # ESSDESTDIR = $(SITELISP)/ess
 # EMACSBATCH = $(EMACS) -batch -Q
 
