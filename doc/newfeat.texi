@@ -5,15 +5,15 @@ Changes and New Features in pre-release (target=24.12.0) version:
 @itemize @bullet
 
 @item polymode: In our transition from literate libraries 
-(such as noweb documented below with respect to 19.04), we are now
-requiring the polymode packages as a more suitable replacement.
-Furthermore, we require the related polymodes including packages for
-poly-R, poly-noweb and poly-markdown. The package polymode itself, and
-the polymodes packages, are all on MELPA rather than ELPA. Therefore,
+(such as noweb documented below with respect to 19.04), we now
+recommend the polymode packages as a more suitable replacement.
+Furthermore, we suggest the related polymodes including 
+poly-R, poly-noweb and poly-markdown. The package polymode itself, as well
+as the polymodes packages, are all on MELPA rather than ELPA. Therefore,
 you need to add MELPA to the list of installation archives as follows.
 @samp{(add-to-list 'package-archives '("melpa-stable" .
-https://stable.melpa.org/packages/))} This will allow @kbd{M-x
-package-install} to proceed naturally.
+https://stable.melpa.org/packages/))} for
+@kbd{M-x package-install}
 
 @item ESS[R]: The shorthand notation for lambda functions
 and the question mark are now fontified as keywords.
