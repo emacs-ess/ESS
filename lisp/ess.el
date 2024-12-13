@@ -19,7 +19,7 @@
 ;; Created: 7 Jan 1994
 ;; Version: 24.01.1
 ;; URL: https://ess.r-project.org/
-;; Package-Requires: ((emacs "26.1") (polymode "0.2.2") (poly-noweb "0.2.2") (poly-markdown "0.2.2") (poly-R "0.2.2"))
+;; Package-Requires: ((emacs "25.1"))
 ;; ESSR-Version: 1.8
 
 ;; This file is part of GNU Emacs.
