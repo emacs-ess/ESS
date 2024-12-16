@@ -1,4 +1,9 @@
 
+/*
+all.txt scraped from
+<https://documentation.sas.com/doc/en/pgmsascdc/9.4_3.5/allprodsproc/procedures.htm>;
+*/
+
 data proc;
     length name $ 20;
     infile 'all.txt';
