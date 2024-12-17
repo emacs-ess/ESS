@@ -33,10 +33,9 @@ EMACSBATCH ?= $(EMACS) -batch -Q
 # EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs
 # ## standard site-lisp
 # SITELISP=$(PREFIX)/site-lisp
+# ## Vincent Goulet's Modified Emacs needs the following SITELISP
+# # SITELISP=$(PREFIX)/lisp
 # LISPDIR=$(SITELISP)/ess
-# ## Vincent Goulet's Modified Emacs needs the following 2 settings
-# ## SITELISP=$(PREFIX)/lisp
-# ## LISPDIR=$(SITELISP)/ess/lisp
 # ESSDESTDIR=$(LISPDIR)
 # INFODIR=/usr/local/info
 # ETCDIR =$(PREFIX)/etc/ess
