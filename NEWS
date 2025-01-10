@@ -1,8 +1,22 @@
-Changes and New Features in development version:
+Changes and New Features in 25.01.0:
+
+   • polymode: In our transition from literate libraries (such as noweb
+     documented below with respect to 19.04), we now recommend the
+     polymode packages as a more suitable replacement.  Furthermore, we
+     suggest the related polymodes including poly-noweb, poly-markdown
+     and poly-R (installed in that order).  The package polymode itself,
+     as well as the polymodes packages, are all on MELPA rather than
+     ELPA. Therefore, you need to add MELPA to the list of installation
+     archives as follows.  ‘(add-to-list 'package-archives
+     '("melpa-stable" . "https://stable.melpa.org/packages/"))’ for ‘M-x
+     package-install’
 
    • ESS[R]: The shorthand notation for lambda functions and the
      question mark are now fontified as keywords.  Contributed by Maxime
      Pettinger.
+
+   • ESS[SAS]: Developed new comprehensive lists of PROCs and functions
+     for syntax highlighting.  See ‘etc/proc.sas’ and ‘etc/func.sas’.
 
    Changes and New Features in 24.01.1:
 
@@ -15,7 +29,7 @@ Changes and New Features in development version:
    • :package-version is now set to "VERSION" in ess-custom.  By make
      this is replaced with "24.01.0" (or similar).
 
-   • Better “collaboration” with org-mode Now ‘ess-request-a-process’
+   • Better "collaboration" with org-mode.  Now ‘ess-request-a-process’
      obeys ‘ess-gen-proc-buffer-name-function’, thanks to Ihor
      Radchenko.
 
@@ -36,7 +50,7 @@ Changes and New Features in development version:
 
    • ESS[R]: ESSR commands are now more robust when ESSR is not in
      scope.  This can happen when using ‘browser()’ in an environment
-     that doesn’t inherit from the search path.
+     that doesn't inherit from the search path.
 
    • ESS[R]: Unexpected exits are now detected during startup.  In that
      case an error is thrown with advice about how to recover.
@@ -152,7 +166,7 @@ Changes and New Features in development version:
      ‘with-current-buffer’ with the return value of the inferior.
 
    • iESS[SAS]: The SAS keymap was only set in iESS buffers called
-     ‘*SAS*‘.  This is now fixed.
+     '*SAS*'.  This is now fixed.
 
    • ESS[R]: Fixed longstanding indentation issues involving ‘::’ and
      ‘:::’ operators.
@@ -167,19 +181,19 @@ Changes and New Features in development version:
 
    • ‘smart-underscore’ and ‘ess-smart-S-assign-key’ have been removed.
      Users who liked the previous behavior (i.e.  underscore inserting
-     “<-”) should bind ‘ess-insert-assign’ to the underscore in their
+     "<-") should bind ‘ess-insert-assign’ to the underscore in their
      Emacs initialization file.  For example, ‘(define-key
      ess-r-mode-map "_" #'ess-insert-assign)’ and ‘(define-key
      inferior-ess-r-mode-map "_" #'ess-insert-assign)’ will activate it
      in all ESS R buffers.
 
-   • ESS major modes are now defined using ’define-derived-mode’.  This
+   • ESS major modes are now defined using 'define-derived-mode'.  This
      makes ESS major modes respect modern conventions such as having
      <language>-mode-hook and <language>-mode-map.  Users are encouraged
      to place customizations under the appropriate mode.
 
    • New option ess-auto-width controls setting the width option on
-     window changes.  Users can change it to ’frame, ’window, or an
+     window changes.  Users can change it to 'frame, 'window, or an
      integer.  See the documentation for details.
      ‘ess-auto-width-visible’ controls visibility.
 
@@ -199,7 +213,7 @@ Changes and New Features in development version:
 
    • ‘ess-default-style’ is now obsolete, use ‘ess-style’ instead.
 
-   • Options for ’ess-gen-proc-buffer-name-function’ have been renamed.
+   • Options for 'ess-gen-proc-buffer-name-function' have been renamed.
      ess-gen-proc-buffer-name:projectile-or-simple was renamed to
      ess-gen-proc-buffer-name:project-or-simple and
      ess-gen-proc-buffer-name:projectile-or-directory was renamed to
@@ -234,7 +248,7 @@ Changes and New Features in development version:
 
    • ESS[R]: imenu now supports assignment with the equals sign.
 
-   • ESS[Rd]: Rd no longer writes abbrevs to user’s abbrev file.
+   • ESS[Rd]: Rd no longer writes abbrevs to user's abbrev file.
 
    • ESS removed support for many unused languages.  This includes old
      versions of S+, ARC, OMG, VST, and XLS.
@@ -365,8 +379,8 @@ documentation for more detail:
 
    • ‘ess-smart-S-assign’ was renamed to ‘ess-insert-assign’.  It
      provides similar functionality but for any keybinding, not just
-     ‘_‘.  For instance if you bind it to ‘;‘, repeated invocations
-     cycle through between assignment and inserting ‘;‘.
+     '_'.  For instance if you bind it to ';', repeated invocations
+     cycle through between assignment and inserting ';'.
 
    • ‘C-c C-=’ is now bound to ‘ess-cycle-assign’ by default.  See the
      documentation for details.  New user customization option
@@ -402,7 +416,7 @@ documentation for more detail:
 
    • ESS[R]: ‘in’ is now only fontified when inside a ‘for’ construct.
      This avoids spurious fontification, especially in the output buffer
-     where ‘in‘ is a common English word.
+     where 'in' is a common English word.
 
    • ESS: Font-lock keywords are now generated lazily.  That means you
      can now add or remove keywords from variables like ‘ess-R-keywords’
@@ -434,7 +448,7 @@ documentation for more detail:
      variable ‘ess-r-prettify-symbols’ to control this behavior.
 
    • ESS: Inferior process buffers are now always displayed on startup.
-     Additionally, they don’t hang Emacs on failures.
+     Additionally, they don't hang Emacs on failures.
 
    Obsolete libraries, functions, and variables:
 
@@ -450,7 +464,7 @@ documentation for more detail:
 
      The variable ‘ess-smart-S-assign-key’ is now deprecated and will be
      removed in the next release.  If you would like to continue using
-     ‘_‘ for inserting assign in future releases, please bind
+     '_' for inserting assign in future releases, please bind
      ‘ess-insert-assign’ in ‘ess-mode-map’ the normal way.
 
    • ESS[S]: Variable ‘ess-s-versions-list’ is obsolete and ignored.
@@ -498,7 +512,7 @@ documentation for more detail:
      sexp.  This is useful for code navigation, e.g.  with ‘C-M-f’ and
      ‘C-M-b’.
    • ESS[R]: Integration of outline mode with roxygen examples fields.
-     You can use outline mode’s code folding commands to fold the
+     You can use outline mode's code folding commands to fold the
      examples field.  This is especially nice to use with well
      documented packages with long examples set.  Set
      ‘ess-roxy-fold-examples’ to non-nil to automatically fold the
@@ -553,7 +567,7 @@ documentation for more detail:
 
    Bug fixes in 16.04:
    • ESS[R]: Roxygen blocks with backtics are now correctly filled
-   • ESS[R]: Don’t skip breakpoints in magrittr’s ‘debug_pipe’
-   • ESS[R]: Error highlighting now understands ‘testthat‘ type errors
+   • ESS[R]: Don't skip breakpoints in magrittr's ‘debug_pipe’
+   • ESS[R]: Error highlighting now understands 'testthat' type errors
    • ESS[Julia]: Added getwd and setwd generic commands
 

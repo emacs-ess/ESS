@@ -1,6 +1,6 @@
 ;;; ess-custom.el --- Customize variables for ESS  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1997-2024 Free Software Foundation, Inc.
+;; Copyright (C) 1997-2025 Free Software Foundation, Inc.
 
 ;; Author: Rodney Sparapani
 ;; Maintainer: ESS-help <ess-help@r-project.org>
@@ -141,7 +141,7 @@
   "Directory containing ess-site.el(c) and other ESS Lisp files."
   :group 'ess
   :type 'directory
-  :package-version '(ess . "24.01.1"))
+  :package-version '(ess . "25.01.1"))
 
 (defcustom ess-etc-directory
   ;; Try to detect the `etc' folder only if not already set up by distribution
@@ -156,7 +156,7 @@ The ESS etc directory stores various auxiliary files that are useful
 for ESS, such as icons."
   :group 'ess
   :type 'directory
-  :package-version '(ess . "24.01.1"))
+  :package-version '(ess . "25.01.1"))
 
 ;; Depending on how ESS is loaded the `load-path' might not contain
 ;; the `lisp' directory. For this reason we need to add it before we
@@ -192,7 +192,7 @@ See `ess-auto-width'. Be warned that ESS can set the width a
 lot."
   :group 'ess
   :type 'boolean
-  :package-version '(ess . "24.01.1"))
+  :package-version '(ess . "25.01.1"))
 
 (defcustom ess-auto-width nil
   "When non-nil, set the width option when the window configuration changes.
@@ -206,7 +206,7 @@ window's width minus that number. Anything else is treated as
                  (const :tag "Frame width" :value frame)
                  (const :tag "Window width" :value window)
                  (integer :tag "Integer value"))
-  :package-version '(ess . "24.01.1"))
+  :package-version '(ess . "25.01.1"))
 
 (defcustom ess-handy-commands '(("change-directory"     . ess-change-directory)
                                 ("install.packages"     . ess-install-library)
@@ -478,7 +478,7 @@ If \\='process, only check if the buffer has an inferior process."
   :type '(choice (const :tag "Always" t)
                  (const :tag "With running inferior process" process)
                  (const :tag "Never" nil))
-  :package-version '(ess . "24.01.1"))
+  :package-version '(ess . "25.01.1"))
 
 (defcustom ess-use-auto-complete t
   "If non-nil, activate auto-complete support.
@@ -562,7 +562,7 @@ contain spaces on either side."
   ;; them.
   :type '(repeat string)
   :group 'ess
-  :package-version '(ess . "24.01.1"))
+  :package-version '(ess . "25.01.1"))
 (defvar ess-S-assign)
 (make-obsolete-variable 'ess-S-assign 'ess-assign-list "ESS 18.10")
 
@@ -584,7 +584,7 @@ This gets appended to `prettify-symbols-alist', so set it to nil
 if you want to disable R specific prettification."
   :group 'ess-R
   :type '(alist :key-type string :value-type symbol)
-  :package-version '(ess . "24.01.1"))
+  :package-version '(ess . "25.01.1"))
 
 ;;*;; Variables concerning editing behavior
 
@@ -751,7 +751,7 @@ is non-nil. Affects `ess-save-file'."
                  (const :tag "Use compilation-ask-about-save and auto-save-visited-mode."
                         :value auto)
                  (const :tag "Save without asking." :value t))
-  :package-version '(ess . "24.01.1"))
+  :package-version '(ess . "25.01.1"))
 
 ;;*;; Variables controlling editing
 
@@ -1371,7 +1371,7 @@ This always dumps to a sub-directory (\".Src\") of the current ess
 working directory (i.e. first elt of search list)."
   :group 'ess-edit
   :type 'directory
-  :package-version '(ess . "24.01.1"))
+  :package-version '(ess . "25.01.1"))
 
 (defvar ess-dump-filename-template nil
   "Internal. Initialized by dialects.")
@@ -1533,7 +1533,7 @@ there is no project root in the current directory."
                  (const :tag "*proc:project-root* or *proc*"     ess-gen-proc-buffer-name:project-or-simple)
                  (const :tag "*proc:project-root* or *proc:dir*" ess-gen-proc-buffer-name:project-or-directory)
                  function)
-  :package-version '(ess . "24.01.1"))
+  :package-version '(ess . "25.01.1"))
 
 
 (defcustom ess-kermit-command "gkermit -T"
@@ -1860,7 +1860,7 @@ This variable also affect the evaluation of input code in
 iESS. The effect is similar to the above. If t then ess waits for
 the process output, otherwise not."
   :group 'ess-proc
-  :package-version '(ess . "24.01.1")
+  :package-version '(ess . "25.01.1")
   :type '(choice (const t) (const nowait) (const nil)))
 
 (defcustom ess-eval-deactivate-mark (fboundp 'deactivate-mark); was nil till 2010-03-22
@@ -2329,7 +2329,7 @@ This defaults to `default-frame-alist' and is used only when
 the variable `ess-help-own-frame' is non-nil."
   :group 'ess-help
   :type 'alist
-  :package-version '(ess . "24.01.1"))
+  :package-version '(ess . "25.01.1"))
 
  ; Faces
 ;;;=====================================================
@@ -2475,7 +2475,7 @@ Created for each process."
 See also `ess-verbose'."
   :group 'ess-proc
   :type 'boolean
-  :package-version '(ess . "24.01.1"))
+  :package-version '(ess . "25.01.1"))
 
 (defcustom ess-verbose nil
   "Non-nil means write more information to `ess-dribble-buffer' than usual."
