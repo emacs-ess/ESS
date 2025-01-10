@@ -124,7 +124,7 @@ $(ESSDIR): RPM.spec autoloads
 #	remove previous ESSDIR, etc:
 	$(MAKE) cleanup-dist
 	@echo "** Exporting Files **"
-	git clone . $(ESSDIR)-git
+	git clone --local . $(ESSDIR)-git
 	mkdir -p $(ESSDIR)
 	(cd $(ESSDIR)-git; $(GNUTAR) cvf - --exclude=.git --exclude=.svn --no-wildcards .) | (cd $(ESSDIR); $(GNUTAR) xf - )
 	@echo "** Clean-up docs, Make docs, and Correct Write Permissions **"
@@ -146,8 +146,7 @@ dist: VERSION tarballs
 	@echo "** Making pdf and html documentation"
 	@cd $(ESSDIR)/doc/ ; $(MAKE) pdf
 	@cd $(ESSDIR)/doc/ ; $(MAKE) html
-	grep -E 'defvar ess-(version|revision)' lisp/ess-custom.el \
-	  $(ESSDIR)/lisp/ess-custom.el > $@
+	grep 'package-version' lisp/ess-custom.el $(ESSDIR)/lisp/ess-custom.el > $@
 
 .PHONY: cleanup-dist cleanup-rel
 cleanup-dist:
@@ -199,13 +198,18 @@ homepage:
 
 upload:
 	[ x$$USER = xmaechler ] || (echo 'must be maechler'; exit 1 )
-	@echo "** Placing .tgz and .zip files and their .sig's **"
-	@chmod a+r $(ESSDIR).tgz $(ESSDIR).tgz.sig $(ESSDIR).zip $(ESSDIR).zip.sig
-	cp -p      $(ESSDIR).tgz $(ESSDIR).tgz.sig $(ESSDIR).zip $(ESSDIR).zip.sig $(UPLOAD_DIR)
+	@echo "** Placing .tgz and .zip files **"
+	@chmod a+r $(ESSDIR).tgz $(ESSDIR).zip 
+	cp -p      $(ESSDIR).tgz $(ESSDIR).zip $(UPLOAD_DIR)
 	@echo "** Creating LATEST.IS. file **"
 	rm -f $(UPLOAD_DIR)/LATEST.IS.*
 	touch $(UPLOAD_DIR)/LATEST.IS.$(ESSDIR)
 	touch $@
+# when we signed, had
+#	@echo "** Placing .tgz and .zip files and their .sig's **"
+# 	@chmod a+r $(ESSDIR).tgz $(ESSDIR).tgz.sig $(ESSDIR).zip $(ESSDIR).zip.sig
+# 	cp -p      $(ESSDIR).tgz $(ESSDIR).tgz.sig $(ESSDIR).zip $(ESSDIR).zip.sig $(UPLOAD_DIR)
+
 
 #==== RELEASE : ====
 
