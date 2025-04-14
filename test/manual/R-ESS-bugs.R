@@ -950,7 +950,10 @@ new <- old+1 # line 2, use ess-eval-line-and-step, i.e., C-c C-n
 ## Otherwise go to the end of paragraph.
 ## ----------------------------------------------------------
 
-## MM: have other examples  which are still buggy (but not "here")
+## MM: an example which is still buggy:
+## --  "C-c C-c" at the first line (  "... <- function(...." )
+## gives several (identically looking) bad parsing errors ...
+## but every time means there *is* a syntax error (!)
 
 
 ### Local Variables:
