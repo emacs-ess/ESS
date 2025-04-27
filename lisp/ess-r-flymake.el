@@ -62,7 +62,7 @@
   "Default linters to use.
 Can be either a string with R expression to be used as
 is (e.g. `lintr::default_linters').  Or a list of strings where
-each element is passed as argument to `lintr::with_defaults'."
+each element is passed as argument to `lintr::linters_with_defaults'."
   :group 'ess-R
   :type '(choice string (repeat string))
   :package-version '(ess . "18.10"))
@@ -120,12 +120,12 @@ we couldn't find a .lintr file."
 
 (defun ess-r--flymake-linters ()
   "If `ess-r-flymake-linters' is a string, use that.
-Otherwise, construct a string to pass to lintr::with_defaults."
+Otherwise, construct a string to pass to lintr::linters_with_defaults."
   (replace-regexp-in-string
    "[\n\t ]+" " "
    (if (stringp ess-r-flymake-linters)
        ess-r-flymake-linters
-     (concat "lintr::with_defaults("
+     (concat "lintr::linters_with_defaults("
              (mapconcat #'identity
                         ess-r-flymake-linters
                         ", ")
