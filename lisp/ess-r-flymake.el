@@ -85,8 +85,8 @@ each element is passed as argument to `lintr::linters_with_defaults'."
     if (!suppressWarnings(require(lintr, quietly=T))) {
         cat('@@error: @@`lintr` package not installed')
     } else {
-        if (packageVersion('lintr') <= '1.0.3') {
-            cat('@@error: @@Need `lintr` version > v1.0.3')
+        if (packageVersion('lintr') <= '3.0.0') {
+            cat('@@error: @@Need `lintr` version > v3.0.0')
         } else {
             tryCatch(lintr::lint(commandArgs(TRUE), ...),
                     error = function(e) {
