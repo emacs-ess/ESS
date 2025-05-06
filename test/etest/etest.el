@@ -295,7 +295,7 @@ If RESET-STATE is non-nil, `last-command' and
   (with-current-buffer buf
     (goto-char (point-min))
     (when (search-forward "×" nil t)
-      (backward-delete-char 1)
+      (delete-char -1)
       (set-mark (point))
       (when (search-forward "×" nil t)
         (error "There can only be one mark cursor")))

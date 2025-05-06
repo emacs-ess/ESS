@@ -87,7 +87,7 @@
 
 (defcustom ess-rdired-auto-update-interval 5
   "Seconds between refreshes of the `ess-rdired' buffer."
-  :type '(choice (const nil :tag "No auto updates") (integer :tag "Seconds"))
+  :type '(choice (const :tag "No auto updates" nil) (integer :tag "Seconds"))
   :group 'ess-R
   :package-version '(ess . "19.04"))
 

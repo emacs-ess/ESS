@@ -714,7 +714,7 @@ nil otherwise."
   (save-excursion
     (goto-char (point-min))
     (while (search-forward "_" nil t)
-      (backward-delete-char 2)
+      (delete-char -2)
       (put-text-property (point) (1+ (point)) 'face 'underline))))
 
 ;;*;; Link to Info

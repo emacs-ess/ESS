@@ -62,7 +62,7 @@ The default value is nil."
   "Variables to customize for S+elsewhere.")
 
 (defun S+elsewhere (&optional _proc-name)
-  "Call 'S-PLUS 3.x', the 'Real Thing'  from StatSci."
+  "Call \\='S-PLUS 3.x\\=', the \\='Real Thing\\='  from StatSci."
   ;; git commit 104c4d7c56bc239ea245562763caa317bc3a1a84
   (declare (obsolete ess-remote "2000"))
   (ess-write-to-dribble-buffer

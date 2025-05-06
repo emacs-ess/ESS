@@ -64,8 +64,8 @@ Users whose default is not \\='sh, but are accessing a remote machine with
 `telnet' or `ssh', should have the following in their init file:
    (setq-default ess-bugs-batch-method \\='sh)"
   :group 'ess-bugs
-  :type '(choice (const sh :tag "Bourne/C-like Unix Shell")
-                 (const dos :tag "DOS-like Windows shell")))
+  :type '(choice (const :tag "Bourne/C-like Unix Shell" sh)
+                 (const :tag "DOS-like Windows shell" dos)))
 
 (defcustom ess-bugs-batch-post-command
   (if (equal ess-bugs-batch-method 'sh) "&" " ")
