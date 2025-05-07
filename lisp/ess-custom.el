@@ -329,7 +329,7 @@ process. If a symbol, the symbol's value should be a directory.
 For example, the following setting would always start the process
 in the directory of the current file:
 
-   (setq ess-startup-directory 'default-directory)
+   (setq ess-startup-directory \\='default-directory)
 
 If `ess-startup-directory' is nil (the default) and
 `ess-startup-directory-function' is non-nil, the value returned
