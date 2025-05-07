@@ -287,7 +287,7 @@ indent line."
     (SAS)))
 
 (defun SAS ()
-  "Call 'SAS', from SAS Institute."
+  "Call \\='SAS\\=', from SAS Institute."
   (interactive)
   (let* ((temp-dialect "SAS")) ;(cdr (rassoc ess-dialect SAS-customize-alist))))
     (ess-write-to-dribble-buffer

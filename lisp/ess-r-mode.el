@@ -72,9 +72,9 @@ Fetching happens once per new ESSR version. The archive is stored
 in ~/.config/ESSR/ESSRv[VERSION].rds file. You can download and
 place it there manually if the remote has restricted network
 access."
-  :type '(choice (const nil :tag "Never")
-                 (const ess-remote :tag "With ess-remote only")
-                 (const t :tag "Always"))
+  :type '(choice (const :tag "Never" nil)
+                 (const :tag "With ess-remote only" ess-remote)
+                 (const :tag "Always" t))
   :group 'ess-R)
 
 ;; Silence the byte compiler
@@ -573,7 +573,7 @@ blocking commands will throw an error.")
 
 ;;;###autoload
 (defun run-ess-r (&optional start-args)
-  "Call 'R', the 'GNU S' system from the R Foundation.
+  "Call \\='R\\=', the \\='GNU S\\=' system from the R Foundation.
 Optional prefix (\\[universal-argument]) allows to set command line arguments, such as
 --vsize.  This should be OS agnostic.
 If you have certain command line arguments that should always be passed
@@ -2918,10 +2918,10 @@ needed."
 (defun ess-rutils-html-docs (&optional remote)
   "Use `browse-url' to navigate R html documentation.
 Documentation is produced by a modified help.start(), that
-returns the URL produced by GNU R's http server. If called with a
+returns the URL produced by GNU R\\='s http server. If called with a
 prefix, the modified help.start() is called with update=TRUE. The
 optional REMOTE argument should be a string with a valid URL for
-the 'R_HOME' directory on a remote server (defaults to NULL)."
+the \\='R_HOME\\=' directory on a remote server (defaults to NULL)."
   (interactive)
   (let* ((update (if current-prefix-arg "update=TRUE" "update=FALSE"))
          (remote (if (or (and remote (not (string= "" remote))))

@@ -555,9 +555,9 @@ If \\='strip, remove all such instances.  Otherwise, if non-nil, `+
 `ess-long+replacement'.
 This variable can be process-local but not buffer-local."
   :group 'ess-tracebug
-  :type '(choice (const nil :tag "No replacement")
-                 (const strip :tag "Replace all")
-                 (const t :tag "Replace 3 or more +")))
+  :type '(choice (const :tag "No replacement" nil)
+                 (const :tag "Replace all" strip)
+                 (const :tag "Replace 3 or more +" t)))
 
 (defvar ess-long+replacement ". + "
   "Replacement used for long + prompt.
