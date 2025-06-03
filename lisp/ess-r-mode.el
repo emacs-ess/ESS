@@ -476,7 +476,7 @@ To be used as part of `font-lock-defaults' keywords."
      (ess-smart-operators                   . ess-r-smart-operators)
      (inferior-ess-program                  . inferior-ess-r-program)
      (inferior-ess-objects-command          . inferior-ess-r-objects-command)
-     (inferior-ess-search-list-command      . "search()\n")
+     (inferior-ess-search-list-command      . "base::search()\n")
      (inferior-ess-help-command             . inferior-ess-r-help-command)
      (inferior-ess-exit-command             . "q()")
      (ess-error-regexp-alist                . ess-r-error-regexp-alist)
