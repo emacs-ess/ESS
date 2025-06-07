@@ -1184,10 +1184,10 @@ Kill the *ess.dbg.[R_name]* buffer."
 ;;; MPI
 
 ;; http://jkorpela.fi/chars/c0.html
-;; https://en.wikipedia.org/wiki/ANSI_escape_code#Escape_sequences
-(defvar ess-mpi-message-start-delimiter "_")
-(defvar ess-mpi-message-field-separator "")
-(defvar ess-mpi-message-end-delimiter "\\")
+;; https://en.wikipedia.org/wiki/C0_and_C1_control_codes
+(defvar ess--mpi-message-start-delimiter "\035\036") ; GS RS
+(defvar ess--mpi-message-field-separator "\037") ; US
+(defvar ess--mpi-message-end-delimiter "\036\035")   ; RS GS
 
 (define-obsolete-variable-alias 'ess-mpi-alist 'ess-mpi-handlers "ESS 19.04")
 (defvar ess-mpi-handlers
@@ -1231,10 +1231,12 @@ value from EXPR and then sent to the subprocess."
 
 (defun ess-mpi-handle-messages (buf)
   "Handle all mpi messages in BUF and delete them.
-The MPI message has the form TYPEFIELD... where TYPE is the
-type of the messages on which handlers in `ess-mpi-handlers' are
-dispatched. And FIELDs are strings. Return :incomplete if BUF
-ends with an incomplete message."
+The MPI message has the form \035\036TYPE\037FIELD\036\035 where TYPE
+is the type of the messages on which handlers in
+`ess-mpi-handlers' are dispatched, and FIELDs are strings. Note
+that the MPI message contains literal ASCII control codes as
+delimiters. Return :incomplete if BUF ends with an incomplete
+message."
   (let ((obuf (current-buffer))
         (out nil))
     (with-current-buffer buf
@@ -1242,15 +1244,15 @@ ends with an incomplete message."
       ;; This should be smarter because Emacs might cut it in the middle of the
       ;; message. In practice this almost never happen because we are
       ;; accumulating output into the cache buffer.
-      (while (search-forward ess-mpi-message-start-delimiter nil t)
+      (while (search-forward ess--mpi-message-start-delimiter nil t)
         (let ((mbeg0 (match-beginning 0))
               (mbeg (match-end 0)))
-          (if (search-forward ess-mpi-message-end-delimiter nil t)
+          (if (search-forward ess--mpi-message-end-delimiter nil t)
               (let* ((mend (match-beginning 0))
                      (mend0 (match-end 0))
                      (msg (buffer-substring mbeg mend))
                      (payload (mapcar #'ess-mpi-convert
-                                      (split-string msg ess-mpi-message-field-separator)))
+                                      (split-string msg ess--mpi-message-field-separator)))
                      (head (pop payload))
                      (handler (cdr (assoc head ess-mpi-handlers))))
                 (unwind-protect
@@ -1259,7 +1261,8 @@ ends with an incomplete message."
                           (apply handler payload))
                       (error "No handler defined for MPI message '%s" head))
                   (goto-char mbeg0)
-                  (delete-region mbeg0 mend0)))
+                  (let ((inhibit-read-only t))
+                    (delete-region mbeg0 mend0))))
             (setq out :incomplete))))
       out)))
 

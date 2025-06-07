@@ -7,7 +7,8 @@
         else as.character(el)
     })
     payload <- paste(dots, collapse = "")
-    cat(sprintf("_%s%s\\", head, payload))
+    ## see docstring for ess-mpi-handle-messages
+    cat(sprintf("\035\036%s\037%s\036\035", head, payload))
 }
 
 .ess_mpi_message <- function(msg){
