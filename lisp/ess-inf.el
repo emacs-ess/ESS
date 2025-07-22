@@ -1,6 +1,6 @@
 ;;; ess-inf.el --- Support for running S as an inferior Emacs process  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1989-2023 Free Software Foundation, Inc.
+;; Copyright (C) 1989-2025 Free Software Foundation, Inc.
 
 ;; Author: David Smith <dsmith@stats.adelaide.edu.au>
 ;; Created: 7 Jan 1994
@@ -3143,7 +3143,7 @@ Uses `temp-buffer-show-function' and respects
 
 (defun ess--inject-code-from-file (file &optional chunked)
   "Load code from FILE into process.
-If CHUNKED is non-nil, split the file by  separator (must be at
+If CHUNKED is non-nil, split the file by \\^L separator (must be at
 bol) and load each chunk separately."
   ;; This is different from ess-load-file as it works by directly loading the
   ;; string into the process and thus works on remotes.

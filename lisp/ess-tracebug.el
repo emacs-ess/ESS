@@ -1,6 +1,6 @@
 ;; ess-tracebug.el --- Tracing and debugging facilities for ESS.  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2011-2022 Free Software Foundation, Inc.
+;; Copyright (C) 2011-2025 Free Software Foundation, Inc.
 ;; Author: Vitalie Spinu
 ;; Maintainer: Vitalie Spinu
 ;; Created: Oct 14 14:15:22 2010
@@ -588,7 +588,7 @@ ESS internal code assumes default R prompts.")
     (setq-local compilation-error-regexp-alist ess-error-regexp-alist)
     (let (compilation-mode-font-lock-keywords)
       (compilation-setup t))
-    (setq next-error-function 'ess-tracebug-next-error-function)
+    (setq next-error-function #'ess-tracebug-next-error-function)
     ;; new locals
     (make-local-variable 'ess--tb-last-input)
     (make-local-variable 'ess--tb-last-input-overlay)
@@ -1231,10 +1231,10 @@ value from EXPR and then sent to the subprocess."
 
 (defun ess-mpi-handle-messages (buf)
   "Handle all mpi messages in BUF and delete them.
-The MPI message has the form TYPEFIELD... where TYPE is the
+The MPI message has the form \\^[TYPE\\^^FIELD...\\^] where TYPE is the
 type of the messages on which handlers in `ess-mpi-handlers' are
-dispatched. And FIELDs are strings. Return :incomplete if BUF
-ends with an incomplete message."
+dispatched, \\^C are ASCII control chars, and FIELDs are strings.
+Return `:incomplete' if BUF ends with an incomplete message."
   (let ((obuf (current-buffer))
         (out nil))
     (with-current-buffer buf
@@ -1992,6 +1992,9 @@ Each sublist  has five elements:
    doesn't apply to current context."
   :group 'ess-debug
   :type '(alist :key-type symbol
+                ;; FIXME: What's this `group'?  The values looks like strings!
+                ;; FIXME: The docstring talks about a 6th element (function)
+                ;; but it's missing here.
                 :value-type (group string string symbol face)))
 
 (defcustom ess-bp-inactive-spec
@@ -2001,7 +2004,8 @@ Each sublist  has five elements:
   ;; `ess-bp-type-spec-alist' except that the second element giving
   ;; the R expression is meaningless here." ;;fixme: second element is missing make it nil for consistency with all other specs
   :group 'ess-debug
-  :type 'list)
+  :type '(alist :key-type symbol
+                :value-type (group string string symbol face)))
 
 (defcustom ess-bp-conditional-spec
   '(conditional     "browser(expr={%s})"  "CB[ %s ]>\n"  question-mark  ess-bp-fringe-browser-face)
@@ -2011,14 +2015,16 @@ List format is identical to that of the elements of
 expression to be replaced instead of %s in the second and third
 elements of the specifications."
   :group 'ess-debug
-  :type 'list)
+  :type '(alist :key-type symbol
+                :value-type (group string string symbol face)))
 
 (defcustom ess-bp-logger-spec
   '(logger     ".ess_log_eval('%s')"  "L[ \"%s\" ]>\n"  hollow-square  ess-bp-fringe-logger-face)
   "List giving the loggers specifications.
 List format is identical to that of `ess-bp-type-spec-alist'."
   :group 'ess-debug
-  :type 'list)
+  :type '(alist :key-type symbol
+                :value-type (group string string symbol face)))
 
 
 (defun ess-bp-get-bp-specs (type &optional condition no-error)
@@ -2339,7 +2345,7 @@ If there is no active R session, this command triggers an error."
 (defun ess-bp-next nil
   "Goto next breakpoint."
   (interactive)
-  (when-let ((bp-pos (next-single-property-change (point) 'ess-bp)))
+  (when-let* ((bp-pos (next-single-property-change (point) 'ess-bp)))
     (save-excursion
       (goto-char bp-pos)
       (when (get-text-property (1- (point)) 'ess-bp)
@@ -2352,7 +2358,7 @@ If there is no active R session, this command triggers an error."
 (defun ess-bp-previous nil
   "Goto previous breakpoint."
   (interactive)
-  (if-let ((bp-pos (previous-single-property-change (point) 'ess-bp)))
+  (if-let* ((bp-pos (previous-single-property-change (point) 'ess-bp)))
       (goto-char (or (previous-single-property-change bp-pos 'ess-bp)
                      bp-pos))
     (message "No breakpoints before the point found")))
@@ -2820,7 +2826,10 @@ for signature and trace it with browser tracer."
                       "*ALL*"))
       (setq fun (ess-completing-read "Undebug" debugged nil t nil nil def-val))
       (if (equal fun "*ALL*" )
-          (ess-command (concat ".ess_dbg_UndebugALL(c(\"" (mapconcat 'identity debugged "\", \"") "\"))\n") tbuffer)
+          (ess-command (concat ".ess_dbg_UndebugALL(c(\""
+                               (mapconcat #'identity debugged "\", \"")
+                               "\"))\n")
+                       tbuffer)
         (ess-command (format ".ess_dbg_UntraceOrUndebug(\"%s\")\n" fun) tbuffer))
       (with-current-buffer  tbuffer
         (if (= (point-max) 1) ;; not reliable TODO:
