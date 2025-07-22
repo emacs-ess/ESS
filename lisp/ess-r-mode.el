@@ -1,6 +1,6 @@
 ;;; ess-r-mode.el --- R customization  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1997-2022 Free Software Foundation, Inc.
+;; Copyright (C) 1997-2025 Free Software Foundation, Inc.
 ;; Author: A.J. Rossini
 ;; Created: 12 Jun 1997
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
@@ -992,7 +992,7 @@ as `ess-r-created-runners' upon ESS initialization."
         (message "Recreated %d R versions known to ESS: %s"
                  (length versions) versions))
       (if ess-microsoft-p
-          (cl-mapcar (lambda (v p) (ess-define-runner v "R" p)) versions ess-rterm-version-paths)
+          (cl-mapc (lambda (v p) (ess-define-runner v "R" p)) versions ess-rterm-version-paths)
         (mapc (lambda (v) (ess-define-runner v "R")) versions))
       ;; Add to menu
       (when ess-r-created-runners
@@ -1619,7 +1619,7 @@ environment to the search path."
 Send the contents of the etc/ESSR/R directory to the remote
 process through the process connection file by file. Then,
 collect all the objects into an ESSR environment and attach to
-the search path. If CHUNKED is non-nil, split each file by 
+the search path. If CHUNKED is non-nil, split each file by \\^L
 separators and send chunk by chunk."
   (ess-command (format ".ess.ESSRversion <<- '%s'\n" essr-version))
   (with-temp-message "Loading ESSR into remote ..."
