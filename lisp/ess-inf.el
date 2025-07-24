@@ -1998,7 +1998,7 @@ meaning as for `ess-eval-region'."
     (define-key map "\C-c\C-z" #'ess-switch-to-inferior-or-script-buffer) ; mask comint map
     (define-key map "\C-d"     #'delete-char)   ; EOF no good in S
     (define-key map "\t"       #'completion-at-point)
-    (define-key map "\M-?"     #'ess-complete-object-name)
+    (define-key map "\M-?"     #'ess-complete-object-name); stealing  M-? from xref(standard Emacs)
     (define-key map "\C-c\C-k" #'ess-request-a-process)
     (define-key map ","        #'ess-smart-comma)
     (define-key map "\C-c\C-d"  'ess-doc-map)
