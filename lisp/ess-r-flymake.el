@@ -27,7 +27,7 @@
 ;; Flymake is the built-in Emacs package that supports on-the-fly
 ;; syntax checking.  This file adds support for this in ess-r-mode by
 ;; relying on the lintr package, available on CRAN and currently
-;; hosted at https://github.com/jimhester/lintr.
+;; hosted at https://github.com/r-lib/lintr.
 
 ;;; Code:
 
@@ -76,28 +76,26 @@ each element is passed as argument to `lintr::linters_with_defaults'."
 (defvar-local ess-r--flymake-proc nil)
 
 (defvar-local ess-r--lintr-file nil
-  "Location of the .lintr file for this buffer.")
+  "Location of the .lintr config file for this buffer.")
 
 (defvar ess-r--flymake-def-linter
   (replace-regexp-in-string
    "[\n\t ]+" " "
    "esslint <- function(str, ...) {
-    if (!suppressWarnings(require(lintr, quietly=T))) {
+    if (!suppressWarnings(requireNamespace('lintr', quietly=TRUE))) {
         cat('@@error: @@`lintr` package not installed')
+    } else if (packageVersion('lintr') <= '3.0.0') {
+        cat('@@error: @@Need `lintr` version > v3.0.0')
     } else {
-        if (packageVersion('lintr') <= '3.0.0') {
-            cat('@@error: @@Need `lintr` version > v3.0.0')
-        } else {
-            tryCatch(lintr::lint(commandArgs(TRUE), ...),
-                    error = function(e) {
-                       cat('@@warning: @@', conditionMessage(e))
-                    })
-        }
+        tryCatch(lintr::lint(text=commandArgs(TRUE), ..., parse_settings=TRUE),
+                 error = function(e) {
+                   cat('@@warning: @@', conditionMessage(e))
+                 })
     }
 };"))
 
 (defun ess-r--find-lintr-file ()
-  "Return the absolute path to the .lintr file.
+  "Return the absolute path to the .lintr config file.
 Check first the current directory, then the project root, then
 the package root, then the user's home directory. Return nil if
 we couldn't find a .lintr file."
