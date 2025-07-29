@@ -87,7 +87,7 @@ each element is passed as argument to `lintr::linters_with_defaults'."
     } else if (packageVersion('lintr') <= '3.0.0') {
         cat('@@error: @@Need `lintr` version > v3.0.0')
     } else {
-        tryCatch(lintr::lint(text=commandArgs(TRUE), ..., parse_settings=TRUE),
+        tryCatch(lintr::lint(text=str, ..., parse_settings=TRUE),
                  error = function(e) {
                    cat('@@warning: @@', conditionMessage(e))
                  })
