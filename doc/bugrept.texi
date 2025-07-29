@@ -1,8 +1,8 @@
-Please send bug reports, suggestions etc. to
-@email{ESS-bugs@@r-project.org}, or post them on our
-@uref{https://github.com/emacs-ess/ESS/issues, github issue tracker}
+Please post bug reports, suggestions etc.
+on our @uref{https://github.com/emacs-ess/ESS/issues, github issue
+tracker}; if not possible, e-mail them to @email{ESS-help@@r-project.org}.
 
-The easiest way to do this is within Emacs by typing
+The easiest way to set this up, is within Emacs by typing
 
 @kbd{M-x ess-submit-bug-report}
 
