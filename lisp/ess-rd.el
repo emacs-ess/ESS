@@ -1,6 +1,6 @@
 ;; ess-rd.el --- Support for editing R documentation (Rd) source  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1997-2023 Free Software Foundation, Inc.
+;; Copyright (C) 1997-2025 Free Software Foundation, Inc.
 ;; Author: KH <Kurt.Hornik@ci.tuwien.ac.at>
 ;; Created: 25 July 1997
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
@@ -48,6 +48,7 @@
     ("`al" "\\alias" nil :system t)
     ("`au" "\\author" nil :system t)
     ("`bf" "\\bold" nil :system t)
+    ;; not (yet) "bibcitep" "bibcitet" "bibshow" "bibinfo"
     ("`co" "\\code" nil :system t)
     ("`de" "\\describe" nil :system t)
     ("`dn" "\\description" nil :system t)
@@ -62,6 +63,7 @@
     ("`kw" "\\keyword" nil :system t)
     ("`li" "\\link" nil :system t)
     ("`me" "\\method" nil :system t)
+    ("`ma" "\\manual" nil :system t)
     ("`na" "\\name" nil :system t)
     ("`no" "\\note" nil :system t)
     ("`re" "\\references" nil :system t)
@@ -122,7 +124,7 @@ All Rd mode abbrevs start with a grave accent (`)."
     "tabular" "title" "usage"
     "value"))
 
-(defvar Rd-keywords
+(defvar Rd-keywords ; to be highlighted in Rd-mode
   '(
     ;; the next two lines: only valid in R <= 2.8.1
     ;; commented out on 2011-01-14 for ESS version 5.13:
@@ -136,11 +138,14 @@ All Rd mode abbrevs start with a grave accent (`)."
     "href"
     "ifelse" "if"
     "item" "kbd" "ldots" "linkS4class" "link" "method"
+    "manual"
     "newcommand" "option" "out"
     "pkg" "sQuote" "renewcommand"
     "samp" "strong" "tab" "url" "var" "verb"
     ;; System macros (from <R>/share/Rd/macros/system.Rd ):
+    "bibcitep" "bibcitet" "bibshow" "bibinfo"
     "CRANpkg" "PR" "sspace" "doi"
+    "I" ; should we?
     "LaTeX"
     "proglang"
     "packageTitle" "packageDescription" "packageAuthor"
