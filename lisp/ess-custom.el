@@ -563,6 +563,7 @@ contain spaces on either side."
   :type '(repeat string)
   :group 'ess
   :package-version '(ess . "25.01.1"))
+
 (defvar ess-S-assign)
 (make-obsolete-variable 'ess-S-assign 'ess-assign-list "ESS 18.10")
 
