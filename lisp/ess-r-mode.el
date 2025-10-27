@@ -865,7 +865,7 @@ top level functions only."
     (imenu-add-to-menubar "Imenu-R"))
   ;; outline
   (setq-local outline-level #'ess-r-outline-level)
-  (setq-local outline-regexp 'ess-r-outline-regexp)
+  (setq-local outline-regexp ess-r-outline-regexp)
   (setq-local beginning-of-defun-function #'ess-r-beginning-of-defun)
   (setq-local end-of-defun-function #'ess-r-end-of-defun)
   (ess-roxy-mode))
