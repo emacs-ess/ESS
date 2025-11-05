@@ -34,6 +34,7 @@ EMACSBATCH ?= $(EMACS) -batch -Q
 # ## standard site-lisp
 # SITELISP=$(PREFIX)/site-lisp
 # ## Vincent Goulet's Modified Emacs needs the following SITELISP
+# ## but you might need to delete $(SITELISP)/elpa/ess-VERSION
 # # SITELISP=$(PREFIX)/lisp
 # LISPDIR=$(SITELISP)/ess
 # ESSDESTDIR=$(LISPDIR)
