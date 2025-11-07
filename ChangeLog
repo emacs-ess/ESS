@@ -1,3 +1,9 @@
+2025-10-27 Christophe Gouel <christophe.gouel@inrae.fr>
+
+	* lisp/ess-custom.el: Support for outline-minor-mode
+	* lisp/ess-r-mode.el: Support for outline-minor-mode
+	* doc/ess.texi: Support for outline-minor-mode
+
 2025-01-10  ESS Maintainers <ESS-core@r-project.org>
 
   * Version 25.01.0 released.
@@ -6565,4 +6571,3 @@ The following is from the original Changelog section of S.el
 
  Wed May 12 dmith
    * Change definition of S-dumped-missing-re to cope with 3.1
-
