@@ -1571,6 +1571,12 @@ by `ess-function-template'."
   :group 'ess
   :type 'regexp)
 
+(defcustom ess-r-outline-regexp
+  "^[ \t]*#+ +.*\\(?:----\\|====\\|####\\)\\s-*$"
+  "Regexp used to detect the beginning of R headings."
+  :group 'ess-R
+  :type 'regexp)
+
 
  ; ess-inf: variables for inferior-ess.
 

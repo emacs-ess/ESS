@@ -2833,6 +2833,7 @@ ESS has a few extra features, which didn't fit anywhere else.
 * Parens::                      Parenthesis matching
 * Graphics::                    Using graphics with ESS
 * Imenu::                       Support for Imenu in ESS
+* Outline::                     Use outline-minor-mode in R scripts
 * Toolbar::                     Support for toolbar in ESS
 * Xref::                        Xref
 * Rdired::                      Directory editor for R objects
@@ -3081,6 +3082,45 @@ thinks is the beginning of a suitable entry, for example the beginning of a
 function definition.  To examine the regular expression that ESS uses,
 check the value of @code{imenu-generic-expression}.  This value is set
 by various ESS variables such as @code{ess-imenu-S-generic-expression}.
+
+@node Outline
+@section Outline navigation
+@cindex outline-minor-mode
+@cindex code folding
+@findex outline-minor-mode
+@findex ess-r-outline-level
+@vindex ess-r-outline-regexp
+R editing buffers integrate with @code{outline-minor-mode}.  When you
+toggle the minor mode (for example via @kbd{M-x outline-minor-mode} or
+by adding it to @code{ess-r-mode-hook}), ESS assigns
+@code{ess-r-outline-level} to @code{outline-level} and installs
+@code{ess-r-outline-regexp} so that comment headings drive folding.
+Lines that begin with one or more @samp{#}, followed by text and a
+trailing marker of @samp{----}, @samp{====}, or @samp{####}, are treated
+as outline headings.  This matches the section markers convention adopted by
+RStudio.
+
+@example
+# Setup ----
+## Data ----
+### Models ====
+#### Helpers ####
+@end example
+
+The number of leading @samp{#} characters sets the outline depth.  Use
+standard Outline commands (such as @kbd{C-c @ C-t}) to cycle visibility once
+the minor mode is active.  To enable Outlining automatically, add it to the R
+mode hook:
+
+@example
+(add-hook 'ess-r-mode-hook #'outline-minor-mode)
+@end example
+
+@defvr {User Option} ess-r-outline-regexp
+Regular expression used by ESS to recognise outline headings in R
+buffers.  The default matches the RStudio-style sections shown above,
+but you can customise it if you prefer a different comment convention.
+@end defvr
 
 @node Toolbar
 @section Toolbar

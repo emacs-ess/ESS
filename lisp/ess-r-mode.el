@@ -299,6 +299,14 @@ When t, loading a file into a namespaced will output information
 about which objects are exported and which stay hidden in the
 namespace.")
 
+(defun ess-r-outline-level ()
+  "R mode `outline-level` function."
+  (save-excursion
+    (beginning-of-line)
+    (if (looking-at "^[ \t]*\\(#+\\)\\s-")
+	(length (match-string 1))
+      1000)))
+
 ;; The syntax class for '\' is punctuation character to handle R 4.1
 ;; lambdas. Inside strings it should be treated as an escape
 ;; character which we ensure here.
@@ -855,6 +863,9 @@ top level functions only."
   (setq imenu-generic-expression ess-imenu-S-generic-expression)
   (when ess-imenu-use-S
     (imenu-add-to-menubar "Imenu-R"))
+  ;; outline
+  (setq-local outline-level #'ess-r-outline-level)
+  (setq-local outline-regexp ess-r-outline-regexp)
   (setq-local beginning-of-defun-function #'ess-r-beginning-of-defun)
   (setq-local end-of-defun-function #'ess-r-end-of-defun)
   (ess-roxy-mode))
