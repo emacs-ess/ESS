@@ -329,7 +329,7 @@ namespace.")
   "Compute outline level for `stars` style headings."
   (save-excursion
     (beginning-of-line)
-    (if (looking-at "###\\s-+\\(\\*+\\)\\s-+")
+    (if (looking-at "^\\(?:> \\)?###\\s-+\\(\\*+\\)\\s-+")
         (length (match-string 1))
       1000)))
 
