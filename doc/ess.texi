@@ -433,7 +433,7 @@ processes.  This is a good command to consider binding to a global key.
 ESS works with processes on remote computers as easily as with processes
 on the local machine.  The recommended way to access a statistical
 program on remote computer is to start it with @xref{Top,,, tramp, TRAMP
-User Manual}. 
+User Manual}.
 
 Start an ssh session using TRAMP with @samp{C-x C-f /ssh:user@@host:
 RET}.  Tramp should open a dired buffer in your remote home directory.
@@ -1328,7 +1328,7 @@ effect of aborting the current command.
 @kindex C-c C-z
 @kbd{C-c C-z} When in process buffer, return to the most recent script
 buffer.  When in a script buffer pop to the associated process buffer.
-Consecutive presses of @kbd{C-z} switch between the script and process buffers. 
+Consecutive presses of @kbd{C-z} switch between the script and process buffers.
 
 If @var{toggle-eob} is given, the value of
 @code{ess-switch-to-end-of-proc-buffer} is toggled.
@@ -3089,13 +3089,14 @@ by various ESS variables such as @code{ess-imenu-S-generic-expression}.
 @cindex code folding
 @findex outline-minor-mode
 @findex ess-r-outline-level
-@vindex ess-r-outline-regexp
+@vindex ess-r-outline-style
 R editing buffers integrate with @code{outline-minor-mode}.  When you
 toggle the minor mode (for example via @kbd{M-x outline-minor-mode} or
 by adding it to @code{ess-r-mode-hook}), ESS assigns
-@code{ess-r-outline-level} to @code{outline-level} and installs
-@code{ess-r-outline-regexp} so that comment headings drive folding.
-Lines that begin with one or more @samp{#}, followed by text and a
+@code{ess-r-outline-level} to @code{outline-level} and configures
+@code{outline-regexp} according to @code{ess-r-outline-style} so that
+comment headings drive folding.  With the default @code{RStudio} style,
+lines that begin with one or more @samp{#}, followed by text and a
 trailing marker of @samp{----}, @samp{====}, or @samp{####}, are treated
 as outline headings.  This matches the section markers convention adopted by
 RStudio.
@@ -3116,10 +3117,20 @@ mode hook:
 (add-hook 'ess-r-mode-hook #'outline-minor-mode)
 @end example
 
-@defvr {User Option} ess-r-outline-regexp
-Regular expression used by ESS to recognise outline headings in R
-buffers.  The default matches the RStudio-style sections shown above,
-but you can customise it if you prefer a different comment convention.
+@defvr {User Option} ess-r-outline-style
+Select which outline convention @code{ess-r-mode} should use.  The
+default @code{RStudio} style recognises the comment rulers shown above.
+Choose @code{stars} to match the @samp{### * Section} pattern:
+
+@example
+### * Setup
+### ** Data
+### *** Models
+### **** Helpers
+@end example
+
+You can switch styles via
+@code{M-x ess-r-set-outline-style} or by customizing this option.
 @end defvr
 
 @node Toolbar

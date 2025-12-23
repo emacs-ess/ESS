@@ -299,13 +299,67 @@ When t, loading a file into a namespaced will output information
 about which objects are exported and which stay hidden in the
 namespace.")
 
-(defun ess-r-outline-level ()
-  "R mode `outline-level` function."
+(defconst ess-r--outline-rstudio-regexp
+  "^[ \t]*#+ +.*\\(?:----\\|====\\|####\\)\\s-*$"
+  "R outline Regexp when `ess-r-outline-style' is `RStudio'.")
+
+(defconst ess-r--outline-stars-regexp
+  "^\\(?:> \\)?###\\s-+\\(\\*+\\)\\s-+.*$"
+  "R outline regexp used when `ess-r-outline-style' is `stars'.")
+
+(defun ess-r--outline-style-definition (&optional style)
+  "Return the style definition for STYLE, defaulting to `ess-r-outline-style'."
+  (let ((style (or style ess-r-outline-style)))
+    (or (assq style ess-r-outline-style-alist)
+        (error "Unknown ESS outline style: %s" style))))
+
+(defun ess-r--outline-style-value (key &optional style)
+  "Return value for KEY in STYLE's definition."
+  (cdr (assq key (cdr (ess-r--outline-style-definition style)))))
+
+(defun ess-r--outline-level-rstudio ()
+  "Compute outline level for `RStudio` style headings."
   (save-excursion
     (beginning-of-line)
     (if (looking-at "^[ \t]*\\(#+\\)\\s-")
-	(length (match-string 1))
+        (length (match-string 1))
       1000)))
+
+(defun ess-r--outline-level-stars ()
+  "Compute outline level for `stars` style headings."
+  (save-excursion
+    (beginning-of-line)
+    (if (looking-at "###\\s-+\\(\\*+\\)\\s-+")
+        (length (match-string 1))
+      1000)))
+
+(defconst ess-r-outline-style-alist
+  `((RStudio
+     (outline-regexp . ,ess-r--outline-rstudio-regexp)
+     (outline-level  . ,#'ess-r--outline-level-rstudio))
+    (stars
+     (outline-regexp . ,ess-r--outline-stars-regexp)
+     (outline-level  . ,#'ess-r--outline-level-stars)))
+  "Mapping between outline styles and their regexp/level helpers.")
+
+(defun ess-r-outline-level ()
+  "R mode `outline-level` dispatcher for the current outline style."
+  (funcall (ess-r--outline-style-value 'outline-level)))
+
+(defun ess-r-set-outline-style (&optional style)
+  "Apply STYLE (or `ess-r-outline-style') to the current buffer."
+  (interactive
+   (list (intern (completing-read
+                 "Outline style"
+                 (mapcar (lambda (entry) (symbol-name (car entry)))
+                         ess-r-outline-style-alist)
+                 nil t nil nil
+                 (symbol-name (or ess-r-outline-style 'RStudio))))))
+  (let* ((style (or style ess-r-outline-style))
+         (entry (ess-r--outline-style-definition style)))
+    (setq-local ess-r-outline-style (car entry))
+    (setq-local outline-regexp (ess-r--outline-style-value 'outline-regexp style))
+    (setq-local outline-level #'ess-r-outline-level)))
 
 ;; The syntax class for '\' is punctuation character to handle R 4.1
 ;; lambdas. Inside strings it should be treated as an escape
@@ -843,6 +897,8 @@ top level functions only."
   (setq-local electric-layout-rules '((?{ . after)))
   ;; indentation
   (add-hook 'hack-local-variables-hook #'ess-set-style nil t)
+  ;; outline
+  (add-hook 'hack-local-variables-hook #'ess-r-set-outline-style nil t)
   ;; eldoc
   (ess--setup-eldoc #'ess-r-eldoc-function)
   ;; auto-complete
@@ -864,8 +920,7 @@ top level functions only."
   (when ess-imenu-use-S
     (imenu-add-to-menubar "Imenu-R"))
   ;; outline
-  (setq-local outline-level #'ess-r-outline-level)
-  (setq-local outline-regexp ess-r-outline-regexp)
+  (ess-r-set-outline-style)
   (setq-local beginning-of-defun-function #'ess-r-beginning-of-defun)
   (setq-local end-of-defun-function #'ess-r-end-of-defun)
   (ess-roxy-mode))
