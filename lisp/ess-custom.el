@@ -1571,11 +1571,14 @@ by `ess-function-template'."
   :group 'ess
   :type 'regexp)
 
-(defcustom ess-r-outline-regexp
-  "^[ \t]*#+ +.*\\(?:----\\|====\\|####\\)\\s-*$"
-  "Regexp used to detect the beginning of R headings."
+(defcustom ess-r-outline-style 'RStudio
+  "Outline convention used by `ess-r-mode'.
+Choose between the comment rulers like RStudio and the \"stars\" headings
+ (\"### ***\")."
   :group 'ess-R
-  :type 'regexp)
+  :type '(choice (const :tag "RStudio comment rulers" RStudio)
+                 (const :tag "Stars (### *** headings)" stars))
+  :safe #'symbolp)
 
 
  ; ess-inf: variables for inferior-ess.
