@@ -1571,11 +1571,19 @@ by `ess-function-template'."
   :group 'ess
   :type 'regexp)
 
-(defcustom ess-r-outline-regexp
-  "^[ \t]*#+ +.*\\(?:----\\|====\\|####\\)\\s-*$"
-  "Regexp used to detect the beginning of R headings."
+(defcustom ess-r-outline-style 'RStudio
+  "Outline convention used by `ess-r-mode'.
+Choose between comment rulers like RStudio (\"### Section title ----\")
+and \"stars\" headings \(\"### *** Section title\").
+
+When using the RStudio outline style, it is recommended to use \(setq
+ess-indent-with-fancy-comments nil) or \(setq ess-style 'RStudio).
+Otherwise, single-hash comments are treated as right-margin comments
+with `comment-column' 40."
   :group 'ess-R
-  :type 'regexp)
+  :type '(choice (const :tag "RStudio comment rulers" RStudio)
+                 (const :tag "Stars (### *** headings)" stars))
+  :safe #'symbolp)
 
 
  ; ess-inf: variables for inferior-ess.
