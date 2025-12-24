@@ -3108,8 +3108,13 @@ RStudio.
 #### Helpers ####
 @end example
 
-The number of leading @samp{#} characters sets the outline depth.  Use
-standard Outline commands (such as @kbd{C-c @ C-t}) to cycle visibility once
+The number of leading @samp{#} characters sets the outline depth.  When using
+this outline style, it is recommended to use
+@code{setq ess-indent-with-fancy-comments nil} or
+@code{setq ess-style 'RStudio}.  Otherwise, single-hash comments are treated as
+right-margin comments with comment-column 40.
+
+Use standard Outline commands (such as @kbd{C-c @ C-t}) to cycle visibility once
 the minor mode is active.  To enable Outlining automatically, add it to the R
 mode hook:
 
