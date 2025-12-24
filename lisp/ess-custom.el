@@ -1573,8 +1573,13 @@ by `ess-function-template'."
 
 (defcustom ess-r-outline-style 'RStudio
   "Outline convention used by `ess-r-mode'.
-Choose between the comment rulers like RStudio and the \"stars\" headings
- (\"### ***\")."
+Choose between comment rulers like RStudio (\"### Section title ----\")
+and \"stars\" headings \(\"### *** Section title\").
+
+When using the RStudio outline style, it is recommended to use \(setq
+ess-indent-with-fancy-comments nil) or \(setq ess-style 'RStudio).
+Otherwise, single-hash comments are treated as right-margin comments
+with `comment-column' 40."
   :group 'ess-R
   :type '(choice (const :tag "RStudio comment rulers" RStudio)
                  (const :tag "Stars (### *** headings)" stars))
