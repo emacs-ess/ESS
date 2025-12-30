@@ -1,6 +1,15 @@
 @comment @itemize @w{}
 @comment @item
 
+Changes and New Features in 26.01.0:
+@itemize @bullet
+@item ESS[BUGS] is still relevant due to NIMBLE keeping the language alive.
+However, only syntax highlighting and key-presses will be supported
+moving forward. For example, the @kbd{<} key now generates @code{<-}
+rather than the former @code{=} since equals is a valid character in NIMBLE
+BUGS.
+@end itemize
+
 Changes and New Features in 25.01.0:
 @itemize @bullet
 
