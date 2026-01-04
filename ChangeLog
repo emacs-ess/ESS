@@ -1,8 +1,8 @@
-2025-12-23 Christophe Gouel <christophe.gouel@inrae.fr>
+2026-01-04 Christophe Gouel <christophe.gouel@inrae.fr>
 
 	* lisp/ess-custom.el (ess-r-outline-style) (ess-r-outline-regexp):
 	New user option to pick an outline convention (RStudio rulers vs.
-	stars). Remove option ess-r-outline-regexp.
+	Org-like). Remove option ess-r-outline-regexp.
 	* lisp/ess-r-mode.el (ess-r-outline-style-alist)
 	(ess-r--outline-style-definition)
 	(ess-r--outline-style-value)

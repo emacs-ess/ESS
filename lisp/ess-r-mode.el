@@ -303,9 +303,9 @@ namespace.")
   "^[ \t]*#+ +.*\\(?:----\\|====\\|####\\)\\s-*$"
   "R outline Regexp when `ess-r-outline-style' is `RStudio'.")
 
-(defconst ess-r--outline-stars-regexp
+(defconst ess-r--outline-org-like-regexp
   "^\\(?:> \\)?###\\s-+\\(\\*+\\)\\s-+.*$"
-  "R outline regexp used when `ess-r-outline-style' is `stars'.")
+  "R outline regexp used when `ess-r-outline-style' is `Org-like'.")
 
 (defun ess-r--outline-style-definition (&optional style)
   "Return the style definition for STYLE, defaulting to `ess-r-outline-style'."
@@ -325,8 +325,8 @@ namespace.")
         (length (match-string 1))
       1000)))
 
-(defun ess-r--outline-level-stars ()
-  "Compute outline level for `stars` style headings."
+(defun ess-r--outline-level-org-like ()
+  "Compute outline level for `Org-like` style headings."
   (save-excursion
     (beginning-of-line)
     (if (looking-at "^\\(?:> \\)?###\\s-+\\(\\*+\\)\\s-+")
@@ -337,9 +337,9 @@ namespace.")
   `((RStudio
      (outline-regexp . ,ess-r--outline-rstudio-regexp)
      (outline-level  . ,#'ess-r--outline-level-rstudio))
-    (stars
-     (outline-regexp . ,ess-r--outline-stars-regexp)
-     (outline-level  . ,#'ess-r--outline-level-stars)))
+    (Org-like
+     (outline-regexp . ,ess-r--outline-org-like-regexp)
+     (outline-level  . ,#'ess-r--outline-level-org-like)))
   "Mapping between outline styles and their regexp/level helpers.")
 
 (defun ess-r-outline-level ()
