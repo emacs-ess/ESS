@@ -3123,9 +3123,10 @@ mode hook:
 @end example
 
 @defvr {User Option} ess-r-outline-style
-Select which outline convention @code{ess-r-mode} should use.  The
+Select which outline convention @code{ess-r-mode} should use. The
 default @code{RStudio} style recognises the comment rulers shown above.
-Choose @code{stars} to match the @samp{### * Section} pattern:
+Choose @code{Org-like} to match the @samp{### * Section} pattern,
+inspired from org-mode:
 
 @example
 ### * Setup
