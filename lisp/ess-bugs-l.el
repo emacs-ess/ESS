@@ -141,7 +141,8 @@ Users whose default is not \\='sh, but are accessing a remote machine with
   (let ((map (make-sparse-keymap)))
     (define-key map (quote [f2])  #'ess-revert-wisely)
     (define-key map "\C-c\C-c" #'ess-bugs-next-action)
-    (define-key map "=" #'ess-bugs-hot-arrow)
+    (define-key map "<" #'ess-bugs-hot-arrow) ;; NIMBLE needs equals character
+;;    (define-key map "=" #'ess-bugs-hot-arrow)
 ;;    (define-key map "_" #'ess-bugs-hot-arrow)
     map)
   "ESS[BUGS]: Keymap for mode.")

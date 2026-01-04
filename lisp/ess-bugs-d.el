@@ -58,7 +58,7 @@
    (cons "^[ \t]*\\(model\\|var\\)\\>"
          font-lock-keyword-face)
 
-   (cons (concat "\\<d\\(bern\\|beta\\|bin\\|cat\\|chisq\\|"
+   (cons (concat "\\<d\\(bern\\|beta\\|bin\\|cat\\|chisq\\|CRP\\|"
                  "dexp\\|dirch\\|exp\\|\\(gen[.]\\)?gamma\\|hyper\\|"
                  "interval\\|lnorm\\|logis\\|mnorm\\|mt\\|multi\\|"
                  "negbin\\|norm\\(mix\\)?\\|par\\|pois\\|sum\\|t\\|"
