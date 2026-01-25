@@ -3095,7 +3095,9 @@ toggle the minor mode (for example via @kbd{M-x outline-minor-mode} or
 by adding it to @code{ess-r-mode-hook}), ESS assigns
 @code{ess-r-outline-level} to @code{outline-level} and configures
 @code{outline-regexp} according to @code{ess-r-outline-style} so that
-comment headings drive folding.  With the default @code{RStudio} style,
+comment headings drive folding.  By default, outline support is disabled
+(@code{none}), but you can enable it by setting @code{ess-r-outline-style}
+to @code{RStudio} or @code{Org-like}.  With the @code{RStudio} style,
 lines that begin with one or more @samp{#}, followed by text and a
 trailing marker of @samp{----}, @samp{====}, or @samp{####}, are treated
 as outline headings.  This matches the section markers convention adopted by
@@ -3109,10 +3111,12 @@ RStudio.
 @end example
 
 The number of leading @samp{#} characters sets the outline depth.  When using
-this outline style, it is recommended to use
-@code{setq ess-indent-with-fancy-comments nil} or
-@code{setq ess-style 'RStudio}.  Otherwise, single-hash comments are treated as
-right-margin comments with comment-column 40.
+the RStudio outline style, @code{ess-indent-with-fancy-comments} is
+automatically set to @code{nil} locally in the buffer to prevent single-hash
+comments from being treated as right-margin comments with @code{comment-column}
+40.  When switching back to a different outline style, the original local
+binding is restored; if the variable was not buffer-local, the current global
+default applies.
 
 Use standard Outline commands (such as @kbd{C-c @ C-t}) to cycle visibility once
 the minor mode is active.  To enable Outlining automatically, add it to the R
@@ -3124,9 +3128,10 @@ mode hook:
 
 @defvr {User Option} ess-r-outline-style
 Select which outline convention @code{ess-r-mode} should use. The
-default @code{RStudio} style recognises the comment rulers shown above.
-Choose @code{Org-like} to match the @samp{### * Section} pattern,
-inspired from org-mode:
+default @code{none} disables outline support to preserve backward
+compatibility.  Set to @code{RStudio} to recognise the comment rulers
+shown above, or choose @code{Org-like} to match the @samp{### * Section}
+pattern, inspired from org-mode:
 
 @example
 ### * Setup

@@ -1571,17 +1571,19 @@ by `ess-function-template'."
   :group 'ess
   :type 'regexp)
 
-(defcustom ess-r-outline-style 'RStudio
+(defcustom ess-r-outline-style 'none
   "Outline convention used by `ess-r-mode'.
-Choose between comment rulers like RStudio (\"### Section title ----\")
-and \"Org-like\" headings \(\"### *** Section title\").
+Choose between comment rulers like RStudio (\"### Section title ----\"),
+\"Org-like\" headings \(\"### *** Section title\"), or no outline support.
 
-When using the RStudio outline style, it is recommended to use \(setq
-ess-indent-with-fancy-comments nil) or \(setq ess-style 'RStudio).
-Otherwise, single-hash comments are treated as right-margin comments
-with `comment-column' 40."
+When using the RStudio outline style, `ess-indent-with-fancy-comments'
+is automatically set to nil locally in the buffer. When switching back,
+the original local binding is restored; if the variable was not
+buffer-local, the current global default applies. You can also use
+\(setq ess-style 'RStudio) to achieve the same effect globally."
   :group 'ess-R
-  :type '(choice (const :tag "RStudio comment rulers" RStudio)
+  :type '(choice (const :tag "No outline support" none)
+                 (const :tag "RStudio comment rulers" RStudio)
                  (const :tag "Org-Like (### *** headings)" Org-like))
   :safe #'symbolp)
 
