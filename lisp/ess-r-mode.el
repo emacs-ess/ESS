@@ -333,8 +333,15 @@ namespace.")
         (length (match-string 1))
       1000)))
 
+(defun ess-r--outline-level-none ()
+  "Dummy outline level function for no outline support."
+  1000)
+
 (defconst ess-r-outline-style-alist
-  `((RStudio
+  `((none
+     (outline-regexp . "\\`a\\`")
+     (outline-level  . ,#'ess-r--outline-level-none))
+    (RStudio
      (outline-regexp . ,ess-r--outline-rstudio-regexp)
      (outline-level  . ,#'ess-r--outline-level-rstudio))
     (Org-like
@@ -346,18 +353,54 @@ namespace.")
   "R mode `outline-level` dispatcher for the current outline style."
   (funcall (ess-r--outline-style-value 'outline-level)))
 
+(defvar-local ess-r--saved-indent-with-fancy-comments nil
+  "Saved state of `ess-indent-with-fancy-comments' before RStudio style.
+Stored as (VALUE . WAS-LOCAL) to restore both value and local binding.")
+
 (defun ess-r-set-outline-style (&optional style)
-  "Apply STYLE (or `ess-r-outline-style') to the current buffer."
+  "Apply STYLE (or `ess-r-outline-style') to the current buffer.
+
+When switching to RStudio style, `ess-indent-with-fancy-comments' is
+automatically set to nil locally. The previous value is saved and
+restored when switching to a different style."
   (interactive
    (list (intern (completing-read
                  "Outline style"
                  (mapcar (lambda (entry) (symbol-name (car entry)))
                          ess-r-outline-style-alist)
                  nil t nil nil
-                 (symbol-name (or ess-r-outline-style 'RStudio))))))
+                 (symbol-name (or ess-r-outline-style 'none))))))
   (let* ((style (or style ess-r-outline-style))
-         (entry (ess-r--outline-style-definition style)))
-    (setq-local ess-r-outline-style (car entry))
+         (entry (ess-r--outline-style-definition style))
+         (old-style ess-r-outline-style)
+         (new-style (car entry)))
+    ;; Handle ess-indent-with-fancy-comments adjustment
+    (cond
+     ;; Switching TO RStudio style
+     ((and (eq new-style 'RStudio)
+           (not (eq old-style 'RStudio)))
+      ;; Save current value if not already saved
+      (unless ess-r--saved-indent-with-fancy-comments
+        (setq ess-r--saved-indent-with-fancy-comments
+              (cons (if (local-variable-p 'ess-indent-with-fancy-comments)
+                        ess-indent-with-fancy-comments
+                      (default-value 'ess-indent-with-fancy-comments))
+                    (local-variable-p 'ess-indent-with-fancy-comments))))
+      (setq-local ess-indent-with-fancy-comments nil))
+     ;; Switching FROM RStudio style to another
+     ((and (eq old-style 'RStudio)
+           (not (eq new-style 'RStudio))
+           ess-r--saved-indent-with-fancy-comments)
+      ;; Restore saved value and local state
+      (let ((saved-value (car ess-r--saved-indent-with-fancy-comments))
+            (saved-local (cdr ess-r--saved-indent-with-fancy-comments)))
+        (if saved-local
+            (setq-local ess-indent-with-fancy-comments saved-value)
+          (when (local-variable-p 'ess-indent-with-fancy-comments)
+            (kill-local-variable 'ess-indent-with-fancy-comments))))
+      (setq ess-r--saved-indent-with-fancy-comments nil)))
+    ;; Apply outline style
+    (setq-local ess-r-outline-style new-style)
     (setq-local outline-regexp (ess-r--outline-style-value 'outline-regexp style))
     (setq-local outline-level #'ess-r-outline-level)))
 
