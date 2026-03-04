@@ -1,4 +1,11 @@
-Changes and New Features in 25.01.0:
+Changes and New Features in 26.01.0:
+   • ESS[BUGS] is still relevant due to NIMBLE keeping the language
+     alive.  However, only syntax highlighting and key-presses will be
+     supported moving forward.  For example, the ‘<’ key now generates
+     ‘<-’ rather than the former ‘=’ since equals is a valid character
+     in NIMBLE BUGS.
+
+   Changes and New Features in 25.01.0:
 
    • polymode: In our transition from literate libraries (such as noweb
      documented below with respect to 19.04), we now recommend the
@@ -199,8 +206,8 @@ Changes and New Features in 25.01.0:
 
    • ESS now respects ‘display-buffer-alist’.  Users can now use
      ‘display-buffer-alist’ to manage how and where windows appear.  For
-     more information and examples, see *Note (ess)Controlling buffer
-     display::.
+     more information and examples, see See (ess)Controlling buffer
+     display.
 
    • ‘ess-roxy-mode’ can now be enabled in non-R buffers.  This is
      primarily intended to support roxygen documentation for cpp
@@ -325,8 +332,8 @@ documentation for more detail:
      ‘(with-require-after-load "ess" <ess-config-here>)’ in your Emacs
      init file.  Users of the popular ‘use-package’ Emacs package can
      now do ‘(use-package ess :defer t)’ to take advantage of this
-     behavior.  For more information on this feature, see *Note
-     (ess)Activating and Loading ESS::.
+     behavior.  For more information on this feature, see See
+     (ess)Activating and Loading ESS.
 
    • ESS now respects Emacs conventions for keybindings.  This means
      that The ‘C-c [letter]’ bindings have been removed.  This affects
@@ -358,7 +365,7 @@ documentation for more detail:
      options include ‘ess-use-flymake’, ‘ess-r-flymake-linters’, and
      ‘ess-r-flymake-lintr-cache’.
 
-   • ESS[R]: Gained support for xref in Emacs 25+ *Note (emacs)Xref::.
+   • ESS[R]: Gained support for xref in Emacs 25+ See (emacs)Xref.
 
    • ESS[R]: The startup screen is cleaner.  It also displays the
      startup directory with an explicit ‘setwd()’.
