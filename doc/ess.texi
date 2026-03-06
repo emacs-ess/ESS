@@ -3280,55 +3280,55 @@ polymode @url{https://github.com/polymode/poly-R/},
 @url{https://polymode.github.io/}, or markdown-mode with edit-indirect
 @url{https://jblevins.org/projects/markdown-mode}.
 
-ESS provides support for writing and processing Sweave
-(@uref{https://leisch.userweb.mwn.de/Sweave/}), building up on
-Emacs' ess-noweb-mode for literate programming.  When working on an Sweave
-document, the following key bindings are available:
+@comment ESS provides support for writing and processing Sweave
+@comment (@uref{https://leisch.userweb.mwn.de/Sweave/}), building up on
+@comment Emacs' ess-noweb-mode for literate programming.  When working on an Sweave
+@comment document, the following key bindings are available:
 
-@deffn Command ess-swv-weave @var{choose}
-@kindex M-n s
-@kbd{M-n s} Run Sweave on the current .Rnw file.  If @var{choose} is
-non-@samp{nil}, offer a menu of available weavers.
-@end deffn
+@comment @deffn Command ess-swv-weave @var{choose}
+@comment @kindex M-n s
+@comment @kbd{M-n s} Run Sweave on the current .Rnw file.  If @var{choose} is
+@comment non-@samp{nil}, offer a menu of available weavers.
+@comment @end deffn
 
-@deffn Command ess-swv-latex
-@kindex M-n l
-@kbd{M-n l} Run LaTeX after Sweave'ing.
-@end deffn
+@comment @deffn Command ess-swv-latex
+@comment @kindex M-n l
+@comment @kbd{M-n l} Run LaTeX after Sweave'ing.
+@comment @end deffn
 
-@deffn Command ess-swv-PS
-@kbd{M-n p} Generate and display a postscript file after LaTeX'ing.
-@end deffn
+@comment @deffn Command ess-swv-PS
+@comment @kbd{M-n p} Generate and display a postscript file after LaTeX'ing.
+@comment @end deffn
 
-@deffn Command ess-swv-PDF @var{pdflatex-cmd}
-@kindex M-n P
-@kbd{M-n P} Generate and display a PDF file after LaTeX'ing.  Optional
-argument @var{pdflatex-cmd} is the command to use, which by default, is
-the command used to generate the PDF file is the first element of
-@code{ess-swv-pdflatex-commands}.
-@end deffn
+@comment @deffn Command ess-swv-PDF @var{pdflatex-cmd}
+@comment @kindex M-n P
+@comment @kbd{M-n P} Generate and display a PDF file after LaTeX'ing.  Optional
+@comment argument @var{pdflatex-cmd} is the command to use, which by default, is
+@comment the command used to generate the PDF file is the first element of
+@comment @code{ess-swv-pdflatex-commands}.
+@comment @end deffn
 
-@defvr {User Option} ess-swv-pdflatex-commands
-Commands used by @code{ess-swv-PDF} to run a version of pdflatex; the
-first entry is the default command.
-@end defvr
+@comment @defvr {User Option} ess-swv-pdflatex-commands
+@comment Commands used by @code{ess-swv-PDF} to run a version of pdflatex; the
+@comment first entry is the default command.
+@comment @end defvr
 
-Sweave'ing with @code{ess-swv-weave} starts an inferior-ESS process, if
-one is not available.  Other commands are available from the
-@samp{Sweaving, Tangling, ...} submenu of the Noweb menu.
+@comment Sweave'ing with @code{ess-swv-weave} starts an inferior-ESS process, if
+@comment one is not available.  Other commands are available from the
+@comment @samp{Sweaving, Tangling, ...} submenu of the Noweb menu.
 
-AUCTeX (@uref{https://www.gnu.org/software/auctex}) users may prefer to
-set the variable @code{ess-swv-plug-into-AUCTeX-p} (available from the
-``ESS Sweave'' customization group) to t.  Alternatively, the same can
-be achieved by activating the entry ``AUCTeX Interface'' from the
-@samp{Sweaving, Tangling, ...} submenu, which toggles this variable on
-or off.  When the interface is activated, new entries for Sweave'ing and
-LaTeX'ing thereafter are available from AUCTeX's ``Command'' menu.
-Sweave'ing can, thus, be done by @kbd{C-c C-c Sweave RET} without an
-inferior-ESS process.  Similarly, LaTeX'ing can be done by @kbd{C-c C-c
-LaTeXSweave RET}.  In both cases, the process can be monitored with
-@kbd{C-c C-l} (@code{TeX-recenter-output-buffer}).  Open the viewer with
-@kbd{C-c C-v} (@code{TeX-view}), as usual in AUCTeX.
+@comment AUCTeX (@uref{https://www.gnu.org/software/auctex}) users may prefer to
+@comment set the variable @code{ess-swv-plug-into-AUCTeX-p} (available from the
+@comment ``ESS Sweave'' customization group) to t.  Alternatively, the same can
+@comment be achieved by activating the entry ``AUCTeX Interface'' from the
+@comment @samp{Sweaving, Tangling, ...} submenu, which toggles this variable on
+@comment or off.  When the interface is activated, new entries for Sweave'ing and
+@comment LaTeX'ing thereafter are available from AUCTeX's ``Command'' menu.
+@comment Sweave'ing can, thus, be done by @kbd{C-c C-c Sweave RET} without an
+@comment inferior-ESS process.  Similarly, LaTeX'ing can be done by @kbd{C-c C-c
+@comment LaTeXSweave RET}.  In both cases, the process can be monitored with
+@comment @kbd{C-c C-l} (@code{TeX-recenter-output-buffer}).  Open the viewer with
+@comment @kbd{C-c C-v} (@code{TeX-view}), as usual in AUCTeX.
 
 @node ESS for R
 @chapter Overview of ESS features for the S family
