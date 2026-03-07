@@ -1,6 +1,6 @@
 ;;; ess-r-mode.el --- R customization  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1997-2025 Free Software Foundation, Inc.
+;; Copyright (C) 1997-2026 Free Software Foundation, Inc.
 ;; Author: A.J. Rossini
 ;; Created: 12 Jun 1997
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
@@ -307,6 +307,18 @@ namespace.")
   "^\\(?:> \\)?###\\s-+\\(\\*+\\)\\s-+.*$"
   "R outline regexp used when `ess-r-outline-style' is `Org-like'.")
 
+(defconst ess-r-outline-style-alist
+  `((none
+     (outline-regexp . "\\`a\\`")
+     (outline-level  . ,#'ess-r--outline-level-none))
+    (RStudio
+     (outline-regexp . ,ess-r--outline-rstudio-regexp)
+     (outline-level  . ,#'ess-r--outline-level-rstudio))
+    (Org-like
+     (outline-regexp . ,ess-r--outline-org-like-regexp)
+     (outline-level  . ,#'ess-r--outline-level-org-like)))
+  "Mapping between outline styles and their regexp/level helpers.")
+
 (defun ess-r--outline-style-definition (&optional style)
   "Return the style definition for STYLE, defaulting to `ess-r-outline-style'."
   (let ((style (or style ess-r-outline-style)))
@@ -336,18 +348,6 @@ namespace.")
 (defun ess-r--outline-level-none ()
   "Dummy outline level function for no outline support."
   1000)
-
-(defconst ess-r-outline-style-alist
-  `((none
-     (outline-regexp . "\\`a\\`")
-     (outline-level  . ,#'ess-r--outline-level-none))
-    (RStudio
-     (outline-regexp . ,ess-r--outline-rstudio-regexp)
-     (outline-level  . ,#'ess-r--outline-level-rstudio))
-    (Org-like
-     (outline-regexp . ,ess-r--outline-org-like-regexp)
-     (outline-level  . ,#'ess-r--outline-level-org-like)))
-  "Mapping between outline styles and their regexp/level helpers.")
 
 (defun ess-r-outline-level ()
   "R mode `outline-level` dispatcher for the current outline style."
