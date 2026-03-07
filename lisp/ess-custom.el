@@ -1,6 +1,6 @@
 ;;; ess-custom.el --- Customize variables for ESS  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 1997-2025 Free Software Foundation, Inc.
+;; Copyright (C) 1997-2026 Free Software Foundation, Inc.
 
 ;; Author: Rodney Sparapani
 ;; Maintainer: ESS-help <ess-help@r-project.org>
@@ -1574,13 +1574,13 @@ by `ess-function-template'."
 (defcustom ess-r-outline-style 'none
   "Outline convention used by `ess-r-mode'.
 Choose between comment rulers like RStudio (\"### Section title ----\"),
-\"Org-like\" headings \(\"### *** Section title\"), or no outline support.
+\"Org-like\" headings (\"### *** Section title\"), or no outline support.
 
 When using the RStudio outline style, `ess-indent-with-fancy-comments'
 is automatically set to nil locally in the buffer. When switching back,
 the original local binding is restored; if the variable was not
 buffer-local, the current global default applies. You can also use
-\(setq ess-style 'RStudio) to achieve the same effect globally."
+(setq ess-style \\='RStudio) to achieve the same effect globally."
   :group 'ess-R
   :type '(choice (const :tag "No outline support" none)
                  (const :tag "RStudio comment rulers" RStudio)
