@@ -51,7 +51,7 @@ ESS version
 
 @dircategory Emacs
 @direntry
-* ESS: (ess). Emacs Speaks Statistics (R/S/S+, SAS, BUGS/JAGS and Stata).
+* ESS: (ess). Emacs Speaks Statistics (R/S/S+, SAS, BUGS/NIMBLE and Stata).
 @end direntry
 @node Top
 @top ESS: Emacs Speaks Statistics
@@ -78,7 +78,7 @@ and J.A. Branham.
 @quotation
 Emacs Speaks Statistics (ESS) provides an intelligent, consistent
 interface between the user and the software.  ESS interfaces with R,
-SAS, S-PLUS, BUGS/JAGS and other statistical analysis packages on
+SAS, S-PLUS, BUGS/NIMBLE and other statistical analysis packages on
 GNU/Linux, other Unix-like systems such as macOS, and Microsoft Windows.
 ESS is itself a package within the Emacs text editor and uses Emacs
 features to streamline the creation and use of statistical software.
@@ -107,7 +107,7 @@ written in these statistical analysis languages.
 * ESS for R::                   Overview of ESS features for the S family
 * ESS for SAS::
 * ESS for BUGS::
-* ESS for JAGS::
+@comment * ESS for JAGS::
 * Mailing lists/bug reports::   How to get assistance with ESS
 * Customization::               Customizing ESS
 * Indices::
@@ -119,7 +119,7 @@ written in these statistical analysis languages.
 
 ESS provides a generic interface, through Emacs, to statistical
 packages.  It currently supports R (and the rest of the S family), SAS,
-BUGS/JAGS, Stata, and Julia with the level of support roughly in that
+BUGS/NIMBLE, Stata, and Julia with the level of support roughly in that
 order.
 
 Throughout this manual, @emph{Emacs} refers to @emph{GNU Emacs} by the
@@ -3361,10 +3361,10 @@ polymode @url{https://github.com/polymode/poly-R/},
 
 @include help-bugs.texi
 
-@node ESS for JAGS
-@chapter ESS for JAGS
+@comment @node ESS for JAGS
+@comment @chapter ESS for JAGS
 
-@include help-jags.texi
+@comment @include help-jags.texi
 
 
 @node Mailing lists/bug reports
