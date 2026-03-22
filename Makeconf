@@ -9,6 +9,7 @@
 ## Variable    Description
 ## EMACS       Path to GNU Emacs
 ## EMACSBATCH  How to run Emacs as batch
+## EMACSVER    Version of Emacs 
 ## SITELISP    Destination of site-lisp
 ## ESSDESTDIR  Destination of ESS
 DESTDIR ?= /usr
@@ -19,12 +20,13 @@ EMACS ?= emacs
 SITELISP ?= $(PREFIX)/share/emacs/site-lisp
 ESSDESTDIR ?= $(SITELISP)/ess
 EMACSBATCH ?= $(EMACS) -batch -Q
+EMACSVER ?= 30.2
 
-# ##__ GNU Emacs __ for version 29.4 
+# ##__ GNU Emacs __ for version EMASCVER 
 # DESTDIR = /usr/local
 # PREFIX = $(DESTDIR)
-# EMACS = $(PREFIX)/emacs/29.4/bin/emacs
-# SITELISP = $(PREFIX)/emacs/29.4/share/emacs/site-lisp
+# EMACS = $(PREFIX)/emacs/$(EMACSVER)/bin/emacs
+# SITELISP = $(PREFIX)/emacs/$(EMACSVER)/share/emacs/site-lisp
 # ESSDESTDIR = $(SITELISP)/ess
 # EMACSBATCH = $(EMACS) -batch -Q
 
