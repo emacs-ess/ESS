@@ -29,14 +29,14 @@
 (require 'ess-utils)
 (defvar ess-bugs-command)
 (defvar ess-bugs-chains)
-(defvar ess-jags-command)
-(defvar ess-jags-chains)
+;;(defvar ess-jags-command)
+;;(defvar ess-jags-chains)
 (defvar ess-bugs-default-bins)
 
 (declare-function ess-bugs-na-bug "ess-bugs-d")
-(declare-function ess-jags-na-bug "ess-jags-d")
+;;(declare-function ess-jags-na-bug "ess-jags-d")
 (declare-function ess-bugs-na-bmd "ess-bugs-d")
-(declare-function ess-jags-na-jmd "ess-jags-d")
+;;(declare-function ess-jags-na-jmd "ess-jags-d")
 
 (defgroup ess-bugs nil
   "ESS: BUGS."
@@ -140,7 +140,7 @@ Users whose default is not \\='sh, but are accessing a remote machine with
 (defvar ess-bugs-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (quote [f2])  #'ess-revert-wisely)
-    (define-key map "\C-c\C-c" #'ess-bugs-next-action)
+    ;;(define-key map "\C-c\C-c" #'ess-bugs-next-action)
     (define-key map "<" #'ess-bugs-hot-arrow) ;; NIMBLE needs equals character
 ;;    (define-key map "=" #'ess-bugs-hot-arrow)
 ;;    (define-key map "_" #'ess-bugs-hot-arrow)
@@ -192,20 +192,20 @@ and `ess-bugs-file-dir'."
   (interactive)
   (insert " <- "))
 
-(defun ess-bugs-next-action ()
-  "ESS[BUGS/JAGS]: Perform the appropriate next action."
-  (interactive)
-  (ess-bugs-file)
+;; (defun ess-bugs-next-action ()
+;;   "ESS[BUGS/JAGS]: Perform the appropriate next action."
+;;   (interactive)
+;;   (ess-bugs-file)
 
-  (cond ((equal ".bug" ess-bugs-file-suffix) (ess-bugs-na-bug))
-        ((equal ".jag" ess-bugs-file-suffix) (ess-jags-na-bug))
-        ((equal ".bmd" ess-bugs-file-suffix)
-         (ess-save-and-set-local-variables)
-         (ess-bugs-na-bmd ess-bugs-command ess-bugs-chains))
-        ((equal ".jmd" ess-bugs-file-suffix)
-         (ess-save-and-set-local-variables)
-         (ess-jags-na-jmd ess-jags-command ess-jags-chains)))
-  )
+;;   (cond ((equal ".bug" ess-bugs-file-suffix) (ess-bugs-na-bug))
+;;         ((equal ".jag" ess-bugs-file-suffix) (ess-jags-na-bug))
+;;         ((equal ".bmd" ess-bugs-file-suffix)
+;;          (ess-save-and-set-local-variables)
+;;          (ess-bugs-na-bmd ess-bugs-command ess-bugs-chains))
+;;         ((equal ".jmd" ess-bugs-file-suffix)
+;;          (ess-save-and-set-local-variables)
+;;          (ess-jags-na-jmd ess-jags-command ess-jags-chains)))
+;;   )
 
 (defun ess-bugs-sci-to-round-4-dp ()
   "ESS[BUGS]: round output from +/-0.000E+/-0 to 4 decimal places."
