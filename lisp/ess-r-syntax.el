@@ -1,6 +1,6 @@
 ;;; ess-r-syntax.el --- Utils to work with R code  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2015-2022 Free Software Foundation, Inc.
+;; Copyright (C) 2015-2026 Free Software Foundation, Inc.
 ;; Author: Lionel Henry <lionel.hry@gmail.com>
 ;; Created: 12 Oct 2015
 ;; Maintainer: ESS-core <ESS-core@r-project.org>
@@ -310,6 +310,8 @@ content. Return nil when the end of the buffer is reached."
 
 (defvar ess-r-operators-list
   '("+" "-" "*" "/" "%%" "**" "^"
+    "%*%" "%/%" "%in%" "%notin%" "%o%" "%x%" "%||%" ; = ls(pattern =  "^%", baseenv())
+    "%/%" "%*%" "%o%" "%in%" "%notin%"
     "&" "&&" "|" "||" "!" "?" "~"
     "==" "!=" "<" "<=" ">=" ">"
     "=" "<-" "<<-" "->" "->>"
