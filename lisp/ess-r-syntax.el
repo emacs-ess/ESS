@@ -311,7 +311,6 @@ content. Return nil when the end of the buffer is reached."
 (defvar ess-r-operators-list
   '("+" "-" "*" "/" "%%" "**" "^"
     "%*%" "%/%" "%in%" "%notin%" "%o%" "%x%" "%||%" ; = ls(pattern =  "^%", baseenv())
-    "%/%" "%*%" "%o%" "%in%" "%notin%"
     "&" "&&" "|" "||" "!" "?" "~"
     "==" "!=" "<" "<=" ">=" ">"
     "=" "<-" "<<-" "->" "->>"
