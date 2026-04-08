@@ -713,7 +713,11 @@ block before the point."
   (save-excursion
     (let ((end-of-entry (ess-roxy-end-of-entry))
           (beg-of-entry (ess-roxy-beg-of-entry)))
-      (hs-hide-block-at-point nil (list beg-of-entry end-of-entry)))))
+      (if (= (cdr (func-arity 'hs-hide-block-at-point)) 1)
+          ;; Emacs 31 ++ signature: single optional COMMENT-REG -- <GH>/emacs-ess/ESS/issues/1334
+          (hs-hide-block-at-point (list beg-of-entry end-of-entry))
+        ;; Emacs <= 30.x signature: (END-OF-BLOCK &optional COMMENT-REG)
+        (hs-hide-block-at-point nil (list beg-of-entry end-of-entry))))))
 
 (defun ess-roxy-toggle-hiding ()
   "Toggle hiding/showing of a block.
