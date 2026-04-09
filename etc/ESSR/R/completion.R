@@ -108,7 +108,7 @@ local({
 }
 
 
-;;; builds on R`s functionality in  src/library/utils/R/completion.R :
+## builds on R`s functionality in  src/library/utils/R/completion.R :
 .ess_get_completions <- function(string, end, suffix = " = ") {
     oldopts <- utils::rc.options(funarg.suffix = suffix)
     on.exit(utils::rc.options(oldopts))
