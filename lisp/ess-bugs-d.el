@@ -61,7 +61,7 @@
    (cons (concat "\\<d\\(bern\\|beta\\|bin\\|binom\\|"
                  "cat\\|chisq\\|chisqr\\|CRP\\|"
                  "dexp\\|dirch\\|dirich\\|"
-                 "exp\\|\\(gen[.]\\|inv\\)?gamma\\|hyper\\|"
+                 "exp\\|flat\\|\\(gen[.]\\|inv\\)?gamma\\|hyper\\|"
                  "interval\\|lkj_corr_cholesky\\|laplace\\|lnorm\\|logis\\|"
                  "mnorm\\|mt\\|multi\\|multinom\\|mvt\\|"
                  "negbin\\|nbinom\\|norm\\(mix\\)?\\|par\\|pois\\|sum\\|t\\|"
