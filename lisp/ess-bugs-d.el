@@ -59,7 +59,7 @@
          font-lock-keyword-face)
 
    (cons (concat "\\<d\\(bern\\|beta\\|bin\\|binom\\|"
-                 "cat\\|chisq\\|chisqr\\|CRP\\|"
+                 "car_normal\\|car_proper\\|cat\\|chisq\\|chisqr\\|CRP\\|"
                  "dexp\\|dirch\\|dirich\\|"
                  "exp\\|flat\\|\\(gen[.]\\|inv\\)?gamma\\|halfflat\\|hyper\\|"
                  "interval\\|lkj_corr_cholesky\\|laplace\\|lnorm\\|logis\\|"
@@ -71,14 +71,15 @@
    (cons (concat "\\<\\(abs\\|acos\\|acosh\\|asin\\|asinh\\|atan\\|atanh\\|"
                  "asCol\\|asRow\\|backsolve\\|besselK\\|ceiling\\|chol\\|"
                  "cos\\|C\\|dim\\|\\(i\\)?cloglog\\|cube\\|"
-                 "equals\\|exp\\|expm\\|expAv\\|expit\\|"
+                 "eigen\\|equals\\|exp\\|expm\\|expAv\\|expit\\|"
                  "floor\\|for\\|forwardsolve\\|"
                  "inprod\\|interp[.]lin\\(e\\)?\\|inverse\\|"
                  "lgamma\\|length\\|lfactorial\\|"
                  "log\\|log1p\\|\\(i\\)?logit\\|logdet\\|logfact\\|loggam\\|"
-                 "max\\|mean\\|mexp\\|min\\|pmax\\|pmin\\|"
-                 "phi\\|pow\\|\\(i\\)?probit\\|prod\\|rank\\|ranked\\|round\\|"
-                 "sd\\|sin\\|solve\\|sort\\|sqrt\\|step\\|sum\\|"
+                 "max\\|mean\\|mexp\\|min\\|order\\|"
+                 "pmax\\|pmin\\|phi\\|pow\\|\\(i\\)?probit\\|prod\\|"
+                 "rank\\|ranked\\|round\\|"
+                 "sd\\|sin\\|solve\\|sort\\|sqrt\\|step\\|sum\\|svd\\|"
                  "t\\|tan\\|trunc\\|T\\)[ \t\n]*(")
          font-lock-function-name-face)
 
