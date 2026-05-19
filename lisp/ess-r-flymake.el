@@ -142,7 +142,7 @@ Otherwise, construct a string to pass to lintr::linters_with_defaults."
   (when (re-search-forward "@@\\(\\(error\\|warning\\): \\)@@" nil t)
     (let ((type (ess-r--flymake-msg-type (match-string 1)))
           (msg (buffer-substring-no-properties (match-end 0) (point-max))))
-      (flymake-log type msg)
+      (flymake-log type "%s" msg)
       (eq type :error))))
 
 (defun ess-r--flymake-parse-output (msg-buffer src-buffer report-fn)
