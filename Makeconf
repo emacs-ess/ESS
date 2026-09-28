@@ -9,7 +9,7 @@
 ## Variable    Description
 ## EMACS       Path to GNU Emacs
 ## EMACSBATCH  How to run Emacs as batch
-## EMACSVER    Version of Emacs 
+## EMACSVER    Version of Emacs
 ## SITELISP    Destination of site-lisp
 ## ESSDESTDIR  Destination of ESS
 DESTDIR ?= /usr
@@ -22,7 +22,7 @@ ESSDESTDIR ?= $(SITELISP)/ess
 EMACSBATCH ?= $(EMACS) -batch -Q
 EMACSVER ?= 30.2
 
-# ##__ GNU Emacs __ for version EMASCVER 
+# ##__ GNU Emacs __ for version EMACSVER
 # DESTDIR = /usr/local
 # PREFIX = $(DESTDIR)
 # EMACS = $(PREFIX)/emacs/$(EMACSVER)/bin/emacs
@@ -43,7 +43,7 @@ EMACSVER ?= 30.2
 # INFODIR=/usr/local/info
 # ETCDIR =$(PREFIX)/etc/ess
 # EMACSBATCH=$(EMACS) -batch -Q
-### R provides makeinfo/texi2pdf/texi2dvi outside of the PATH 
+### R provides makeinfo/texi2pdf/texi2dvi outside of the PATH
 ### add the line "/opt/R/MACHINE/bin" to the file /etc/paths
 
 ##__ GNU Emacs with Homebrew __  for macOS
