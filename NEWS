@@ -1,6 +1,5 @@
-Changes and New Features in 27.XX.0:
-   • SAS function names are now automatically generated; see
-     ‘etc/func.sas’.
+Changes and New Features in 26.09.0:
+   • ‘<Rpkg>/DESCRIPTION’ files are now opened in new ‘ess-dcf-mode’.
 
    Changes and New Features in 26.01.0:
    • ESS[BUGS] is still relevant due to NIMBLE keeping the language

@@ -1,10 +1,9 @@
 @comment @itemize @w{}
 @comment @item
 
-Changes and New Features in 27.XX.0:
+Changes and New Features in 26.09.0:
 @itemize @bullet
-@item SAS function names are now automatically generated;
-see @code{etc/func.sas}.
+@item @file{<Rpkg>/DESCRIPTION} files are now opened in new @code{ess-dcf-mode}.
 @end itemize
 
 Changes and New Features in 26.01.0:
@@ -19,7 +18,7 @@ BUGS.
 Changes and New Features in 25.01.0:
 @itemize @bullet
 
-@item polymode: In our transition from literate libraries 
+@item polymode: In our transition from literate libraries
 (such as noweb documented below with respect to 19.04), we now recommend
 the polymode packages as a more suitable replacement. Furthermore, we
 suggest the related polymodes including poly-noweb, poly-markdown and
@@ -33,8 +32,8 @@ you need to add MELPA to the list of installation archives as follows.
 and the question mark are now fontified as keywords.
 Contributed by Maxime Pettinger.
 
-@item ESS[SAS]: Developed new comprehensive lists of PROCs 
-and functions for syntax highlighting. See @code{etc/proc.sas} 
+@item ESS[SAS]: Developed new comprehensive lists of PROCs
+and functions for syntax highlighting. See @code{etc/proc.sas}
 and @code{etc/func.sas}.
 
 @end itemize

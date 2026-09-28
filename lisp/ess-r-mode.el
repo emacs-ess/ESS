@@ -3141,8 +3141,6 @@ given field. Options should be separated by value of
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("/Makevars\\(\\.win\\)?\\'" . makefile-mode))
-;;;###autoload
-(add-to-list 'auto-mode-alist '("DESCRIPTION\\'" . conf-colon-mode))
 
 (provide 'ess-r-mode)
 
